@@ -80,4 +80,4 @@
 --xcodeindentation disabled
 --yodaswap always
 --disable enumNamespaces,unusedArguments,wrapMultilineStatementBraces
---enable blankLineAfterImports,isEmpty,sortedSwitchCases,wrapConditionalBodies,wrapEnumCases,wrapSwitchCases
+--enable blankLineAfterImports,isEmpty,sortSwitchCases,wrapConditionalBodies,wrapEnumCases,wrapSwitchCases
