@@ -49,16 +49,5 @@ format: check_uncommitted
 clean_spm_cache:
 	swift package purge-cache
 
-# URL of the raw openapi.yaml file in the GitHub repository
-OPENAPI_URL := "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml"
-# Local path where the openapi.yaml file should be saved
-OPENAPI_PATH := "./Sources/OpenAIUrlSessionClient/openapi.yaml"
-
 download-openapi:
-	@echo "Downloading openapi.yaml from GitHub..."
-	@curl -o $(OPENAPI_PATH) $(OPENAPI_URL)
-	@if [ -f $(OPENAPI_PATH) ]; then \
-		echo "openapi.yaml has been downloaded successfully to $(OPENAPI_PATH)."; \
-	else \
-		echo "Failed to download openapi.yaml."; \
-	fi
+	swift scripts/openaiYamlDownload.swift
