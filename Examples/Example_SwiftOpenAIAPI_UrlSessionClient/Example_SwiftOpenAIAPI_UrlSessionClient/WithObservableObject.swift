@@ -3,6 +3,7 @@
 // 18.02.24
 
 import Dependencies
+import Combine
 import Foundation
 import HTTPTypes
 import OpenAPIRuntime
@@ -13,6 +14,16 @@ import OpenAIUrlSessionDependency
 class MyObservableObject: ObservableObject {
     @Dependency(\.openAIUrlSession) var openAIUrlSession
     @Published var text: String = ""
+    @Published var yourKey: String = ""
+    var cancellables = Set<AnyCancellable>()
+    
+    init(){
+        $yourKey.sink {
+//            self.yourKey = UserDefaults.standard.string(forKey: "openapikey") ?? ""
+            UserDefaults.standard.setValue($0, forKey: "openapikey")
+        }
+        .store(in: &cancellables)
+    }
     
     @MainActor
     func buttonTapped() {
@@ -30,7 +41,7 @@ class MyObservableObject: ObservableObject {
                                 .ChatCompletionRequestUserMessage(.init(content: .case1("Nice to meet you. How are you?"), role: .user))
                             ],
                             model: .init(value2: .gpt_hyphen_3_period_5_hyphen_turbo),
-                            stream: true
+                            stream: false
                         )
                     )
                 )
@@ -38,20 +49,29 @@ class MyObservableObject: ObservableObject {
             print(output)
 //            for try await o in output.ok.body. {}
 
-            self.text = try! output.ok.body.json.choices.first?.message.content ?? "nil"
+            do {
+                self.text = try output.ok.body.json.choices.first?.message.content ?? "nil"
+            } catch{
+                print(error.localizedDescription)
+            }
         } // <-Task
     }
 }
 
 struct WithObservableObjectView: View {
     @StateObject var vm = withDependencies {
-        $0.secrets = .init(openAIKey: {"sk-"})
+        $0.secrets = .init(openAIKey: {
+            let key = UserDefaults.standard.string(forKey: "openapikey")!
+            print("openapikey", key)
+            return key
+        })
     } operation: {
         MyObservableObject()
     }
 
     
     var body: some View {
+        TextField("Your Key", text: $vm.yourKey)
         Button {
             vm.buttonTapped()
         } label: {
