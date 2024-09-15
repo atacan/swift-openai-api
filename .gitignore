@@ -8,3 +8,4 @@ DerivedData/
 .netrc
 # ignore every .build folder whereever it is
 .build
+.swiftpm/
