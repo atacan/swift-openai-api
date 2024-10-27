@@ -12041,8 +12041,8 @@ components:
           x-oaiExpandable: true
         seed:
           type: integer
-          minimum: -922337203 #6854776000
-          maximum: 9223372036 #854776000
+          minimum: -922337203685477600
+          maximum: 922337203685477600
           nullable: true
           description: >
             This feature is in Beta.
@@ -12655,8 +12655,8 @@ components:
             penalties.](/docs/guides/text-generation/parameter-details)
         seed:
           type: integer
-          minimum: -9223372 #036854776000
-          maximum: 92233720 #36854776000
+          minimum: -922337203685477600
+          maximum: 922337203685477600
           nullable: true
           description: >
             If specified, our system will make a best effort to sample

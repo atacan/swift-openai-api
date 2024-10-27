@@ -9,8 +9,18 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) {
         if let tempLocalUrl = tempLocalUrl, error == nil {
             do {
                 let fileData = try Data(contentsOf: tempLocalUrl)
+                var fileContent: String = String(data: fileData, encoding: .utf8)!
+                fileContent = fileContent.replacingOccurrences(of: "9223372036854776000", with: "922337203685477600")
+                fileContent = fileContent.replacingOccurrences(of: """
+                                - gpt-4o-2024-08-06
+                                - gpt-4o-2024-05-13
+                                - gpt-4o-2024-08-06
+                """, with: """
+                                - gpt-4o-2024-08-06
+                                - gpt-4o-2024-05-13
+                """)
                 try destinationPaths.forEach { destinationPath in
-                    try fileData.write(to: URL(fileURLWithPath: destinationPath), options: .atomic)
+                    try fileContent.write(toFile: destinationPath, atomically: true, encoding: .utf8)
                     print("Successfully downloaded and saved file to: \(destinationPath)")
                 }
             }
