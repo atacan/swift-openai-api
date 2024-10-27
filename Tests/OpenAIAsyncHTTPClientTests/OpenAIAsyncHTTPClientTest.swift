@@ -90,18 +90,18 @@ struct OpenAIAsyncHTTPClientTest {
         // ⚠️ Even though the server returns VerboseJson, we get Json here
         switch response {
         case .ok(let ok):
-             // if switched to
-             let jsonPayload = try ok.body.json
-//             let shortJson = jsonPayload.value1!
-             let verboseJson = jsonPayload.value2!
-             print("✅", verboseJson)
+             // if switched to anyOf
+//             let jsonPayload = try ok.body.json
+//             let value1 = jsonPayload.value1!
+//             let value2 = jsonPayload.value2!
+//             print("✅", value2)
 
-//            switch try ok.body.json {
-//            case .CreateTranscriptionResponseVerboseJson(let verbose):
-//                dump(verbose)
-//            case .CreateTranscriptionResponseJson(let json):
-//                dump(json)
-//            }
+            switch try ok.body.json {
+            case .CreateTranscriptionResponseVerboseJson(let verbose):
+                dump(verbose)
+            case .CreateTranscriptionResponseJson(let json):
+                dump(json)
+            }
         case .undocumented(let statusCode, let undocumentedPayload):
             let buffer = try await undocumentedPayload.body?.collect(upTo: 1024 * 1035 * 2, using: .init())
             let description = String(buffer: buffer!)
@@ -109,6 +109,43 @@ struct OpenAIAsyncHTTPClientTest {
 
             struct myerror: Error {}
             throw ClientError.init(operationID: "", operationInput: "", causeDescription: "", underlyingError: myerror())
+        }
+    }
+
+    @Test func decodingVerboseJsonString() async throws {
+        let input = """
+            {
+              "task": "transcribe",
+              "language": "english",
+              "duration": 8.470000267028809,
+              "text": "The beach was a popular spot on a hot summer day. People were swimming in the ocean, building sandcastles, and playing beach volleyball.",
+              "segments": [
+                {
+                  "id": 0,
+                  "seek": 0,
+                  "start": 0.0,
+                  "end": 3.319999933242798,
+                  "text": " The beach was a popular spot on a hot summer day.",
+                  "tokens": [
+                    50364, 440, 7534, 390, 257, 3743, 4008, 322, 257, 2368, 4266, 786, 13, 50530
+                  ],
+                  "temperature": 0.0,
+                  "avg_logprob": -0.2860786020755768,
+                  "compression_ratio": 1.2363636493682861,
+                  "no_speech_prob": 0.00985979475080967
+                }
+              ]
+            }
+            """
+
+        let data = input.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        let result = try! decoder.decode(Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
+        switch result {
+        case .CreateTranscriptionResponseVerboseJson(let object):
+            #expect(object.text.count >= 1)
+        case .CreateTranscriptionResponseJson(_):
+            assertionFailure()
         }
     }
 }

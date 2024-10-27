@@ -11396,7 +11396,7 @@ public enum Components {
             /// The duration of the input audio.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranscriptionResponseVerboseJson/duration`.
-            public var duration: Swift.String
+            public var duration: Swift.Double
             /// The transcribed text.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranscriptionResponseVerboseJson/text`.
@@ -11419,7 +11419,7 @@ public enum Components {
             ///   - segments: Segments of the transcribed text and their corresponding details.
             public init(
                 language: Swift.String,
-                duration: Swift.String,
+                duration: Swift.Double,
                 text: Swift.String,
                 words: [Components.Schemas.TranscriptionWord]? = nil,
                 segments: [Components.Schemas.TranscriptionSegment]? = nil
@@ -11525,7 +11525,7 @@ public enum Components {
             /// The duration of the input audio.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranslationResponseVerboseJson/duration`.
-            public var duration: Swift.String
+            public var duration: Swift.Double
             /// The translated text.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranslationResponseVerboseJson/text`.
@@ -11543,7 +11543,7 @@ public enum Components {
             ///   - segments: Segments of the translated text and their corresponding details.
             public init(
                 language: Swift.String,
-                duration: Swift.String,
+                duration: Swift.Double,
                 text: Swift.String,
                 segments: [Components.Schemas.TranscriptionSegment]? = nil
             ) {
@@ -25766,19 +25766,19 @@ public enum Operations {
                     /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json`.
                     @frozen public enum jsonPayload: Codable, Hashable, Sendable {
                         /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case1`.
-                        case CreateTranscriptionResponseJson(Components.Schemas.CreateTranscriptionResponseJson)
-                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case2`.
                         case CreateTranscriptionResponseVerboseJson(Components.Schemas.CreateTranscriptionResponseVerboseJson)
+                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case2`.
+                        case CreateTranscriptionResponseJson(Components.Schemas.CreateTranscriptionResponseJson)
                         public init(from decoder: any Decoder) throws {
                             var errors: [any Error] = []
                             do {
-                                self = .CreateTranscriptionResponseJson(try .init(from: decoder))
+                                self = .CreateTranscriptionResponseVerboseJson(try .init(from: decoder))
                                 return
                             } catch {
                                 errors.append(error)
                             }
                             do {
-                                self = .CreateTranscriptionResponseVerboseJson(try .init(from: decoder))
+                                self = .CreateTranscriptionResponseJson(try .init(from: decoder))
                                 return
                             } catch {
                                 errors.append(error)
@@ -25791,9 +25791,9 @@ public enum Operations {
                         }
                         public func encode(to encoder: any Encoder) throws {
                             switch self {
-                            case let .CreateTranscriptionResponseJson(value):
-                                try value.encode(to: encoder)
                             case let .CreateTranscriptionResponseVerboseJson(value):
+                                try value.encode(to: encoder)
+                            case let .CreateTranscriptionResponseJson(value):
                                 try value.encode(to: encoder)
                             }
                         }

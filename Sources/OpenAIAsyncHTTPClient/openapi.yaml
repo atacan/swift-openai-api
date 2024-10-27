@@ -691,7 +691,7 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
+                oneOf:
                   - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
                   - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
       x-oaiMeta:
@@ -14580,7 +14580,7 @@ components:
           type: string
           description: The language of the input audio.
         duration:
-          type: string
+          type: number
           description: The duration of the input audio.
         text:
           type: string
@@ -14683,7 +14683,7 @@ components:
           type: string
           description: The language of the output translation (always `english`).
         duration:
-          type: string
+          type: number
           description: The duration of the input audio.
         text:
           type: string

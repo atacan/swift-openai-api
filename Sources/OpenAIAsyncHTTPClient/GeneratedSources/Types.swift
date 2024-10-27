@@ -11396,7 +11396,7 @@ public enum Components {
             /// The duration of the input audio.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranscriptionResponseVerboseJson/duration`.
-            public var duration: Swift.String
+            public var duration: Swift.Double
             /// The transcribed text.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranscriptionResponseVerboseJson/text`.
@@ -11419,7 +11419,7 @@ public enum Components {
             ///   - segments: Segments of the transcribed text and their corresponding details.
             public init(
                 language: Swift.String,
-                duration: Swift.String,
+                duration: Swift.Double,
                 text: Swift.String,
                 words: [Components.Schemas.TranscriptionWord]? = nil,
                 segments: [Components.Schemas.TranscriptionSegment]? = nil
@@ -11525,7 +11525,7 @@ public enum Components {
             /// The duration of the input audio.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranslationResponseVerboseJson/duration`.
-            public var duration: Swift.String
+            public var duration: Swift.Double
             /// The translated text.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateTranslationResponseVerboseJson/text`.
@@ -11543,7 +11543,7 @@ public enum Components {
             ///   - segments: Segments of the translated text and their corresponding details.
             public init(
                 language: Swift.String,
-                duration: Swift.String,
+                duration: Swift.Double,
                 text: Swift.String,
                 segments: [Components.Schemas.TranscriptionSegment]? = nil
             ) {
@@ -25764,48 +25764,38 @@ public enum Operations {
                 /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content`.
                 @frozen public enum Body: Sendable, Hashable {
                     /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json`.
-                    public struct jsonPayload: Codable, Hashable, Sendable {
-                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/value1`.
-                        public var value1: Components.Schemas.CreateTranscriptionResponseVerboseJson?
-                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/value2`.
-                        public var value2: Components.Schemas.CreateTranscriptionResponseJson?
-                        /// Creates a new `jsonPayload`.
-                        ///
-                        /// - Parameters:
-                        ///   - value1:
-                        ///   - value2:
-                        public init(
-                            value1: Components.Schemas.CreateTranscriptionResponseVerboseJson? = nil,
-                            value2: Components.Schemas.CreateTranscriptionResponseJson? = nil
-                        ) {
-                            self.value1 = value1
-                            self.value2 = value2
-                        }
+                    @frozen public enum jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case1`.
+                        case CreateTranscriptionResponseVerboseJson(Components.Schemas.CreateTranscriptionResponseVerboseJson)
+                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case2`.
+                        case CreateTranscriptionResponseJson(Components.Schemas.CreateTranscriptionResponseJson)
                         public init(from decoder: any Decoder) throws {
                             var errors: [any Error] = []
                             do {
-                                value1 = try .init(from: decoder)
+                                self = .CreateTranscriptionResponseVerboseJson(try .init(from: decoder))
+                                return
                             } catch {
                                 errors.append(error)
                             }
                             do {
-                                value2 = try .init(from: decoder)
+                                self = .CreateTranscriptionResponseJson(try .init(from: decoder))
+                                return
                             } catch {
                                 errors.append(error)
                             }
-                            try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
-                                [
-                                    value1,
-                                    value2
-                                ],
+                            throw Swift.DecodingError.failedToDecodeOneOfSchema(
                                 type: Self.self,
                                 codingPath: decoder.codingPath,
                                 errors: errors
                             )
                         }
                         public func encode(to encoder: any Encoder) throws {
-                            try value1?.encode(to: encoder)
-                            try value2?.encode(to: encoder)
+                            switch self {
+                            case let .CreateTranscriptionResponseVerboseJson(value):
+                                try value.encode(to: encoder)
+                            case let .CreateTranscriptionResponseJson(value):
+                                try value.encode(to: encoder)
+                            }
                         }
                     }
                     /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/application\/json`.
