@@ -4,18 +4,18 @@ let fileURL = URL(
     string: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml"
 )!
 let destinationPaths = [
-    "./Sources/OpenAIUrlSessionClient/openapi.yaml", "./Sources/OpenAIAsyncHTTPClient/openapi.yaml",
+    "./Sources/OpenAIUrlSessionClient/openapi.yaml",
+    "./Sources/OpenAIAsyncHTTPClient/openapi.yaml",
 ]
 
-func downloadFile(from fileURL: URL, to destinationPaths: [String]) {
-    let semaphore = DispatchSemaphore(value: 0)
-    let task = URLSession.shared.downloadTask(with: fileURL) { (tempLocalUrl, response, error) in
-        if let tempLocalUrl = tempLocalUrl, error == nil {
-            do {
-                let fileData = try Data(contentsOf: tempLocalUrl)
-                var fileContent: String = String(data: fileData, encoding: .utf8)!
-                fileContent =
-                    fileContent
+func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws {
+    let (tempLocalUrl, _) = try await URLSession.shared.download(from: fileURL)
+
+    let fileData = try Data(contentsOf: tempLocalUrl)
+    var fileContent = try String(data: fileData, encoding: .utf8)!
+
+    // Apply content modifications
+    fileContent = fileContent
                     // Fix overflowing integer
                     .replacingOccurrences(of: "9223372036854776000", with: "922337203685477600")
                     // Fix duplicate models
@@ -53,28 +53,22 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) {
           description: The duration of the input audio.
 """
                     )
-                
-                // Save to each destination path
-                try destinationPaths.forEach { destinationPath in
-                    try fileContent.write(
-                        toFile: destinationPath,
-                        atomically: true,
-                        encoding: .utf8
-                    )
-                    print("Successfully downloaded and saved file to: \(destinationPath)")
-                }
-            }
-            catch {
-                print("Error saving file \(error)")
+
+    // Save to each destination path
+    try await withThrowingTaskGroup(of: Void.self) { group in
+        for destinationPath in destinationPaths {
+            group.addTask {
+                try fileContent.write(
+                    toFile: destinationPath,
+                    atomically: true,
+                    encoding: .utf8
+                )
+                print("Successfully downloaded and saved file to: \(destinationPath)")
             }
         }
-        else {
-            print("Error downloading file: \(error!.localizedDescription)")
-        }
-        semaphore.signal()
+        try await group.waitForAll()
     }
-    task.resume()
-    semaphore.wait()
 }
 
-downloadFile(from: fileURL, to: destinationPaths)
+// Execute the download
+try await downloadFile(from: fileURL, to: destinationPaths)
