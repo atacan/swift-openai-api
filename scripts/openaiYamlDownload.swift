@@ -1,7 +1,7 @@
 import Foundation
 
 let fileURL = URL(string: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml")!
-let destinationPaths = ["./Sources/OpenAIUrlSessionClient/openapi.yaml"]
+let destinationPaths = ["./Sources/OpenAIUrlSessionClient/openapi.yaml", "./Sources/OpenAIAsyncHTTPClient/openapi.yaml"]
 
 func downloadFile(from fileURL: URL, to destinationPaths: [String]) {
     let semaphore = DispatchSemaphore(value: 0)

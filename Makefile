@@ -51,3 +51,6 @@ clean_spm_cache:
 
 download-openapi:
 	swift scripts/openaiYamlDownload.swift
+
+generate-openapi:
+	swift package generate-code-from-openapi
