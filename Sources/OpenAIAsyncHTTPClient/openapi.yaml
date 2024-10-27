@@ -691,9 +691,9 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
+                anyOf:
                   - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
+                  - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
       x-oaiMeta:
         name: Create transcription
         group: audio

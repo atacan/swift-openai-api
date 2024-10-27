@@ -90,12 +90,18 @@ struct OpenAIAsyncHTTPClientTest {
         // ⚠️ Even though the server returns VerboseJson, we get Json here
         switch response {
         case .ok(let ok):
-            switch try ok.body.json {
-            case .CreateTranscriptionResponseVerboseJson(let verbose):
-                dump(verbose)
-            case .CreateTranscriptionResponseJson(let json):
-                dump(json)
-            }
+             // if switched to
+             let jsonPayload = try ok.body.json
+//             let shortJson = jsonPayload.value1!
+             let verboseJson = jsonPayload.value2!
+             print("✅", verboseJson)
+
+//            switch try ok.body.json {
+//            case .CreateTranscriptionResponseVerboseJson(let verbose):
+//                dump(verbose)
+//            case .CreateTranscriptionResponseJson(let json):
+//                dump(json)
+//            }
         case .undocumented(let statusCode, let undocumentedPayload):
             let buffer = try await undocumentedPayload.body?.collect(upTo: 1024 * 1035 * 2, using: .init())
             let description = String(buffer: buffer!)

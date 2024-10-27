@@ -25764,38 +25764,48 @@ public enum Operations {
                 /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content`.
                 @frozen public enum Body: Sendable, Hashable {
                     /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json`.
-                    @frozen public enum jsonPayload: Codable, Hashable, Sendable {
-                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case1`.
-                        case CreateTranscriptionResponseJson(Components.Schemas.CreateTranscriptionResponseJson)
-                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/case2`.
-                        case CreateTranscriptionResponseVerboseJson(Components.Schemas.CreateTranscriptionResponseVerboseJson)
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/value1`.
+                        public var value1: Components.Schemas.CreateTranscriptionResponseVerboseJson?
+                        /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/json/value2`.
+                        public var value2: Components.Schemas.CreateTranscriptionResponseJson?
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - value1:
+                        ///   - value2:
+                        public init(
+                            value1: Components.Schemas.CreateTranscriptionResponseVerboseJson? = nil,
+                            value2: Components.Schemas.CreateTranscriptionResponseJson? = nil
+                        ) {
+                            self.value1 = value1
+                            self.value2 = value2
+                        }
                         public init(from decoder: any Decoder) throws {
                             var errors: [any Error] = []
                             do {
-                                self = .CreateTranscriptionResponseJson(try .init(from: decoder))
-                                return
+                                value1 = try .init(from: decoder)
                             } catch {
                                 errors.append(error)
                             }
                             do {
-                                self = .CreateTranscriptionResponseVerboseJson(try .init(from: decoder))
-                                return
+                                value2 = try .init(from: decoder)
                             } catch {
                                 errors.append(error)
                             }
-                            throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
+                                [
+                                    value1,
+                                    value2
+                                ],
                                 type: Self.self,
                                 codingPath: decoder.codingPath,
                                 errors: errors
                             )
                         }
                         public func encode(to encoder: any Encoder) throws {
-                            switch self {
-                            case let .CreateTranscriptionResponseJson(value):
-                                try value.encode(to: encoder)
-                            case let .CreateTranscriptionResponseVerboseJson(value):
-                                try value.encode(to: encoder)
-                            }
+                            try value1?.encode(to: encoder)
+                            try value2?.encode(to: encoder)
                         }
                     }
                     /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/application\/json`.
