@@ -11436,7 +11436,6 @@ components:
                 - gpt-4o
                 - gpt-4o-2024-08-06
                 - gpt-4o-2024-05-13
-                - gpt-4o-2024-08-06
                 - gpt-4o-mini
                 - gpt-4o-mini-2024-07-18
                 - gpt-4-turbo
@@ -11830,7 +11829,6 @@ components:
                 - gpt-4o
                 - gpt-4o-2024-08-06
                 - gpt-4o-2024-05-13
-                - gpt-4o-2024-08-06
                 - gpt-4o-realtime-preview
                 - gpt-4o-realtime-preview-2024-10-01
                 - gpt-4o-audio-preview
@@ -12043,8 +12041,8 @@ components:
           x-oaiExpandable: true
         seed:
           type: integer
-          minimum: -9223372036854776000
-          maximum: 9223372036854776000
+          minimum: -922337203 #6854776000
+          maximum: 9223372036 #854776000
           nullable: true
           description: >
             This feature is in Beta.
@@ -12657,8 +12655,8 @@ components:
             penalties.](/docs/guides/text-generation/parameter-details)
         seed:
           type: integer
-          minimum: -9223372036854776000
-          maximum: 9223372036854776000
+          minimum: -9223372 #036854776000
+          maximum: 92233720 #36854776000
           nullable: true
           description: >
             If specified, our system will make a best effort to sample
@@ -13989,7 +13987,6 @@ components:
                 - gpt-4o
                 - gpt-4o-2024-08-06
                 - gpt-4o-2024-05-13
-                - gpt-4o-2024-08-06
                 - gpt-4o-mini
                 - gpt-4o-mini-2024-07-18
                 - gpt-4-turbo
@@ -14199,7 +14196,6 @@ components:
                 - gpt-4o
                 - gpt-4o-2024-08-06
                 - gpt-4o-2024-05-13
-                - gpt-4o-2024-08-06
                 - gpt-4o-mini
                 - gpt-4o-mini-2024-07-18
                 - gpt-4-turbo

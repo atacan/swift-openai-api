@@ -40,5 +40,13 @@ let package = Package(
             name: "SwiftOpenAIAPITests",
             dependencies: ["SwiftOpenAIAPI"]
         ),
+
+        .testTarget(
+            name: "OpenAIAsyncHTTPClientTests",
+            dependencies: ["OpenAIAsyncHTTPClient"],
+            resources: [
+                .copy("Resources")
+            ]
+        ),
     ]
 )
