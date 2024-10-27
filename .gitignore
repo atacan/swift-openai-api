@@ -9,3 +9,4 @@ DerivedData/
 # ignore every .build folder whereever it is
 .build
 .swiftpm/
+*.wav
