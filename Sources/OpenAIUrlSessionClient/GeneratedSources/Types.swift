@@ -25809,6 +25809,30 @@ public enum Operations {
                             switch self {
                             case let .json(body):
                                 return body
+                            default:
+                                try throwUnexpectedResponseBody(
+                                    expectedContent: "application/json",
+                                    body: self
+                                )
+                            }
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/200/content/text\/plain`.
+                    case plainText(OpenAPIRuntime.HTTPBody)
+                    /// The associated value of the enum case if `self` is `.plainText`.
+                    ///
+                    /// - Throws: An error if `self` is not `.plainText`.
+                    /// - SeeAlso: `.plainText`.
+                    public var plainText: OpenAPIRuntime.HTTPBody {
+                        get throws {
+                            switch self {
+                            case let .plainText(body):
+                                return body
+                            default:
+                                try throwUnexpectedResponseBody(
+                                    expectedContent: "text/plain",
+                                    body: self
+                                )
                             }
                         }
                     }
@@ -25853,11 +25877,14 @@ public enum Operations {
         }
         @frozen public enum AcceptableContentType: AcceptableProtocol {
             case json
+            case plainText
             case other(Swift.String)
             public init?(rawValue: Swift.String) {
                 switch rawValue.lowercased() {
                 case "application/json":
                     self = .json
+                case "text/plain":
+                    self = .plainText
                 default:
                     self = .other(rawValue)
                 }
@@ -25868,11 +25895,14 @@ public enum Operations {
                     return string
                 case .json:
                     return "application/json"
+                case .plainText:
+                    return "text/plain"
                 }
             }
             public static var allCases: [Self] {
                 [
-                    .json
+                    .json,
+                    .plainText
                 ]
             }
         }
@@ -25922,19 +25952,19 @@ public enum Operations {
                     /// - Remark: Generated from `#/paths/audio/translations/POST/responses/200/content/json`.
                     @frozen public enum jsonPayload: Codable, Hashable, Sendable {
                         /// - Remark: Generated from `#/paths/audio/translations/POST/responses/200/content/json/case1`.
-                        case CreateTranslationResponseJson(Components.Schemas.CreateTranslationResponseJson)
-                        /// - Remark: Generated from `#/paths/audio/translations/POST/responses/200/content/json/case2`.
                         case CreateTranslationResponseVerboseJson(Components.Schemas.CreateTranslationResponseVerboseJson)
+                        /// - Remark: Generated from `#/paths/audio/translations/POST/responses/200/content/json/case2`.
+                        case CreateTranslationResponseJson(Components.Schemas.CreateTranslationResponseJson)
                         public init(from decoder: any Decoder) throws {
                             var errors: [any Error] = []
                             do {
-                                self = .CreateTranslationResponseJson(try .init(from: decoder))
+                                self = .CreateTranslationResponseVerboseJson(try .init(from: decoder))
                                 return
                             } catch {
                                 errors.append(error)
                             }
                             do {
-                                self = .CreateTranslationResponseVerboseJson(try .init(from: decoder))
+                                self = .CreateTranslationResponseJson(try .init(from: decoder))
                                 return
                             } catch {
                                 errors.append(error)
@@ -25947,9 +25977,9 @@ public enum Operations {
                         }
                         public func encode(to encoder: any Encoder) throws {
                             switch self {
-                            case let .CreateTranslationResponseJson(value):
-                                try value.encode(to: encoder)
                             case let .CreateTranslationResponseVerboseJson(value):
+                                try value.encode(to: encoder)
+                            case let .CreateTranslationResponseJson(value):
                                 try value.encode(to: encoder)
                             }
                         }
@@ -25965,6 +25995,30 @@ public enum Operations {
                             switch self {
                             case let .json(body):
                                 return body
+                            default:
+                                try throwUnexpectedResponseBody(
+                                    expectedContent: "application/json",
+                                    body: self
+                                )
+                            }
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/audio/translations/POST/responses/200/content/text\/plain`.
+                    case plainText(OpenAPIRuntime.HTTPBody)
+                    /// The associated value of the enum case if `self` is `.plainText`.
+                    ///
+                    /// - Throws: An error if `self` is not `.plainText`.
+                    /// - SeeAlso: `.plainText`.
+                    public var plainText: OpenAPIRuntime.HTTPBody {
+                        get throws {
+                            switch self {
+                            case let .plainText(body):
+                                return body
+                            default:
+                                try throwUnexpectedResponseBody(
+                                    expectedContent: "text/plain",
+                                    body: self
+                                )
                             }
                         }
                     }
@@ -26009,11 +26063,14 @@ public enum Operations {
         }
         @frozen public enum AcceptableContentType: AcceptableProtocol {
             case json
+            case plainText
             case other(Swift.String)
             public init?(rawValue: Swift.String) {
                 switch rawValue.lowercased() {
                 case "application/json":
                     self = .json
+                case "text/plain":
+                    self = .plainText
                 default:
                     self = .other(rawValue)
                 }
@@ -26024,11 +26081,14 @@ public enum Operations {
                     return string
                 case .json:
                     return "application/json"
+                case .plainText:
+                    return "text/plain"
                 }
             }
             public static var allCases: [Self] {
                 [
-                    .json
+                    .json,
+                    .plainText
                 ]
             }
         }

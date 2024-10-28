@@ -78,7 +78,7 @@ struct OpenAIAsyncHTTPClientTest {
                         .init(
                             payload: .init(
                                 body: .init(
-                                    Components.Schemas.AudioResponseFormat.verbose_json.rawValue
+                                    Components.Schemas.AudioResponseFormat.srt.rawValue
                                 )
                             )
                         )
@@ -90,25 +90,31 @@ struct OpenAIAsyncHTTPClientTest {
         // ⚠️ Even though the server returns VerboseJson, we get Json here
         switch response {
         case .ok(let ok):
-             // if switched to anyOf
-//             let jsonPayload = try ok.body.json
-//             let value1 = jsonPayload.value1!
-//             let value2 = jsonPayload.value2!
-//             print("✅", value2)
 
-            switch try ok.body.json {
-            case .CreateTranscriptionResponseVerboseJson(let verbose):
-                dump(verbose)
-            case .CreateTranscriptionResponseJson(let json):
-                dump(json)
+            switch ok.body {
+            case .json(let jsonPayload):
+                switch jsonPayload {
+                case .CreateTranscriptionResponseVerboseJson(let verbose):
+                    print("🥁")
+                    dump(verbose)
+                case .CreateTranscriptionResponseJson(let json):
+                    print("🥁")
+                    dump(json)
+                }
+
+            case .plainText(let httpBody):
+                let buffer = try await httpBody.collect(upTo: 1024 * 1035 * 2, using: .init())
+                let text = String(buffer: buffer)
+                print("🥁", text)
             }
+
         case .undocumented(let statusCode, let undocumentedPayload):
             let buffer = try await undocumentedPayload.body?.collect(upTo: 1024 * 1035 * 2, using: .init())
             let description = String(buffer: buffer!)
             print("❌", statusCode, description)
 
             struct myerror: Error {}
-            throw ClientError.init(operationID: "", operationInput: "", causeDescription: "", underlyingError: myerror())
+            throw myerror()
         }
     }
 

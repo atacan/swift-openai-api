@@ -694,6 +694,9 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
                   - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
+            text/plain:
+              schema:
+                type: string
       x-oaiMeta:
         name: Create transcription
         group: audio
@@ -892,8 +895,11 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/CreateTranslationResponseJson"
                   - $ref: "#/components/schemas/CreateTranslationResponseVerboseJson"
+                  - $ref: "#/components/schemas/CreateTranslationResponseJson"
+            text/plain:
+              schema:
+                type: string
       x-oaiMeta:
         name: Create translation
         group: audio

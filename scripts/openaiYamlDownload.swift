@@ -30,17 +30,47 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
                                             - gpt-4o-2024-05-13
                             """
                     )
-                    // Try to decode verbose json first
+                    // Try to decode verbose json first and add text/plain content type
                     .replacingOccurrences(
                         of: """
+            application/json:
+              schema:
+                oneOf:
                   - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
                   - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
 """,
                         with: """
+            application/json:
+              schema:
+                oneOf:
                   - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
                   - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
+            text/plain:
+              schema:
+                type: string
 """
                     )
+                    // Try to decode verbose json first and add text/plain content type
+                    .replacingOccurrences(
+                        of: """
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CreateTranslationResponseJson"
+                  - $ref: "#/components/schemas/CreateTranslationResponseVerboseJson"
+""",
+                        with: """
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CreateTranslationResponseVerboseJson"
+                  - $ref: "#/components/schemas/CreateTranslationResponseJson"
+            text/plain:
+              schema:
+                type: string
+"""
+                    )
+                    // Fix wrong type
                     .replacingOccurrences(
                         of: """
         duration:
