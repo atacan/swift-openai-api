@@ -70,6 +70,24 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
                 type: string
 """
                     )
+                    // Add streaming response
+                    .replacingOccurrences(
+                        of: """
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateChatCompletionResponse"
+""",
+                        with: """
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateChatCompletionResponse"
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/CreateChatCompletionStreamResponse"
+"""
+                    )
                     // Fix wrong type
                     .replacingOccurrences(
                         of: """

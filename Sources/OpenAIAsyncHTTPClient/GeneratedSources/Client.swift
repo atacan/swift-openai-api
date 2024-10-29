@@ -1137,7 +1137,8 @@ public struct Client: APIProtocol {
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
-                            "application/json"
+                            "application/json",
+                            "text/event-stream"
                         ]
                     )
                     switch chosenContentType {
@@ -1147,6 +1148,14 @@ public struct Client: APIProtocol {
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
+                            }
+                        )
+                    case "text/event-stream":
+                        body = try converter.getResponseBodyAsBinary(
+                            OpenAPIRuntime.HTTPBody.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .text_event_hyphen_stream(value)
                             }
                         )
                     default:

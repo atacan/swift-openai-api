@@ -87,7 +87,6 @@ struct OpenAIAsyncHTTPClientTest {
             )
         )
 
-        // ⚠️ Even though the server returns VerboseJson, we get Json here
         switch response {
         case .ok(let ok):
 
@@ -109,12 +108,7 @@ struct OpenAIAsyncHTTPClientTest {
             }
 
         case .undocumented(let statusCode, let undocumentedPayload):
-            let buffer = try await undocumentedPayload.body?.collect(upTo: 1024 * 1035 * 2, using: .init())
-            let description = String(buffer: buffer!)
-            print("❌", statusCode, description)
-
-            struct myerror: Error {}
-            throw myerror()
+            try await undocumentedPayloadPrinter(statusCode, undocumentedPayload)
         }
     }
 
@@ -154,4 +148,55 @@ struct OpenAIAsyncHTTPClientTest {
             assertionFailure()
         }
     }
+
+    @Test func streamingChatCompletion() async throws {
+        let response = try await client
+            .createChatCompletion(
+                .init(
+                    body:
+                            .json(
+                                .init(
+                                    messages: [
+                                        .ChatCompletionRequestSystemMessage(.init(content: .case1("Say hello"), role: .system)),
+                                        .ChatCompletionRequestUserMessage(.init(content: .case1("to Swift programming language"), role: .user))
+                                    ],
+                                    model: .init(value2: .gpt_hyphen_4o_hyphen_mini),
+                                    stream: true
+                                )
+                            )
+                )
+            )
+
+        switch response {
+        case .ok(let ok):
+            switch ok.body {
+            case .text_event_hyphen_stream(let httpBody):
+                let stream = httpBody.asDecodedServerSentEventsWithJSONData(of: Components.Schemas.CreateChatCompletionStreamResponse.self)
+                do {
+                    for try await event in stream {
+                        // the last data is "[DONE]", that's why it will throw decoding error
+                        guard let data = event.data else { continue }
+                        data.choices.forEach {
+                            print("|", $0.delta.content ?? "", terminator: " ")
+                        }
+                    }
+                } catch {}
+            case .json(_):
+                struct notasked: Error {}
+                throw notasked()
+            }
+        case .undocumented(let statusCode, let undocumentedPayload):
+            try await undocumentedPayloadPrinter(statusCode, undocumentedPayload)
+        }
+
+    }
+}
+
+func undocumentedPayloadPrinter(_ statusCode: Int, _ undocumentedPayload: UndocumentedPayload) async throws {
+    let buffer = try await undocumentedPayload.body?.collect(upTo: 1024 * 1035 * 2, using: .init())
+    let description = String(buffer: buffer!)
+    print("❌", statusCode, description)
+
+    struct myerror: Error {}
+    throw myerror()
 }
