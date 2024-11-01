@@ -14,6 +14,39 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
     let fileData = try Data(contentsOf: tempLocalUrl)
     var fileContent = try String(data: fileData, encoding: .utf8)!
 
+    let errorResponses = """
+        "401":
+          description: Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Country, region, or territory not supported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: The engine is currently overloaded, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+"""
+
     // Apply content modifications
     fileContent = fileContent
                     // Fix overflowing integer
@@ -30,27 +63,42 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
                                             - gpt-4o-2024-05-13
                             """
                     )
-                    // Try to decode verbose json first and add text/plain content type
+                    // Fix wrong type
                     .replacingOccurrences(
                         of: """
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
-                  - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
+        duration:
+          type: string
+          description: The duration of the input audio.
 """,
                         with: """
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
-                  - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
-            text/plain:
-              schema:
-                type: string
+        duration:
+          type: number
+          description: The duration of the input audio.
 """
                     )
                     // Try to decode verbose json first and add text/plain content type
+                    // Add error responses
+                    .replacingOccurrences(
+                        of: """
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
+                  - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
+""",
+                        with: """
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CreateTranscriptionResponseVerboseJson"
+                  - $ref: "#/components/schemas/CreateTranscriptionResponseJson"
+            text/plain:
+              schema:
+                type: string
+""" + "\n" + errorResponses
+                    )
+                    // Try to decode verbose json first and add text/plain content type
+                    // Add error responses
                     .replacingOccurrences(
                         of: """
             application/json:
@@ -68,9 +116,10 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
             text/plain:
               schema:
                 type: string
-"""
+""" + "\n" + errorResponses
                     )
                     // Add streaming response
+                    // Add error responses
                     .replacingOccurrences(
                         of: """
           content:
@@ -86,20 +135,7 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/CreateChatCompletionStreamResponse"
-"""
-                    )
-                    // Fix wrong type
-                    .replacingOccurrences(
-                        of: """
-        duration:
-          type: string
-          description: The duration of the input audio.
-""",
-                        with: """
-        duration:
-          type: number
-          description: The duration of the input audio.
-"""
+""" + "\n" + errorResponses
                     )
 
     // Save to each destination path

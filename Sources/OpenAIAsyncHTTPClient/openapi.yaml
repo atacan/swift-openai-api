@@ -697,6 +697,36 @@ paths:
             text/plain:
               schema:
                 type: string
+        "401":
+          description: Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Country, region, or territory not supported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: The engine is currently overloaded, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
       x-oaiMeta:
         name: Create transcription
         group: audio
@@ -900,6 +930,36 @@ paths:
             text/plain:
               schema:
                 type: string
+        "401":
+          description: Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Country, region, or territory not supported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: The engine is currently overloaded, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
       x-oaiMeta:
         name: Create translation
         group: audio
@@ -1360,6 +1420,36 @@ paths:
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/CreateChatCompletionStreamResponse"
+        "401":
+          description: Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Country, region, or territory not supported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: The engine is currently overloaded, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
       x-oaiMeta:
         name: Create chat completion
         group: chat

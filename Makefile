@@ -7,25 +7,6 @@ merge_main:
 	git merge $(BRANCH)
 	git push
 
-
-# install the swift formatters and pre-commit hook helper
-install-formatters:
-	brew install swiftformat
-	brew install swift-format
-	npm install -g --save-dev git-format-staged
-
-# Create and fill the pre-commit hook
-precommit:
-	touch .git/hooks/pre-commit
-	chmod +x .git/hooks/pre-commit
-	echo '#!/bin/bash' > .git/hooks/pre-commit
-	echo '' >> .git/hooks/pre-commit
-	# echo 'git-format-staged --formatter "swift-format . -i -p --ignore-unparsable-files -r --configuration .swift-format '\''{}'\''" "*.swift"' >> .git/hooks/pre-commit
-	echo 'git-format-staged --formatter "swiftformat --config .swiftformat --swiftversion 5.7 stdin --stdinpath '\''{}'\''" "*.swift"' >> .git/hooks/pre-commit
-
-# Setup the environment
-start: install-formatters precommit
-
 check_uncommitted:
 	@if git diff-index --quiet HEAD --; then \
 		echo '\033[32mNo uncommitted changes found.\033[0m'; \
@@ -40,7 +21,7 @@ format: check_uncommitted
 	# nicklockwood/SwiftFormat
 	swiftformat --config .swiftformat --swiftversion 5.7 .
 	# apple/swift-format
-	# swift-format . -i -p --ignore-unparsable-files -r --configuration .swift-format
+	swift-format . -i -p --ignore-unparsable-files -r --configuration .swift-format
 	# commit
 	git add .
 	git commit -m "Format code"
@@ -53,4 +34,5 @@ download-openapi:
 	swift scripts/openaiYamlDownload.swift
 
 generate-openapi:
-	swift package generate-code-from-openapi
+	# automatically provide the "yes" response
+	echo "yes" | swift package generate-code-from-openapi

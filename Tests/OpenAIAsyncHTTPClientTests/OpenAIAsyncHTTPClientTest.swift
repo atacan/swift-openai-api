@@ -109,6 +109,13 @@ struct OpenAIAsyncHTTPClientTest {
 
         case .undocumented(let statusCode, let undocumentedPayload):
             try await undocumentedPayloadPrinter(statusCode, undocumentedPayload)
+        case .unauthorized(let unauthorized):
+            switch unauthorized.body {
+            case .json(let jsonPayload):
+                dump(jsonPayload)
+            }
+        default:
+            break
         }
     }
 
@@ -185,8 +192,15 @@ struct OpenAIAsyncHTTPClientTest {
                 struct notasked: Error {}
                 throw notasked()
             }
+        case .unauthorized(let unauthorized):
+            switch unauthorized.body {
+            case .json(let jsonPayload):
+                dump(jsonPayload)
+            }
         case .undocumented(let statusCode, let undocumentedPayload):
             try await undocumentedPayloadPrinter(statusCode, undocumentedPayload)
+        default:
+            break
         }
 
     }
