@@ -15,6 +15,11 @@ For example, duplicate models are removed, type mismatches are fixed.
 - The server-sent-events response type for chat completions is now supported 
 - The original API document has only 200 status documented as response. We add all the possible error responses with decodable error message payload, so that you can know what the error is.
 
+## Usage
+
+- `AuthenticationMiddleware` is provided to add API key authentication.
+- Check out [Tests](/Tests)
+
 ### Installation
 
 Add the following to your `Package.swift` file:
