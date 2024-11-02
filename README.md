@@ -4,11 +4,16 @@ This is a Swift package for the OpenAI public API. It is generated from the
 [official OpenAI OpenAPI specification](https://github.com/openai/openai-openapi) 
 using [Swift OpenAPI Generator](https://swiftpackageindex.com/apple/swift-openapi-generator).
 
-## Issues
+## Why not generate it yourself?
 
-OpenAI's OpenAPI specification has some issues. Some of them are fixed in the download script with string replacements.
+OpenAI's OpenAPI specification has some [issues](https://github.com/openai/openai-openapi/issues). Some of them are fixed in the [download script](/scripts/openaiYamlDownload.swift) with string replacements.
 
-For example, duplicate models are removed from the OpenAPI specification. Type mismatches are fixed by replacing the type with the correct one.
+For example, duplicate models are removed, type mismatches are fixed.
+
+## Additions
+
+- The server-sent-events response type for chat completions is now supported 
+- The original API document has only 200 status documented as response. We add all the possible error responses with decodable error message payload, so that you can know what the error is.
 
 ### Installation
 
