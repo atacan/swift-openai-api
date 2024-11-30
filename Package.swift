@@ -26,6 +26,10 @@ let package = Package(
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+            ],
+            exclude: [
+                "openapi.yaml",
+                "openapi-generator-config.yaml",
             ]
         ),
         .target(
@@ -33,6 +37,10 @@ let package = Package(
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+            ],
+            exclude: [
+                "openapi.yaml",
+                "openapi-generator-config.yaml",
             ]
         ),
 

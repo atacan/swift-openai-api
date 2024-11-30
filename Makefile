@@ -34,5 +34,5 @@ download-openapi:
 	swift scripts/openaiYamlDownload.swift
 
 generate-openapi:
-	# automatically provide the "yes" response
-	echo "yes" | swift package generate-code-from-openapi
+	swift run swift-openapi-generator generate --output-directory Sources/OpenAIAsyncHTTPClient/GeneratedSources --config Sources/OpenAIAsyncHTTPClient/openapi-generator-config.yaml Sources/OpenAIAsyncHTTPClient/openapi.yaml
+	swift run swift-openapi-generator generate --output-directory Sources/OpenAIUrlSessionClient/GeneratedSources --config Sources/OpenAIUrlSessionClient/openapi-generator-config.yaml Sources/OpenAIUrlSessionClient/openapi.yaml
