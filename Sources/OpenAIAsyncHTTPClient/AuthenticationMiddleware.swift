@@ -11,14 +11,37 @@ import AsyncHTTPClient
 import HTTPTypes
 import OpenAPIRuntime
 
+
 /// Injects an authorization header to every request.
 public struct AuthenticationMiddleware: ClientMiddleware {
-    public init(bearerToken: String) {
-        self.bearerToken = bearerToken
+    /// The token value.
+    private let token: String
+    private let authenticationType: AuthenticationType
+    
+    public init(token: String, type: AuthenticationType = .bearer) {
+        self.token = token
+        self.authenticationType = type
     }
 
-    /// The token value.
-    public var bearerToken: String
+    public init(bearerToken: String) {
+        self.token = bearerToken
+        self.authenticationType = .bearer
+    }
+    
+    /// Authentication type to determine how the token should be formatted
+    public enum AuthenticationType: Sendable {
+        case bearer
+        case apiKey
+
+        var valuePrefix: String {
+            switch self {
+            case .bearer:
+                return "Bearer "
+            case .apiKey:
+                return ""
+            }
+        }
+    }
 
     public func intercept(
         _ request: HTTPRequest,
@@ -28,7 +51,7 @@ public struct AuthenticationMiddleware: ClientMiddleware {
         next: (HTTPRequest, HTTPBody?, URL) async throws -> (HTTPResponse, HTTPBody?)
     ) async throws -> (HTTPResponse, HTTPBody?) {
         var request = request
-        request.headerFields[.authorization] = "Bearer \(bearerToken)"
+        request.headerFields[.authorization] = authenticationType.valuePrefix + token
         return try await next(request, body, baseURL)
     }
 }

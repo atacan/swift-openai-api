@@ -20,7 +20,7 @@ struct OpenAIAsyncHTTPClientTest {
 
     let client = {
         // get api key from environment value OPENAI_API_KEY
-        let apiKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"]!
+        let apiKey = getEnvironmentVariable("OPENAI_API_KEY")!
 
         let authMiddleware = AuthenticationMiddleware(bearerToken: apiKey)
 

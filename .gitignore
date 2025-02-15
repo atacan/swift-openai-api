@@ -3,10 +3,14 @@
 /Packages
 xcuserdata/
 DerivedData/
-.swiftpm/configuration/registries.json
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.swiftpm
 .netrc
-# ignore every .build folder whereever it is
-.build
-.swiftpm/
+.env
+auth/
+
+# Audio files
 *.wav
+*.mp3
+*.m4a
+*.aac
+*.ogg
