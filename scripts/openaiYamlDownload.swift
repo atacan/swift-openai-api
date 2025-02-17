@@ -15,6 +15,12 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
     var fileContent = try String(data: fileData, encoding: .utf8)!
 
     let errorResponses = """
+        "400":
+          description: The request was malformed, missing required fields, or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API
           content:

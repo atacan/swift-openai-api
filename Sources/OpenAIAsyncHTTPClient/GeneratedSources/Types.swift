@@ -75,6 +75,12 @@ public protocol APIProtocol: Sendable {
     /// [text generation](/docs/guides/text-generation), [vision](/docs/guides/vision),
     /// and [audio](/docs/guides/audio) guides.
     ///
+    /// Parameter support can differ depending on the model used to generate the
+    /// response, particularly for newer reasoning models. Parameters that are only
+    /// supported for reasoning models are noted below. For the current state of 
+    /// unsupported parameters in reasoning models, 
+    /// [refer to the reasoning guide](/docs/guides/reasoning).
+    ///
     ///
     /// - Remark: HTTP `POST /chat/completions`.
     /// - Remark: Generated from `#/paths//chat/completions/post(createChatCompletion)`.
@@ -89,7 +95,7 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `POST /embeddings`.
     /// - Remark: Generated from `#/paths//embeddings/post(createEmbedding)`.
     func createEmbedding(_ input: Operations.createEmbedding.Input) async throws -> Operations.createEmbedding.Output
-    /// Returns a list of files that belong to the user's organization.
+    /// Returns a list of files.
     ///
     /// - Remark: HTTP `GET /files`.
     /// - Remark: Generated from `#/paths//files/get(listFiles)`.
@@ -100,7 +106,7 @@ public protocol APIProtocol: Sendable {
     ///
     /// The Fine-tuning API only supports `.jsonl` files. The input also has certain required formats for fine-tuning [chat](/docs/api-reference/fine-tuning/chat-input) or [completions](/docs/api-reference/fine-tuning/completions-input) models.
     ///
-    /// The Batch API only supports `.jsonl` files up to 100 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
+    /// The Batch API only supports `.jsonl` files up to 200 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
     ///
     /// Please [contact us](https://help.openai.com/) if you need to increase these storage limits.
     ///
@@ -202,11 +208,44 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `POST /moderations`.
     /// - Remark: Generated from `#/paths//moderations/post(createModeration)`.
     func createModeration(_ input: Operations.createModeration.Input) async throws -> Operations.createModeration.Output
+    /// List organization API keys
+    ///
+    /// Retrieve a paginated list of organization admin API keys.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/get(admin-api-keys-list)`.
+    func admin_hyphen_api_hyphen_keys_hyphen_list(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output
+    /// Create an organization admin API key
+    ///
+    /// Create a new admin-level API key for the organization.
+    ///
+    /// - Remark: HTTP `POST /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/post(admin-api-keys-create)`.
+    func admin_hyphen_api_hyphen_keys_hyphen_create(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output
+    /// Retrieve a single organization API key
+    ///
+    /// Get details for a specific organization API key by its ID.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/get(admin-api-keys-get)`.
+    func admin_hyphen_api_hyphen_keys_hyphen_get(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output
+    /// Delete an organization admin API key
+    ///
+    /// Delete the specified admin API key.
+    ///
+    /// - Remark: HTTP `DELETE /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/delete(admin-api-keys-delete)`.
+    func admin_hyphen_api_hyphen_keys_hyphen_delete(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output
     /// List user actions and configuration changes within this organization.
     ///
     /// - Remark: HTTP `GET /organization/audit_logs`.
     /// - Remark: Generated from `#/paths//organization/audit_logs/get(list-audit-logs)`.
     func list_hyphen_audit_hyphen_logs(_ input: Operations.list_hyphen_audit_hyphen_logs.Input) async throws -> Operations.list_hyphen_audit_hyphen_logs.Output
+    /// Get costs details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/costs`.
+    /// - Remark: Generated from `#/paths//organization/costs/get(usage-costs)`.
+    func usage_hyphen_costs(_ input: Operations.usage_hyphen_costs.Input) async throws -> Operations.usage_hyphen_costs.Output
     /// Returns a list of invites in the organization.
     ///
     /// - Remark: HTTP `GET /organization/invites`.
@@ -267,6 +306,16 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `POST /organization/projects/{project_id}/archive`.
     /// - Remark: Generated from `#/paths//organization/projects/{project_id}/archive/post(archive-project)`.
     func archive_hyphen_project(_ input: Operations.archive_hyphen_project.Input) async throws -> Operations.archive_hyphen_project.Output
+    /// Returns the rate limits per model for a project.
+    ///
+    /// - Remark: HTTP `GET /organization/projects/{project_id}/rate_limits`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/get(list-project-rate-limits)`.
+    func list_hyphen_project_hyphen_rate_hyphen_limits(_ input: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input) async throws -> Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output
+    /// Updates a project rate limit.
+    ///
+    /// - Remark: HTTP `POST /organization/projects/{project_id}/rate_limits/{rate_limit_id}`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/{rate_limit_id}/post(update-project-rate-limits)`.
+    func update_hyphen_project_hyphen_rate_hyphen_limits(_ input: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input) async throws -> Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output
     /// Returns a list of service accounts in the project.
     ///
     /// - Remark: HTTP `GET /organization/projects/{project_id}/service_accounts`.
@@ -312,6 +361,46 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `DELETE /organization/projects/{project_id}/users/{user_id}`.
     /// - Remark: Generated from `#/paths//organization/projects/{project_id}/users/{user_id}/delete(delete-project-user)`.
     func delete_hyphen_project_hyphen_user(_ input: Operations.delete_hyphen_project_hyphen_user.Input) async throws -> Operations.delete_hyphen_project_hyphen_user.Output
+    /// Get audio speeches usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_speeches`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_speeches/get(usage-audio-speeches)`.
+    func usage_hyphen_audio_hyphen_speeches(_ input: Operations.usage_hyphen_audio_hyphen_speeches.Input) async throws -> Operations.usage_hyphen_audio_hyphen_speeches.Output
+    /// Get audio transcriptions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_transcriptions`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_transcriptions/get(usage-audio-transcriptions)`.
+    func usage_hyphen_audio_hyphen_transcriptions(_ input: Operations.usage_hyphen_audio_hyphen_transcriptions.Input) async throws -> Operations.usage_hyphen_audio_hyphen_transcriptions.Output
+    /// Get code interpreter sessions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/code_interpreter_sessions`.
+    /// - Remark: Generated from `#/paths//organization/usage/code_interpreter_sessions/get(usage-code-interpreter-sessions)`.
+    func usage_hyphen_code_hyphen_interpreter_hyphen_sessions(_ input: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input) async throws -> Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output
+    /// Get completions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/completions`.
+    /// - Remark: Generated from `#/paths//organization/usage/completions/get(usage-completions)`.
+    func usage_hyphen_completions(_ input: Operations.usage_hyphen_completions.Input) async throws -> Operations.usage_hyphen_completions.Output
+    /// Get embeddings usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/embeddings`.
+    /// - Remark: Generated from `#/paths//organization/usage/embeddings/get(usage-embeddings)`.
+    func usage_hyphen_embeddings(_ input: Operations.usage_hyphen_embeddings.Input) async throws -> Operations.usage_hyphen_embeddings.Output
+    /// Get images usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/images`.
+    /// - Remark: Generated from `#/paths//organization/usage/images/get(usage-images)`.
+    func usage_hyphen_images(_ input: Operations.usage_hyphen_images.Input) async throws -> Operations.usage_hyphen_images.Output
+    /// Get moderations usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/moderations`.
+    /// - Remark: Generated from `#/paths//organization/usage/moderations/get(usage-moderations)`.
+    func usage_hyphen_moderations(_ input: Operations.usage_hyphen_moderations.Input) async throws -> Operations.usage_hyphen_moderations.Output
+    /// Get vector stores usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/vector_stores`.
+    /// - Remark: Generated from `#/paths//organization/usage/vector_stores/get(usage-vector-stores)`.
+    func usage_hyphen_vector_hyphen_stores(_ input: Operations.usage_hyphen_vector_hyphen_stores.Input) async throws -> Operations.usage_hyphen_vector_hyphen_stores.Output
     /// Lists all of the users in the organization.
     ///
     /// - Remark: HTTP `GET /organization/users`.
@@ -332,6 +421,18 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `DELETE /organization/users/{user_id}`.
     /// - Remark: Generated from `#/paths//organization/users/{user_id}/delete(delete-user)`.
     func delete_hyphen_user(_ input: Operations.delete_hyphen_user.Input) async throws -> Operations.delete_hyphen_user.Output
+    /// Create an ephemeral API token for use in client-side applications with the
+    /// Realtime API. Can be configured with the same session parameters as the
+    /// `session.update` client event.
+    ///
+    /// It responds with a session object, plus a `client_secret` key which contains
+    /// a usable ephemeral API token that can be used to authenticate browser clients
+    /// for the Realtime API.
+    ///
+    ///
+    /// - Remark: HTTP `POST /realtime/sessions`.
+    /// - Remark: Generated from `#/paths//realtime/sessions/post(create-realtime-session)`.
+    func create_hyphen_realtime_hyphen_session(_ input: Operations.create_hyphen_realtime_hyphen_session.Input) async throws -> Operations.create_hyphen_realtime_hyphen_session.Output
     /// Create a thread.
     ///
     /// - Remark: HTTP `POST /threads`.
@@ -428,7 +529,7 @@ public protocol APIProtocol: Sendable {
     /// Once you complete the Upload, we will create a [File](/docs/api-reference/files/object) object that contains all the parts you uploaded. This File is usable in the rest of our platform as a regular File object.
     ///
     /// For certain `purpose`s, the correct `mime_type` must be specified. Please refer to documentation for the supported MIME types for your use case:
-    /// - [Assistants](/docs/assistants/tools/file-search/supported-files)
+    /// - [Assistants](/docs/assistants/tools/file-search#supported-files)
     ///
     /// For guidance on the proper filename extensions for each purpose, please follow the documentation on [creating a File](/docs/api-reference/files/create).
     ///
@@ -695,6 +796,12 @@ extension APIProtocol {
     /// [text generation](/docs/guides/text-generation), [vision](/docs/guides/vision),
     /// and [audio](/docs/guides/audio) guides.
     ///
+    /// Parameter support can differ depending on the model used to generate the
+    /// response, particularly for newer reasoning models. Parameters that are only
+    /// supported for reasoning models are noted below. For the current state of 
+    /// unsupported parameters in reasoning models, 
+    /// [refer to the reasoning guide](/docs/guides/reasoning).
+    ///
     ///
     /// - Remark: HTTP `POST /chat/completions`.
     /// - Remark: Generated from `#/paths//chat/completions/post(createChatCompletion)`.
@@ -733,7 +840,7 @@ extension APIProtocol {
             body: body
         ))
     }
-    /// Returns a list of files that belong to the user's organization.
+    /// Returns a list of files.
     ///
     /// - Remark: HTTP `GET /files`.
     /// - Remark: Generated from `#/paths//files/get(listFiles)`.
@@ -752,7 +859,7 @@ extension APIProtocol {
     ///
     /// The Fine-tuning API only supports `.jsonl` files. The input also has certain required formats for fine-tuning [chat](/docs/api-reference/fine-tuning/chat-input) or [completions](/docs/api-reference/fine-tuning/completions-input) models.
     ///
-    /// The Batch API only supports `.jsonl` files up to 100 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
+    /// The Batch API only supports `.jsonl` files up to 200 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
     ///
     /// Please [contact us](https://help.openai.com/) if you need to increase these storage limits.
     ///
@@ -988,6 +1095,66 @@ extension APIProtocol {
             body: body
         ))
     }
+    /// List organization API keys
+    ///
+    /// Retrieve a paginated list of organization admin API keys.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/get(admin-api-keys-list)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_list(
+        query: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Query = .init(),
+        headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Headers = .init()
+    ) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output {
+        try await admin_hyphen_api_hyphen_keys_hyphen_list(Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Create an organization admin API key
+    ///
+    /// Create a new admin-level API key for the organization.
+    ///
+    /// - Remark: HTTP `POST /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/post(admin-api-keys-create)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_create(
+        headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Headers = .init(),
+        body: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Body
+    ) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output {
+        try await admin_hyphen_api_hyphen_keys_hyphen_create(Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// Retrieve a single organization API key
+    ///
+    /// Get details for a specific organization API key by its ID.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/get(admin-api-keys-get)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_get(
+        path: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input.Path,
+        headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input.Headers = .init()
+    ) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output {
+        try await admin_hyphen_api_hyphen_keys_hyphen_get(Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input(
+            path: path,
+            headers: headers
+        ))
+    }
+    /// Delete an organization admin API key
+    ///
+    /// Delete the specified admin API key.
+    ///
+    /// - Remark: HTTP `DELETE /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/delete(admin-api-keys-delete)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_delete(
+        path: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input.Path,
+        headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input.Headers = .init()
+    ) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output {
+        try await admin_hyphen_api_hyphen_keys_hyphen_delete(Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input(
+            path: path,
+            headers: headers
+        ))
+    }
     /// List user actions and configuration changes within this organization.
     ///
     /// - Remark: HTTP `GET /organization/audit_logs`.
@@ -997,6 +1164,19 @@ extension APIProtocol {
         headers: Operations.list_hyphen_audit_hyphen_logs.Input.Headers = .init()
     ) async throws -> Operations.list_hyphen_audit_hyphen_logs.Output {
         try await list_hyphen_audit_hyphen_logs(Operations.list_hyphen_audit_hyphen_logs.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get costs details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/costs`.
+    /// - Remark: Generated from `#/paths//organization/costs/get(usage-costs)`.
+    public func usage_hyphen_costs(
+        query: Operations.usage_hyphen_costs.Input.Query,
+        headers: Operations.usage_hyphen_costs.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_costs.Output {
+        try await usage_hyphen_costs(Operations.usage_hyphen_costs.Input(
             query: query,
             headers: headers
         ))
@@ -1161,6 +1341,36 @@ extension APIProtocol {
             headers: headers
         ))
     }
+    /// Returns the rate limits per model for a project.
+    ///
+    /// - Remark: HTTP `GET /organization/projects/{project_id}/rate_limits`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/get(list-project-rate-limits)`.
+    public func list_hyphen_project_hyphen_rate_hyphen_limits(
+        path: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Path,
+        query: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Query = .init(),
+        headers: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Headers = .init()
+    ) async throws -> Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output {
+        try await list_hyphen_project_hyphen_rate_hyphen_limits(Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input(
+            path: path,
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Updates a project rate limit.
+    ///
+    /// - Remark: HTTP `POST /organization/projects/{project_id}/rate_limits/{rate_limit_id}`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/{rate_limit_id}/post(update-project-rate-limits)`.
+    public func update_hyphen_project_hyphen_rate_hyphen_limits(
+        path: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Path,
+        headers: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Headers = .init(),
+        body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Body
+    ) async throws -> Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output {
+        try await update_hyphen_project_hyphen_rate_hyphen_limits(Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input(
+            path: path,
+            headers: headers,
+            body: body
+        ))
+    }
     /// Returns a list of service accounts in the project.
     ///
     /// - Remark: HTTP `GET /organization/projects/{project_id}/service_accounts`.
@@ -1288,6 +1498,110 @@ extension APIProtocol {
             headers: headers
         ))
     }
+    /// Get audio speeches usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_speeches`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_speeches/get(usage-audio-speeches)`.
+    public func usage_hyphen_audio_hyphen_speeches(
+        query: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query,
+        headers: Operations.usage_hyphen_audio_hyphen_speeches.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_audio_hyphen_speeches.Output {
+        try await usage_hyphen_audio_hyphen_speeches(Operations.usage_hyphen_audio_hyphen_speeches.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get audio transcriptions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_transcriptions`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_transcriptions/get(usage-audio-transcriptions)`.
+    public func usage_hyphen_audio_hyphen_transcriptions(
+        query: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query,
+        headers: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_audio_hyphen_transcriptions.Output {
+        try await usage_hyphen_audio_hyphen_transcriptions(Operations.usage_hyphen_audio_hyphen_transcriptions.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get code interpreter sessions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/code_interpreter_sessions`.
+    /// - Remark: Generated from `#/paths//organization/usage/code_interpreter_sessions/get(usage-code-interpreter-sessions)`.
+    public func usage_hyphen_code_hyphen_interpreter_hyphen_sessions(
+        query: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query,
+        headers: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output {
+        try await usage_hyphen_code_hyphen_interpreter_hyphen_sessions(Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get completions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/completions`.
+    /// - Remark: Generated from `#/paths//organization/usage/completions/get(usage-completions)`.
+    public func usage_hyphen_completions(
+        query: Operations.usage_hyphen_completions.Input.Query,
+        headers: Operations.usage_hyphen_completions.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_completions.Output {
+        try await usage_hyphen_completions(Operations.usage_hyphen_completions.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get embeddings usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/embeddings`.
+    /// - Remark: Generated from `#/paths//organization/usage/embeddings/get(usage-embeddings)`.
+    public func usage_hyphen_embeddings(
+        query: Operations.usage_hyphen_embeddings.Input.Query,
+        headers: Operations.usage_hyphen_embeddings.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_embeddings.Output {
+        try await usage_hyphen_embeddings(Operations.usage_hyphen_embeddings.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get images usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/images`.
+    /// - Remark: Generated from `#/paths//organization/usage/images/get(usage-images)`.
+    public func usage_hyphen_images(
+        query: Operations.usage_hyphen_images.Input.Query,
+        headers: Operations.usage_hyphen_images.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_images.Output {
+        try await usage_hyphen_images(Operations.usage_hyphen_images.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get moderations usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/moderations`.
+    /// - Remark: Generated from `#/paths//organization/usage/moderations/get(usage-moderations)`.
+    public func usage_hyphen_moderations(
+        query: Operations.usage_hyphen_moderations.Input.Query,
+        headers: Operations.usage_hyphen_moderations.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_moderations.Output {
+        try await usage_hyphen_moderations(Operations.usage_hyphen_moderations.Input(
+            query: query,
+            headers: headers
+        ))
+    }
+    /// Get vector stores usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/vector_stores`.
+    /// - Remark: Generated from `#/paths//organization/usage/vector_stores/get(usage-vector-stores)`.
+    public func usage_hyphen_vector_hyphen_stores(
+        query: Operations.usage_hyphen_vector_hyphen_stores.Input.Query,
+        headers: Operations.usage_hyphen_vector_hyphen_stores.Input.Headers = .init()
+    ) async throws -> Operations.usage_hyphen_vector_hyphen_stores.Output {
+        try await usage_hyphen_vector_hyphen_stores(Operations.usage_hyphen_vector_hyphen_stores.Input(
+            query: query,
+            headers: headers
+        ))
+    }
     /// Lists all of the users in the organization.
     ///
     /// - Remark: HTTP `GET /organization/users`.
@@ -1340,6 +1654,26 @@ extension APIProtocol {
         try await delete_hyphen_user(Operations.delete_hyphen_user.Input(
             path: path,
             headers: headers
+        ))
+    }
+    /// Create an ephemeral API token for use in client-side applications with the
+    /// Realtime API. Can be configured with the same session parameters as the
+    /// `session.update` client event.
+    ///
+    /// It responds with a session object, plus a `client_secret` key which contains
+    /// a usable ephemeral API token that can be used to authenticate browser clients
+    /// for the Realtime API.
+    ///
+    ///
+    /// - Remark: HTTP `POST /realtime/sessions`.
+    /// - Remark: Generated from `#/paths//realtime/sessions/post(create-realtime-session)`.
+    public func create_hyphen_realtime_hyphen_session(
+        headers: Operations.create_hyphen_realtime_hyphen_session.Input.Headers = .init(),
+        body: Operations.create_hyphen_realtime_hyphen_session.Input.Body
+    ) async throws -> Operations.create_hyphen_realtime_hyphen_session.Output {
+        try await create_hyphen_realtime_hyphen_session(Operations.create_hyphen_realtime_hyphen_session.Input(
+            headers: headers,
+            body: body
         ))
     }
     /// Create a thread.
@@ -1604,7 +1938,7 @@ extension APIProtocol {
     /// Once you complete the Upload, we will create a [File](/docs/api-reference/files/object) object that contains all the parts you uploaded. This File is usable in the rest of our platform as a regular File object.
     ///
     /// For certain `purpose`s, the correct `mime_type` must be specified. Please refer to documentation for the supported MIME types for your use case:
-    /// - [Assistants](/docs/assistants/tools/file-search/supported-files)
+    /// - [Assistants](/docs/assistants/tools/file-search#supported-files)
     ///
     /// For guidance on the proper filename extensions for each purpose, please follow the documentation on [creating a File](/docs/api-reference/files/create).
     ///
@@ -1886,6 +2220,141 @@ public enum Components {
             }
             case data(OpenAPIRuntime.MultipartPart<Components.Schemas.AddUploadPartRequest.dataPayload>)
         }
+        /// - Remark: Generated from `#/components/schemas/AdminApiKey`.
+        public struct AdminApiKey: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/object`.
+            public var object: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/id`.
+            public var id: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/name`.
+            public var name: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/redacted_value`.
+            public var redacted_value: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/value`.
+            public var value: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/created_at`.
+            public var created_at: Swift.Int64?
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner`.
+            public struct ownerPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner/type`.
+                public var _type: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner/id`.
+                public var id: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner/name`.
+                public var name: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner/created_at`.
+                public var created_at: Swift.Int64?
+                /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner/role`.
+                public var role: Swift.String?
+                /// Creates a new `ownerPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type:
+                ///   - id:
+                ///   - name:
+                ///   - created_at:
+                ///   - role:
+                public init(
+                    _type: Swift.String? = nil,
+                    id: Swift.String? = nil,
+                    name: Swift.String? = nil,
+                    created_at: Swift.Int64? = nil,
+                    role: Swift.String? = nil
+                ) {
+                    self._type = _type
+                    self.id = id
+                    self.name = name
+                    self.created_at = created_at
+                    self.role = role
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case id
+                    case name
+                    case created_at
+                    case role
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AdminApiKey/owner`.
+            public var owner: Components.Schemas.AdminApiKey.ownerPayload?
+            /// Creates a new `AdminApiKey`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - id:
+            ///   - name:
+            ///   - redacted_value:
+            ///   - value:
+            ///   - created_at:
+            ///   - owner:
+            public init(
+                object: Swift.String? = nil,
+                id: Swift.String? = nil,
+                name: Swift.String? = nil,
+                redacted_value: Swift.String? = nil,
+                value: Swift.String? = nil,
+                created_at: Swift.Int64? = nil,
+                owner: Components.Schemas.AdminApiKey.ownerPayload? = nil
+            ) {
+                self.object = object
+                self.id = id
+                self.name = name
+                self.redacted_value = redacted_value
+                self.value = value
+                self.created_at = created_at
+                self.owner = owner
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case id
+                case name
+                case redacted_value
+                case value
+                case created_at
+                case owner
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/ApiKeyList`.
+        public struct ApiKeyList: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/ApiKeyList/object`.
+            public var object: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/ApiKeyList/data`.
+            public var data: [Components.Schemas.AdminApiKey]?
+            /// - Remark: Generated from `#/components/schemas/ApiKeyList/has_more`.
+            public var has_more: Swift.Bool?
+            /// - Remark: Generated from `#/components/schemas/ApiKeyList/first_id`.
+            public var first_id: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/ApiKeyList/last_id`.
+            public var last_id: Swift.String?
+            /// Creates a new `ApiKeyList`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - data:
+            ///   - has_more:
+            ///   - first_id:
+            ///   - last_id:
+            public init(
+                object: Swift.String? = nil,
+                data: [Components.Schemas.AdminApiKey]? = nil,
+                has_more: Swift.Bool? = nil,
+                first_id: Swift.String? = nil,
+                last_id: Swift.String? = nil
+            ) {
+                self.object = object
+                self.data = data
+                self.has_more = has_more
+                self.first_id = first_id
+                self.last_id = last_id
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case data
+                case has_more
+                case first_id
+                case last_id
+            }
+        }
         /// Represents an `assistant` that can call the model and use tools.
         ///
         /// - Remark: Generated from `#/components/schemas/AssistantObject`.
@@ -1918,7 +2387,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/AssistantObject/description`.
             public var description: Swift.String?
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/AssistantObject/model`.
@@ -2050,11 +2519,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/AssistantObject/tool_resources`.
             public var tool_resources: Components.Schemas.AssistantObject.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/AssistantObject/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///
             ///
@@ -2068,7 +2534,34 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/AssistantObject/top_p`.
             public var top_p: Swift.Double?
             /// - Remark: Generated from `#/components/schemas/AssistantObject/response_format`.
-            public var response_format: Components.Schemas.AssistantsApiResponseFormatOption?
+            public struct response_formatPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/AssistantObject/response_format/value1`.
+                public var value1: Components.Schemas.AssistantsApiResponseFormatOption
+                /// - Remark: Generated from `#/components/schemas/AssistantObject/response_format/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `response_formatPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiResponseFormatOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/AssistantObject/response_format`.
+            public var response_format: Components.Schemas.AssistantObject.response_formatPayload?
             /// Creates a new `AssistantObject`.
             ///
             /// - Parameters:
@@ -2077,11 +2570,11 @@ public enum Components {
             ///   - created_at: The Unix timestamp (in seconds) for when the assistant was created.
             ///   - name: The name of the assistant. The maximum length is 256 characters.
             ///   - description: The description of the assistant. The maximum length is 512 characters.
-            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///   - instructions: The system instructions that the assistant uses. The maximum length is 256,000 characters.
             ///   - tools: A list of tool enabled on the assistant. There can be a maximum of 128 tools per assistant. Tools can be of types `code_interpreter`, `file_search`, or `function`.
             ///   - tool_resources: A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
             ///   - response_format:
@@ -2095,10 +2588,10 @@ public enum Components {
                 instructions: Swift.String? = nil,
                 tools: Components.Schemas.AssistantObject.toolsPayload,
                 tool_resources: Components.Schemas.AssistantObject.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 temperature: Swift.Double? = nil,
                 top_p: Swift.Double? = nil,
-                response_format: Components.Schemas.AssistantsApiResponseFormatOption? = nil
+                response_format: Components.Schemas.AssistantObject.response_formatPayload? = nil
             ) {
                 self.id = id
                 self.object = object
@@ -2226,6 +2719,37 @@ public enum Components {
                 }
             }
         }
+        /// - Remark: Generated from `#/components/schemas/AssistantSupportedModels`.
+        @frozen public enum AssistantSupportedModels: String, Codable, Hashable, Sendable {
+            case o3_hyphen_mini = "o3-mini"
+            case o3_hyphen_mini_hyphen_2025_hyphen_01_hyphen_31 = "o3-mini-2025-01-31"
+            case o1 = "o1"
+            case o1_hyphen_2024_hyphen_12_hyphen_17 = "o1-2024-12-17"
+            case gpt_hyphen_4o = "gpt-4o"
+            case gpt_hyphen_4o_hyphen_2024_hyphen_11_hyphen_20 = "gpt-4o-2024-11-20"
+            case gpt_hyphen_4o_hyphen_2024_hyphen_08_hyphen_06 = "gpt-4o-2024-08-06"
+            case gpt_hyphen_4o_hyphen_2024_hyphen_05_hyphen_13 = "gpt-4o-2024-05-13"
+            case gpt_hyphen_4o_hyphen_mini = "gpt-4o-mini"
+            case gpt_hyphen_4o_hyphen_mini_hyphen_2024_hyphen_07_hyphen_18 = "gpt-4o-mini-2024-07-18"
+            case gpt_hyphen_4_hyphen_turbo = "gpt-4-turbo"
+            case gpt_hyphen_4_hyphen_turbo_hyphen_2024_hyphen_04_hyphen_09 = "gpt-4-turbo-2024-04-09"
+            case gpt_hyphen_4_hyphen_0125_hyphen_preview = "gpt-4-0125-preview"
+            case gpt_hyphen_4_hyphen_turbo_hyphen_preview = "gpt-4-turbo-preview"
+            case gpt_hyphen_4_hyphen_1106_hyphen_preview = "gpt-4-1106-preview"
+            case gpt_hyphen_4_hyphen_vision_hyphen_preview = "gpt-4-vision-preview"
+            case gpt_hyphen_4 = "gpt-4"
+            case gpt_hyphen_4_hyphen_0314 = "gpt-4-0314"
+            case gpt_hyphen_4_hyphen_0613 = "gpt-4-0613"
+            case gpt_hyphen_4_hyphen_32k = "gpt-4-32k"
+            case gpt_hyphen_4_hyphen_32k_hyphen_0314 = "gpt-4-32k-0314"
+            case gpt_hyphen_4_hyphen_32k_hyphen_0613 = "gpt-4-32k-0613"
+            case gpt_hyphen_3_period_5_hyphen_turbo = "gpt-3.5-turbo"
+            case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_16k = "gpt-3.5-turbo-16k"
+            case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_0613 = "gpt-3.5-turbo-0613"
+            case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_1106 = "gpt-3.5-turbo-1106"
+            case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_0125 = "gpt-3.5-turbo-0125"
+            case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_16k_hyphen_0613 = "gpt-3.5-turbo-16k-0613"
+        }
         /// - Remark: Generated from `#/components/schemas/AssistantToolsCode`.
         public struct AssistantToolsCode: Codable, Hashable, Sendable {
             /// The type of tool being defined: `code_interpreter`
@@ -2267,7 +2791,7 @@ public enum Components {
             public struct file_searchPayload: Codable, Hashable, Sendable {
                 /// The maximum number of results the file search tool should output. The default is 20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between 1 and 50 inclusive.
                 ///
-                /// Note that the file search tool may output fewer than `max_num_results` results. See the [file search tool documentation](/docs/assistants/tools/file-search/customizing-file-search-settings) for more information.
+                /// Note that the file search tool may output fewer than `max_num_results` results. See the [file search tool documentation](/docs/assistants/tools/file-search#customizing-file-search-settings) for more information.
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/AssistantToolsFileSearch/file_search/max_num_results`.
@@ -2366,7 +2890,7 @@ public enum Components {
                 case function
             }
         }
-        /// Specifies the format that the model must output. Compatible with [GPT-4o](/docs/models/gpt-4o), [GPT-4 Turbo](/docs/models/gpt-4-turbo-and-gpt-4), and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+        /// Specifies the format that the model must output. Compatible with [GPT-4o](/docs/models#gpt-4o), [GPT-4 Turbo](/docs/models#gpt-4-turbo-and-gpt-4), and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
         ///
         /// Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied JSON schema. Learn more in the [Structured Outputs guide](/docs/guides/structured-outputs).
         ///
@@ -3149,6 +3673,123 @@ public enum Components {
             public var project_period_archived: Components.Schemas.AuditLog.project_period_archivedPayload?
             /// The details for events with this `type`.
             ///
+            /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated`.
+            public struct rate_limit_period_updatedPayload: Codable, Hashable, Sendable {
+                /// The rate limit ID
+                ///
+                /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/id`.
+                public var id: Swift.String?
+                /// The payload used to update the rate limits.
+                ///
+                /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested`.
+                public struct changes_requestedPayload: Codable, Hashable, Sendable {
+                    /// The maximum requests per minute.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested/max_requests_per_1_minute`.
+                    public var max_requests_per_1_minute: Swift.Int?
+                    /// The maximum tokens per minute.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested/max_tokens_per_1_minute`.
+                    public var max_tokens_per_1_minute: Swift.Int?
+                    /// The maximum images per minute. Only relevant for certain models.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested/max_images_per_1_minute`.
+                    public var max_images_per_1_minute: Swift.Int?
+                    /// The maximum audio megabytes per minute. Only relevant for certain models.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested/max_audio_megabytes_per_1_minute`.
+                    public var max_audio_megabytes_per_1_minute: Swift.Int?
+                    /// The maximum requests per day. Only relevant for certain models.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested/max_requests_per_1_day`.
+                    public var max_requests_per_1_day: Swift.Int?
+                    /// The maximum batch input tokens per day. Only relevant for certain models.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested/batch_1_day_max_input_tokens`.
+                    public var batch_1_day_max_input_tokens: Swift.Int?
+                    /// Creates a new `changes_requestedPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - max_requests_per_1_minute: The maximum requests per minute.
+                    ///   - max_tokens_per_1_minute: The maximum tokens per minute.
+                    ///   - max_images_per_1_minute: The maximum images per minute. Only relevant for certain models.
+                    ///   - max_audio_megabytes_per_1_minute: The maximum audio megabytes per minute. Only relevant for certain models.
+                    ///   - max_requests_per_1_day: The maximum requests per day. Only relevant for certain models.
+                    ///   - batch_1_day_max_input_tokens: The maximum batch input tokens per day. Only relevant for certain models.
+                    public init(
+                        max_requests_per_1_minute: Swift.Int? = nil,
+                        max_tokens_per_1_minute: Swift.Int? = nil,
+                        max_images_per_1_minute: Swift.Int? = nil,
+                        max_audio_megabytes_per_1_minute: Swift.Int? = nil,
+                        max_requests_per_1_day: Swift.Int? = nil,
+                        batch_1_day_max_input_tokens: Swift.Int? = nil
+                    ) {
+                        self.max_requests_per_1_minute = max_requests_per_1_minute
+                        self.max_tokens_per_1_minute = max_tokens_per_1_minute
+                        self.max_images_per_1_minute = max_images_per_1_minute
+                        self.max_audio_megabytes_per_1_minute = max_audio_megabytes_per_1_minute
+                        self.max_requests_per_1_day = max_requests_per_1_day
+                        self.batch_1_day_max_input_tokens = batch_1_day_max_input_tokens
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case max_requests_per_1_minute
+                        case max_tokens_per_1_minute
+                        case max_images_per_1_minute
+                        case max_audio_megabytes_per_1_minute
+                        case max_requests_per_1_day
+                        case batch_1_day_max_input_tokens
+                    }
+                }
+                /// The payload used to update the rate limits.
+                ///
+                /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated/changes_requested`.
+                public var changes_requested: Components.Schemas.AuditLog.rate_limit_period_updatedPayload.changes_requestedPayload?
+                /// Creates a new `rate_limit_period_updatedPayload`.
+                ///
+                /// - Parameters:
+                ///   - id: The rate limit ID
+                ///   - changes_requested: The payload used to update the rate limits.
+                public init(
+                    id: Swift.String? = nil,
+                    changes_requested: Components.Schemas.AuditLog.rate_limit_period_updatedPayload.changes_requestedPayload? = nil
+                ) {
+                    self.id = id
+                    self.changes_requested = changes_requested
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case id
+                    case changes_requested
+                }
+            }
+            /// The details for events with this `type`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.updated`.
+            public var rate_limit_period_updated: Components.Schemas.AuditLog.rate_limit_period_updatedPayload?
+            /// The details for events with this `type`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.deleted`.
+            public struct rate_limit_period_deletedPayload: Codable, Hashable, Sendable {
+                /// The rate limit ID
+                ///
+                /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.deleted/id`.
+                public var id: Swift.String?
+                /// Creates a new `rate_limit_period_deletedPayload`.
+                ///
+                /// - Parameters:
+                ///   - id: The rate limit ID
+                public init(id: Swift.String? = nil) {
+                    self.id = id
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case id
+                }
+            }
+            /// The details for events with this `type`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/AuditLog/rate_limit.deleted`.
+            public var rate_limit_period_deleted: Components.Schemas.AuditLog.rate_limit_period_deletedPayload?
+            /// The details for events with this `type`.
+            ///
             /// - Remark: Generated from `#/components/schemas/AuditLog/service_account.created`.
             public struct service_account_period_createdPayload: Codable, Hashable, Sendable {
                 /// The service account ID.
@@ -3421,6 +4062,8 @@ public enum Components {
             ///   - project_period_created: The details for events with this `type`.
             ///   - project_period_updated: The details for events with this `type`.
             ///   - project_period_archived: The details for events with this `type`.
+            ///   - rate_limit_period_updated: The details for events with this `type`.
+            ///   - rate_limit_period_deleted: The details for events with this `type`.
             ///   - service_account_period_created: The details for events with this `type`.
             ///   - service_account_period_updated: The details for events with this `type`.
             ///   - service_account_period_deleted: The details for events with this `type`.
@@ -3445,6 +4088,8 @@ public enum Components {
                 project_period_created: Components.Schemas.AuditLog.project_period_createdPayload? = nil,
                 project_period_updated: Components.Schemas.AuditLog.project_period_updatedPayload? = nil,
                 project_period_archived: Components.Schemas.AuditLog.project_period_archivedPayload? = nil,
+                rate_limit_period_updated: Components.Schemas.AuditLog.rate_limit_period_updatedPayload? = nil,
+                rate_limit_period_deleted: Components.Schemas.AuditLog.rate_limit_period_deletedPayload? = nil,
                 service_account_period_created: Components.Schemas.AuditLog.service_account_period_createdPayload? = nil,
                 service_account_period_updated: Components.Schemas.AuditLog.service_account_period_updatedPayload? = nil,
                 service_account_period_deleted: Components.Schemas.AuditLog.service_account_period_deletedPayload? = nil,
@@ -3469,6 +4114,8 @@ public enum Components {
                 self.project_period_created = project_period_created
                 self.project_period_updated = project_period_updated
                 self.project_period_archived = project_period_archived
+                self.rate_limit_period_updated = rate_limit_period_updated
+                self.rate_limit_period_deleted = rate_limit_period_deleted
                 self.service_account_period_created = service_account_period_created
                 self.service_account_period_updated = service_account_period_updated
                 self.service_account_period_deleted = service_account_period_deleted
@@ -3494,6 +4141,8 @@ public enum Components {
                 case project_period_created = "project.created"
                 case project_period_updated = "project.updated"
                 case project_period_archived = "project.archived"
+                case rate_limit_period_updated = "rate_limit.updated"
+                case rate_limit_period_deleted = "rate_limit.deleted"
                 case service_account_period_created = "service_account.created"
                 case service_account_period_updated = "service_account.updated"
                 case service_account_period_deleted = "service_account.deleted"
@@ -3686,6 +4335,8 @@ public enum Components {
             case service_account_period_created = "service_account.created"
             case service_account_period_updated = "service_account.updated"
             case service_account_period_deleted = "service_account.deleted"
+            case rate_limit_period_updated = "rate_limit.updated"
+            case rate_limit_period_deleted = "rate_limit.deleted"
             case user_period_added = "user.added"
             case user_period_updated = "user.updated"
             case user_period_deleted = "user.deleted"
@@ -3925,11 +4576,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Batch/request_counts`.
             public var request_counts: Components.Schemas.Batch.request_countsPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/Batch/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `Batch`.
             ///
             /// - Parameters:
@@ -3952,7 +4600,7 @@ public enum Components {
             ///   - cancelling_at: The Unix timestamp (in seconds) for when the batch started cancelling.
             ///   - cancelled_at: The Unix timestamp (in seconds) for when the batch was cancelled.
             ///   - request_counts: The request counts for different statuses within the batch.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 id: Swift.String,
                 object: Components.Schemas.Batch.objectPayload,
@@ -3973,7 +4621,7 @@ public enum Components {
                 cancelling_at: Swift.Int? = nil,
                 cancelled_at: Swift.Int? = nil,
                 request_counts: Components.Schemas.Batch.request_countsPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.id = id
                 self.object = object
@@ -4444,6 +5092,9 @@ public enum Components {
                 case function
             }
         }
+        /// Messages sent by the model in response to user messages.
+        ///
+        ///
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestAssistantMessage`.
         public struct ChatCompletionRequestAssistantMessage: Codable, Hashable, Sendable {
             /// The contents of the assistant message. Required unless `tool_calls` or `function_call` is specified.
@@ -4648,6 +5299,93 @@ public enum Components {
                 }
             }
         }
+        /// Developer-provided instructions that the model should follow, regardless of
+        /// messages sent by the user. With o1 models and newer, `developer` messages
+        /// replace the previous `system` messages.
+        ///
+        ///
+        /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage`.
+        public struct ChatCompletionRequestDeveloperMessage: Codable, Hashable, Sendable {
+            /// The contents of the developer message.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/content`.
+            @frozen public enum contentPayload: Codable, Hashable, Sendable {
+                /// The contents of the developer message.
+                ///
+                /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/content/case1`.
+                case case1(Swift.String)
+                /// An array of content parts with a defined type. For developer messages, only type `text` is supported.
+                ///
+                /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/content/case2`.
+                case case2([Components.Schemas.ChatCompletionRequestMessageContentPartText])
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// The contents of the developer message.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/content`.
+            public var content: Components.Schemas.ChatCompletionRequestDeveloperMessage.contentPayload
+            /// The role of the messages author, in this case `developer`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/role`.
+            @frozen public enum rolePayload: String, Codable, Hashable, Sendable {
+                case developer = "developer"
+            }
+            /// The role of the messages author, in this case `developer`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/role`.
+            public var role: Components.Schemas.ChatCompletionRequestDeveloperMessage.rolePayload
+            /// An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestDeveloperMessage/name`.
+            public var name: Swift.String?
+            /// Creates a new `ChatCompletionRequestDeveloperMessage`.
+            ///
+            /// - Parameters:
+            ///   - content: The contents of the developer message.
+            ///   - role: The role of the messages author, in this case `developer`.
+            ///   - name: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+            public init(
+                content: Components.Schemas.ChatCompletionRequestDeveloperMessage.contentPayload,
+                role: Components.Schemas.ChatCompletionRequestDeveloperMessage.rolePayload,
+                name: Swift.String? = nil
+            ) {
+                self.content = content
+                self.role = role
+                self.name = name
+            }
+            public enum CodingKeys: String, CodingKey {
+                case content
+                case role
+                case name
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestFunctionMessage`.
         @available(*, deprecated)
         public struct ChatCompletionRequestFunctionMessage: Codable, Hashable, Sendable {
@@ -4693,17 +5431,25 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage`.
         @frozen public enum ChatCompletionRequestMessage: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/case1`.
-            case ChatCompletionRequestSystemMessage(Components.Schemas.ChatCompletionRequestSystemMessage)
+            case ChatCompletionRequestDeveloperMessage(Components.Schemas.ChatCompletionRequestDeveloperMessage)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/case2`.
-            case ChatCompletionRequestUserMessage(Components.Schemas.ChatCompletionRequestUserMessage)
+            case ChatCompletionRequestSystemMessage(Components.Schemas.ChatCompletionRequestSystemMessage)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/case3`.
-            case ChatCompletionRequestAssistantMessage(Components.Schemas.ChatCompletionRequestAssistantMessage)
+            case ChatCompletionRequestUserMessage(Components.Schemas.ChatCompletionRequestUserMessage)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/case4`.
-            case ChatCompletionRequestToolMessage(Components.Schemas.ChatCompletionRequestToolMessage)
+            case ChatCompletionRequestAssistantMessage(Components.Schemas.ChatCompletionRequestAssistantMessage)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/case5`.
+            case ChatCompletionRequestToolMessage(Components.Schemas.ChatCompletionRequestToolMessage)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/case6`.
             case ChatCompletionRequestFunctionMessage(Components.Schemas.ChatCompletionRequestFunctionMessage)
             public init(from decoder: any Decoder) throws {
                 var errors: [any Error] = []
+                do {
+                    self = .ChatCompletionRequestDeveloperMessage(try .init(from: decoder))
+                    return
+                } catch {
+                    errors.append(error)
+                }
                 do {
                     self = .ChatCompletionRequestSystemMessage(try .init(from: decoder))
                     return
@@ -4742,6 +5488,8 @@ public enum Components {
             }
             public func encode(to encoder: any Encoder) throws {
                 switch self {
+                case let .ChatCompletionRequestDeveloperMessage(value):
+                    try value.encode(to: encoder)
                 case let .ChatCompletionRequestSystemMessage(value):
                     try value.encode(to: encoder)
                 case let .ChatCompletionRequestUserMessage(value):
@@ -4846,7 +5594,7 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessageContentPartImage/image_url/url`.
                 public var url: Swift.String
-                /// Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision/low-or-high-fidelity-image-understanding).
+                /// Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision#low-or-high-fidelity-image-understanding).
                 ///
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessageContentPartImage/image_url/detail`.
                 @frozen public enum detailPayload: String, Codable, Hashable, Sendable {
@@ -4854,7 +5602,7 @@ public enum Components {
                     case low = "low"
                     case high = "high"
                 }
-                /// Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision/low-or-high-fidelity-image-understanding).
+                /// Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision#low-or-high-fidelity-image-understanding).
                 ///
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessageContentPartImage/image_url/detail`.
                 public var detail: Components.Schemas.ChatCompletionRequestMessageContentPartImage.image_urlPayload.detailPayload?
@@ -4862,7 +5610,7 @@ public enum Components {
                 ///
                 /// - Parameters:
                 ///   - url: Either a URL of the image or the base64 encoded image data.
-                ///   - detail: Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision/low-or-high-fidelity-image-understanding).
+                ///   - detail: Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision#low-or-high-fidelity-image-understanding).
                 public init(
                     url: Swift.String,
                     detail: Components.Schemas.ChatCompletionRequestMessageContentPartImage.image_urlPayload.detailPayload? = nil
@@ -4963,6 +5711,11 @@ public enum Components {
                 case text
             }
         }
+        /// Developer-provided instructions that the model should follow, regardless of
+        /// messages sent by the user. With o1 models and newer, use `developer` messages
+        /// for this purpose instead.
+        ///
+        ///
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestSystemMessage`.
         public struct ChatCompletionRequestSystemMessage: Codable, Hashable, Sendable {
             /// The contents of the system message.
@@ -5177,6 +5930,10 @@ public enum Components {
                 }
             }
         }
+        /// Messages sent by an end user, containing prompts or additional context
+        /// information.
+        ///
+        ///
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestUserMessage`.
         public struct ChatCompletionRequestUserMessage: Codable, Hashable, Sendable {
             /// The contents of the user message.
@@ -5460,6 +6217,7 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRole`.
         @frozen public enum ChatCompletionRole: String, Codable, Hashable, Sendable {
+            case developer = "developer"
             case system = "system"
             case user = "user"
             case assistant = "assistant"
@@ -5536,6 +6294,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionStreamResponseDelta/role`.
             @frozen public enum rolePayload: String, Codable, Hashable, Sendable {
+                case developer = "developer"
                 case system = "system"
                 case user = "user"
                 case assistant = "assistant"
@@ -5848,6 +6607,12 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CompletionUsage/completion_tokens_details`.
             public struct completion_tokens_detailsPayload: Codable, Hashable, Sendable {
+                /// When using Predicted Outputs, the number of tokens in the
+                /// prediction that appeared in the completion.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/CompletionUsage/completion_tokens_details/accepted_prediction_tokens`.
+                public var accepted_prediction_tokens: Swift.Int?
                 /// Audio input tokens generated by the model.
                 ///
                 /// - Remark: Generated from `#/components/schemas/CompletionUsage/completion_tokens_details/audio_tokens`.
@@ -5856,21 +6621,38 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/CompletionUsage/completion_tokens_details/reasoning_tokens`.
                 public var reasoning_tokens: Swift.Int?
+                /// When using Predicted Outputs, the number of tokens in the
+                /// prediction that did not appear in the completion. However, like
+                /// reasoning tokens, these tokens are still counted in the total
+                /// completion tokens for purposes of billing, output, and context window
+                /// limits.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/CompletionUsage/completion_tokens_details/rejected_prediction_tokens`.
+                public var rejected_prediction_tokens: Swift.Int?
                 /// Creates a new `completion_tokens_detailsPayload`.
                 ///
                 /// - Parameters:
+                ///   - accepted_prediction_tokens: When using Predicted Outputs, the number of tokens in the
                 ///   - audio_tokens: Audio input tokens generated by the model.
                 ///   - reasoning_tokens: Tokens generated by the model for reasoning.
+                ///   - rejected_prediction_tokens: When using Predicted Outputs, the number of tokens in the
                 public init(
+                    accepted_prediction_tokens: Swift.Int? = nil,
                     audio_tokens: Swift.Int? = nil,
-                    reasoning_tokens: Swift.Int? = nil
+                    reasoning_tokens: Swift.Int? = nil,
+                    rejected_prediction_tokens: Swift.Int? = nil
                 ) {
+                    self.accepted_prediction_tokens = accepted_prediction_tokens
                     self.audio_tokens = audio_tokens
                     self.reasoning_tokens = reasoning_tokens
+                    self.rejected_prediction_tokens = rejected_prediction_tokens
                 }
                 public enum CodingKeys: String, CodingKey {
+                    case accepted_prediction_tokens
                     case audio_tokens
                     case reasoning_tokens
+                    case rejected_prediction_tokens
                 }
             }
             /// Breakdown of tokens used in a completion.
@@ -5939,9 +6721,85 @@ public enum Components {
                 case prompt_tokens_details
             }
         }
+        /// The aggregated costs details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CostsResult`.
+        public struct CostsResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CostsResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_costs_period_result = "organization.costs.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/CostsResult/object`.
+            public var object: Components.Schemas.CostsResult.objectPayload
+            /// The monetary value in its associated currency.
+            ///
+            /// - Remark: Generated from `#/components/schemas/CostsResult/amount`.
+            public struct amountPayload: Codable, Hashable, Sendable {
+                /// The numeric value of the cost.
+                ///
+                /// - Remark: Generated from `#/components/schemas/CostsResult/amount/value`.
+                public var value: Swift.Double?
+                /// Lowercase ISO-4217 currency e.g. "usd"
+                ///
+                /// - Remark: Generated from `#/components/schemas/CostsResult/amount/currency`.
+                public var currency: Swift.String?
+                /// Creates a new `amountPayload`.
+                ///
+                /// - Parameters:
+                ///   - value: The numeric value of the cost.
+                ///   - currency: Lowercase ISO-4217 currency e.g. "usd"
+                public init(
+                    value: Swift.Double? = nil,
+                    currency: Swift.String? = nil
+                ) {
+                    self.value = value
+                    self.currency = currency
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case value
+                    case currency
+                }
+            }
+            /// The monetary value in its associated currency.
+            ///
+            /// - Remark: Generated from `#/components/schemas/CostsResult/amount`.
+            public var amount: Components.Schemas.CostsResult.amountPayload?
+            /// When `group_by=line_item`, this field provides the line item of the grouped costs result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/CostsResult/line_item`.
+            public var line_item: Swift.String?
+            /// When `group_by=project_id`, this field provides the project ID of the grouped costs result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/CostsResult/project_id`.
+            public var project_id: Swift.String?
+            /// Creates a new `CostsResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - amount: The monetary value in its associated currency.
+            ///   - line_item: When `group_by=line_item`, this field provides the line item of the grouped costs result.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped costs result.
+            public init(
+                object: Components.Schemas.CostsResult.objectPayload,
+                amount: Components.Schemas.CostsResult.amountPayload? = nil,
+                line_item: Swift.String? = nil,
+                project_id: Swift.String? = nil
+            ) {
+                self.object = object
+                self.amount = amount
+                self.line_item = line_item
+                self.project_id = project_id
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case amount
+                case line_item
+                case project_id
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest`.
         public struct CreateAssistantRequest: Codable, Hashable, Sendable {
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/model`.
@@ -5949,33 +6807,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/model/value1`.
                 public var value1: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/model/value2`.
-                @frozen public enum Value2Payload: String, Codable, Hashable, Sendable {
-                    case gpt_hyphen_4o = "gpt-4o"
-                    case gpt_hyphen_4o_hyphen_2024_hyphen_08_hyphen_06 = "gpt-4o-2024-08-06"
-                    case gpt_hyphen_4o_hyphen_2024_hyphen_05_hyphen_13 = "gpt-4o-2024-05-13"
-                    case gpt_hyphen_4o_hyphen_mini = "gpt-4o-mini"
-                    case gpt_hyphen_4o_hyphen_mini_hyphen_2024_hyphen_07_hyphen_18 = "gpt-4o-mini-2024-07-18"
-                    case gpt_hyphen_4_hyphen_turbo = "gpt-4-turbo"
-                    case gpt_hyphen_4_hyphen_turbo_hyphen_2024_hyphen_04_hyphen_09 = "gpt-4-turbo-2024-04-09"
-                    case gpt_hyphen_4_hyphen_0125_hyphen_preview = "gpt-4-0125-preview"
-                    case gpt_hyphen_4_hyphen_turbo_hyphen_preview = "gpt-4-turbo-preview"
-                    case gpt_hyphen_4_hyphen_1106_hyphen_preview = "gpt-4-1106-preview"
-                    case gpt_hyphen_4_hyphen_vision_hyphen_preview = "gpt-4-vision-preview"
-                    case gpt_hyphen_4 = "gpt-4"
-                    case gpt_hyphen_4_hyphen_0314 = "gpt-4-0314"
-                    case gpt_hyphen_4_hyphen_0613 = "gpt-4-0613"
-                    case gpt_hyphen_4_hyphen_32k = "gpt-4-32k"
-                    case gpt_hyphen_4_hyphen_32k_hyphen_0314 = "gpt-4-32k-0314"
-                    case gpt_hyphen_4_hyphen_32k_hyphen_0613 = "gpt-4-32k-0613"
-                    case gpt_hyphen_3_period_5_hyphen_turbo = "gpt-3.5-turbo"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_16k = "gpt-3.5-turbo-16k"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_0613 = "gpt-3.5-turbo-0613"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_1106 = "gpt-3.5-turbo-1106"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_0125 = "gpt-3.5-turbo-0125"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_16k_hyphen_0613 = "gpt-3.5-turbo-16k-0613"
-                }
-                /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/model/value2`.
-                public var value2: Components.Schemas.CreateAssistantRequest.modelPayload.Value2Payload?
+                public var value2: Components.Schemas.AssistantSupportedModels?
                 /// Creates a new `modelPayload`.
                 ///
                 /// - Parameters:
@@ -5983,7 +6815,7 @@ public enum Components {
                 ///   - value2:
                 public init(
                     value1: Swift.String? = nil,
-                    value2: Components.Schemas.CreateAssistantRequest.modelPayload.Value2Payload? = nil
+                    value2: Components.Schemas.AssistantSupportedModels? = nil
                 ) {
                     self.value1 = value1
                     self.value2 = value2
@@ -6017,7 +6849,7 @@ public enum Components {
                     ])
                 }
             }
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/model`.
@@ -6037,6 +6869,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/instructions`.
             public var instructions: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/reasoning_effort`.
+            public var reasoning_effort: Components.Schemas.ReasoningEffort?
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/toolsPayload`.
             @frozen public enum toolsPayloadPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/toolsPayload/case1`.
@@ -6186,11 +7020,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/tool_resources`.
             public var tool_resources: Components.Schemas.CreateAssistantRequest.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///
             ///
@@ -6204,17 +7035,45 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/top_p`.
             public var top_p: Swift.Double?
             /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/response_format`.
-            public var response_format: Components.Schemas.AssistantsApiResponseFormatOption?
+            public struct response_formatPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/response_format/value1`.
+                public var value1: Components.Schemas.AssistantsApiResponseFormatOption
+                /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/response_format/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `response_formatPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiResponseFormatOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateAssistantRequest/response_format`.
+            public var response_format: Components.Schemas.CreateAssistantRequest.response_formatPayload?
             /// Creates a new `CreateAssistantRequest`.
             ///
             /// - Parameters:
-            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///   - name: The name of the assistant. The maximum length is 256 characters.
             ///   - description: The description of the assistant. The maximum length is 512 characters.
             ///   - instructions: The system instructions that the assistant uses. The maximum length is 256,000 characters.
+            ///   - reasoning_effort:
             ///   - tools: A list of tool enabled on the assistant. There can be a maximum of 128 tools per assistant. Tools can be of types `code_interpreter`, `file_search`, or `function`.
             ///   - tool_resources: A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
             ///   - response_format:
@@ -6223,17 +7082,19 @@ public enum Components {
                 name: Swift.String? = nil,
                 description: Swift.String? = nil,
                 instructions: Swift.String? = nil,
+                reasoning_effort: Components.Schemas.ReasoningEffort? = nil,
                 tools: Components.Schemas.CreateAssistantRequest.toolsPayload? = nil,
                 tool_resources: Components.Schemas.CreateAssistantRequest.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 temperature: Swift.Double? = nil,
                 top_p: Swift.Double? = nil,
-                response_format: Components.Schemas.AssistantsApiResponseFormatOption? = nil
+                response_format: Components.Schemas.CreateAssistantRequest.response_formatPayload? = nil
             ) {
                 self.model = model
                 self.name = name
                 self.description = description
                 self.instructions = instructions
+                self.reasoning_effort = reasoning_effort
                 self.tools = tools
                 self.tool_resources = tool_resources
                 self.metadata = metadata
@@ -6246,6 +7107,7 @@ public enum Components {
                 case name
                 case description
                 case instructions
+                case reasoning_effort
                 case tools
                 case tool_resources
                 case metadata
@@ -6271,6 +7133,10 @@ public enum Components {
                     Swift.String.self,
                     forKey: .instructions
                 )
+                reasoning_effort = try container.decodeIfPresent(
+                    Components.Schemas.ReasoningEffort.self,
+                    forKey: .reasoning_effort
+                )
                 tools = try container.decodeIfPresent(
                     Components.Schemas.CreateAssistantRequest.toolsPayload.self,
                     forKey: .tools
@@ -6280,7 +7146,7 @@ public enum Components {
                     forKey: .tool_resources
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 temperature = try container.decodeIfPresent(
@@ -6292,7 +7158,7 @@ public enum Components {
                     forKey: .top_p
                 )
                 response_format = try container.decodeIfPresent(
-                    Components.Schemas.AssistantsApiResponseFormatOption.self,
+                    Components.Schemas.CreateAssistantRequest.response_formatPayload.self,
                     forKey: .response_format
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -6300,6 +7166,7 @@ public enum Components {
                     "name",
                     "description",
                     "instructions",
+                    "reasoning_effort",
                     "tools",
                     "tool_resources",
                     "metadata",
@@ -6447,7 +7314,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/messages`.
             public var messages: [Components.Schemas.ChatCompletionRequestMessage]
-            /// ID of the model to use. See the [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for details on which models work with the Chat API.
+            /// ID of the model to use. See the [model endpoint compatibility](/docs/models#model-endpoint-compatibility) table for details on which models work with the Chat API.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/model`.
             public struct modelPayload: Codable, Hashable, Sendable {
@@ -6455,17 +7322,23 @@ public enum Components {
                 public var value1: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/model/value2`.
                 @frozen public enum Value2Payload: String, Codable, Hashable, Sendable {
+                    case o3_hyphen_mini = "o3-mini"
+                    case o3_hyphen_mini_hyphen_2025_hyphen_01_hyphen_31 = "o3-mini-2025-01-31"
+                    case o1 = "o1"
+                    case o1_hyphen_2024_hyphen_12_hyphen_17 = "o1-2024-12-17"
                     case o1_hyphen_preview = "o1-preview"
                     case o1_hyphen_preview_hyphen_2024_hyphen_09_hyphen_12 = "o1-preview-2024-09-12"
                     case o1_hyphen_mini = "o1-mini"
                     case o1_hyphen_mini_hyphen_2024_hyphen_09_hyphen_12 = "o1-mini-2024-09-12"
                     case gpt_hyphen_4o = "gpt-4o"
+                    case gpt_hyphen_4o_hyphen_2024_hyphen_11_hyphen_20 = "gpt-4o-2024-11-20"
                     case gpt_hyphen_4o_hyphen_2024_hyphen_08_hyphen_06 = "gpt-4o-2024-08-06"
                     case gpt_hyphen_4o_hyphen_2024_hyphen_05_hyphen_13 = "gpt-4o-2024-05-13"
-                    case gpt_hyphen_4o_hyphen_realtime_hyphen_preview = "gpt-4o-realtime-preview"
-                    case gpt_hyphen_4o_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_10_hyphen_01 = "gpt-4o-realtime-preview-2024-10-01"
                     case gpt_hyphen_4o_hyphen_audio_hyphen_preview = "gpt-4o-audio-preview"
                     case gpt_hyphen_4o_hyphen_audio_hyphen_preview_hyphen_2024_hyphen_10_hyphen_01 = "gpt-4o-audio-preview-2024-10-01"
+                    case gpt_hyphen_4o_hyphen_audio_hyphen_preview_hyphen_2024_hyphen_12_hyphen_17 = "gpt-4o-audio-preview-2024-12-17"
+                    case gpt_hyphen_4o_hyphen_mini_hyphen_audio_hyphen_preview = "gpt-4o-mini-audio-preview"
+                    case gpt_hyphen_4o_hyphen_mini_hyphen_audio_hyphen_preview_hyphen_2024_hyphen_12_hyphen_17 = "gpt-4o-mini-audio-preview-2024-12-17"
                     case chatgpt_hyphen_4o_hyphen_latest = "chatgpt-4o-latest"
                     case gpt_hyphen_4o_hyphen_mini = "gpt-4o-mini"
                     case gpt_hyphen_4o_hyphen_mini_hyphen_2024_hyphen_07_hyphen_18 = "gpt-4o-mini-2024-07-18"
@@ -6532,54 +7405,36 @@ public enum Components {
                     ])
                 }
             }
-            /// ID of the model to use. See the [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for details on which models work with the Chat API.
+            /// ID of the model to use. See the [model endpoint compatibility](/docs/models#model-endpoint-compatibility) table for details on which models work with the Chat API.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/model`.
             public var model: Components.Schemas.CreateChatCompletionRequest.modelPayload
-            /// Whether or not to store the output of this chat completion request
-            /// for use in our [model distillation](/docs/guides/distillation) or [evals](/docs/guides/evals) products.
+            /// Whether or not to store the output of this chat completion request for 
+            /// use in our [model distillation](/docs/guides/distillation) or
+            /// [evals](/docs/guides/evals) products.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/store`.
             public var store: Swift.Bool?
-            /// Developer-defined tags and values used for filtering completions
-            /// in the [dashboard](https://platform.openai.com/chat-completions).
-            ///
-            ///
+            /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/reasoning_effort`.
+            public var reasoning_effort: Components.Schemas.ReasoningEffort?
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/metadata`.
-            public struct metadataPayload: Codable, Hashable, Sendable {
-                /// A container of undocumented properties.
-                public var additionalProperties: [String: Swift.String]
-                /// Creates a new `metadataPayload`.
-                ///
-                /// - Parameters:
-                ///   - additionalProperties: A container of undocumented properties.
-                public init(additionalProperties: [String: Swift.String] = .init()) {
-                    self.additionalProperties = additionalProperties
-                }
-                public init(from decoder: any Decoder) throws {
-                    additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
-                }
-                public func encode(to encoder: any Encoder) throws {
-                    try encoder.encodeAdditionalProperties(additionalProperties)
-                }
-            }
-            /// Developer-defined tags and values used for filtering completions
-            /// in the [dashboard](https://platform.openai.com/chat-completions).
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/metadata`.
-            public var metadata: Components.Schemas.CreateChatCompletionRequest.metadataPayload?
-            /// Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
-            ///
-            /// [See more information about frequency and presence penalties.](/docs/guides/text-generation/parameter-details)
+            public var metadata: Components.Schemas.Metadata?
+            /// Number between -2.0 and 2.0. Positive values penalize new tokens based on
+            /// their existing frequency in the text so far, decreasing the model's
+            /// likelihood to repeat the same line verbatim.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/frequency_penalty`.
             public var frequency_penalty: Swift.Double?
             /// Modify the likelihood of specified tokens appearing in the completion.
             ///
-            /// Accepts a JSON object that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100 to 100. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
+            /// Accepts a JSON object that maps tokens (specified by their token ID in the
+            /// tokenizer) to an associated bias value from -100 to 100. Mathematically,
+            /// the bias is added to the logits generated by the model prior to sampling.
+            /// The exact effect will vary per model, but values between -1 and 1 should
+            /// decrease or increase likelihood of selection; values like -100 or 100
+            /// should result in a ban or exclusive selection of the relevant token.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/logit_bias`.
@@ -6602,22 +7457,36 @@ public enum Components {
             }
             /// Modify the likelihood of specified tokens appearing in the completion.
             ///
-            /// Accepts a JSON object that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100 to 100. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
+            /// Accepts a JSON object that maps tokens (specified by their token ID in the
+            /// tokenizer) to an associated bias value from -100 to 100. Mathematically,
+            /// the bias is added to the logits generated by the model prior to sampling.
+            /// The exact effect will vary per model, but values between -1 and 1 should
+            /// decrease or increase likelihood of selection; values like -100 or 100
+            /// should result in a ban or exclusive selection of the relevant token.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/logit_bias`.
             public var logit_bias: Components.Schemas.CreateChatCompletionRequest.logit_biasPayload?
-            /// Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`.
+            /// Whether to return log probabilities of the output tokens or not. If true,
+            /// returns the log probabilities of each output token returned in the
+            /// `content` of `message`.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/logprobs`.
             public var logprobs: Swift.Bool?
-            /// An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
+            /// An integer between 0 and 20 specifying the number of most likely tokens to
+            /// return at each token position, each with an associated log probability.
+            /// `logprobs` must be set to `true` if this parameter is used.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/top_logprobs`.
             public var top_logprobs: Swift.Int?
-            /// The maximum number of [tokens](/tokenizer) that can be generated in the chat completion. This value can be used to control [costs](https://openai.com/api/pricing/) for text generated via API.
+            /// The maximum number of [tokens](/tokenizer) that can be generated in the
+            /// chat completion. This value can be used to control
+            /// [costs](https://openai.com/api/pricing/) for text generated via API.
             ///
-            /// This value is now deprecated in favor of `max_completion_tokens`, and is not compatible with [o1 series models](/docs/guides/reasoning).
+            /// This value is now deprecated in favor of `max_completion_tokens`, and is
+            /// not compatible with [o1 series models](/docs/guides/reasoning).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/max_tokens`.
@@ -6634,33 +7503,72 @@ public enum Components {
             public var n: Swift.Int?
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/modalities`.
             public var modalities: Components.Schemas.ChatCompletionModalities?
+            /// Configuration for a [Predicted Output](/docs/guides/predicted-outputs),
+            /// which can greatly improve response times when large parts of the model
+            /// response are known ahead of time. This is most common when you are
+            /// regenerating a file with only minor changes to most of the content.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/prediction`.
+            @frozen public enum predictionPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/prediction/case1`.
+                case PredictionContent(Components.Schemas.PredictionContent)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .PredictionContent(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .PredictionContent(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// Configuration for a [Predicted Output](/docs/guides/predicted-outputs),
+            /// which can greatly improve response times when large parts of the model
+            /// response are known ahead of time. This is most common when you are
+            /// regenerating a file with only minor changes to most of the content.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/prediction`.
+            public var prediction: Components.Schemas.CreateChatCompletionRequest.predictionPayload?
             /// Parameters for audio output. Required when audio output is requested with
             /// `modalities: ["audio"]`. [Learn more](/docs/guides/audio).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/audio`.
             public struct audioPayload: Codable, Hashable, Sendable {
-                /// Specifies the voice type. Supported voices are `alloy`, `echo`, 
-                /// `fable`, `onyx`, `nova`, and `shimmer`.
+                /// The voice the model uses to respond. Supported voices are `ash`, `ballad`, `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`, `echo`, and `shimmer`; these voices are less expressive).
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/audio/voice`.
                 @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
                     case alloy = "alloy"
+                    case ash = "ash"
+                    case ballad = "ballad"
+                    case coral = "coral"
                     case echo = "echo"
-                    case fable = "fable"
-                    case onyx = "onyx"
-                    case nova = "nova"
+                    case sage = "sage"
                     case shimmer = "shimmer"
+                    case verse = "verse"
                 }
-                /// Specifies the voice type. Supported voices are `alloy`, `echo`, 
-                /// `fable`, `onyx`, `nova`, and `shimmer`.
+                /// The voice the model uses to respond. Supported voices are `ash`, `ballad`, `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`, `echo`, and `shimmer`; these voices are less expressive).
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/audio/voice`.
                 public var voice: Components.Schemas.CreateChatCompletionRequest.audioPayload.voicePayload
                 /// Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
-                /// `opus`, or `pcm16`. 
+                /// `opus`, or `pcm16`.
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/audio/format`.
@@ -6672,7 +7580,7 @@ public enum Components {
                     case pcm16 = "pcm16"
                 }
                 /// Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
-                /// `opus`, or `pcm16`. 
+                /// `opus`, or `pcm16`.
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/audio/format`.
@@ -6680,7 +7588,7 @@ public enum Components {
                 /// Creates a new `audioPayload`.
                 ///
                 /// - Parameters:
-                ///   - voice: Specifies the voice type. Supported voices are `alloy`, `echo`, 
+                ///   - voice: The voice the model uses to respond. Supported voices are `ash`, `ballad`, `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`, `echo`, and `shimmer`; these voices are less expressive).
                 ///   - format: Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
                 public init(
                     voice: Components.Schemas.CreateChatCompletionRequest.audioPayload.voicePayload,
@@ -6700,20 +7608,30 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/audio`.
             public var audio: Components.Schemas.CreateChatCompletionRequest.audioPayload?
-            /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-            ///
-            /// [See more information about frequency and presence penalties.](/docs/guides/text-generation/parameter-details)
+            /// Number between -2.0 and 2.0. Positive values penalize new tokens based on
+            /// whether they appear in the text so far, increasing the model's likelihood
+            /// to talk about new topics.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/presence_penalty`.
             public var presence_penalty: Swift.Double?
-            /// An object specifying the format that the model must output. Compatible with [GPT-4o](/docs/models/gpt-4o), [GPT-4o mini](/docs/models/gpt-4o-mini), [GPT-4 Turbo](/docs/models/gpt-4-and-gpt-4-turbo) and all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+            /// An object specifying the format that the model must output.
             ///
-            /// Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied JSON schema. Learn more in the [Structured Outputs guide](/docs/guides/structured-outputs).
+            /// Setting to `{ "type": "json_schema", "json_schema": {...} }` enables
+            /// Structured Outputs which ensures the model will match your supplied JSON
+            /// schema. Learn more in the [Structured Outputs
+            /// guide](/docs/guides/structured-outputs).
             ///
-            /// Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the message the model generates is valid JSON.
+            /// Setting to `{ "type": "json_object" }` enables JSON mode, which ensures
+            /// the message the model generates is valid JSON.
             ///
-            /// **Important:** when using JSON mode, you **must** also instruct the model to produce JSON yourself via a system or user message. Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request. Also note that the message content may be partially cut off if `finish_reason="length"`, which indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
+            /// **Important:** when using JSON mode, you **must** also instruct the model
+            /// to produce JSON yourself via a system or user message. Without this, the
+            /// model may generate an unending stream of whitespace until the generation
+            /// reaches the token limit, resulting in a long-running and seemingly "stuck"
+            /// request. Also note that the message content may be partially cut off if
+            /// `finish_reason="length"`, which indicates the generation exceeded
+            /// `max_tokens` or the conversation exceeded the max context length.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/response_format`.
@@ -6761,13 +7679,23 @@ public enum Components {
                     }
                 }
             }
-            /// An object specifying the format that the model must output. Compatible with [GPT-4o](/docs/models/gpt-4o), [GPT-4o mini](/docs/models/gpt-4o-mini), [GPT-4 Turbo](/docs/models/gpt-4-and-gpt-4-turbo) and all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+            /// An object specifying the format that the model must output.
             ///
-            /// Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied JSON schema. Learn more in the [Structured Outputs guide](/docs/guides/structured-outputs).
+            /// Setting to `{ "type": "json_schema", "json_schema": {...} }` enables
+            /// Structured Outputs which ensures the model will match your supplied JSON
+            /// schema. Learn more in the [Structured Outputs
+            /// guide](/docs/guides/structured-outputs).
             ///
-            /// Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the message the model generates is valid JSON.
+            /// Setting to `{ "type": "json_object" }` enables JSON mode, which ensures
+            /// the message the model generates is valid JSON.
             ///
-            /// **Important:** when using JSON mode, you **must** also instruct the model to produce JSON yourself via a system or user message. Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request. Also note that the message content may be partially cut off if `finish_reason="length"`, which indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
+            /// **Important:** when using JSON mode, you **must** also instruct the model
+            /// to produce JSON yourself via a system or user message. Without this, the
+            /// model may generate an unending stream of whitespace until the generation
+            /// reaches the token limit, resulting in a long-running and seemingly "stuck"
+            /// request. Also note that the message content may be partially cut off if
+            /// `finish_reason="length"`, which indicates the generation exceeded
+            /// `max_tokens` or the conversation exceeded the max context length.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/response_format`.
@@ -6778,14 +7706,12 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/seed`.
-            public var seed: Swift.Int?
+            public var seed: Swift.Int64?
             /// Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:
-            ///   - If set to 'auto', and the Project is Scale tier enabled, the system will utilize scale tier credits until they are exhausted. 
-            ///   - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
-            ///   - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
+            ///   - If set to 'auto', and the Project is Scale tier enabled, the system will utilize scale tier credits until they are exhausted.
+            ///   - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarantee.
+            ///   - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarantee.
             ///   - When not set, the default behavior is 'auto'.
-            ///
-            ///   When this parameter is set, the response body will include the `service_tier` utilized.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/service_tier`.
@@ -6794,12 +7720,10 @@ public enum Components {
                 case _default = "default"
             }
             /// Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:
-            ///   - If set to 'auto', and the Project is Scale tier enabled, the system will utilize scale tier credits until they are exhausted. 
-            ///   - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
-            ///   - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
+            ///   - If set to 'auto', and the Project is Scale tier enabled, the system will utilize scale tier credits until they are exhausted.
+            ///   - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarantee.
+            ///   - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarantee.
             ///   - When not set, the default behavior is 'auto'.
-            ///
-            ///   When this parameter is set, the response body will include the `service_tier` utilized.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/service_tier`.
@@ -6855,13 +7779,15 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/stream_options`.
             public var stream_options: Components.Schemas.ChatCompletionStreamOptions?
             /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-            ///
             /// We generally recommend altering this or `top_p` but not both.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/temperature`.
             public var temperature: Swift.Double?
-            /// An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+            /// An alternative to sampling with temperature, called nucleus sampling,
+            /// where the model considers the results of the tokens with top_p probability
+            /// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+            /// are considered.
             ///
             /// We generally recommend altering this or `temperature` but not both.
             ///
@@ -6877,7 +7803,7 @@ public enum Components {
             public var tool_choice: Components.Schemas.ChatCompletionToolChoiceOption?
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/parallel_tool_calls`.
             public var parallel_tool_calls: Components.Schemas.ParallelToolCalls?
-            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/user`.
@@ -6885,11 +7811,18 @@ public enum Components {
             /// Deprecated in favor of `tool_choice`.
             ///
             /// Controls which (if any) function is called by the model.
-            /// `none` means the model will not call a function and instead generates a message.
-            /// `auto` means the model can pick between generating a message or calling a function.
-            /// Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
             ///
-            /// `none` is the default when no functions are present. `auto` is the default if functions are present.
+            /// `none` means the model will not call a function and instead generates a
+            /// message.
+            ///
+            /// `auto` means the model can pick between generating a message or calling a
+            /// function.
+            ///
+            /// Specifying a particular function via `{"name": "my_function"}` forces the
+            /// model to call that function.
+            ///
+            /// `none` is the default when no functions are present. `auto` is the default
+            /// if functions are present.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/function_call`.
@@ -6941,11 +7874,18 @@ public enum Components {
             /// Deprecated in favor of `tool_choice`.
             ///
             /// Controls which (if any) function is called by the model.
-            /// `none` means the model will not call a function and instead generates a message.
-            /// `auto` means the model can pick between generating a message or calling a function.
-            /// Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
             ///
-            /// `none` is the default when no functions are present. `auto` is the default if functions are present.
+            /// `none` means the model will not call a function and instead generates a
+            /// message.
+            ///
+            /// `auto` means the model can pick between generating a message or calling a
+            /// function.
+            ///
+            /// Specifying a particular function via `{"name": "my_function"}` forces the
+            /// model to call that function.
+            ///
+            /// `none` is the default when no functions are present. `auto` is the default
+            /// if functions are present.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/function_call`.
@@ -6963,38 +7903,41 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - messages: A list of messages comprising the conversation so far. Depending on the
-            ///   - model: ID of the model to use. See the [model endpoint compatibility](/docs/models/model-endpoint-compatibility) table for details on which models work with the Chat API.
-            ///   - store: Whether or not to store the output of this chat completion request
-            ///   - metadata: Developer-defined tags and values used for filtering completions
-            ///   - frequency_penalty: Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+            ///   - model: ID of the model to use. See the [model endpoint compatibility](/docs/models#model-endpoint-compatibility) table for details on which models work with the Chat API.
+            ///   - store: Whether or not to store the output of this chat completion request for 
+            ///   - reasoning_effort:
+            ///   - metadata:
+            ///   - frequency_penalty: Number between -2.0 and 2.0. Positive values penalize new tokens based on
             ///   - logit_bias: Modify the likelihood of specified tokens appearing in the completion.
-            ///   - logprobs: Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`.
-            ///   - top_logprobs: An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
-            ///   - max_tokens: The maximum number of [tokens](/tokenizer) that can be generated in the chat completion. This value can be used to control [costs](https://openai.com/api/pricing/) for text generated via API.
+            ///   - logprobs: Whether to return log probabilities of the output tokens or not. If true,
+            ///   - top_logprobs: An integer between 0 and 20 specifying the number of most likely tokens to
+            ///   - max_tokens: The maximum number of [tokens](/tokenizer) that can be generated in the
             ///   - max_completion_tokens: An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
             ///   - n: How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
             ///   - modalities:
+            ///   - prediction: Configuration for a [Predicted Output](/docs/guides/predicted-outputs),
             ///   - audio: Parameters for audio output. Required when audio output is requested with
-            ///   - presence_penalty: Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-            ///   - response_format: An object specifying the format that the model must output. Compatible with [GPT-4o](/docs/models/gpt-4o), [GPT-4o mini](/docs/models/gpt-4o-mini), [GPT-4 Turbo](/docs/models/gpt-4-and-gpt-4-turbo) and all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`.
+            ///   - presence_penalty: Number between -2.0 and 2.0. Positive values penalize new tokens based on
+            ///   - response_format: An object specifying the format that the model must output.
             ///   - seed: This feature is in Beta.
             ///   - service_tier: Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:
             ///   - stop: Up to 4 sequences where the API will stop generating further tokens.
             ///   - stream: If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
             ///   - stream_options:
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-            ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+            ///   - top_p: An alternative to sampling with temperature, called nucleus sampling,
             ///   - tools: A list of tools the model may call. Currently, only functions are supported as a tool. Use this to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are supported.
             ///   - tool_choice:
             ///   - parallel_tool_calls:
-            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             ///   - function_call: Deprecated in favor of `tool_choice`.
             ///   - functions: Deprecated in favor of `tools`.
             public init(
                 messages: [Components.Schemas.ChatCompletionRequestMessage],
                 model: Components.Schemas.CreateChatCompletionRequest.modelPayload,
                 store: Swift.Bool? = nil,
-                metadata: Components.Schemas.CreateChatCompletionRequest.metadataPayload? = nil,
+                reasoning_effort: Components.Schemas.ReasoningEffort? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 frequency_penalty: Swift.Double? = nil,
                 logit_bias: Components.Schemas.CreateChatCompletionRequest.logit_biasPayload? = nil,
                 logprobs: Swift.Bool? = nil,
@@ -7003,10 +7946,11 @@ public enum Components {
                 max_completion_tokens: Swift.Int? = nil,
                 n: Swift.Int? = nil,
                 modalities: Components.Schemas.ChatCompletionModalities? = nil,
+                prediction: Components.Schemas.CreateChatCompletionRequest.predictionPayload? = nil,
                 audio: Components.Schemas.CreateChatCompletionRequest.audioPayload? = nil,
                 presence_penalty: Swift.Double? = nil,
                 response_format: Components.Schemas.CreateChatCompletionRequest.response_formatPayload? = nil,
-                seed: Swift.Int? = nil,
+                seed: Swift.Int64? = nil,
                 service_tier: Components.Schemas.CreateChatCompletionRequest.service_tierPayload? = nil,
                 stop: Components.Schemas.CreateChatCompletionRequest.stopPayload? = nil,
                 stream: Swift.Bool? = nil,
@@ -7023,6 +7967,7 @@ public enum Components {
                 self.messages = messages
                 self.model = model
                 self.store = store
+                self.reasoning_effort = reasoning_effort
                 self.metadata = metadata
                 self.frequency_penalty = frequency_penalty
                 self.logit_bias = logit_bias
@@ -7032,6 +7977,7 @@ public enum Components {
                 self.max_completion_tokens = max_completion_tokens
                 self.n = n
                 self.modalities = modalities
+                self.prediction = prediction
                 self.audio = audio
                 self.presence_penalty = presence_penalty
                 self.response_format = response_format
@@ -7053,6 +7999,7 @@ public enum Components {
                 case messages
                 case model
                 case store
+                case reasoning_effort
                 case metadata
                 case frequency_penalty
                 case logit_bias
@@ -7062,6 +8009,7 @@ public enum Components {
                 case max_completion_tokens
                 case n
                 case modalities
+                case prediction
                 case audio
                 case presence_penalty
                 case response_format
@@ -7192,14 +8140,14 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionResponse/model`.
             public var model: Swift.String
-            /// The service tier used for processing the request. This field is only included if the `service_tier` parameter is specified in the request.
+            /// The service tier used for processing the request.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionResponse/service_tier`.
             @frozen public enum service_tierPayload: String, Codable, Hashable, Sendable {
                 case scale = "scale"
                 case _default = "default"
             }
-            /// The service tier used for processing the request. This field is only included if the `service_tier` parameter is specified in the request.
+            /// The service tier used for processing the request.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionResponse/service_tier`.
             public var service_tier: Components.Schemas.CreateChatCompletionResponse.service_tierPayload?
@@ -7229,7 +8177,7 @@ public enum Components {
             ///   - choices: A list of chat completion choices. Can be more than one if `n` is greater than 1.
             ///   - created: The Unix timestamp (in seconds) of when the chat completion was created.
             ///   - model: The model used for the chat completion.
-            ///   - service_tier: The service tier used for processing the request. This field is only included if the `service_tier` parameter is specified in the request.
+            ///   - service_tier: The service tier used for processing the request.
             ///   - system_fingerprint: This fingerprint represents the backend configuration that the model runs with.
             ///   - object: The object type, which is always `chat.completion`.
             ///   - usage:
@@ -7379,14 +8327,14 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionStreamResponse/model`.
             public var model: Swift.String
-            /// The service tier used for processing the request. This field is only included if the `service_tier` parameter is specified in the request.
+            /// The service tier used for processing the request.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionStreamResponse/service_tier`.
             @frozen public enum service_tierPayload: String, Codable, Hashable, Sendable {
                 case scale = "scale"
                 case _default = "default"
             }
-            /// The service tier used for processing the request. This field is only included if the `service_tier` parameter is specified in the request.
+            /// The service tier used for processing the request.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateChatCompletionStreamResponse/service_tier`.
             public var service_tier: Components.Schemas.CreateChatCompletionStreamResponse.service_tierPayload?
@@ -7458,7 +8406,7 @@ public enum Components {
             ///   - choices: A list of chat completion choices. Can contain more than one elements if `n` is greater than 1. Can also be empty for the
             ///   - created: The Unix timestamp (in seconds) of when the chat completion was created. Each chunk has the same timestamp.
             ///   - model: The model to generate the completion.
-            ///   - service_tier: The service tier used for processing the request. This field is only included if the `service_tier` parameter is specified in the request.
+            ///   - service_tier: The service tier used for processing the request.
             ///   - system_fingerprint: This fingerprint represents the backend configuration that the model runs with.
             ///   - object: The object type, which is always `chat.completion.chunk`.
             ///   - usage: An optional field that will only be present when you set `stream_options: {"include_usage": true}` in your request.
@@ -7494,7 +8442,7 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest`.
         public struct CreateCompletionRequest: Codable, Hashable, Sendable {
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/model`.
@@ -7550,7 +8498,7 @@ public enum Components {
                     ])
                 }
             }
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/model`.
@@ -7638,7 +8586,7 @@ public enum Components {
             public var echo: Swift.Bool?
             /// Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
             ///
-            /// [See more information about frequency and presence penalties.](/docs/guides/text-generation/parameter-details)
+            /// [See more information about frequency and presence penalties.](/docs/guides/text-generation)
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/frequency_penalty`.
@@ -7700,7 +8648,7 @@ public enum Components {
             public var n: Swift.Int?
             /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
             ///
-            /// [See more information about frequency and presence penalties.](/docs/guides/text-generation/parameter-details)
+            /// [See more information about frequency and presence penalties.](/docs/guides/text-generation)
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/presence_penalty`.
@@ -7711,7 +8659,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/seed`.
-            public var seed: Swift.Int?
+            public var seed: Swift.Int64?
             /// Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
             ///
             ///
@@ -7783,7 +8731,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/top_p`.
             public var top_p: Swift.Double?
-            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateCompletionRequest/user`.
@@ -7791,7 +8739,7 @@ public enum Components {
             /// Creates a new `CreateCompletionRequest`.
             ///
             /// - Parameters:
-            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///   - prompt: The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
             ///   - best_of: Generates `best_of` completions server-side and returns the "best" (the one with the highest log probability per token). Results cannot be streamed.
             ///   - echo: Echo back the prompt in addition to the completion
@@ -7808,7 +8756,7 @@ public enum Components {
             ///   - suffix: The suffix that comes after a completion of inserted text.
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             public init(
                 model: Components.Schemas.CreateCompletionRequest.modelPayload,
                 prompt: Components.Schemas.CreateCompletionRequest.promptPayload? = nil,
@@ -7820,7 +8768,7 @@ public enum Components {
                 max_tokens: Swift.Int? = nil,
                 n: Swift.Int? = nil,
                 presence_penalty: Swift.Double? = nil,
-                seed: Swift.Int? = nil,
+                seed: Swift.Int64? = nil,
                 stop: Components.Schemas.CreateCompletionRequest.stopPayload? = nil,
                 stream: Swift.Bool? = nil,
                 stream_options: Components.Schemas.ChatCompletionStreamOptions? = nil,
@@ -8058,7 +9006,7 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest`.
         public struct CreateEmbeddingRequest: Codable, Hashable, Sendable {
-            /// Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
+            /// Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens. Some models may also impose a limit on total number of tokens summed across inputs.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest/input`.
@@ -8124,12 +9072,12 @@ public enum Components {
                     }
                 }
             }
-            /// Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
+            /// Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens. Some models may also impose a limit on total number of tokens summed across inputs.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest/input`.
             public var input: Components.Schemas.CreateEmbeddingRequest.inputPayload
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest/model`.
@@ -8185,7 +9133,7 @@ public enum Components {
                     ])
                 }
             }
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest/model`.
@@ -8206,7 +9154,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest/dimensions`.
             public var dimensions: Swift.Int?
-            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateEmbeddingRequest/user`.
@@ -8214,11 +9162,11 @@ public enum Components {
             /// Creates a new `CreateEmbeddingRequest`.
             ///
             /// - Parameters:
-            ///   - input: Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
-            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            ///   - input: Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens. Some models may also impose a limit on total number of tokens summed across inputs.
+            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///   - encoding_format: The format to return the embeddings in. Can be either `float` or [`base64`](https://pypi.org/project/pybase64/).
             ///   - dimensions: The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and later models.
-            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             public init(
                 input: Components.Schemas.CreateEmbeddingRequest.inputPayload,
                 model: Components.Schemas.CreateEmbeddingRequest.modelPayload,
@@ -8378,7 +9326,7 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest`.
         public struct CreateFineTuningJobRequest: Codable, Hashable, Sendable {
             /// The name of the model to fine-tune. You can select one of the
-            /// [supported models](/docs/guides/fine-tuning/which-models-can-be-fine-tuned).
+            /// [supported models](/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/model`.
@@ -8436,7 +9384,7 @@ public enum Components {
                 }
             }
             /// The name of the model to fine-tune. You can select one of the
-            /// [supported models](/docs/guides/fine-tuning/which-models-can-be-fine-tuned).
+            /// [supported models](/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/model`.
@@ -8447,7 +9395,7 @@ public enum Components {
             ///
             /// Your dataset must be formatted as a JSONL file. Additionally, you must upload your file with the purpose `fine-tune`.
             ///
-            /// The contents of the file should differ depending on if the model uses the [chat](/docs/api-reference/fine-tuning/chat-input) or [completions](/docs/api-reference/fine-tuning/completions-input) format.
+            /// The contents of the file should differ depending on if the model uses the [chat](/docs/api-reference/fine-tuning/chat-input), [completions](/docs/api-reference/fine-tuning/completions-input) format, or if the fine-tuning method uses the [preference](/docs/api-reference/fine-tuning/preference-input) format.
             ///
             /// See the [fine-tuning guide](/docs/guides/fine-tuning) for more details.
             ///
@@ -8455,8 +9403,11 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/training_file`.
             public var training_file: Swift.String
             /// The hyperparameters used for the fine-tuning job.
+            /// This value is now deprecated in favor of `method`, and should be passed in under the `method` parameter.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/hyperparameters`.
+            @available(*, deprecated)
             public struct hyperparametersPayload: Codable, Hashable, Sendable {
                 /// Number of examples in each batch. A larger batch size means that model parameters
                 /// are updated less frequently, but with lower variance.
@@ -8627,8 +9578,11 @@ public enum Components {
                 }
             }
             /// The hyperparameters used for the fine-tuning job.
+            /// This value is now deprecated in favor of `method`, and should be passed in under the `method` parameter.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/hyperparameters`.
+            @available(*, deprecated)
             public var hyperparameters: Components.Schemas.CreateFineTuningJobRequest.hyperparametersPayload?
             /// A string of up to 64 characters that will be added to your fine-tuned model name.
             ///
@@ -8782,6 +9736,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/seed`.
             public var seed: Swift.Int?
+            /// - Remark: Generated from `#/components/schemas/CreateFineTuningJobRequest/method`.
+            public var method: Components.Schemas.FineTuneMethod?
             /// Creates a new `CreateFineTuningJobRequest`.
             ///
             /// - Parameters:
@@ -8792,6 +9748,7 @@ public enum Components {
             ///   - validation_file: The ID of an uploaded file that contains validation data.
             ///   - integrations: A list of integrations to enable for your fine-tuning job.
             ///   - seed: The seed controls the reproducibility of the job. Passing in the same seed and job parameters should produce the same results, but may differ in rare cases.
+            ///   - method:
             public init(
                 model: Components.Schemas.CreateFineTuningJobRequest.modelPayload,
                 training_file: Swift.String,
@@ -8799,7 +9756,8 @@ public enum Components {
                 suffix: Swift.String? = nil,
                 validation_file: Swift.String? = nil,
                 integrations: Components.Schemas.CreateFineTuningJobRequest.integrationsPayload? = nil,
-                seed: Swift.Int? = nil
+                seed: Swift.Int? = nil,
+                method: Components.Schemas.FineTuneMethod? = nil
             ) {
                 self.model = model
                 self.training_file = training_file
@@ -8808,6 +9766,7 @@ public enum Components {
                 self.validation_file = validation_file
                 self.integrations = integrations
                 self.seed = seed
+                self.method = method
             }
             public enum CodingKeys: String, CodingKey {
                 case model
@@ -8817,6 +9776,7 @@ public enum Components {
                 case validation_file
                 case integrations
                 case seed
+                case method
             }
         }
         /// - Remark: Generated from `#/components/schemas/CreateImageEditRequest`.
@@ -9034,7 +9994,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateImageRequest/style`.
             public var style: Components.Schemas.CreateImageRequest.stylePayload?
-            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateImageRequest/user`.
@@ -9049,7 +10009,7 @@ public enum Components {
             ///   - response_format: The format in which the generated images are returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes after the image has been generated.
             ///   - size: The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
             ///   - style: The style of the generated images. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images. This param is only supported for `dall-e-3`.
-            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+            ///   - user: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
             public init(
                 prompt: Swift.String,
                 model: Components.Schemas.CreateImageRequest.modelPayload? = nil,
@@ -9226,11 +10186,11 @@ public enum Components {
                         }
                     }
                 }
-                /// An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](/docs/models/overview).
+                /// An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](/docs/models).
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateMessageRequest/content/case2`.
                 public typealias Case2Payload = [Components.Schemas.CreateMessageRequest.contentPayload.Case2PayloadPayload]
-                /// An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](/docs/models/overview).
+                /// An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](/docs/models).
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateMessageRequest/content/case2`.
                 case case2(Components.Schemas.CreateMessageRequest.contentPayload.Case2Payload)
@@ -9339,23 +10299,20 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateMessageRequest/attachments`.
             public var attachments: Components.Schemas.CreateMessageRequest.attachmentsPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/CreateMessageRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `CreateMessageRequest`.
             ///
             /// - Parameters:
             ///   - role: The role of the entity that is creating the message. Allowed values include:
             ///   - content:
             ///   - attachments: A list of files attached to the message, and the tools they should be added to.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 role: Components.Schemas.CreateMessageRequest.rolePayload,
                 content: Components.Schemas.CreateMessageRequest.contentPayload,
                 attachments: Components.Schemas.CreateMessageRequest.attachmentsPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.role = role
                 self.content = content
@@ -9383,7 +10340,7 @@ public enum Components {
                     forKey: .attachments
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -9591,7 +10548,7 @@ public enum Components {
             public var input: Components.Schemas.CreateModerationRequest.inputPayload
             /// The content moderation model you would like to use. Learn more in
             /// [the moderation guide](/docs/guides/moderation), and learn about
-            /// available models [here](/docs/models/moderation).
+            /// available models [here](/docs/models#moderation).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateModerationRequest/model`.
@@ -9650,7 +10607,7 @@ public enum Components {
             }
             /// The content moderation model you would like to use. Learn more in
             /// [the moderation guide](/docs/guides/moderation), and learn about
-            /// available models [here](/docs/models/moderation).
+            /// available models [here](/docs/models#moderation).
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateModerationRequest/model`.
@@ -9713,11 +10670,11 @@ public enum Components {
                     /// Content that includes instructions or advice that facilitate the planning or execution of wrongdoing, or that gives advice or instruction on how to commit illicit acts. For example, "how to shoplift" would fit this category.
                     ///
                     /// - Remark: Generated from `#/components/schemas/CreateModerationResponse/resultsPayload/categories/illicit`.
-                    public var illicit: Swift.Bool
+                    public var illicit: Swift.Bool?
                     /// Content that includes instructions or advice that facilitate the planning or execution of wrongdoing that also includes violence, or that gives advice or instruction on the procurement of any weapon.
                     ///
                     /// - Remark: Generated from `#/components/schemas/CreateModerationResponse/resultsPayload/categories/illicit/violent`.
-                    public var illicit_sol_violent: Swift.Bool
+                    public var illicit_sol_violent: Swift.Bool?
                     /// Content that promotes, encourages, or depicts acts of self-harm, such as suicide, cutting, and eating disorders.
                     ///
                     /// - Remark: Generated from `#/components/schemas/CreateModerationResponse/resultsPayload/categories/self-harm`.
@@ -9767,8 +10724,8 @@ public enum Components {
                         hate_sol_threatening: Swift.Bool,
                         harassment: Swift.Bool,
                         harassment_sol_threatening: Swift.Bool,
-                        illicit: Swift.Bool,
-                        illicit_sol_violent: Swift.Bool,
+                        illicit: Swift.Bool? = nil,
+                        illicit_sol_violent: Swift.Bool? = nil,
                         self_hyphen_harm: Swift.Bool,
                         self_hyphen_harm_sol_intent: Swift.Bool,
                         self_hyphen_harm_sol_instructions: Swift.Bool,
@@ -10230,33 +11187,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/CreateRunRequest/model/value1`.
                 public var value1: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/CreateRunRequest/model/value2`.
-                @frozen public enum Value2Payload: String, Codable, Hashable, Sendable {
-                    case gpt_hyphen_4o = "gpt-4o"
-                    case gpt_hyphen_4o_hyphen_2024_hyphen_08_hyphen_06 = "gpt-4o-2024-08-06"
-                    case gpt_hyphen_4o_hyphen_2024_hyphen_05_hyphen_13 = "gpt-4o-2024-05-13"
-                    case gpt_hyphen_4o_hyphen_mini = "gpt-4o-mini"
-                    case gpt_hyphen_4o_hyphen_mini_hyphen_2024_hyphen_07_hyphen_18 = "gpt-4o-mini-2024-07-18"
-                    case gpt_hyphen_4_hyphen_turbo = "gpt-4-turbo"
-                    case gpt_hyphen_4_hyphen_turbo_hyphen_2024_hyphen_04_hyphen_09 = "gpt-4-turbo-2024-04-09"
-                    case gpt_hyphen_4_hyphen_0125_hyphen_preview = "gpt-4-0125-preview"
-                    case gpt_hyphen_4_hyphen_turbo_hyphen_preview = "gpt-4-turbo-preview"
-                    case gpt_hyphen_4_hyphen_1106_hyphen_preview = "gpt-4-1106-preview"
-                    case gpt_hyphen_4_hyphen_vision_hyphen_preview = "gpt-4-vision-preview"
-                    case gpt_hyphen_4 = "gpt-4"
-                    case gpt_hyphen_4_hyphen_0314 = "gpt-4-0314"
-                    case gpt_hyphen_4_hyphen_0613 = "gpt-4-0613"
-                    case gpt_hyphen_4_hyphen_32k = "gpt-4-32k"
-                    case gpt_hyphen_4_hyphen_32k_hyphen_0314 = "gpt-4-32k-0314"
-                    case gpt_hyphen_4_hyphen_32k_hyphen_0613 = "gpt-4-32k-0613"
-                    case gpt_hyphen_3_period_5_hyphen_turbo = "gpt-3.5-turbo"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_16k = "gpt-3.5-turbo-16k"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_0613 = "gpt-3.5-turbo-0613"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_1106 = "gpt-3.5-turbo-1106"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_0125 = "gpt-3.5-turbo-0125"
-                    case gpt_hyphen_3_period_5_hyphen_turbo_hyphen_16k_hyphen_0613 = "gpt-3.5-turbo-16k-0613"
-                }
-                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/model/value2`.
-                public var value2: Components.Schemas.CreateRunRequest.modelPayload.Value2Payload?
+                public var value2: Components.Schemas.AssistantSupportedModels?
                 /// Creates a new `modelPayload`.
                 ///
                 /// - Parameters:
@@ -10264,7 +11195,7 @@ public enum Components {
                 ///   - value2:
                 public init(
                     value1: Swift.String? = nil,
-                    value2: Components.Schemas.CreateRunRequest.modelPayload.Value2Payload? = nil
+                    value2: Components.Schemas.AssistantSupportedModels? = nil
                 ) {
                     self.value1 = value1
                     self.value2 = value2
@@ -10302,6 +11233,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/model`.
             public var model: Components.Schemas.CreateRunRequest.modelPayload?
+            /// - Remark: Generated from `#/components/schemas/CreateRunRequest/reasoning_effort`.
+            public var reasoning_effort: Components.Schemas.ReasoningEffort?
             /// Overrides the [instructions](/docs/api-reference/assistants/createAssistant) of the assistant. This is useful for modifying the behavior on a per-run basis.
             ///
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/instructions`.
@@ -10367,11 +11300,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/tools`.
             public var tools: Components.Schemas.CreateRunRequest.toolsPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///
             ///
@@ -10400,23 +11330,105 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/max_completion_tokens`.
             public var max_completion_tokens: Swift.Int?
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/truncation_strategy`.
-            public var truncation_strategy: Components.Schemas.TruncationObject?
+            public struct truncation_strategyPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/truncation_strategy/value1`.
+                public var value1: Components.Schemas.TruncationObject
+                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/truncation_strategy/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `truncation_strategyPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.TruncationObject,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateRunRequest/truncation_strategy`.
+            public var truncation_strategy: Components.Schemas.CreateRunRequest.truncation_strategyPayload?
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/tool_choice`.
-            public var tool_choice: Components.Schemas.AssistantsApiToolChoiceOption?
+            public struct tool_choicePayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/tool_choice/value1`.
+                public var value1: Components.Schemas.AssistantsApiToolChoiceOption
+                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/tool_choice/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `tool_choicePayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiToolChoiceOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateRunRequest/tool_choice`.
+            public var tool_choice: Components.Schemas.CreateRunRequest.tool_choicePayload?
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/parallel_tool_calls`.
             public var parallel_tool_calls: Components.Schemas.ParallelToolCalls?
             /// - Remark: Generated from `#/components/schemas/CreateRunRequest/response_format`.
-            public var response_format: Components.Schemas.AssistantsApiResponseFormatOption?
+            public struct response_formatPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/response_format/value1`.
+                public var value1: Components.Schemas.AssistantsApiResponseFormatOption
+                /// - Remark: Generated from `#/components/schemas/CreateRunRequest/response_format/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `response_formatPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiResponseFormatOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateRunRequest/response_format`.
+            public var response_format: Components.Schemas.CreateRunRequest.response_formatPayload?
             /// Creates a new `CreateRunRequest`.
             ///
             /// - Parameters:
             ///   - assistant_id: The ID of the [assistant](/docs/api-reference/assistants) to use to execute this run.
             ///   - model: The ID of the [Model](/docs/api-reference/models) to be used to execute this run. If a value is provided here, it will override the model associated with the assistant. If not, the model associated with the assistant will be used.
+            ///   - reasoning_effort:
             ///   - instructions: Overrides the [instructions](/docs/api-reference/assistants/createAssistant) of the assistant. This is useful for modifying the behavior on a per-run basis.
             ///   - additional_instructions: Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.
             ///   - additional_messages: Adds additional messages to the thread before creating the run.
             ///   - tools: Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
             ///   - stream: If `true`, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a terminal state with a `data: [DONE]` message.
@@ -10429,23 +11441,25 @@ public enum Components {
             public init(
                 assistant_id: Swift.String,
                 model: Components.Schemas.CreateRunRequest.modelPayload? = nil,
+                reasoning_effort: Components.Schemas.ReasoningEffort? = nil,
                 instructions: Swift.String? = nil,
                 additional_instructions: Swift.String? = nil,
                 additional_messages: [Components.Schemas.CreateMessageRequest]? = nil,
                 tools: Components.Schemas.CreateRunRequest.toolsPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 temperature: Swift.Double? = nil,
                 top_p: Swift.Double? = nil,
                 stream: Swift.Bool? = nil,
                 max_prompt_tokens: Swift.Int? = nil,
                 max_completion_tokens: Swift.Int? = nil,
-                truncation_strategy: Components.Schemas.TruncationObject? = nil,
-                tool_choice: Components.Schemas.AssistantsApiToolChoiceOption? = nil,
+                truncation_strategy: Components.Schemas.CreateRunRequest.truncation_strategyPayload? = nil,
+                tool_choice: Components.Schemas.CreateRunRequest.tool_choicePayload? = nil,
                 parallel_tool_calls: Components.Schemas.ParallelToolCalls? = nil,
-                response_format: Components.Schemas.AssistantsApiResponseFormatOption? = nil
+                response_format: Components.Schemas.CreateRunRequest.response_formatPayload? = nil
             ) {
                 self.assistant_id = assistant_id
                 self.model = model
+                self.reasoning_effort = reasoning_effort
                 self.instructions = instructions
                 self.additional_instructions = additional_instructions
                 self.additional_messages = additional_messages
@@ -10464,6 +11478,7 @@ public enum Components {
             public enum CodingKeys: String, CodingKey {
                 case assistant_id
                 case model
+                case reasoning_effort
                 case instructions
                 case additional_instructions
                 case additional_messages
@@ -10489,6 +11504,10 @@ public enum Components {
                     Components.Schemas.CreateRunRequest.modelPayload.self,
                     forKey: .model
                 )
+                reasoning_effort = try container.decodeIfPresent(
+                    Components.Schemas.ReasoningEffort.self,
+                    forKey: .reasoning_effort
+                )
                 instructions = try container.decodeIfPresent(
                     Swift.String.self,
                     forKey: .instructions
@@ -10506,7 +11525,7 @@ public enum Components {
                     forKey: .tools
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 temperature = try container.decodeIfPresent(
@@ -10530,11 +11549,11 @@ public enum Components {
                     forKey: .max_completion_tokens
                 )
                 truncation_strategy = try container.decodeIfPresent(
-                    Components.Schemas.TruncationObject.self,
+                    Components.Schemas.CreateRunRequest.truncation_strategyPayload.self,
                     forKey: .truncation_strategy
                 )
                 tool_choice = try container.decodeIfPresent(
-                    Components.Schemas.AssistantsApiToolChoiceOption.self,
+                    Components.Schemas.CreateRunRequest.tool_choicePayload.self,
                     forKey: .tool_choice
                 )
                 parallel_tool_calls = try container.decodeIfPresent(
@@ -10542,12 +11561,13 @@ public enum Components {
                     forKey: .parallel_tool_calls
                 )
                 response_format = try container.decodeIfPresent(
-                    Components.Schemas.AssistantsApiResponseFormatOption.self,
+                    Components.Schemas.CreateRunRequest.response_formatPayload.self,
                     forKey: .response_format
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
                     "assistant_id",
                     "model",
+                    "reasoning_effort",
                     "instructions",
                     "additional_instructions",
                     "additional_messages",
@@ -10567,7 +11587,7 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/CreateSpeechRequest`.
         public struct CreateSpeechRequest: Codable, Hashable, Sendable {
-            /// One of the available [TTS models](/docs/models/tts): `tts-1` or `tts-1-hd`
+            /// One of the available [TTS models](/docs/models#tts): `tts-1` or `tts-1-hd`
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateSpeechRequest/model`.
@@ -10622,7 +11642,7 @@ public enum Components {
                     ])
                 }
             }
-            /// One of the available [TTS models](/docs/models/tts): `tts-1` or `tts-1-hd`
+            /// One of the available [TTS models](/docs/models#tts): `tts-1` or `tts-1-hd`
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CreateSpeechRequest/model`.
@@ -10631,18 +11651,21 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateSpeechRequest/input`.
             public var input: Swift.String
-            /// The voice to use when generating the audio. Supported voices are `alloy`, `echo`, `fable`, `onyx`, `nova`, and `shimmer`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech/voice-options).
+            /// The voice to use when generating the audio. Supported voices are `alloy`, `ash`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech#voice-options).
             ///
             /// - Remark: Generated from `#/components/schemas/CreateSpeechRequest/voice`.
             @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
                 case alloy = "alloy"
+                case ash = "ash"
+                case coral = "coral"
                 case echo = "echo"
                 case fable = "fable"
                 case onyx = "onyx"
                 case nova = "nova"
+                case sage = "sage"
                 case shimmer = "shimmer"
             }
-            /// The voice to use when generating the audio. Supported voices are `alloy`, `echo`, `fable`, `onyx`, `nova`, and `shimmer`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech/voice-options).
+            /// The voice to use when generating the audio. Supported voices are `alloy`, `ash`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech#voice-options).
             ///
             /// - Remark: Generated from `#/components/schemas/CreateSpeechRequest/voice`.
             public var voice: Components.Schemas.CreateSpeechRequest.voicePayload
@@ -10668,9 +11691,9 @@ public enum Components {
             /// Creates a new `CreateSpeechRequest`.
             ///
             /// - Parameters:
-            ///   - model: One of the available [TTS models](/docs/models/tts): `tts-1` or `tts-1-hd`
+            ///   - model: One of the available [TTS models](/docs/models#tts): `tts-1` or `tts-1-hd`
             ///   - input: The text to generate audio for. The maximum length is 4096 characters.
-            ///   - voice: The voice to use when generating the audio. Supported voices are `alloy`, `echo`, `fable`, `onyx`, `nova`, and `shimmer`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech/voice-options).
+            ///   - voice: The voice to use when generating the audio. Supported voices are `alloy`, `ash`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech#voice-options).
             ///   - response_format: The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`.
             ///   - speed: The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is the default.
             public init(
@@ -10741,6 +11764,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/model/value2`.
                 @frozen public enum Value2Payload: String, Codable, Hashable, Sendable {
                     case gpt_hyphen_4o = "gpt-4o"
+                    case gpt_hyphen_4o_hyphen_2024_hyphen_11_hyphen_20 = "gpt-4o-2024-11-20"
                     case gpt_hyphen_4o_hyphen_2024_hyphen_08_hyphen_06 = "gpt-4o-2024-08-06"
                     case gpt_hyphen_4o_hyphen_2024_hyphen_05_hyphen_13 = "gpt-4o-2024-05-13"
                     case gpt_hyphen_4o_hyphen_mini = "gpt-4o-mini"
@@ -10935,11 +11959,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/tool_resources`.
             public var tool_resources: Components.Schemas.CreateThreadAndRunRequest.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///
             ///
@@ -10968,13 +11989,94 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/max_completion_tokens`.
             public var max_completion_tokens: Swift.Int?
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/truncation_strategy`.
-            public var truncation_strategy: Components.Schemas.TruncationObject?
+            public struct truncation_strategyPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/truncation_strategy/value1`.
+                public var value1: Components.Schemas.TruncationObject
+                /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/truncation_strategy/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `truncation_strategyPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.TruncationObject,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/truncation_strategy`.
+            public var truncation_strategy: Components.Schemas.CreateThreadAndRunRequest.truncation_strategyPayload?
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/tool_choice`.
-            public var tool_choice: Components.Schemas.AssistantsApiToolChoiceOption?
+            public struct tool_choicePayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/tool_choice/value1`.
+                public var value1: Components.Schemas.AssistantsApiToolChoiceOption
+                /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/tool_choice/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `tool_choicePayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiToolChoiceOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/tool_choice`.
+            public var tool_choice: Components.Schemas.CreateThreadAndRunRequest.tool_choicePayload?
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/parallel_tool_calls`.
             public var parallel_tool_calls: Components.Schemas.ParallelToolCalls?
             /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/response_format`.
-            public var response_format: Components.Schemas.AssistantsApiResponseFormatOption?
+            public struct response_formatPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/response_format/value1`.
+                public var value1: Components.Schemas.AssistantsApiResponseFormatOption
+                /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/response_format/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `response_formatPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiResponseFormatOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/CreateThreadAndRunRequest/response_format`.
+            public var response_format: Components.Schemas.CreateThreadAndRunRequest.response_formatPayload?
             /// Creates a new `CreateThreadAndRunRequest`.
             ///
             /// - Parameters:
@@ -10984,7 +12086,7 @@ public enum Components {
             ///   - instructions: Override the default system message of the assistant. This is useful for modifying the behavior on a per-run basis.
             ///   - tools: Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
             ///   - tool_resources: A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
             ///   - stream: If `true`, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a terminal state with a `data: [DONE]` message.
@@ -11001,16 +12103,16 @@ public enum Components {
                 instructions: Swift.String? = nil,
                 tools: Components.Schemas.CreateThreadAndRunRequest.toolsPayload? = nil,
                 tool_resources: Components.Schemas.CreateThreadAndRunRequest.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 temperature: Swift.Double? = nil,
                 top_p: Swift.Double? = nil,
                 stream: Swift.Bool? = nil,
                 max_prompt_tokens: Swift.Int? = nil,
                 max_completion_tokens: Swift.Int? = nil,
-                truncation_strategy: Components.Schemas.TruncationObject? = nil,
-                tool_choice: Components.Schemas.AssistantsApiToolChoiceOption? = nil,
+                truncation_strategy: Components.Schemas.CreateThreadAndRunRequest.truncation_strategyPayload? = nil,
+                tool_choice: Components.Schemas.CreateThreadAndRunRequest.tool_choicePayload? = nil,
                 parallel_tool_calls: Components.Schemas.ParallelToolCalls? = nil,
-                response_format: Components.Schemas.AssistantsApiResponseFormatOption? = nil
+                response_format: Components.Schemas.CreateThreadAndRunRequest.response_formatPayload? = nil
             ) {
                 self.assistant_id = assistant_id
                 self.thread = thread
@@ -11074,7 +12176,7 @@ public enum Components {
                     forKey: .tool_resources
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 temperature = try container.decodeIfPresent(
@@ -11098,11 +12200,11 @@ public enum Components {
                     forKey: .max_completion_tokens
                 )
                 truncation_strategy = try container.decodeIfPresent(
-                    Components.Schemas.TruncationObject.self,
+                    Components.Schemas.CreateThreadAndRunRequest.truncation_strategyPayload.self,
                     forKey: .truncation_strategy
                 )
                 tool_choice = try container.decodeIfPresent(
-                    Components.Schemas.AssistantsApiToolChoiceOption.self,
+                    Components.Schemas.CreateThreadAndRunRequest.tool_choicePayload.self,
                     forKey: .tool_choice
                 )
                 parallel_tool_calls = try container.decodeIfPresent(
@@ -11110,7 +12212,7 @@ public enum Components {
                     forKey: .parallel_tool_calls
                 )
                 response_format = try container.decodeIfPresent(
-                    Components.Schemas.AssistantsApiResponseFormatOption.self,
+                    Components.Schemas.CreateThreadAndRunRequest.response_formatPayload.self,
                     forKey: .response_format
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -11133,6 +12235,10 @@ public enum Components {
                 ])
             }
         }
+        /// Options to create a new thread. If no thread is provided when running a 
+        /// request, an empty thread will be created.
+        ///
+        ///
         /// - Remark: Generated from `#/components/schemas/CreateThreadRequest`.
         public struct CreateThreadRequest: Codable, Hashable, Sendable {
             /// A list of [messages](/docs/api-reference/messages) to start the thread with.
@@ -11233,21 +12339,18 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateThreadRequest/tool_resources`.
             public var tool_resources: Components.Schemas.CreateThreadRequest.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/CreateThreadRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `CreateThreadRequest`.
             ///
             /// - Parameters:
             ///   - messages: A list of [messages](/docs/api-reference/messages) to start the thread with.
             ///   - tool_resources: A set of resources that are made available to the assistant's tools in this thread. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 messages: [Components.Schemas.CreateMessageRequest]? = nil,
                 tool_resources: Components.Schemas.CreateThreadRequest.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.messages = messages
                 self.tool_resources = tool_resources
@@ -11269,7 +12372,7 @@ public enum Components {
                     forKey: .tool_resources
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -11780,11 +12883,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CreateVectorStoreRequest/chunking_strategy`.
             public var chunking_strategy: Components.Schemas.CreateVectorStoreRequest.chunking_strategyPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/CreateVectorStoreRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `CreateVectorStoreRequest`.
             ///
             /// - Parameters:
@@ -11792,13 +12892,13 @@ public enum Components {
             ///   - name: The name of the vector store.
             ///   - expires_after:
             ///   - chunking_strategy: The chunking strategy used to chunk the file(s). If not set, will use the `auto` strategy. Only applicable if `file_ids` is non-empty.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 file_ids: [Swift.String]? = nil,
                 name: Swift.String? = nil,
                 expires_after: Components.Schemas.VectorStoreExpirationAfter? = nil,
                 chunking_strategy: Components.Schemas.CreateVectorStoreRequest.chunking_strategyPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.file_ids = file_ids
                 self.name = name
@@ -11832,7 +12932,7 @@ public enum Components {
                     forKey: .chunking_strategy
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -12207,7 +13307,7 @@ public enum Components {
                 case _type = "type"
             }
         }
-        /// Occurs when an [error](/docs/guides/error-codes/api-errors) occurs. This can happen due to an internal server error or a timeout.
+        /// Occurs when an [error](/docs/guides/error-codes#api-errors) occurs. This can happen due to an internal server error or a timeout.
         ///
         /// - Remark: Generated from `#/components/schemas/ErrorEvent`.
         public struct ErrorEvent: Codable, Hashable, Sendable {
@@ -12253,7 +13353,7 @@ public enum Components {
         }
         /// The ranking options for the file search. If not specified, the file search tool will use the `auto` ranker and a score_threshold of 0.
         ///
-        /// See the [file search tool documentation](/docs/assistants/tools/file-search/customizing-file-search-settings) for more information.
+        /// See the [file search tool documentation](/docs/assistants/tools/file-search#customizing-file-search-settings) for more information.
         ///
         ///
         /// - Remark: Generated from `#/components/schemas/FileSearchRankingOptions`.
@@ -12339,6 +13439,796 @@ public enum Components {
             public func encode(to encoder: any Encoder) throws {
                 try value1.encode(to: encoder)
                 try value2.encode(to: encoder)
+            }
+        }
+        /// The per-line training example of a fine-tuning input file for chat models using the supervised method.
+        ///
+        /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput`.
+        public struct FineTuneChatRequestInput: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messagesPayload`.
+            @frozen public enum messagesPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messagesPayload/case1`.
+                case ChatCompletionRequestSystemMessage(Components.Schemas.ChatCompletionRequestSystemMessage)
+                /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messagesPayload/case2`.
+                case ChatCompletionRequestUserMessage(Components.Schemas.ChatCompletionRequestUserMessage)
+                /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messagesPayload/case3`.
+                case FineTuneChatCompletionRequestAssistantMessage(Components.Schemas.FineTuneChatCompletionRequestAssistantMessage)
+                /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messagesPayload/case4`.
+                case ChatCompletionRequestToolMessage(Components.Schemas.ChatCompletionRequestToolMessage)
+                /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messagesPayload/case5`.
+                case ChatCompletionRequestFunctionMessage(Components.Schemas.ChatCompletionRequestFunctionMessage)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .ChatCompletionRequestSystemMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .ChatCompletionRequestUserMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .FineTuneChatCompletionRequestAssistantMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .ChatCompletionRequestToolMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .ChatCompletionRequestFunctionMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .ChatCompletionRequestSystemMessage(value):
+                        try value.encode(to: encoder)
+                    case let .ChatCompletionRequestUserMessage(value):
+                        try value.encode(to: encoder)
+                    case let .FineTuneChatCompletionRequestAssistantMessage(value):
+                        try value.encode(to: encoder)
+                    case let .ChatCompletionRequestToolMessage(value):
+                        try value.encode(to: encoder)
+                    case let .ChatCompletionRequestFunctionMessage(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messages`.
+            public typealias messagesPayload = [Components.Schemas.FineTuneChatRequestInput.messagesPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/messages`.
+            public var messages: Components.Schemas.FineTuneChatRequestInput.messagesPayload?
+            /// A list of tools the model may generate JSON inputs for.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/tools`.
+            public var tools: [Components.Schemas.ChatCompletionTool]?
+            /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/parallel_tool_calls`.
+            public var parallel_tool_calls: Components.Schemas.ParallelToolCalls?
+            /// A list of functions the model may generate JSON inputs for.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneChatRequestInput/functions`.
+            @available(*, deprecated)
+            public var functions: [Components.Schemas.ChatCompletionFunctions]?
+            /// Creates a new `FineTuneChatRequestInput`.
+            ///
+            /// - Parameters:
+            ///   - messages:
+            ///   - tools: A list of tools the model may generate JSON inputs for.
+            ///   - parallel_tool_calls:
+            ///   - functions: A list of functions the model may generate JSON inputs for.
+            public init(
+                messages: Components.Schemas.FineTuneChatRequestInput.messagesPayload? = nil,
+                tools: [Components.Schemas.ChatCompletionTool]? = nil,
+                parallel_tool_calls: Components.Schemas.ParallelToolCalls? = nil,
+                functions: [Components.Schemas.ChatCompletionFunctions]? = nil
+            ) {
+                self.messages = messages
+                self.tools = tools
+                self.parallel_tool_calls = parallel_tool_calls
+                self.functions = functions
+            }
+            public enum CodingKeys: String, CodingKey {
+                case messages
+                case tools
+                case parallel_tool_calls
+                case functions
+            }
+        }
+        /// The per-line training example of a fine-tuning input file for completions models
+        ///
+        /// - Remark: Generated from `#/components/schemas/FineTuneCompletionRequestInput`.
+        public struct FineTuneCompletionRequestInput: Codable, Hashable, Sendable {
+            /// The input prompt for this training example.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneCompletionRequestInput/prompt`.
+            public var prompt: Swift.String?
+            /// The desired completion for this training example.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneCompletionRequestInput/completion`.
+            public var completion: Swift.String?
+            /// Creates a new `FineTuneCompletionRequestInput`.
+            ///
+            /// - Parameters:
+            ///   - prompt: The input prompt for this training example.
+            ///   - completion: The desired completion for this training example.
+            public init(
+                prompt: Swift.String? = nil,
+                completion: Swift.String? = nil
+            ) {
+                self.prompt = prompt
+                self.completion = completion
+            }
+            public enum CodingKeys: String, CodingKey {
+                case prompt
+                case completion
+            }
+        }
+        /// Configuration for the DPO fine-tuning method.
+        ///
+        /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod`.
+        public struct FineTuneDPOMethod: Codable, Hashable, Sendable {
+            /// The hyperparameters used for the fine-tuning job.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters`.
+            public struct hyperparametersPayload: Codable, Hashable, Sendable {
+                /// The beta value for the DPO method. A higher beta value will increase the weight of the penalty between the policy and reference model.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/beta`.
+                @frozen public enum betaPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/beta/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/beta/case1`.
+                    case case1(Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.betaPayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/beta/case2`.
+                    case case2(Swift.Double)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// The beta value for the DPO method. A higher beta value will increase the weight of the penalty between the policy and reference model.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/beta`.
+                public var beta: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.betaPayload?
+                /// Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/batch_size`.
+                @frozen public enum batch_sizePayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/batch_size/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/batch_size/case1`.
+                    case case1(Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.batch_sizePayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/batch_size/case2`.
+                    case case2(Swift.Int)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/batch_size`.
+                public var batch_size: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.batch_sizePayload?
+                /// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/learning_rate_multiplier`.
+                @frozen public enum learning_rate_multiplierPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/learning_rate_multiplier/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/learning_rate_multiplier/case1`.
+                    case case1(Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.learning_rate_multiplierPayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/learning_rate_multiplier/case2`.
+                    case case2(Swift.Double)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/learning_rate_multiplier`.
+                public var learning_rate_multiplier: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.learning_rate_multiplierPayload?
+                /// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/n_epochs`.
+                @frozen public enum n_epochsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/n_epochs/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/n_epochs/case1`.
+                    case case1(Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.n_epochsPayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/n_epochs/case2`.
+                    case case2(Swift.Int)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters/n_epochs`.
+                public var n_epochs: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.n_epochsPayload?
+                /// Creates a new `hyperparametersPayload`.
+                ///
+                /// - Parameters:
+                ///   - beta: The beta value for the DPO method. A higher beta value will increase the weight of the penalty between the policy and reference model.
+                ///   - batch_size: Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
+                ///   - learning_rate_multiplier: Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
+                ///   - n_epochs: The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
+                public init(
+                    beta: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.betaPayload? = nil,
+                    batch_size: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.batch_sizePayload? = nil,
+                    learning_rate_multiplier: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.learning_rate_multiplierPayload? = nil,
+                    n_epochs: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload.n_epochsPayload? = nil
+                ) {
+                    self.beta = beta
+                    self.batch_size = batch_size
+                    self.learning_rate_multiplier = learning_rate_multiplier
+                    self.n_epochs = n_epochs
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case beta
+                    case batch_size
+                    case learning_rate_multiplier
+                    case n_epochs
+                }
+            }
+            /// The hyperparameters used for the fine-tuning job.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneDPOMethod/hyperparameters`.
+            public var hyperparameters: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload?
+            /// Creates a new `FineTuneDPOMethod`.
+            ///
+            /// - Parameters:
+            ///   - hyperparameters: The hyperparameters used for the fine-tuning job.
+            public init(hyperparameters: Components.Schemas.FineTuneDPOMethod.hyperparametersPayload? = nil) {
+                self.hyperparameters = hyperparameters
+            }
+            public enum CodingKeys: String, CodingKey {
+                case hyperparameters
+            }
+        }
+        /// The method used for fine-tuning.
+        ///
+        /// - Remark: Generated from `#/components/schemas/FineTuneMethod`.
+        public struct FineTuneMethod: Codable, Hashable, Sendable {
+            /// The type of method. Is either `supervised` or `dpo`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneMethod/type`.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case supervised = "supervised"
+                case dpo = "dpo"
+            }
+            /// The type of method. Is either `supervised` or `dpo`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneMethod/type`.
+            public var _type: Components.Schemas.FineTuneMethod._typePayload?
+            /// - Remark: Generated from `#/components/schemas/FineTuneMethod/supervised`.
+            public var supervised: Components.Schemas.FineTuneSupervisedMethod?
+            /// - Remark: Generated from `#/components/schemas/FineTuneMethod/dpo`.
+            public var dpo: Components.Schemas.FineTuneDPOMethod?
+            /// Creates a new `FineTuneMethod`.
+            ///
+            /// - Parameters:
+            ///   - _type: The type of method. Is either `supervised` or `dpo`.
+            ///   - supervised:
+            ///   - dpo:
+            public init(
+                _type: Components.Schemas.FineTuneMethod._typePayload? = nil,
+                supervised: Components.Schemas.FineTuneSupervisedMethod? = nil,
+                dpo: Components.Schemas.FineTuneDPOMethod? = nil
+            ) {
+                self._type = _type
+                self.supervised = supervised
+                self.dpo = dpo
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case supervised
+                case dpo
+            }
+        }
+        /// The per-line training example of a fine-tuning input file for chat models using the dpo method.
+        ///
+        /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput`.
+        public struct FineTunePreferenceRequestInput: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input`.
+            public struct inputPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messagesPayload`.
+                @frozen public enum messagesPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messagesPayload/case1`.
+                    case ChatCompletionRequestSystemMessage(Components.Schemas.ChatCompletionRequestSystemMessage)
+                    /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messagesPayload/case2`.
+                    case ChatCompletionRequestUserMessage(Components.Schemas.ChatCompletionRequestUserMessage)
+                    /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messagesPayload/case3`.
+                    case FineTuneChatCompletionRequestAssistantMessage(Components.Schemas.FineTuneChatCompletionRequestAssistantMessage)
+                    /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messagesPayload/case4`.
+                    case ChatCompletionRequestToolMessage(Components.Schemas.ChatCompletionRequestToolMessage)
+                    /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messagesPayload/case5`.
+                    case ChatCompletionRequestFunctionMessage(Components.Schemas.ChatCompletionRequestFunctionMessage)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .ChatCompletionRequestSystemMessage(try .init(from: decoder))
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .ChatCompletionRequestUserMessage(try .init(from: decoder))
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .FineTuneChatCompletionRequestAssistantMessage(try .init(from: decoder))
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .ChatCompletionRequestToolMessage(try .init(from: decoder))
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .ChatCompletionRequestFunctionMessage(try .init(from: decoder))
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .ChatCompletionRequestSystemMessage(value):
+                            try value.encode(to: encoder)
+                        case let .ChatCompletionRequestUserMessage(value):
+                            try value.encode(to: encoder)
+                        case let .FineTuneChatCompletionRequestAssistantMessage(value):
+                            try value.encode(to: encoder)
+                        case let .ChatCompletionRequestToolMessage(value):
+                            try value.encode(to: encoder)
+                        case let .ChatCompletionRequestFunctionMessage(value):
+                            try value.encode(to: encoder)
+                        }
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messages`.
+                public typealias messagesPayload = [Components.Schemas.FineTunePreferenceRequestInput.inputPayload.messagesPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/messages`.
+                public var messages: Components.Schemas.FineTunePreferenceRequestInput.inputPayload.messagesPayload?
+                /// A list of tools the model may generate JSON inputs for.
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/tools`.
+                public var tools: [Components.Schemas.ChatCompletionTool]?
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input/parallel_tool_calls`.
+                public var parallel_tool_calls: Components.Schemas.ParallelToolCalls?
+                /// Creates a new `inputPayload`.
+                ///
+                /// - Parameters:
+                ///   - messages:
+                ///   - tools: A list of tools the model may generate JSON inputs for.
+                ///   - parallel_tool_calls:
+                public init(
+                    messages: Components.Schemas.FineTunePreferenceRequestInput.inputPayload.messagesPayload? = nil,
+                    tools: [Components.Schemas.ChatCompletionTool]? = nil,
+                    parallel_tool_calls: Components.Schemas.ParallelToolCalls? = nil
+                ) {
+                    self.messages = messages
+                    self.tools = tools
+                    self.parallel_tool_calls = parallel_tool_calls
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case messages
+                    case tools
+                    case parallel_tool_calls
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/input`.
+            public var input: Components.Schemas.FineTunePreferenceRequestInput.inputPayload?
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/preferred_completionPayload`.
+            @frozen public enum preferred_completionPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/preferred_completionPayload/case1`.
+                case ChatCompletionRequestAssistantMessage(Components.Schemas.ChatCompletionRequestAssistantMessage)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .ChatCompletionRequestAssistantMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .ChatCompletionRequestAssistantMessage(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// The preferred completion message for the output.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/preferred_completion`.
+            public typealias preferred_completionPayload = [Components.Schemas.FineTunePreferenceRequestInput.preferred_completionPayloadPayload]
+            /// The preferred completion message for the output.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/preferred_completion`.
+            public var preferred_completion: Components.Schemas.FineTunePreferenceRequestInput.preferred_completionPayload?
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/non_preferred_completionPayload`.
+            @frozen public enum non_preferred_completionPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/non_preferred_completionPayload/case1`.
+                case ChatCompletionRequestAssistantMessage(Components.Schemas.ChatCompletionRequestAssistantMessage)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .ChatCompletionRequestAssistantMessage(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .ChatCompletionRequestAssistantMessage(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// The non-preferred completion message for the output.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/non_preferred_completion`.
+            public typealias non_preferred_completionPayload = [Components.Schemas.FineTunePreferenceRequestInput.non_preferred_completionPayloadPayload]
+            /// The non-preferred completion message for the output.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTunePreferenceRequestInput/non_preferred_completion`.
+            public var non_preferred_completion: Components.Schemas.FineTunePreferenceRequestInput.non_preferred_completionPayload?
+            /// Creates a new `FineTunePreferenceRequestInput`.
+            ///
+            /// - Parameters:
+            ///   - input:
+            ///   - preferred_completion: The preferred completion message for the output.
+            ///   - non_preferred_completion: The non-preferred completion message for the output.
+            public init(
+                input: Components.Schemas.FineTunePreferenceRequestInput.inputPayload? = nil,
+                preferred_completion: Components.Schemas.FineTunePreferenceRequestInput.preferred_completionPayload? = nil,
+                non_preferred_completion: Components.Schemas.FineTunePreferenceRequestInput.non_preferred_completionPayload? = nil
+            ) {
+                self.input = input
+                self.preferred_completion = preferred_completion
+                self.non_preferred_completion = non_preferred_completion
+            }
+            public enum CodingKeys: String, CodingKey {
+                case input
+                case preferred_completion
+                case non_preferred_completion
+            }
+        }
+        /// Configuration for the supervised fine-tuning method.
+        ///
+        /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod`.
+        public struct FineTuneSupervisedMethod: Codable, Hashable, Sendable {
+            /// The hyperparameters used for the fine-tuning job.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters`.
+            public struct hyperparametersPayload: Codable, Hashable, Sendable {
+                /// Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/batch_size`.
+                @frozen public enum batch_sizePayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/batch_size/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/batch_size/case1`.
+                    case case1(Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.batch_sizePayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/batch_size/case2`.
+                    case case2(Swift.Int)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/batch_size`.
+                public var batch_size: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.batch_sizePayload?
+                /// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/learning_rate_multiplier`.
+                @frozen public enum learning_rate_multiplierPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/learning_rate_multiplier/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/learning_rate_multiplier/case1`.
+                    case case1(Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.learning_rate_multiplierPayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/learning_rate_multiplier/case2`.
+                    case case2(Swift.Double)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/learning_rate_multiplier`.
+                public var learning_rate_multiplier: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.learning_rate_multiplierPayload?
+                /// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/n_epochs`.
+                @frozen public enum n_epochsPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/n_epochs/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/n_epochs/case1`.
+                    case case1(Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.n_epochsPayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/n_epochs/case2`.
+                    case case2(Swift.Int)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters/n_epochs`.
+                public var n_epochs: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.n_epochsPayload?
+                /// Creates a new `hyperparametersPayload`.
+                ///
+                /// - Parameters:
+                ///   - batch_size: Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
+                ///   - learning_rate_multiplier: Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
+                ///   - n_epochs: The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
+                public init(
+                    batch_size: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.batch_sizePayload? = nil,
+                    learning_rate_multiplier: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.learning_rate_multiplierPayload? = nil,
+                    n_epochs: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload.n_epochsPayload? = nil
+                ) {
+                    self.batch_size = batch_size
+                    self.learning_rate_multiplier = learning_rate_multiplier
+                    self.n_epochs = n_epochs
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case batch_size
+                    case learning_rate_multiplier
+                    case n_epochs
+                }
+            }
+            /// The hyperparameters used for the fine-tuning job.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuneSupervisedMethod/hyperparameters`.
+            public var hyperparameters: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload?
+            /// Creates a new `FineTuneSupervisedMethod`.
+            ///
+            /// - Parameters:
+            ///   - hyperparameters: The hyperparameters used for the fine-tuning job.
+            public init(hyperparameters: Components.Schemas.FineTuneSupervisedMethod.hyperparametersPayload? = nil) {
+                self.hyperparameters = hyperparameters
+            }
+            public enum CodingKeys: String, CodingKey {
+                case hyperparameters
             }
         }
         /// - Remark: Generated from `#/components/schemas/FineTuningIntegration`.
@@ -12493,12 +14383,111 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJob/finished_at`.
             public var finished_at: Swift.Int?
-            /// The hyperparameters used for the fine-tuning job. See the [fine-tuning guide](/docs/guides/fine-tuning) for more details.
+            /// The hyperparameters used for the fine-tuning job. This value will only be returned when running `supervised` jobs.
             ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters`.
             public struct hyperparametersPayload: Codable, Hashable, Sendable {
-                /// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
-                /// "auto" decides the optimal number of epochs based on the size of the dataset. If setting the number manually, we support any number between 1 and 50 epochs.
+                /// Number of examples in each batch. A larger batch size means that model parameters
+                /// are updated less frequently, but with lower variance.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/batch_size`.
+                @frozen public enum batch_sizePayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/batch_size/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/batch_size/case1`.
+                    case case1(Components.Schemas.FineTuningJob.hyperparametersPayload.batch_sizePayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/batch_size/case2`.
+                    case case2(Swift.Int)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// Number of examples in each batch. A larger batch size means that model parameters
+                /// are updated less frequently, but with lower variance.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/batch_size`.
+                public var batch_size: Components.Schemas.FineTuningJob.hyperparametersPayload.batch_sizePayload?
+                /// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
+                /// overfitting.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/learning_rate_multiplier`.
+                @frozen public enum learning_rate_multiplierPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/learning_rate_multiplier/case1`.
+                    @frozen public enum Case1Payload: String, Codable, Hashable, Sendable {
+                        case auto = "auto"
+                    }
+                    /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/learning_rate_multiplier/case1`.
+                    case case1(Components.Schemas.FineTuningJob.hyperparametersPayload.learning_rate_multiplierPayload.Case1Payload)
+                    /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/learning_rate_multiplier/case2`.
+                    case case2(Swift.Double)
+                    public init(from decoder: any Decoder) throws {
+                        var errors: [any Error] = []
+                        do {
+                            self = .case1(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        do {
+                            self = .case2(try decoder.decodeFromSingleValueContainer())
+                            return
+                        } catch {
+                            errors.append(error)
+                        }
+                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                            type: Self.self,
+                            codingPath: decoder.codingPath,
+                            errors: errors
+                        )
+                    }
+                    public func encode(to encoder: any Encoder) throws {
+                        switch self {
+                        case let .case1(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        case let .case2(value):
+                            try encoder.encodeToSingleValueContainer(value)
+                        }
+                    }
+                }
+                /// Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
+                /// overfitting.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/learning_rate_multiplier`.
+                public var learning_rate_multiplier: Components.Schemas.FineTuningJob.hyperparametersPayload.learning_rate_multiplierPayload?
+                /// The number of epochs to train the model for. An epoch refers to one full cycle
+                /// through the training dataset.
+                ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/n_epochs`.
                 @frozen public enum n_epochsPayload: Codable, Hashable, Sendable {
@@ -12539,23 +14528,34 @@ public enum Components {
                         }
                     }
                 }
-                /// The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
-                /// "auto" decides the optimal number of epochs based on the size of the dataset. If setting the number manually, we support any number between 1 and 50 epochs.
+                /// The number of epochs to train the model for. An epoch refers to one full cycle
+                /// through the training dataset.
+                ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters/n_epochs`.
-                public var n_epochs: Components.Schemas.FineTuningJob.hyperparametersPayload.n_epochsPayload
+                public var n_epochs: Components.Schemas.FineTuningJob.hyperparametersPayload.n_epochsPayload?
                 /// Creates a new `hyperparametersPayload`.
                 ///
                 /// - Parameters:
-                ///   - n_epochs: The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
-                public init(n_epochs: Components.Schemas.FineTuningJob.hyperparametersPayload.n_epochsPayload) {
+                ///   - batch_size: Number of examples in each batch. A larger batch size means that model parameters
+                ///   - learning_rate_multiplier: Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
+                ///   - n_epochs: The number of epochs to train the model for. An epoch refers to one full cycle
+                public init(
+                    batch_size: Components.Schemas.FineTuningJob.hyperparametersPayload.batch_sizePayload? = nil,
+                    learning_rate_multiplier: Components.Schemas.FineTuningJob.hyperparametersPayload.learning_rate_multiplierPayload? = nil,
+                    n_epochs: Components.Schemas.FineTuningJob.hyperparametersPayload.n_epochsPayload? = nil
+                ) {
+                    self.batch_size = batch_size
+                    self.learning_rate_multiplier = learning_rate_multiplier
                     self.n_epochs = n_epochs
                 }
                 public enum CodingKeys: String, CodingKey {
+                    case batch_size
+                    case learning_rate_multiplier
                     case n_epochs
                 }
             }
-            /// The hyperparameters used for the fine-tuning job. See the [fine-tuning guide](/docs/guides/fine-tuning) for more details.
+            /// The hyperparameters used for the fine-tuning job. This value will only be returned when running `supervised` jobs.
             ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJob/hyperparameters`.
             public var hyperparameters: Components.Schemas.FineTuningJob.hyperparametersPayload
@@ -12649,6 +14649,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJob/estimated_finish`.
             public var estimated_finish: Swift.Int?
+            /// - Remark: Generated from `#/components/schemas/FineTuningJob/method`.
+            public var method: Components.Schemas.FineTuneMethod?
             /// Creates a new `FineTuningJob`.
             ///
             /// - Parameters:
@@ -12657,7 +14659,7 @@ public enum Components {
             ///   - error: For fine-tuning jobs that have `failed`, this will contain more information on the cause of the failure.
             ///   - fine_tuned_model: The name of the fine-tuned model that is being created. The value will be null if the fine-tuning job is still running.
             ///   - finished_at: The Unix timestamp (in seconds) for when the fine-tuning job was finished. The value will be null if the fine-tuning job is still running.
-            ///   - hyperparameters: The hyperparameters used for the fine-tuning job. See the [fine-tuning guide](/docs/guides/fine-tuning) for more details.
+            ///   - hyperparameters: The hyperparameters used for the fine-tuning job. This value will only be returned when running `supervised` jobs.
             ///   - model: The base model that is being fine-tuned.
             ///   - object: The object type, which is always "fine_tuning.job".
             ///   - organization_id: The organization that owns the fine-tuning job.
@@ -12669,6 +14671,7 @@ public enum Components {
             ///   - integrations: A list of integrations to enable for this fine-tuning job.
             ///   - seed: The seed used for the fine-tuning job.
             ///   - estimated_finish: The Unix timestamp (in seconds) for when the fine-tuning job is estimated to finish. The value will be null if the fine-tuning job is not running.
+            ///   - method:
             public init(
                 id: Swift.String,
                 created_at: Swift.Int,
@@ -12686,7 +14689,8 @@ public enum Components {
                 validation_file: Swift.String? = nil,
                 integrations: Components.Schemas.FineTuningJob.integrationsPayload? = nil,
                 seed: Swift.Int,
-                estimated_finish: Swift.Int? = nil
+                estimated_finish: Swift.Int? = nil,
+                method: Components.Schemas.FineTuneMethod? = nil
             ) {
                 self.id = id
                 self.created_at = created_at
@@ -12705,6 +14709,7 @@ public enum Components {
                 self.integrations = integrations
                 self.seed = seed
                 self.estimated_finish = estimated_finish
+                self.method = method
             }
             public enum CodingKeys: String, CodingKey {
                 case id
@@ -12724,6 +14729,7 @@ public enum Components {
                 case integrations
                 case seed
                 case estimated_finish
+                case method
             }
         }
         /// The `fine_tuning.job.checkpoint` object represents a model checkpoint for a fine-tuning job that is ready to use.
@@ -12861,191 +14867,90 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent`.
         public struct FineTuningJobEvent: Codable, Hashable, Sendable {
+            /// The object type, which is always "fine_tuning.job.event".
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case fine_tuning_period_job_period_event = "fine_tuning.job.event"
+            }
+            /// The object type, which is always "fine_tuning.job.event".
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/object`.
+            public var object: Components.Schemas.FineTuningJobEvent.objectPayload
+            /// The object identifier.
+            ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/id`.
             public var id: Swift.String
+            /// The Unix timestamp (in seconds) for when the fine-tuning job was created.
+            ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/created_at`.
             public var created_at: Swift.Int
+            /// The log level of the event.
+            ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/level`.
             @frozen public enum levelPayload: String, Codable, Hashable, Sendable {
                 case info = "info"
                 case warn = "warn"
                 case error = "error"
             }
+            /// The log level of the event.
+            ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/level`.
             public var level: Components.Schemas.FineTuningJobEvent.levelPayload
+            /// The message of the event.
+            ///
             /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/message`.
             public var message: Swift.String
-            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/object`.
-            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
-                case fine_tuning_period_job_period_event = "fine_tuning.job.event"
+            /// The type of event.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/type`.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case message = "message"
+                case metrics = "metrics"
             }
-            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/object`.
-            public var object: Components.Schemas.FineTuningJobEvent.objectPayload
+            /// The type of event.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/type`.
+            public var _type: Components.Schemas.FineTuningJobEvent._typePayload?
+            /// The data associated with the event.
+            ///
+            /// - Remark: Generated from `#/components/schemas/FineTuningJobEvent/data`.
+            public var data: OpenAPIRuntime.OpenAPIObjectContainer?
             /// Creates a new `FineTuningJobEvent`.
             ///
             /// - Parameters:
-            ///   - id:
-            ///   - created_at:
-            ///   - level:
-            ///   - message:
-            ///   - object:
+            ///   - object: The object type, which is always "fine_tuning.job.event".
+            ///   - id: The object identifier.
+            ///   - created_at: The Unix timestamp (in seconds) for when the fine-tuning job was created.
+            ///   - level: The log level of the event.
+            ///   - message: The message of the event.
+            ///   - _type: The type of event.
+            ///   - data: The data associated with the event.
             public init(
+                object: Components.Schemas.FineTuningJobEvent.objectPayload,
                 id: Swift.String,
                 created_at: Swift.Int,
                 level: Components.Schemas.FineTuningJobEvent.levelPayload,
                 message: Swift.String,
-                object: Components.Schemas.FineTuningJobEvent.objectPayload
+                _type: Components.Schemas.FineTuningJobEvent._typePayload? = nil,
+                data: OpenAPIRuntime.OpenAPIObjectContainer? = nil
             ) {
+                self.object = object
                 self.id = id
                 self.created_at = created_at
                 self.level = level
                 self.message = message
-                self.object = object
+                self._type = _type
+                self.data = data
             }
             public enum CodingKeys: String, CodingKey {
+                case object
                 case id
                 case created_at
                 case level
                 case message
-                case object
-            }
-        }
-        /// The per-line training example of a fine-tuning input file for chat models
-        ///
-        /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput`.
-        public struct FinetuneChatRequestInput: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messagesPayload`.
-            @frozen public enum messagesPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messagesPayload/case1`.
-                case ChatCompletionRequestSystemMessage(Components.Schemas.ChatCompletionRequestSystemMessage)
-                /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messagesPayload/case2`.
-                case ChatCompletionRequestUserMessage(Components.Schemas.ChatCompletionRequestUserMessage)
-                /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messagesPayload/case3`.
-                case FineTuneChatCompletionRequestAssistantMessage(Components.Schemas.FineTuneChatCompletionRequestAssistantMessage)
-                /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messagesPayload/case4`.
-                case ChatCompletionRequestToolMessage(Components.Schemas.ChatCompletionRequestToolMessage)
-                /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messagesPayload/case5`.
-                case ChatCompletionRequestFunctionMessage(Components.Schemas.ChatCompletionRequestFunctionMessage)
-                public init(from decoder: any Decoder) throws {
-                    var errors: [any Error] = []
-                    do {
-                        self = .ChatCompletionRequestSystemMessage(try .init(from: decoder))
-                        return
-                    } catch {
-                        errors.append(error)
-                    }
-                    do {
-                        self = .ChatCompletionRequestUserMessage(try .init(from: decoder))
-                        return
-                    } catch {
-                        errors.append(error)
-                    }
-                    do {
-                        self = .FineTuneChatCompletionRequestAssistantMessage(try .init(from: decoder))
-                        return
-                    } catch {
-                        errors.append(error)
-                    }
-                    do {
-                        self = .ChatCompletionRequestToolMessage(try .init(from: decoder))
-                        return
-                    } catch {
-                        errors.append(error)
-                    }
-                    do {
-                        self = .ChatCompletionRequestFunctionMessage(try .init(from: decoder))
-                        return
-                    } catch {
-                        errors.append(error)
-                    }
-                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
-                        type: Self.self,
-                        codingPath: decoder.codingPath,
-                        errors: errors
-                    )
-                }
-                public func encode(to encoder: any Encoder) throws {
-                    switch self {
-                    case let .ChatCompletionRequestSystemMessage(value):
-                        try value.encode(to: encoder)
-                    case let .ChatCompletionRequestUserMessage(value):
-                        try value.encode(to: encoder)
-                    case let .FineTuneChatCompletionRequestAssistantMessage(value):
-                        try value.encode(to: encoder)
-                    case let .ChatCompletionRequestToolMessage(value):
-                        try value.encode(to: encoder)
-                    case let .ChatCompletionRequestFunctionMessage(value):
-                        try value.encode(to: encoder)
-                    }
-                }
-            }
-            /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messages`.
-            public typealias messagesPayload = [Components.Schemas.FinetuneChatRequestInput.messagesPayloadPayload]
-            /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/messages`.
-            public var messages: Components.Schemas.FinetuneChatRequestInput.messagesPayload?
-            /// A list of tools the model may generate JSON inputs for.
-            ///
-            /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/tools`.
-            public var tools: [Components.Schemas.ChatCompletionTool]?
-            /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/parallel_tool_calls`.
-            public var parallel_tool_calls: Components.Schemas.ParallelToolCalls?
-            /// A list of functions the model may generate JSON inputs for.
-            ///
-            /// - Remark: Generated from `#/components/schemas/FinetuneChatRequestInput/functions`.
-            @available(*, deprecated)
-            public var functions: [Components.Schemas.ChatCompletionFunctions]?
-            /// Creates a new `FinetuneChatRequestInput`.
-            ///
-            /// - Parameters:
-            ///   - messages:
-            ///   - tools: A list of tools the model may generate JSON inputs for.
-            ///   - parallel_tool_calls:
-            ///   - functions: A list of functions the model may generate JSON inputs for.
-            public init(
-                messages: Components.Schemas.FinetuneChatRequestInput.messagesPayload? = nil,
-                tools: [Components.Schemas.ChatCompletionTool]? = nil,
-                parallel_tool_calls: Components.Schemas.ParallelToolCalls? = nil,
-                functions: [Components.Schemas.ChatCompletionFunctions]? = nil
-            ) {
-                self.messages = messages
-                self.tools = tools
-                self.parallel_tool_calls = parallel_tool_calls
-                self.functions = functions
-            }
-            public enum CodingKeys: String, CodingKey {
-                case messages
-                case tools
-                case parallel_tool_calls
-                case functions
-            }
-        }
-        /// The per-line training example of a fine-tuning input file for completions models
-        ///
-        /// - Remark: Generated from `#/components/schemas/FinetuneCompletionRequestInput`.
-        public struct FinetuneCompletionRequestInput: Codable, Hashable, Sendable {
-            /// The input prompt for this training example.
-            ///
-            /// - Remark: Generated from `#/components/schemas/FinetuneCompletionRequestInput/prompt`.
-            public var prompt: Swift.String?
-            /// The desired completion for this training example.
-            ///
-            /// - Remark: Generated from `#/components/schemas/FinetuneCompletionRequestInput/completion`.
-            public var completion: Swift.String?
-            /// Creates a new `FinetuneCompletionRequestInput`.
-            ///
-            /// - Parameters:
-            ///   - prompt: The input prompt for this training example.
-            ///   - completion: The desired completion for this training example.
-            public init(
-                prompt: Swift.String? = nil,
-                completion: Swift.String? = nil
-            ) {
-                self.prompt = prompt
-                self.completion = completion
-            }
-            public enum CodingKeys: String, CodingKey {
-                case prompt
-                case completion
+                case _type = "type"
+                case data
             }
         }
         /// - Remark: Generated from `#/components/schemas/FunctionObject`.
@@ -13228,6 +15133,48 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Invite/accepted_at`.
             public var accepted_at: Swift.Int?
+            /// - Remark: Generated from `#/components/schemas/Invite/projectsPayload`.
+            public struct projectsPayloadPayload: Codable, Hashable, Sendable {
+                /// Project's public ID
+                ///
+                /// - Remark: Generated from `#/components/schemas/Invite/projectsPayload/id`.
+                public var id: Swift.String?
+                /// Project membership role
+                ///
+                /// - Remark: Generated from `#/components/schemas/Invite/projectsPayload/role`.
+                @frozen public enum rolePayload: String, Codable, Hashable, Sendable {
+                    case member = "member"
+                    case owner = "owner"
+                }
+                /// Project membership role
+                ///
+                /// - Remark: Generated from `#/components/schemas/Invite/projectsPayload/role`.
+                public var role: Components.Schemas.Invite.projectsPayloadPayload.rolePayload?
+                /// Creates a new `projectsPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - id: Project's public ID
+                ///   - role: Project membership role
+                public init(
+                    id: Swift.String? = nil,
+                    role: Components.Schemas.Invite.projectsPayloadPayload.rolePayload? = nil
+                ) {
+                    self.id = id
+                    self.role = role
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case id
+                    case role
+                }
+            }
+            /// The projects that were granted membership upon acceptance of the invite.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Invite/projects`.
+            public typealias projectsPayload = [Components.Schemas.Invite.projectsPayloadPayload]
+            /// The projects that were granted membership upon acceptance of the invite.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Invite/projects`.
+            public var projects: Components.Schemas.Invite.projectsPayload?
             /// Creates a new `Invite`.
             ///
             /// - Parameters:
@@ -13239,6 +15186,7 @@ public enum Components {
             ///   - invited_at: The Unix timestamp (in seconds) of when the invite was sent.
             ///   - expires_at: The Unix timestamp (in seconds) of when the invite expires.
             ///   - accepted_at: The Unix timestamp (in seconds) of when the invite was accepted.
+            ///   - projects: The projects that were granted membership upon acceptance of the invite.
             public init(
                 object: Components.Schemas.Invite.objectPayload,
                 id: Swift.String,
@@ -13247,7 +15195,8 @@ public enum Components {
                 status: Components.Schemas.Invite.statusPayload,
                 invited_at: Swift.Int,
                 expires_at: Swift.Int,
-                accepted_at: Swift.Int? = nil
+                accepted_at: Swift.Int? = nil,
+                projects: Components.Schemas.Invite.projectsPayload? = nil
             ) {
                 self.object = object
                 self.id = id
@@ -13257,6 +15206,7 @@ public enum Components {
                 self.invited_at = invited_at
                 self.expires_at = expires_at
                 self.accepted_at = accepted_at
+                self.projects = projects
             }
             public enum CodingKeys: String, CodingKey {
                 case object
@@ -13267,6 +15217,7 @@ public enum Components {
                 case invited_at
                 case expires_at
                 case accepted_at
+                case projects
             }
         }
         /// - Remark: Generated from `#/components/schemas/InviteDeleteResponse`.
@@ -13378,21 +15329,67 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/InviteRequest/role`.
             public var role: Components.Schemas.InviteRequest.rolePayload
+            /// - Remark: Generated from `#/components/schemas/InviteRequest/projectsPayload`.
+            public struct projectsPayloadPayload: Codable, Hashable, Sendable {
+                /// Project's public ID
+                ///
+                /// - Remark: Generated from `#/components/schemas/InviteRequest/projectsPayload/id`.
+                public var id: Swift.String
+                /// Project membership role
+                ///
+                /// - Remark: Generated from `#/components/schemas/InviteRequest/projectsPayload/role`.
+                @frozen public enum rolePayload: String, Codable, Hashable, Sendable {
+                    case member = "member"
+                    case owner = "owner"
+                }
+                /// Project membership role
+                ///
+                /// - Remark: Generated from `#/components/schemas/InviteRequest/projectsPayload/role`.
+                public var role: Components.Schemas.InviteRequest.projectsPayloadPayload.rolePayload
+                /// Creates a new `projectsPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - id: Project's public ID
+                ///   - role: Project membership role
+                public init(
+                    id: Swift.String,
+                    role: Components.Schemas.InviteRequest.projectsPayloadPayload.rolePayload
+                ) {
+                    self.id = id
+                    self.role = role
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case id
+                    case role
+                }
+            }
+            /// An array of projects to which membership is granted at the same time the org invite is accepted. If omitted, the user will be invited to the default project for compatibility with legacy behavior.
+            ///
+            /// - Remark: Generated from `#/components/schemas/InviteRequest/projects`.
+            public typealias projectsPayload = [Components.Schemas.InviteRequest.projectsPayloadPayload]
+            /// An array of projects to which membership is granted at the same time the org invite is accepted. If omitted, the user will be invited to the default project for compatibility with legacy behavior.
+            ///
+            /// - Remark: Generated from `#/components/schemas/InviteRequest/projects`.
+            public var projects: Components.Schemas.InviteRequest.projectsPayload?
             /// Creates a new `InviteRequest`.
             ///
             /// - Parameters:
             ///   - email: Send an email to this address
             ///   - role: `owner` or `reader`
+            ///   - projects: An array of projects to which membership is granted at the same time the org invite is accepted. If omitted, the user will be invited to the default project for compatibility with legacy behavior.
             public init(
                 email: Swift.String,
-                role: Components.Schemas.InviteRequest.rolePayload
+                role: Components.Schemas.InviteRequest.rolePayload,
+                projects: Components.Schemas.InviteRequest.projectsPayload? = nil
             ) {
                 self.email = email
                 self.role = role
+                self.projects = projects
             }
             public enum CodingKeys: String, CodingKey {
                 case email
                 case role
+                case projects
             }
         }
         /// - Remark: Generated from `#/components/schemas/ListAssistantsResponse`.
@@ -13528,29 +15525,43 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ListFilesResponse`.
         public struct ListFilesResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/ListFilesResponse/object`.
+            public var object: Swift.String
             /// - Remark: Generated from `#/components/schemas/ListFilesResponse/data`.
             public var data: [Components.Schemas.OpenAIFile]
-            /// - Remark: Generated from `#/components/schemas/ListFilesResponse/object`.
-            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
-                case list = "list"
-            }
-            /// - Remark: Generated from `#/components/schemas/ListFilesResponse/object`.
-            public var object: Components.Schemas.ListFilesResponse.objectPayload
+            /// - Remark: Generated from `#/components/schemas/ListFilesResponse/first_id`.
+            public var first_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/ListFilesResponse/last_id`.
+            public var last_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/ListFilesResponse/has_more`.
+            public var has_more: Swift.Bool
             /// Creates a new `ListFilesResponse`.
             ///
             /// - Parameters:
-            ///   - data:
             ///   - object:
+            ///   - data:
+            ///   - first_id:
+            ///   - last_id:
+            ///   - has_more:
             public init(
+                object: Swift.String,
                 data: [Components.Schemas.OpenAIFile],
-                object: Components.Schemas.ListFilesResponse.objectPayload
+                first_id: Swift.String,
+                last_id: Swift.String,
+                has_more: Swift.Bool
             ) {
-                self.data = data
                 self.object = object
+                self.data = data
+                self.first_id = first_id
+                self.last_id = last_id
+                self.has_more = has_more
             }
             public enum CodingKeys: String, CodingKey {
-                case data
                 case object
+                case data
+                case first_id
+                case last_id
+                case has_more
             }
         }
         /// - Remark: Generated from `#/components/schemas/ListFineTuningJobCheckpointsResponse`.
@@ -13608,21 +15619,27 @@ public enum Components {
             }
             /// - Remark: Generated from `#/components/schemas/ListFineTuningJobEventsResponse/object`.
             public var object: Components.Schemas.ListFineTuningJobEventsResponse.objectPayload
+            /// - Remark: Generated from `#/components/schemas/ListFineTuningJobEventsResponse/has_more`.
+            public var has_more: Swift.Bool
             /// Creates a new `ListFineTuningJobEventsResponse`.
             ///
             /// - Parameters:
             ///   - data:
             ///   - object:
+            ///   - has_more:
             public init(
                 data: [Components.Schemas.FineTuningJobEvent],
-                object: Components.Schemas.ListFineTuningJobEventsResponse.objectPayload
+                object: Components.Schemas.ListFineTuningJobEventsResponse.objectPayload,
+                has_more: Swift.Bool
             ) {
                 self.data = data
                 self.object = object
+                self.has_more = has_more
             }
             public enum CodingKeys: String, CodingKey {
                 case data
                 case object
+                case has_more
             }
         }
         /// - Remark: Generated from `#/components/schemas/ListMessagesResponse`.
@@ -15171,11 +17188,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/MessageObject/attachments`.
             public var attachments: Components.Schemas.MessageObject.attachmentsPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/MessageObject/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `MessageObject`.
             ///
             /// - Parameters:
@@ -15192,7 +17206,7 @@ public enum Components {
             ///   - assistant_id: If applicable, the ID of the [assistant](/docs/api-reference/assistants) that authored this message.
             ///   - run_id: The ID of the [run](/docs/api-reference/runs) associated with the creation of this message. Value is `null` when messages are created manually using the create message or create thread endpoints.
             ///   - attachments: A list of files attached to the message, and the tools they were added to.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 id: Swift.String,
                 object: Components.Schemas.MessageObject.objectPayload,
@@ -15207,7 +17221,7 @@ public enum Components {
                 assistant_id: Swift.String? = nil,
                 run_id: Swift.String? = nil,
                 attachments: Components.Schemas.MessageObject.attachmentsPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.id = id
                 self.object = object
@@ -15496,6 +17510,32 @@ public enum Components {
                 }
             }
         }
+        /// Set of 16 key-value pairs that can be attached to an object. This can be
+        /// useful for storing additional information about the object in a structured
+        /// format, and querying for objects via API or the dashboard. 
+        ///
+        /// Keys are strings with a maximum length of 64 characters. Values are strings
+        /// with a maximum length of 512 characters.
+        ///
+        ///
+        /// - Remark: Generated from `#/components/schemas/Metadata`.
+        public struct Metadata: Codable, Hashable, Sendable {
+            /// A container of undocumented properties.
+            public var additionalProperties: [String: Swift.String]
+            /// Creates a new `Metadata`.
+            ///
+            /// - Parameters:
+            ///   - additionalProperties: A container of undocumented properties.
+            public init(additionalProperties: [String: Swift.String] = .init()) {
+                self.additionalProperties = additionalProperties
+            }
+            public init(from decoder: any Decoder) throws {
+                additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+            }
+            public func encode(to encoder: any Encoder) throws {
+                try encoder.encodeAdditionalProperties(additionalProperties)
+            }
+        }
         /// Describes an OpenAI model offering that can be used with the API.
         ///
         /// - Remark: Generated from `#/components/schemas/Model`.
@@ -15549,19 +17589,26 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest`.
         public struct ModifyAssistantRequest: Codable, Hashable, Sendable {
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/model`.
             public struct modelPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/model/value1`.
                 public var value1: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/model/value2`.
+                public var value2: Components.Schemas.AssistantSupportedModels?
                 /// Creates a new `modelPayload`.
                 ///
                 /// - Parameters:
                 ///   - value1:
-                public init(value1: Swift.String? = nil) {
+                ///   - value2:
+                public init(
+                    value1: Swift.String? = nil,
+                    value2: Components.Schemas.AssistantSupportedModels? = nil
+                ) {
                     self.value1 = value1
+                    self.value2 = value2
                 }
                 public init(from decoder: any Decoder) throws {
                     var errors: [any Error] = []
@@ -15570,9 +17617,15 @@ public enum Components {
                     } catch {
                         errors.append(error)
                     }
+                    do {
+                        value2 = try decoder.decodeFromSingleValueContainer()
+                    } catch {
+                        errors.append(error)
+                    }
                     try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
                         [
-                            value1
+                            value1,
+                            value2
                         ],
                         type: Self.self,
                         codingPath: decoder.codingPath,
@@ -15581,15 +17634,18 @@ public enum Components {
                 }
                 public func encode(to encoder: any Encoder) throws {
                     try encoder.encodeFirstNonNilValueToSingleValueContainer([
-                        value1
+                        value1,
+                        value2
                     ])
                 }
             }
-            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            /// ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/model`.
             public var model: Components.Schemas.ModifyAssistantRequest.modelPayload?
+            /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/reasoning_effort`.
+            public var reasoning_effort: Components.Schemas.ReasoningEffort?
             /// The name of the assistant. The maximum length is 256 characters.
             ///
             ///
@@ -15727,11 +17783,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/tool_resources`.
             public var tool_resources: Components.Schemas.ModifyAssistantRequest.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///
             ///
@@ -15745,33 +17798,63 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/top_p`.
             public var top_p: Swift.Double?
             /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/response_format`.
-            public var response_format: Components.Schemas.AssistantsApiResponseFormatOption?
+            public struct response_formatPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/response_format/value1`.
+                public var value1: Components.Schemas.AssistantsApiResponseFormatOption
+                /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/response_format/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `response_formatPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiResponseFormatOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/ModifyAssistantRequest/response_format`.
+            public var response_format: Components.Schemas.ModifyAssistantRequest.response_formatPayload?
             /// Creates a new `ModifyAssistantRequest`.
             ///
             /// - Parameters:
-            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them.
+            ///   - model: ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models) for descriptions of them.
+            ///   - reasoning_effort:
             ///   - name: The name of the assistant. The maximum length is 256 characters.
             ///   - description: The description of the assistant. The maximum length is 512 characters.
             ///   - instructions: The system instructions that the assistant uses. The maximum length is 256,000 characters.
             ///   - tools: A list of tool enabled on the assistant. There can be a maximum of 128 tools per assistant. Tools can be of types `code_interpreter`, `file_search`, or `function`.
             ///   - tool_resources: A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
             ///   - top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
             ///   - response_format:
             public init(
                 model: Components.Schemas.ModifyAssistantRequest.modelPayload? = nil,
+                reasoning_effort: Components.Schemas.ReasoningEffort? = nil,
                 name: Swift.String? = nil,
                 description: Swift.String? = nil,
                 instructions: Swift.String? = nil,
                 tools: Components.Schemas.ModifyAssistantRequest.toolsPayload? = nil,
                 tool_resources: Components.Schemas.ModifyAssistantRequest.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 temperature: Swift.Double? = nil,
                 top_p: Swift.Double? = nil,
-                response_format: Components.Schemas.AssistantsApiResponseFormatOption? = nil
+                response_format: Components.Schemas.ModifyAssistantRequest.response_formatPayload? = nil
             ) {
                 self.model = model
+                self.reasoning_effort = reasoning_effort
                 self.name = name
                 self.description = description
                 self.instructions = instructions
@@ -15784,6 +17867,7 @@ public enum Components {
             }
             public enum CodingKeys: String, CodingKey {
                 case model
+                case reasoning_effort
                 case name
                 case description
                 case instructions
@@ -15799,6 +17883,10 @@ public enum Components {
                 model = try container.decodeIfPresent(
                     Components.Schemas.ModifyAssistantRequest.modelPayload.self,
                     forKey: .model
+                )
+                reasoning_effort = try container.decodeIfPresent(
+                    Components.Schemas.ReasoningEffort.self,
+                    forKey: .reasoning_effort
                 )
                 name = try container.decodeIfPresent(
                     Swift.String.self,
@@ -15821,7 +17909,7 @@ public enum Components {
                     forKey: .tool_resources
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 temperature = try container.decodeIfPresent(
@@ -15833,11 +17921,12 @@ public enum Components {
                     forKey: .top_p
                 )
                 response_format = try container.decodeIfPresent(
-                    Components.Schemas.AssistantsApiResponseFormatOption.self,
+                    Components.Schemas.ModifyAssistantRequest.response_formatPayload.self,
                     forKey: .response_format
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
                     "model",
+                    "reasoning_effort",
                     "name",
                     "description",
                     "instructions",
@@ -15852,16 +17941,13 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ModifyMessageRequest`.
         public struct ModifyMessageRequest: Codable, Hashable, Sendable {
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/ModifyMessageRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `ModifyMessageRequest`.
             ///
             /// - Parameters:
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            public init(metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil) {
+            ///   - metadata:
+            public init(metadata: Components.Schemas.Metadata? = nil) {
                 self.metadata = metadata
             }
             public enum CodingKeys: String, CodingKey {
@@ -15870,7 +17956,7 @@ public enum Components {
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -15880,16 +17966,13 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ModifyRunRequest`.
         public struct ModifyRunRequest: Codable, Hashable, Sendable {
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/ModifyRunRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `ModifyRunRequest`.
             ///
             /// - Parameters:
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            public init(metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil) {
+            ///   - metadata:
+            public init(metadata: Components.Schemas.Metadata? = nil) {
                 self.metadata = metadata
             }
             public enum CodingKeys: String, CodingKey {
@@ -15898,7 +17981,7 @@ public enum Components {
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -15975,19 +18058,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ModifyThreadRequest/tool_resources`.
             public var tool_resources: Components.Schemas.ModifyThreadRequest.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/ModifyThreadRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `ModifyThreadRequest`.
             ///
             /// - Parameters:
             ///   - tool_resources: A set of resources that are made available to the assistant's tools in this thread. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 tool_resources: Components.Schemas.ModifyThreadRequest.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.tool_resources = tool_resources
                 self.metadata = metadata
@@ -16003,7 +18083,7 @@ public enum Components {
                     forKey: .tool_resources
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -16152,10 +18232,100 @@ public enum Components {
                 ])
             }
         }
-        /// Whether to enable [parallel function calling](/docs/guides/function-calling/parallel-function-calling) during tool use.
+        /// Whether to enable [parallel function calling](/docs/guides/function-calling#configuring-parallel-function-calling) during tool use.
         ///
         /// - Remark: Generated from `#/components/schemas/ParallelToolCalls`.
         public typealias ParallelToolCalls = Swift.Bool
+        /// Static predicted output content, such as the content of a text file that is
+        /// being regenerated.
+        ///
+        ///
+        /// - Remark: Generated from `#/components/schemas/PredictionContent`.
+        public struct PredictionContent: Codable, Hashable, Sendable {
+            /// The type of the predicted content you want to provide. This type is
+            /// currently always `content`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/PredictionContent/type`.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case content = "content"
+            }
+            /// The type of the predicted content you want to provide. This type is
+            /// currently always `content`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/PredictionContent/type`.
+            public var _type: Components.Schemas.PredictionContent._typePayload
+            /// The content that should be matched when generating a model response.
+            /// If generated tokens would match this content, the entire model response
+            /// can be returned much more quickly.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/PredictionContent/content`.
+            @frozen public enum contentPayload: Codable, Hashable, Sendable {
+                /// The content used for a Predicted Output. This is often the
+                /// text of a file you are regenerating with minor changes.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/PredictionContent/content/case1`.
+                case case1(Swift.String)
+                /// An array of content parts with a defined type. Supported options differ based on the [model](/docs/models) being used to generate the response. Can contain text inputs.
+                ///
+                /// - Remark: Generated from `#/components/schemas/PredictionContent/content/case2`.
+                case case2([Components.Schemas.ChatCompletionRequestMessageContentPartText])
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// The content that should be matched when generating a model response.
+            /// If generated tokens would match this content, the entire model response
+            /// can be returned much more quickly.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/PredictionContent/content`.
+            public var content: Components.Schemas.PredictionContent.contentPayload
+            /// Creates a new `PredictionContent`.
+            ///
+            /// - Parameters:
+            ///   - _type: The type of the predicted content you want to provide. This type is
+            ///   - content: The content that should be matched when generating a model response.
+            public init(
+                _type: Components.Schemas.PredictionContent._typePayload,
+                content: Components.Schemas.PredictionContent.contentPayload
+            ) {
+                self._type = _type
+                self.content = content
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case content
+            }
+        }
         /// Represents an individual project.
         ///
         /// - Remark: Generated from `#/components/schemas/Project`.
@@ -16471,6 +18641,201 @@ public enum Components {
                 case first_id
                 case last_id
                 case has_more
+            }
+        }
+        /// Represents a project rate limit config.
+        ///
+        /// - Remark: Generated from `#/components/schemas/ProjectRateLimit`.
+        public struct ProjectRateLimit: Codable, Hashable, Sendable {
+            /// The object type, which is always `project.rate_limit`
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case project_period_rate_limit = "project.rate_limit"
+            }
+            /// The object type, which is always `project.rate_limit`
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/object`.
+            public var object: Components.Schemas.ProjectRateLimit.objectPayload
+            /// The identifier, which can be referenced in API endpoints.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/id`.
+            public var id: Swift.String
+            /// The model this rate limit applies to.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/model`.
+            public var model: Swift.String
+            /// The maximum requests per minute.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/max_requests_per_1_minute`.
+            public var max_requests_per_1_minute: Swift.Int
+            /// The maximum tokens per minute.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/max_tokens_per_1_minute`.
+            public var max_tokens_per_1_minute: Swift.Int
+            /// The maximum images per minute. Only present for relevant models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/max_images_per_1_minute`.
+            public var max_images_per_1_minute: Swift.Int?
+            /// The maximum audio megabytes per minute. Only present for relevant models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/max_audio_megabytes_per_1_minute`.
+            public var max_audio_megabytes_per_1_minute: Swift.Int?
+            /// The maximum requests per day. Only present for relevant models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/max_requests_per_1_day`.
+            public var max_requests_per_1_day: Swift.Int?
+            /// The maximum batch input tokens per day. Only present for relevant models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimit/batch_1_day_max_input_tokens`.
+            public var batch_1_day_max_input_tokens: Swift.Int?
+            /// Creates a new `ProjectRateLimit`.
+            ///
+            /// - Parameters:
+            ///   - object: The object type, which is always `project.rate_limit`
+            ///   - id: The identifier, which can be referenced in API endpoints.
+            ///   - model: The model this rate limit applies to.
+            ///   - max_requests_per_1_minute: The maximum requests per minute.
+            ///   - max_tokens_per_1_minute: The maximum tokens per minute.
+            ///   - max_images_per_1_minute: The maximum images per minute. Only present for relevant models.
+            ///   - max_audio_megabytes_per_1_minute: The maximum audio megabytes per minute. Only present for relevant models.
+            ///   - max_requests_per_1_day: The maximum requests per day. Only present for relevant models.
+            ///   - batch_1_day_max_input_tokens: The maximum batch input tokens per day. Only present for relevant models.
+            public init(
+                object: Components.Schemas.ProjectRateLimit.objectPayload,
+                id: Swift.String,
+                model: Swift.String,
+                max_requests_per_1_minute: Swift.Int,
+                max_tokens_per_1_minute: Swift.Int,
+                max_images_per_1_minute: Swift.Int? = nil,
+                max_audio_megabytes_per_1_minute: Swift.Int? = nil,
+                max_requests_per_1_day: Swift.Int? = nil,
+                batch_1_day_max_input_tokens: Swift.Int? = nil
+            ) {
+                self.object = object
+                self.id = id
+                self.model = model
+                self.max_requests_per_1_minute = max_requests_per_1_minute
+                self.max_tokens_per_1_minute = max_tokens_per_1_minute
+                self.max_images_per_1_minute = max_images_per_1_minute
+                self.max_audio_megabytes_per_1_minute = max_audio_megabytes_per_1_minute
+                self.max_requests_per_1_day = max_requests_per_1_day
+                self.batch_1_day_max_input_tokens = batch_1_day_max_input_tokens
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case id
+                case model
+                case max_requests_per_1_minute
+                case max_tokens_per_1_minute
+                case max_images_per_1_minute
+                case max_audio_megabytes_per_1_minute
+                case max_requests_per_1_day
+                case batch_1_day_max_input_tokens
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse`.
+        public struct ProjectRateLimitListResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case list = "list"
+            }
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse/object`.
+            public var object: Components.Schemas.ProjectRateLimitListResponse.objectPayload
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse/data`.
+            public var data: [Components.Schemas.ProjectRateLimit]
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse/first_id`.
+            public var first_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse/last_id`.
+            public var last_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitListResponse/has_more`.
+            public var has_more: Swift.Bool
+            /// Creates a new `ProjectRateLimitListResponse`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - data:
+            ///   - first_id:
+            ///   - last_id:
+            ///   - has_more:
+            public init(
+                object: Components.Schemas.ProjectRateLimitListResponse.objectPayload,
+                data: [Components.Schemas.ProjectRateLimit],
+                first_id: Swift.String,
+                last_id: Swift.String,
+                has_more: Swift.Bool
+            ) {
+                self.object = object
+                self.data = data
+                self.first_id = first_id
+                self.last_id = last_id
+                self.has_more = has_more
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case data
+                case first_id
+                case last_id
+                case has_more
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest`.
+        public struct ProjectRateLimitUpdateRequest: Codable, Hashable, Sendable {
+            /// The maximum requests per minute.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest/max_requests_per_1_minute`.
+            public var max_requests_per_1_minute: Swift.Int?
+            /// The maximum tokens per minute.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest/max_tokens_per_1_minute`.
+            public var max_tokens_per_1_minute: Swift.Int?
+            /// The maximum images per minute. Only relevant for certain models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest/max_images_per_1_minute`.
+            public var max_images_per_1_minute: Swift.Int?
+            /// The maximum audio megabytes per minute. Only relevant for certain models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest/max_audio_megabytes_per_1_minute`.
+            public var max_audio_megabytes_per_1_minute: Swift.Int?
+            /// The maximum requests per day. Only relevant for certain models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest/max_requests_per_1_day`.
+            public var max_requests_per_1_day: Swift.Int?
+            /// The maximum batch input tokens per day. Only relevant for certain models.
+            ///
+            /// - Remark: Generated from `#/components/schemas/ProjectRateLimitUpdateRequest/batch_1_day_max_input_tokens`.
+            public var batch_1_day_max_input_tokens: Swift.Int?
+            /// Creates a new `ProjectRateLimitUpdateRequest`.
+            ///
+            /// - Parameters:
+            ///   - max_requests_per_1_minute: The maximum requests per minute.
+            ///   - max_tokens_per_1_minute: The maximum tokens per minute.
+            ///   - max_images_per_1_minute: The maximum images per minute. Only relevant for certain models.
+            ///   - max_audio_megabytes_per_1_minute: The maximum audio megabytes per minute. Only relevant for certain models.
+            ///   - max_requests_per_1_day: The maximum requests per day. Only relevant for certain models.
+            ///   - batch_1_day_max_input_tokens: The maximum batch input tokens per day. Only relevant for certain models.
+            public init(
+                max_requests_per_1_minute: Swift.Int? = nil,
+                max_tokens_per_1_minute: Swift.Int? = nil,
+                max_images_per_1_minute: Swift.Int? = nil,
+                max_audio_megabytes_per_1_minute: Swift.Int? = nil,
+                max_requests_per_1_day: Swift.Int? = nil,
+                batch_1_day_max_input_tokens: Swift.Int? = nil
+            ) {
+                self.max_requests_per_1_minute = max_requests_per_1_minute
+                self.max_tokens_per_1_minute = max_tokens_per_1_minute
+                self.max_images_per_1_minute = max_images_per_1_minute
+                self.max_audio_megabytes_per_1_minute = max_audio_megabytes_per_1_minute
+                self.max_requests_per_1_day = max_requests_per_1_day
+                self.batch_1_day_max_input_tokens = batch_1_day_max_input_tokens
+            }
+            public enum CodingKeys: String, CodingKey {
+                case max_requests_per_1_minute
+                case max_tokens_per_1_minute
+                case max_images_per_1_minute
+                case max_audio_megabytes_per_1_minute
+                case max_requests_per_1_day
+                case batch_1_day_max_input_tokens
             }
         }
         /// Represents an individual service account in a project.
@@ -16965,7 +19330,14 @@ public enum Components {
                 case role
             }
         }
-        /// Send this event when adding an item to the conversation.
+        /// Add a new Item to the Conversation's context, including messages, function 
+        /// calls, and function call responses. This event can be used both to populate a 
+        /// "history" of the conversation and to add new items mid-stream, but has the 
+        /// current limitation that it cannot populate assistant audio messages.
+        ///
+        /// If successful, the server will respond with a `conversation.item.created` 
+        /// event, otherwise an `error` event will be sent.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate`.
         public struct RealtimeClientEventConversationItemCreate: Codable, Hashable, Sendable {
@@ -16973,162 +19345,39 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "conversation.item.create".
+            /// The event type, must be `conversation.item.create`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/type`.
-            public var _type: Swift.String
-            /// The ID of the preceding item after which the new item will be inserted.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_create = "conversation.item.create"
+            }
+            /// The event type, must be `conversation.item.create`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/type`.
+            public var _type: Components.Schemas.RealtimeClientEventConversationItemCreate._typePayload
+            /// The ID of the preceding item after which the new item will be inserted. 
+            /// If not set, the new item will be appended to the end of the conversation.
+            /// If set to `root`, the new item will be added to the beginning of the conversation.
+            /// If set to an existing ID, it allows an item to be inserted mid-conversation. If the
+            /// ID cannot be found, an error will be returned and the item will not be added.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/previous_item_id`.
             public var previous_item_id: Swift.String?
-            /// The item to add to the conversation.
-            ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item`.
-            public struct itemPayload: Codable, Hashable, Sendable {
-                /// The unique ID of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/id`.
-                public var id: Swift.String?
-                /// The type of the item ("message", "function_call", "function_call_output").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/type`.
-                public var _type: Swift.String?
-                /// The status of the item ("completed", "in_progress", "incomplete").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/status`.
-                public var status: Swift.String?
-                /// The role of the message sender ("user", "assistant", "system").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/role`.
-                public var role: Swift.String?
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/contentPayload`.
-                public struct contentPayloadPayload: Codable, Hashable, Sendable {
-                    /// The content type ("input_text", "input_audio", "text", "audio").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/contentPayload/type`.
-                    public var _type: Swift.String?
-                    /// The text content.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/contentPayload/text`.
-                    public var text: Swift.String?
-                    /// Base64-encoded audio bytes.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/contentPayload/audio`.
-                    public var audio: Swift.String?
-                    /// The transcript of the audio.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/contentPayload/transcript`.
-                    public var transcript: Swift.String?
-                    /// Creates a new `contentPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The content type ("input_text", "input_audio", "text", "audio").
-                    ///   - text: The text content.
-                    ///   - audio: Base64-encoded audio bytes.
-                    ///   - transcript: The transcript of the audio.
-                    public init(
-                        _type: Swift.String? = nil,
-                        text: Swift.String? = nil,
-                        audio: Swift.String? = nil,
-                        transcript: Swift.String? = nil
-                    ) {
-                        self._type = _type
-                        self.text = text
-                        self.audio = audio
-                        self.transcript = transcript
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case text
-                        case audio
-                        case transcript
-                    }
-                }
-                /// The content of the message.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/content`.
-                public typealias contentPayload = [Components.Schemas.RealtimeClientEventConversationItemCreate.itemPayload.contentPayloadPayload]
-                /// The content of the message.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/content`.
-                public var content: Components.Schemas.RealtimeClientEventConversationItemCreate.itemPayload.contentPayload?
-                /// The ID of the function call (for "function_call" items).
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/call_id`.
-                public var call_id: Swift.String?
-                /// The name of the function being called (for "function_call" items).
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/name`.
-                public var name: Swift.String?
-                /// The arguments of the function call (for "function_call" items).
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/arguments`.
-                public var arguments: Swift.String?
-                /// The output of the function call (for "function_call_output" items).
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item/output`.
-                public var output: Swift.String?
-                /// Creates a new `itemPayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the item.
-                ///   - _type: The type of the item ("message", "function_call", "function_call_output").
-                ///   - status: The status of the item ("completed", "in_progress", "incomplete").
-                ///   - role: The role of the message sender ("user", "assistant", "system").
-                ///   - content: The content of the message.
-                ///   - call_id: The ID of the function call (for "function_call" items).
-                ///   - name: The name of the function being called (for "function_call" items).
-                ///   - arguments: The arguments of the function call (for "function_call" items).
-                ///   - output: The output of the function call (for "function_call_output" items).
-                public init(
-                    id: Swift.String? = nil,
-                    _type: Swift.String? = nil,
-                    status: Swift.String? = nil,
-                    role: Swift.String? = nil,
-                    content: Components.Schemas.RealtimeClientEventConversationItemCreate.itemPayload.contentPayload? = nil,
-                    call_id: Swift.String? = nil,
-                    name: Swift.String? = nil,
-                    arguments: Swift.String? = nil,
-                    output: Swift.String? = nil
-                ) {
-                    self.id = id
-                    self._type = _type
-                    self.status = status
-                    self.role = role
-                    self.content = content
-                    self.call_id = call_id
-                    self.name = name
-                    self.arguments = arguments
-                    self.output = output
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case _type = "type"
-                    case status
-                    case role
-                    case content
-                    case call_id
-                    case name
-                    case arguments
-                    case output
-                }
-            }
-            /// The item to add to the conversation.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemCreate/item`.
-            public var item: Components.Schemas.RealtimeClientEventConversationItemCreate.itemPayload
+            public var item: Components.Schemas.RealtimeConversationItem
             /// Creates a new `RealtimeClientEventConversationItemCreate`.
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "conversation.item.create".
-            ///   - previous_item_id: The ID of the preceding item after which the new item will be inserted.
-            ///   - item: The item to add to the conversation.
+            ///   - _type: The event type, must be `conversation.item.create`.
+            ///   - previous_item_id: The ID of the preceding item after which the new item will be inserted. 
+            ///   - item:
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeClientEventConversationItemCreate._typePayload,
                 previous_item_id: Swift.String? = nil,
-                item: Components.Schemas.RealtimeClientEventConversationItemCreate.itemPayload
+                item: Components.Schemas.RealtimeConversationItem
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -17142,7 +19391,11 @@ public enum Components {
                 case item
             }
         }
-        /// Send this event when you want to remove any item from the conversation history.
+        /// Send this event when you want to remove any item from the conversation 
+        /// history. The server will respond with a `conversation.item.deleted` event, 
+        /// unless the item does not exist in the conversation history, in which case the 
+        /// server will respond with an error.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemDelete`.
         public struct RealtimeClientEventConversationItemDelete: Codable, Hashable, Sendable {
@@ -17150,10 +19403,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemDelete/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "conversation.item.delete".
+            /// The event type, must be `conversation.item.delete`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemDelete/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_delete = "conversation.item.delete"
+            }
+            /// The event type, must be `conversation.item.delete`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemDelete/type`.
+            public var _type: Components.Schemas.RealtimeClientEventConversationItemDelete._typePayload
             /// The ID of the item to delete.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemDelete/item_id`.
@@ -17162,11 +19421,11 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "conversation.item.delete".
+            ///   - _type: The event type, must be `conversation.item.delete`.
             ///   - item_id: The ID of the item to delete.
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeClientEventConversationItemDelete._typePayload,
                 item_id: Swift.String
             ) {
                 self.event_id = event_id
@@ -17179,7 +19438,18 @@ public enum Components {
                 case item_id
             }
         }
-        /// Send this event when you want to truncate a previous assistant message’s audio.
+        /// Send this event to truncate a previous assistant message’s audio. The server 
+        /// will produce audio faster than realtime, so this event is useful when the user 
+        /// interrupts to truncate audio that has already been sent to the client but not 
+        /// yet played. This will synchronize the server's understanding of the audio with 
+        /// the client's playback.
+        ///
+        /// Truncating audio will delete the server-side text transcript to ensure there 
+        /// is not text in the context that hasn't been heard by the user.
+        ///
+        /// If successful, the server will respond with a `conversation.item.truncated` 
+        /// event. 
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate`.
         public struct RealtimeClientEventConversationItemTruncate: Codable, Hashable, Sendable {
@@ -17187,19 +19457,30 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "conversation.item.truncate".
+            /// The event type, must be `conversation.item.truncate`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate/type`.
-            public var _type: Swift.String
-            /// The ID of the assistant message item to truncate.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_truncate = "conversation.item.truncate"
+            }
+            /// The event type, must be `conversation.item.truncate`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate/type`.
+            public var _type: Components.Schemas.RealtimeClientEventConversationItemTruncate._typePayload
+            /// The ID of the assistant message item to truncate. Only assistant message 
+            /// items can be truncated.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate/item_id`.
             public var item_id: Swift.String
-            /// The index of the content part to truncate.
+            /// The index of the content part to truncate. Set this to 0.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate/content_index`.
             public var content_index: Swift.Int
-            /// Inclusive duration up to which audio is truncated, in milliseconds.
+            /// Inclusive duration up to which audio is truncated, in milliseconds. If 
+            /// the audio_end_ms is greater than the actual audio duration, the server 
+            /// will respond with an error.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventConversationItemTruncate/audio_end_ms`.
             public var audio_end_ms: Swift.Int
@@ -17207,13 +19488,13 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "conversation.item.truncate".
-            ///   - item_id: The ID of the assistant message item to truncate.
-            ///   - content_index: The index of the content part to truncate.
-            ///   - audio_end_ms: Inclusive duration up to which audio is truncated, in milliseconds.
+            ///   - _type: The event type, must be `conversation.item.truncate`.
+            ///   - item_id: The ID of the assistant message item to truncate. Only assistant message 
+            ///   - content_index: The index of the content part to truncate. Set this to 0.
+            ///   - audio_end_ms: Inclusive duration up to which audio is truncated, in milliseconds. If 
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeClientEventConversationItemTruncate._typePayload,
                 item_id: Swift.String,
                 content_index: Swift.Int,
                 audio_end_ms: Swift.Int
@@ -17232,7 +19513,17 @@ public enum Components {
                 case audio_end_ms
             }
         }
-        /// Send this event to append audio bytes to the input audio buffer.
+        /// Send this event to append audio bytes to the input audio buffer. The audio 
+        /// buffer is temporary storage you can write to and later commit. In Server VAD 
+        /// mode, the audio buffer is used to detect speech and the server will decide 
+        /// when to commit. When Server VAD is disabled, you must commit the audio buffer
+        /// manually.
+        ///
+        /// The client may choose how much audio to place in each event up to a maximum 
+        /// of 15 MiB, for example streaming smaller chunks from the client may allow the 
+        /// VAD to be more responsive. Unlike made other client events, the server will 
+        /// not send a confirmation response to this event.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferAppend`.
         public struct RealtimeClientEventInputAudioBufferAppend: Codable, Hashable, Sendable {
@@ -17240,11 +19531,19 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferAppend/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "input_audio_buffer.append".
+            /// The event type, must be `input_audio_buffer.append`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferAppend/type`.
-            public var _type: Swift.String
-            /// Base64-encoded audio bytes.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_append = "input_audio_buffer.append"
+            }
+            /// The event type, must be `input_audio_buffer.append`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferAppend/type`.
+            public var _type: Components.Schemas.RealtimeClientEventInputAudioBufferAppend._typePayload
+            /// Base64-encoded audio bytes. This must be in the format specified by the 
+            /// `input_audio_format` field in the session configuration.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferAppend/audio`.
             public var audio: Swift.String
@@ -17252,11 +19551,11 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "input_audio_buffer.append".
-            ///   - audio: Base64-encoded audio bytes.
+            ///   - _type: The event type, must be `input_audio_buffer.append`.
+            ///   - audio: Base64-encoded audio bytes. This must be in the format specified by the 
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeClientEventInputAudioBufferAppend._typePayload,
                 audio: Swift.String
             ) {
                 self.event_id = event_id
@@ -17269,7 +19568,9 @@ public enum Components {
                 case audio
             }
         }
-        /// Send this event to clear the audio bytes in the buffer.
+        /// Send this event to clear the audio bytes in the buffer. The server will 
+        /// respond with an `input_audio_buffer.cleared` event.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferClear`.
         public struct RealtimeClientEventInputAudioBufferClear: Codable, Hashable, Sendable {
@@ -17277,18 +19578,24 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferClear/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "input_audio_buffer.clear".
+            /// The event type, must be `input_audio_buffer.clear`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferClear/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_clear = "input_audio_buffer.clear"
+            }
+            /// The event type, must be `input_audio_buffer.clear`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferClear/type`.
+            public var _type: Components.Schemas.RealtimeClientEventInputAudioBufferClear._typePayload
             /// Creates a new `RealtimeClientEventInputAudioBufferClear`.
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "input_audio_buffer.clear".
+            ///   - _type: The event type, must be `input_audio_buffer.clear`.
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String
+                _type: Components.Schemas.RealtimeClientEventInputAudioBufferClear._typePayload
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -17298,7 +19605,17 @@ public enum Components {
                 case _type = "type"
             }
         }
-        /// Send this event to commit audio bytes to a user message.
+        /// Send this event to commit the user input audio buffer, which will create a 
+        /// new user message item in the conversation. This event will produce an error 
+        /// if the input audio buffer is empty. When in Server VAD mode, the client does 
+        /// not need to send this event, the server will commit the audio buffer 
+        /// automatically.
+        ///
+        /// Committing the input audio buffer will trigger input audio transcription 
+        /// (if enabled in session configuration), but it will not create a response 
+        /// from the model. The server will respond with an `input_audio_buffer.committed` 
+        /// event.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferCommit`.
         public struct RealtimeClientEventInputAudioBufferCommit: Codable, Hashable, Sendable {
@@ -17306,18 +19623,24 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferCommit/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "input_audio_buffer.commit".
+            /// The event type, must be `input_audio_buffer.commit`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferCommit/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_commit = "input_audio_buffer.commit"
+            }
+            /// The event type, must be `input_audio_buffer.commit`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventInputAudioBufferCommit/type`.
+            public var _type: Components.Schemas.RealtimeClientEventInputAudioBufferCommit._typePayload
             /// Creates a new `RealtimeClientEventInputAudioBufferCommit`.
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "input_audio_buffer.commit".
+            ///   - _type: The event type, must be `input_audio_buffer.commit`.
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String
+                _type: Components.Schemas.RealtimeClientEventInputAudioBufferCommit._typePayload
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -17327,7 +19650,10 @@ public enum Components {
                 case _type = "type"
             }
         }
-        /// Send this event to cancel an in-progress response.
+        /// Send this event to cancel an in-progress response. The server will respond 
+        /// with a `response.cancelled` event or an error if there is no response to 
+        /// cancel.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCancel`.
         public struct RealtimeClientEventResponseCancel: Codable, Hashable, Sendable {
@@ -17335,28 +19661,59 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCancel/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "response.cancel".
+            /// The event type, must be `response.cancel`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCancel/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_cancel = "response.cancel"
+            }
+            /// The event type, must be `response.cancel`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCancel/type`.
+            public var _type: Components.Schemas.RealtimeClientEventResponseCancel._typePayload
+            /// A specific response ID to cancel - if not provided, will cancel an 
+            /// in-progress response in the default conversation.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCancel/response_id`.
+            public var response_id: Swift.String?
             /// Creates a new `RealtimeClientEventResponseCancel`.
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "response.cancel".
+            ///   - _type: The event type, must be `response.cancel`.
+            ///   - response_id: A specific response ID to cancel - if not provided, will cancel an 
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String
+                _type: Components.Schemas.RealtimeClientEventResponseCancel._typePayload,
+                response_id: Swift.String? = nil
             ) {
                 self.event_id = event_id
                 self._type = _type
+                self.response_id = response_id
             }
             public enum CodingKeys: String, CodingKey {
                 case event_id
                 case _type = "type"
+                case response_id
             }
         }
-        /// Send this event to trigger a response generation.
+        /// This event instructs the server to create a Response, which means triggering 
+        /// model inference. When in Server VAD mode, the server will create Responses 
+        /// automatically.
+        ///
+        /// A Response will include at least one Item, and may have two, in which case 
+        /// the second will be a function call. These Items will be appended to the 
+        /// conversation history.
+        ///
+        /// The server will respond with a `response.created` event, events for Items 
+        /// and content created, and finally a `response.done` event to indicate the 
+        /// Response is complete.
+        ///
+        /// The `response.create` event includes inference configuration like 
+        /// `instructions`, and `temperature`. These fields will override the Session's 
+        /// configuration for this Response only.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate`.
         public struct RealtimeClientEventResponseCreate: Codable, Hashable, Sendable {
@@ -17364,189 +19721,28 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "response.create".
+            /// The event type, must be `response.create`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/type`.
-            public var _type: Swift.String
-            /// Configuration for the response.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response`.
-            public struct responsePayload: Codable, Hashable, Sendable {
-                /// The modalities for the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/modalities`.
-                public var modalities: [Swift.String]?
-                /// Instructions for the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/instructions`.
-                public var instructions: Swift.String?
-                /// The voice the model uses to respond - one of `alloy`, `echo`, or `shimmer`.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/voice`.
-                public var voice: Swift.String?
-                /// The format of output audio.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/output_audio_format`.
-                public var output_audio_format: Swift.String?
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/toolsPayload`.
-                public struct toolsPayloadPayload: Codable, Hashable, Sendable {
-                    /// The type of the tool.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/toolsPayload/type`.
-                    public var _type: Swift.String?
-                    /// The name of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/toolsPayload/name`.
-                    public var name: Swift.String?
-                    /// The description of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/toolsPayload/description`.
-                    public var description: Swift.String?
-                    /// Parameters of the function in JSON Schema.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/toolsPayload/parameters`.
-                    public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
-                    /// Creates a new `toolsPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The type of the tool.
-                    ///   - name: The name of the function.
-                    ///   - description: The description of the function.
-                    ///   - parameters: Parameters of the function in JSON Schema.
-                    public init(
-                        _type: Swift.String? = nil,
-                        name: Swift.String? = nil,
-                        description: Swift.String? = nil,
-                        parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
-                    ) {
-                        self._type = _type
-                        self.name = name
-                        self.description = description
-                        self.parameters = parameters
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case name
-                        case description
-                        case parameters
-                    }
-                }
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/tools`.
-                public typealias toolsPayload = [Components.Schemas.RealtimeClientEventResponseCreate.responsePayload.toolsPayloadPayload]
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/tools`.
-                public var tools: Components.Schemas.RealtimeClientEventResponseCreate.responsePayload.toolsPayload?
-                /// How the model chooses tools.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/tool_choice`.
-                public var tool_choice: Swift.String?
-                /// Sampling temperature.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/temperature`.
-                public var temperature: Swift.Double?
-                /// Maximum number of output tokens for a single assistant response, inclusive of tool calls. Provide an integer between 1 and 4096 to limit output tokens, or "inf" for the maximum available tokens for a given model. Defaults to "inf".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/max_output_tokens`.
-                @frozen public enum max_output_tokensPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/max_output_tokens/case1`.
-                    case case1(Swift.Int)
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/max_output_tokens/case2`.
-                    @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
-                        case inf = "inf"
-                    }
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/max_output_tokens/case2`.
-                    case case2(Components.Schemas.RealtimeClientEventResponseCreate.responsePayload.max_output_tokensPayload.Case2Payload)
-                    public init(from decoder: any Decoder) throws {
-                        var errors: [any Error] = []
-                        do {
-                            self = .case1(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        do {
-                            self = .case2(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
-                            type: Self.self,
-                            codingPath: decoder.codingPath,
-                            errors: errors
-                        )
-                    }
-                    public func encode(to encoder: any Encoder) throws {
-                        switch self {
-                        case let .case1(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        case let .case2(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        }
-                    }
-                }
-                /// Maximum number of output tokens for a single assistant response, inclusive of tool calls. Provide an integer between 1 and 4096 to limit output tokens, or "inf" for the maximum available tokens for a given model. Defaults to "inf".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response/max_output_tokens`.
-                public var max_output_tokens: Components.Schemas.RealtimeClientEventResponseCreate.responsePayload.max_output_tokensPayload?
-                /// Creates a new `responsePayload`.
-                ///
-                /// - Parameters:
-                ///   - modalities: The modalities for the response.
-                ///   - instructions: Instructions for the model.
-                ///   - voice: The voice the model uses to respond - one of `alloy`, `echo`, or `shimmer`.
-                ///   - output_audio_format: The format of output audio.
-                ///   - tools: Tools (functions) available to the model.
-                ///   - tool_choice: How the model chooses tools.
-                ///   - temperature: Sampling temperature.
-                ///   - max_output_tokens: Maximum number of output tokens for a single assistant response, inclusive of tool calls. Provide an integer between 1 and 4096 to limit output tokens, or "inf" for the maximum available tokens for a given model. Defaults to "inf".
-                public init(
-                    modalities: [Swift.String]? = nil,
-                    instructions: Swift.String? = nil,
-                    voice: Swift.String? = nil,
-                    output_audio_format: Swift.String? = nil,
-                    tools: Components.Schemas.RealtimeClientEventResponseCreate.responsePayload.toolsPayload? = nil,
-                    tool_choice: Swift.String? = nil,
-                    temperature: Swift.Double? = nil,
-                    max_output_tokens: Components.Schemas.RealtimeClientEventResponseCreate.responsePayload.max_output_tokensPayload? = nil
-                ) {
-                    self.modalities = modalities
-                    self.instructions = instructions
-                    self.voice = voice
-                    self.output_audio_format = output_audio_format
-                    self.tools = tools
-                    self.tool_choice = tool_choice
-                    self.temperature = temperature
-                    self.max_output_tokens = max_output_tokens
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case modalities
-                    case instructions
-                    case voice
-                    case output_audio_format
-                    case tools
-                    case tool_choice
-                    case temperature
-                    case max_output_tokens
-                }
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_create = "response.create"
             }
-            /// Configuration for the response.
+            /// The event type, must be `response.create`.
             ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/type`.
+            public var _type: Components.Schemas.RealtimeClientEventResponseCreate._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventResponseCreate/response`.
-            public var response: Components.Schemas.RealtimeClientEventResponseCreate.responsePayload
+            public var response: Components.Schemas.RealtimeResponseCreateParams?
             /// Creates a new `RealtimeClientEventResponseCreate`.
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "response.create".
-            ///   - response: Configuration for the response.
+            ///   - _type: The event type, must be `response.create`.
+            ///   - response:
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String,
-                response: Components.Schemas.RealtimeClientEventResponseCreate.responsePayload
+                _type: Components.Schemas.RealtimeClientEventResponseCreate._typePayload,
+                response: Components.Schemas.RealtimeResponseCreateParams? = nil
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -17558,7 +19754,13 @@ public enum Components {
                 case response
             }
         }
-        /// Send this event to update the session’s default configuration.
+        /// Send this event to update the session’s default configuration. The client may 
+        /// send this event at any time to update the session configuration, and any 
+        /// field may be updated at any time, except for "voice". The server will respond 
+        /// with a `session.updated` event that shows the full effective configuration. 
+        /// Only fields that are present are updated, thus the correct way to clear a 
+        /// field like "instructions" is to pass an empty string.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate`.
         public struct RealtimeClientEventSessionUpdate: Codable, Hashable, Sendable {
@@ -17566,277 +19768,28 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/event_id`.
             public var event_id: Swift.String?
-            /// The event type, must be "session.update".
+            /// The event type, must be `session.update`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/type`.
-            public var _type: Swift.String
-            /// Session configuration to update.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session`.
-            public struct sessionPayload: Codable, Hashable, Sendable {
-                /// The set of modalities the model can respond with. To disable audio, set this to ["text"].
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/modalities`.
-                public var modalities: [Swift.String]?
-                /// The default system instructions prepended to model calls.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/instructions`.
-                public var instructions: Swift.String?
-                /// The voice the model uses to respond - one of `alloy`, `echo`, or  `shimmer`. Cannot be changed once the model has responded with audio  at least once.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/voice`.
-                public var voice: Swift.String?
-                /// The format of input audio. Options are "pcm16", "g711_ulaw", or "g711_alaw".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/input_audio_format`.
-                public var input_audio_format: Swift.String?
-                /// The format of output audio. Options are "pcm16", "g711_ulaw", or "g711_alaw".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/output_audio_format`.
-                public var output_audio_format: Swift.String?
-                /// Configuration for input audio transcription. Can be set to `null` to turn off.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/input_audio_transcription`.
-                public struct input_audio_transcriptionPayload: Codable, Hashable, Sendable {
-                    /// The model to use for transcription (e.g., "whisper-1").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/input_audio_transcription/model`.
-                    public var model: Swift.String?
-                    /// Creates a new `input_audio_transcriptionPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - model: The model to use for transcription (e.g., "whisper-1").
-                    public init(model: Swift.String? = nil) {
-                        self.model = model
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case model
-                    }
-                }
-                /// Configuration for input audio transcription. Can be set to `null` to turn off.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/input_audio_transcription`.
-                public var input_audio_transcription: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.input_audio_transcriptionPayload?
-                /// Configuration for turn detection. Can be set to `null` to turn off.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/turn_detection`.
-                public struct turn_detectionPayload: Codable, Hashable, Sendable {
-                    /// Type of turn detection, only "server_vad" is currently supported.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/turn_detection/type`.
-                    public var _type: Swift.String?
-                    /// Activation threshold for VAD (0.0 to 1.0).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/turn_detection/threshold`.
-                    public var threshold: Swift.Double?
-                    /// Amount of audio to include before speech starts (in milliseconds).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/turn_detection/prefix_padding_ms`.
-                    public var prefix_padding_ms: Swift.Int?
-                    /// Duration of silence to detect speech stop (in milliseconds).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/turn_detection/silence_duration_ms`.
-                    public var silence_duration_ms: Swift.Int?
-                    /// Creates a new `turn_detectionPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: Type of turn detection, only "server_vad" is currently supported.
-                    ///   - threshold: Activation threshold for VAD (0.0 to 1.0).
-                    ///   - prefix_padding_ms: Amount of audio to include before speech starts (in milliseconds).
-                    ///   - silence_duration_ms: Duration of silence to detect speech stop (in milliseconds).
-                    public init(
-                        _type: Swift.String? = nil,
-                        threshold: Swift.Double? = nil,
-                        prefix_padding_ms: Swift.Int? = nil,
-                        silence_duration_ms: Swift.Int? = nil
-                    ) {
-                        self._type = _type
-                        self.threshold = threshold
-                        self.prefix_padding_ms = prefix_padding_ms
-                        self.silence_duration_ms = silence_duration_ms
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case threshold
-                        case prefix_padding_ms
-                        case silence_duration_ms
-                    }
-                }
-                /// Configuration for turn detection. Can be set to `null` to turn off.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/turn_detection`.
-                public var turn_detection: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.turn_detectionPayload?
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/toolsPayload`.
-                public struct toolsPayloadPayload: Codable, Hashable, Sendable {
-                    /// The type of the tool, e.g., "function".
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/toolsPayload/type`.
-                    public var _type: Swift.String?
-                    /// The name of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/toolsPayload/name`.
-                    public var name: Swift.String?
-                    /// The description of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/toolsPayload/description`.
-                    public var description: Swift.String?
-                    /// Parameters of the function in JSON Schema.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/toolsPayload/parameters`.
-                    public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
-                    /// Creates a new `toolsPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The type of the tool, e.g., "function".
-                    ///   - name: The name of the function.
-                    ///   - description: The description of the function.
-                    ///   - parameters: Parameters of the function in JSON Schema.
-                    public init(
-                        _type: Swift.String? = nil,
-                        name: Swift.String? = nil,
-                        description: Swift.String? = nil,
-                        parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
-                    ) {
-                        self._type = _type
-                        self.name = name
-                        self.description = description
-                        self.parameters = parameters
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case name
-                        case description
-                        case parameters
-                    }
-                }
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/tools`.
-                public typealias toolsPayload = [Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.toolsPayloadPayload]
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/tools`.
-                public var tools: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.toolsPayload?
-                /// How the model chooses tools. Options are "auto", "none", "required", or specify a function.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/tool_choice`.
-                public var tool_choice: Swift.String?
-                /// Sampling temperature for the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/temperature`.
-                public var temperature: Swift.Double?
-                /// Maximum number of output tokens for a single assistant response, inclusive of tool calls. Provide an integer between 1 and 4096 to limit output tokens, or "inf" for the maximum available tokens for a given model. Defaults to "inf".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/max_output_tokens`.
-                @frozen public enum max_output_tokensPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/max_output_tokens/case1`.
-                    case case1(Swift.Int)
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/max_output_tokens/case2`.
-                    @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
-                        case inf = "inf"
-                    }
-                    /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/max_output_tokens/case2`.
-                    case case2(Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.max_output_tokensPayload.Case2Payload)
-                    public init(from decoder: any Decoder) throws {
-                        var errors: [any Error] = []
-                        do {
-                            self = .case1(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        do {
-                            self = .case2(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
-                            type: Self.self,
-                            codingPath: decoder.codingPath,
-                            errors: errors
-                        )
-                    }
-                    public func encode(to encoder: any Encoder) throws {
-                        switch self {
-                        case let .case1(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        case let .case2(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        }
-                    }
-                }
-                /// Maximum number of output tokens for a single assistant response, inclusive of tool calls. Provide an integer between 1 and 4096 to limit output tokens, or "inf" for the maximum available tokens for a given model. Defaults to "inf".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session/max_output_tokens`.
-                public var max_output_tokens: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.max_output_tokensPayload?
-                /// Creates a new `sessionPayload`.
-                ///
-                /// - Parameters:
-                ///   - modalities: The set of modalities the model can respond with. To disable audio, set this to ["text"].
-                ///   - instructions: The default system instructions prepended to model calls.
-                ///   - voice: The voice the model uses to respond - one of `alloy`, `echo`, or  `shimmer`. Cannot be changed once the model has responded with audio  at least once.
-                ///   - input_audio_format: The format of input audio. Options are "pcm16", "g711_ulaw", or "g711_alaw".
-                ///   - output_audio_format: The format of output audio. Options are "pcm16", "g711_ulaw", or "g711_alaw".
-                ///   - input_audio_transcription: Configuration for input audio transcription. Can be set to `null` to turn off.
-                ///   - turn_detection: Configuration for turn detection. Can be set to `null` to turn off.
-                ///   - tools: Tools (functions) available to the model.
-                ///   - tool_choice: How the model chooses tools. Options are "auto", "none", "required", or specify a function.
-                ///   - temperature: Sampling temperature for the model.
-                ///   - max_output_tokens: Maximum number of output tokens for a single assistant response, inclusive of tool calls. Provide an integer between 1 and 4096 to limit output tokens, or "inf" for the maximum available tokens for a given model. Defaults to "inf".
-                public init(
-                    modalities: [Swift.String]? = nil,
-                    instructions: Swift.String? = nil,
-                    voice: Swift.String? = nil,
-                    input_audio_format: Swift.String? = nil,
-                    output_audio_format: Swift.String? = nil,
-                    input_audio_transcription: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.input_audio_transcriptionPayload? = nil,
-                    turn_detection: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.turn_detectionPayload? = nil,
-                    tools: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.toolsPayload? = nil,
-                    tool_choice: Swift.String? = nil,
-                    temperature: Swift.Double? = nil,
-                    max_output_tokens: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload.max_output_tokensPayload? = nil
-                ) {
-                    self.modalities = modalities
-                    self.instructions = instructions
-                    self.voice = voice
-                    self.input_audio_format = input_audio_format
-                    self.output_audio_format = output_audio_format
-                    self.input_audio_transcription = input_audio_transcription
-                    self.turn_detection = turn_detection
-                    self.tools = tools
-                    self.tool_choice = tool_choice
-                    self.temperature = temperature
-                    self.max_output_tokens = max_output_tokens
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case modalities
-                    case instructions
-                    case voice
-                    case input_audio_format
-                    case output_audio_format
-                    case input_audio_transcription
-                    case turn_detection
-                    case tools
-                    case tool_choice
-                    case temperature
-                    case max_output_tokens
-                }
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case session_period_update = "session.update"
             }
-            /// Session configuration to update.
+            /// The event type, must be `session.update`.
             ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/type`.
+            public var _type: Components.Schemas.RealtimeClientEventSessionUpdate._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeClientEventSessionUpdate/session`.
-            public var session: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload
+            public var session: Components.Schemas.RealtimeSessionCreateRequest
             /// Creates a new `RealtimeClientEventSessionUpdate`.
             ///
             /// - Parameters:
             ///   - event_id: Optional client-generated ID used to identify this event.
-            ///   - _type: The event type, must be "session.update".
-            ///   - session: Session configuration to update.
+            ///   - _type: The event type, must be `session.update`.
+            ///   - session:
             public init(
                 event_id: Swift.String? = nil,
-                _type: Swift.String,
-                session: Components.Schemas.RealtimeClientEventSessionUpdate.sessionPayload
+                _type: Components.Schemas.RealtimeClientEventSessionUpdate._typePayload,
+                session: Components.Schemas.RealtimeSessionCreateRequest
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -17848,7 +19801,1254 @@ public enum Components {
                 case session
             }
         }
+        /// The item to add to the conversation.
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem`.
+        public struct RealtimeConversationItem: Codable, Hashable, Sendable {
+            /// The unique ID of the item, this can be generated by the client to help 
+            /// manage server-side context, but is not required because the server will 
+            /// generate one if not provided.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/id`.
+            public var id: Swift.String?
+            /// The type of the item (`message`, `function_call`, `function_call_output`).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/type`.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case message = "message"
+                case function_call = "function_call"
+                case function_call_output = "function_call_output"
+            }
+            /// The type of the item (`message`, `function_call`, `function_call_output`).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/type`.
+            public var _type: Components.Schemas.RealtimeConversationItem._typePayload?
+            /// Identifier for the API object being returned - always `realtime.item`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case realtime_period_item = "realtime.item"
+            }
+            /// Identifier for the API object being returned - always `realtime.item`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/object`.
+            public var object: Components.Schemas.RealtimeConversationItem.objectPayload?
+            /// The status of the item (`completed`, `incomplete`). These have no effect 
+            /// on the conversation, but are accepted for consistency with the 
+            /// `conversation.item.created` event.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/status`.
+            @frozen public enum statusPayload: String, Codable, Hashable, Sendable {
+                case completed = "completed"
+                case incomplete = "incomplete"
+            }
+            /// The status of the item (`completed`, `incomplete`). These have no effect 
+            /// on the conversation, but are accepted for consistency with the 
+            /// `conversation.item.created` event.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/status`.
+            public var status: Components.Schemas.RealtimeConversationItem.statusPayload?
+            /// The role of the message sender (`user`, `assistant`, `system`), only 
+            /// applicable for `message` items.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/role`.
+            @frozen public enum rolePayload: String, Codable, Hashable, Sendable {
+                case user = "user"
+                case assistant = "assistant"
+                case system = "system"
+            }
+            /// The role of the message sender (`user`, `assistant`, `system`), only 
+            /// applicable for `message` items.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/role`.
+            public var role: Components.Schemas.RealtimeConversationItem.rolePayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload`.
+            public struct contentPayloadPayload: Codable, Hashable, Sendable {
+                /// The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case input_audio = "input_audio"
+                    case input_text = "input_text"
+                    case item_reference = "item_reference"
+                    case text = "text"
+                }
+                /// The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload/type`.
+                public var _type: Components.Schemas.RealtimeConversationItem.contentPayloadPayload._typePayload?
+                /// The text content, used for `input_text` and `text` content types.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload/text`.
+                public var text: Swift.String?
+                /// ID of a previous conversation item to reference (for `item_reference`
+                /// content types in `response.create` events). These can reference both
+                /// client and server created items.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload/id`.
+                public var id: Swift.String?
+                /// Base64-encoded audio bytes, used for `input_audio` content type.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload/audio`.
+                public var audio: Swift.String?
+                /// The transcript of the audio, used for `input_audio` content type.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/contentPayload/transcript`.
+                public var transcript: Swift.String?
+                /// Creates a new `contentPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+                ///   - text: The text content, used for `input_text` and `text` content types.
+                ///   - id: ID of a previous conversation item to reference (for `item_reference`
+                ///   - audio: Base64-encoded audio bytes, used for `input_audio` content type.
+                ///   - transcript: The transcript of the audio, used for `input_audio` content type.
+                public init(
+                    _type: Components.Schemas.RealtimeConversationItem.contentPayloadPayload._typePayload? = nil,
+                    text: Swift.String? = nil,
+                    id: Swift.String? = nil,
+                    audio: Swift.String? = nil,
+                    transcript: Swift.String? = nil
+                ) {
+                    self._type = _type
+                    self.text = text
+                    self.id = id
+                    self.audio = audio
+                    self.transcript = transcript
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case text
+                    case id
+                    case audio
+                    case transcript
+                }
+            }
+            /// The content of the message, applicable for `message` items. 
+            /// - Message items of role `system` support only `input_text` content
+            /// - Message items of role `user` support `input_text` and `input_audio` 
+            ///   content
+            /// - Message items of role `assistant` support `text` content.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/content`.
+            public typealias contentPayload = [Components.Schemas.RealtimeConversationItem.contentPayloadPayload]
+            /// The content of the message, applicable for `message` items. 
+            /// - Message items of role `system` support only `input_text` content
+            /// - Message items of role `user` support `input_text` and `input_audio` 
+            ///   content
+            /// - Message items of role `assistant` support `text` content.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/content`.
+            public var content: Components.Schemas.RealtimeConversationItem.contentPayload?
+            /// The ID of the function call (for `function_call` and 
+            /// `function_call_output` items). If passed on a `function_call_output` 
+            /// item, the server will check that a `function_call` item with the same 
+            /// ID exists in the conversation history.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/call_id`.
+            public var call_id: Swift.String?
+            /// The name of the function being called (for `function_call` items).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/name`.
+            public var name: Swift.String?
+            /// The arguments of the function call (for `function_call` items).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/arguments`.
+            public var arguments: Swift.String?
+            /// The output of the function call (for `function_call_output` items).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItem/output`.
+            public var output: Swift.String?
+            /// Creates a new `RealtimeConversationItem`.
+            ///
+            /// - Parameters:
+            ///   - id: The unique ID of the item, this can be generated by the client to help 
+            ///   - _type: The type of the item (`message`, `function_call`, `function_call_output`).
+            ///   - object: Identifier for the API object being returned - always `realtime.item`.
+            ///   - status: The status of the item (`completed`, `incomplete`). These have no effect 
+            ///   - role: The role of the message sender (`user`, `assistant`, `system`), only 
+            ///   - content: The content of the message, applicable for `message` items. 
+            ///   - call_id: The ID of the function call (for `function_call` and 
+            ///   - name: The name of the function being called (for `function_call` items).
+            ///   - arguments: The arguments of the function call (for `function_call` items).
+            ///   - output: The output of the function call (for `function_call_output` items).
+            public init(
+                id: Swift.String? = nil,
+                _type: Components.Schemas.RealtimeConversationItem._typePayload? = nil,
+                object: Components.Schemas.RealtimeConversationItem.objectPayload? = nil,
+                status: Components.Schemas.RealtimeConversationItem.statusPayload? = nil,
+                role: Components.Schemas.RealtimeConversationItem.rolePayload? = nil,
+                content: Components.Schemas.RealtimeConversationItem.contentPayload? = nil,
+                call_id: Swift.String? = nil,
+                name: Swift.String? = nil,
+                arguments: Swift.String? = nil,
+                output: Swift.String? = nil
+            ) {
+                self.id = id
+                self._type = _type
+                self.object = object
+                self.status = status
+                self.role = role
+                self.content = content
+                self.call_id = call_id
+                self.name = name
+                self.arguments = arguments
+                self.output = output
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case _type = "type"
+                case object
+                case status
+                case role
+                case content
+                case call_id
+                case name
+                case arguments
+                case output
+            }
+        }
+        /// The item to add to the conversation.
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference`.
+        public struct RealtimeConversationItemWithReference: Codable, Hashable, Sendable {
+            /// For an item of type (`message` | `function_call` | `function_call_output`)
+            /// this field allows the client to assign the unique ID of the item. It is
+            /// not required because the server will generate one if not provided.
+            ///
+            /// For an item of type `item_reference`, this field is required and is a
+            /// reference to any item that has previously existed in the conversation.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/id`.
+            public var id: Swift.String?
+            /// The type of the item (`message`, `function_call`, `function_call_output`, `item_reference`).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/type`.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case message = "message"
+                case function_call = "function_call"
+                case function_call_output = "function_call_output"
+            }
+            /// The type of the item (`message`, `function_call`, `function_call_output`, `item_reference`).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/type`.
+            public var _type: Components.Schemas.RealtimeConversationItemWithReference._typePayload?
+            /// Identifier for the API object being returned - always `realtime.item`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case realtime_period_item = "realtime.item"
+            }
+            /// Identifier for the API object being returned - always `realtime.item`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/object`.
+            public var object: Components.Schemas.RealtimeConversationItemWithReference.objectPayload?
+            /// The status of the item (`completed`, `incomplete`). These have no effect 
+            /// on the conversation, but are accepted for consistency with the 
+            /// `conversation.item.created` event.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/status`.
+            @frozen public enum statusPayload: String, Codable, Hashable, Sendable {
+                case completed = "completed"
+                case incomplete = "incomplete"
+            }
+            /// The status of the item (`completed`, `incomplete`). These have no effect 
+            /// on the conversation, but are accepted for consistency with the 
+            /// `conversation.item.created` event.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/status`.
+            public var status: Components.Schemas.RealtimeConversationItemWithReference.statusPayload?
+            /// The role of the message sender (`user`, `assistant`, `system`), only 
+            /// applicable for `message` items.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/role`.
+            @frozen public enum rolePayload: String, Codable, Hashable, Sendable {
+                case user = "user"
+                case assistant = "assistant"
+                case system = "system"
+            }
+            /// The role of the message sender (`user`, `assistant`, `system`), only 
+            /// applicable for `message` items.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/role`.
+            public var role: Components.Schemas.RealtimeConversationItemWithReference.rolePayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload`.
+            public struct contentPayloadPayload: Codable, Hashable, Sendable {
+                /// The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case input_audio = "input_audio"
+                    case input_text = "input_text"
+                    case item_reference = "item_reference"
+                    case text = "text"
+                }
+                /// The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload/type`.
+                public var _type: Components.Schemas.RealtimeConversationItemWithReference.contentPayloadPayload._typePayload?
+                /// The text content, used for `input_text` and `text` content types.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload/text`.
+                public var text: Swift.String?
+                /// ID of a previous conversation item to reference (for `item_reference`
+                /// content types in `response.create` events). These can reference both
+                /// client and server created items.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload/id`.
+                public var id: Swift.String?
+                /// Base64-encoded audio bytes, used for `input_audio` content type.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload/audio`.
+                public var audio: Swift.String?
+                /// The transcript of the audio, used for `input_audio` content type.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/contentPayload/transcript`.
+                public var transcript: Swift.String?
+                /// Creates a new `contentPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+                ///   - text: The text content, used for `input_text` and `text` content types.
+                ///   - id: ID of a previous conversation item to reference (for `item_reference`
+                ///   - audio: Base64-encoded audio bytes, used for `input_audio` content type.
+                ///   - transcript: The transcript of the audio, used for `input_audio` content type.
+                public init(
+                    _type: Components.Schemas.RealtimeConversationItemWithReference.contentPayloadPayload._typePayload? = nil,
+                    text: Swift.String? = nil,
+                    id: Swift.String? = nil,
+                    audio: Swift.String? = nil,
+                    transcript: Swift.String? = nil
+                ) {
+                    self._type = _type
+                    self.text = text
+                    self.id = id
+                    self.audio = audio
+                    self.transcript = transcript
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case text
+                    case id
+                    case audio
+                    case transcript
+                }
+            }
+            /// The content of the message, applicable for `message` items. 
+            /// - Message items of role `system` support only `input_text` content
+            /// - Message items of role `user` support `input_text` and `input_audio` 
+            ///   content
+            /// - Message items of role `assistant` support `text` content.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/content`.
+            public typealias contentPayload = [Components.Schemas.RealtimeConversationItemWithReference.contentPayloadPayload]
+            /// The content of the message, applicable for `message` items. 
+            /// - Message items of role `system` support only `input_text` content
+            /// - Message items of role `user` support `input_text` and `input_audio` 
+            ///   content
+            /// - Message items of role `assistant` support `text` content.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/content`.
+            public var content: Components.Schemas.RealtimeConversationItemWithReference.contentPayload?
+            /// The ID of the function call (for `function_call` and 
+            /// `function_call_output` items). If passed on a `function_call_output` 
+            /// item, the server will check that a `function_call` item with the same 
+            /// ID exists in the conversation history.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/call_id`.
+            public var call_id: Swift.String?
+            /// The name of the function being called (for `function_call` items).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/name`.
+            public var name: Swift.String?
+            /// The arguments of the function call (for `function_call` items).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/arguments`.
+            public var arguments: Swift.String?
+            /// The output of the function call (for `function_call_output` items).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeConversationItemWithReference/output`.
+            public var output: Swift.String?
+            /// Creates a new `RealtimeConversationItemWithReference`.
+            ///
+            /// - Parameters:
+            ///   - id: For an item of type (`message` | `function_call` | `function_call_output`)
+            ///   - _type: The type of the item (`message`, `function_call`, `function_call_output`, `item_reference`).
+            ///   - object: Identifier for the API object being returned - always `realtime.item`.
+            ///   - status: The status of the item (`completed`, `incomplete`). These have no effect 
+            ///   - role: The role of the message sender (`user`, `assistant`, `system`), only 
+            ///   - content: The content of the message, applicable for `message` items. 
+            ///   - call_id: The ID of the function call (for `function_call` and 
+            ///   - name: The name of the function being called (for `function_call` items).
+            ///   - arguments: The arguments of the function call (for `function_call` items).
+            ///   - output: The output of the function call (for `function_call_output` items).
+            public init(
+                id: Swift.String? = nil,
+                _type: Components.Schemas.RealtimeConversationItemWithReference._typePayload? = nil,
+                object: Components.Schemas.RealtimeConversationItemWithReference.objectPayload? = nil,
+                status: Components.Schemas.RealtimeConversationItemWithReference.statusPayload? = nil,
+                role: Components.Schemas.RealtimeConversationItemWithReference.rolePayload? = nil,
+                content: Components.Schemas.RealtimeConversationItemWithReference.contentPayload? = nil,
+                call_id: Swift.String? = nil,
+                name: Swift.String? = nil,
+                arguments: Swift.String? = nil,
+                output: Swift.String? = nil
+            ) {
+                self.id = id
+                self._type = _type
+                self.object = object
+                self.status = status
+                self.role = role
+                self.content = content
+                self.call_id = call_id
+                self.name = name
+                self.arguments = arguments
+                self.output = output
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case _type = "type"
+                case object
+                case status
+                case role
+                case content
+                case call_id
+                case name
+                case arguments
+                case output
+            }
+        }
+        /// The response resource.
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeResponse`.
+        public struct RealtimeResponse: Codable, Hashable, Sendable {
+            /// The unique ID of the response.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/id`.
+            public var id: Swift.String?
+            /// The object type, must be `realtime.response`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case realtime_period_response = "realtime.response"
+            }
+            /// The object type, must be `realtime.response`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/object`.
+            public var object: Components.Schemas.RealtimeResponse.objectPayload?
+            /// The final status of the response (`completed`, `cancelled`, `failed`, or 
+            /// `incomplete`).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status`.
+            @frozen public enum statusPayload: String, Codable, Hashable, Sendable {
+                case completed = "completed"
+                case cancelled = "cancelled"
+                case failed = "failed"
+                case incomplete = "incomplete"
+            }
+            /// The final status of the response (`completed`, `cancelled`, `failed`, or 
+            /// `incomplete`).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status`.
+            public var status: Components.Schemas.RealtimeResponse.statusPayload?
+            /// Additional details about the status.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details`.
+            public struct status_detailsPayload: Codable, Hashable, Sendable {
+                /// The type of error that caused the response to fail, corresponding 
+                /// with the `status` field (`completed`, `cancelled`, `incomplete`, 
+                /// `failed`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case completed = "completed"
+                    case cancelled = "cancelled"
+                    case failed = "failed"
+                    case incomplete = "incomplete"
+                }
+                /// The type of error that caused the response to fail, corresponding 
+                /// with the `status` field (`completed`, `cancelled`, `incomplete`, 
+                /// `failed`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/type`.
+                public var _type: Components.Schemas.RealtimeResponse.status_detailsPayload._typePayload?
+                /// The reason the Response did not complete. For a `cancelled` Response, 
+                /// one of `turn_detected` (the server VAD detected a new start of speech) 
+                /// or `client_cancelled` (the client sent a cancel event). For an 
+                /// `incomplete` Response, one of `max_output_tokens` or `content_filter` 
+                /// (the server-side safety filter activated and cut off the response).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/reason`.
+                @frozen public enum reasonPayload: String, Codable, Hashable, Sendable {
+                    case turn_detected = "turn_detected"
+                    case client_cancelled = "client_cancelled"
+                    case max_output_tokens = "max_output_tokens"
+                    case content_filter = "content_filter"
+                }
+                /// The reason the Response did not complete. For a `cancelled` Response, 
+                /// one of `turn_detected` (the server VAD detected a new start of speech) 
+                /// or `client_cancelled` (the client sent a cancel event). For an 
+                /// `incomplete` Response, one of `max_output_tokens` or `content_filter` 
+                /// (the server-side safety filter activated and cut off the response).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/reason`.
+                public var reason: Components.Schemas.RealtimeResponse.status_detailsPayload.reasonPayload?
+                /// A description of the error that caused the response to fail, 
+                /// populated when the `status` is `failed`.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/error`.
+                public struct errorPayload: Codable, Hashable, Sendable {
+                    /// The type of error.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/error/type`.
+                    public var _type: Swift.String?
+                    /// Error code, if any.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/error/code`.
+                    public var code: Swift.String?
+                    /// Creates a new `errorPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - _type: The type of error.
+                    ///   - code: Error code, if any.
+                    public init(
+                        _type: Swift.String? = nil,
+                        code: Swift.String? = nil
+                    ) {
+                        self._type = _type
+                        self.code = code
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case _type = "type"
+                        case code
+                    }
+                }
+                /// A description of the error that caused the response to fail, 
+                /// populated when the `status` is `failed`.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details/error`.
+                public var error: Components.Schemas.RealtimeResponse.status_detailsPayload.errorPayload?
+                /// Creates a new `status_detailsPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The type of error that caused the response to fail, corresponding 
+                ///   - reason: The reason the Response did not complete. For a `cancelled` Response, 
+                ///   - error: A description of the error that caused the response to fail, 
+                public init(
+                    _type: Components.Schemas.RealtimeResponse.status_detailsPayload._typePayload? = nil,
+                    reason: Components.Schemas.RealtimeResponse.status_detailsPayload.reasonPayload? = nil,
+                    error: Components.Schemas.RealtimeResponse.status_detailsPayload.errorPayload? = nil
+                ) {
+                    self._type = _type
+                    self.reason = reason
+                    self.error = error
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case reason
+                    case error
+                }
+            }
+            /// Additional details about the status.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/status_details`.
+            public var status_details: Components.Schemas.RealtimeResponse.status_detailsPayload?
+            /// The list of output items generated by the response.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/output`.
+            public var output: [Components.Schemas.RealtimeConversationItem]?
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/metadata`.
+            public var metadata: Components.Schemas.Metadata?
+            /// Usage statistics for the Response, this will correspond to billing. A 
+            /// Realtime API session will maintain a conversation context and append new 
+            /// Items to the Conversation, thus output from previous turns (text and 
+            /// audio tokens) will become the input for later turns.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage`.
+            public struct usagePayload: Codable, Hashable, Sendable {
+                /// The total number of tokens in the Response including input and output 
+                /// text and audio tokens.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/total_tokens`.
+                public var total_tokens: Swift.Int?
+                /// The number of input tokens used in the Response, including text and 
+                /// audio tokens.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/input_tokens`.
+                public var input_tokens: Swift.Int?
+                /// The number of output tokens sent in the Response, including text and 
+                /// audio tokens.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/output_tokens`.
+                public var output_tokens: Swift.Int?
+                /// Details about the input tokens used in the Response.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/input_token_details`.
+                public struct input_token_detailsPayload: Codable, Hashable, Sendable {
+                    /// The number of cached tokens used in the Response.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/input_token_details/cached_tokens`.
+                    public var cached_tokens: Swift.Int?
+                    /// The number of text tokens used in the Response.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/input_token_details/text_tokens`.
+                    public var text_tokens: Swift.Int?
+                    /// The number of audio tokens used in the Response.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/input_token_details/audio_tokens`.
+                    public var audio_tokens: Swift.Int?
+                    /// Creates a new `input_token_detailsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - cached_tokens: The number of cached tokens used in the Response.
+                    ///   - text_tokens: The number of text tokens used in the Response.
+                    ///   - audio_tokens: The number of audio tokens used in the Response.
+                    public init(
+                        cached_tokens: Swift.Int? = nil,
+                        text_tokens: Swift.Int? = nil,
+                        audio_tokens: Swift.Int? = nil
+                    ) {
+                        self.cached_tokens = cached_tokens
+                        self.text_tokens = text_tokens
+                        self.audio_tokens = audio_tokens
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case cached_tokens
+                        case text_tokens
+                        case audio_tokens
+                    }
+                }
+                /// Details about the input tokens used in the Response.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/input_token_details`.
+                public var input_token_details: Components.Schemas.RealtimeResponse.usagePayload.input_token_detailsPayload?
+                /// Details about the output tokens used in the Response.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/output_token_details`.
+                public struct output_token_detailsPayload: Codable, Hashable, Sendable {
+                    /// The number of text tokens used in the Response.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/output_token_details/text_tokens`.
+                    public var text_tokens: Swift.Int?
+                    /// The number of audio tokens used in the Response.
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/output_token_details/audio_tokens`.
+                    public var audio_tokens: Swift.Int?
+                    /// Creates a new `output_token_detailsPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - text_tokens: The number of text tokens used in the Response.
+                    ///   - audio_tokens: The number of audio tokens used in the Response.
+                    public init(
+                        text_tokens: Swift.Int? = nil,
+                        audio_tokens: Swift.Int? = nil
+                    ) {
+                        self.text_tokens = text_tokens
+                        self.audio_tokens = audio_tokens
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case text_tokens
+                        case audio_tokens
+                    }
+                }
+                /// Details about the output tokens used in the Response.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage/output_token_details`.
+                public var output_token_details: Components.Schemas.RealtimeResponse.usagePayload.output_token_detailsPayload?
+                /// Creates a new `usagePayload`.
+                ///
+                /// - Parameters:
+                ///   - total_tokens: The total number of tokens in the Response including input and output 
+                ///   - input_tokens: The number of input tokens used in the Response, including text and 
+                ///   - output_tokens: The number of output tokens sent in the Response, including text and 
+                ///   - input_token_details: Details about the input tokens used in the Response.
+                ///   - output_token_details: Details about the output tokens used in the Response.
+                public init(
+                    total_tokens: Swift.Int? = nil,
+                    input_tokens: Swift.Int? = nil,
+                    output_tokens: Swift.Int? = nil,
+                    input_token_details: Components.Schemas.RealtimeResponse.usagePayload.input_token_detailsPayload? = nil,
+                    output_token_details: Components.Schemas.RealtimeResponse.usagePayload.output_token_detailsPayload? = nil
+                ) {
+                    self.total_tokens = total_tokens
+                    self.input_tokens = input_tokens
+                    self.output_tokens = output_tokens
+                    self.input_token_details = input_token_details
+                    self.output_token_details = output_token_details
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case total_tokens
+                    case input_tokens
+                    case output_tokens
+                    case input_token_details
+                    case output_token_details
+                }
+            }
+            /// Usage statistics for the Response, this will correspond to billing. A 
+            /// Realtime API session will maintain a conversation context and append new 
+            /// Items to the Conversation, thus output from previous turns (text and 
+            /// audio tokens) will become the input for later turns.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/usage`.
+            public var usage: Components.Schemas.RealtimeResponse.usagePayload?
+            /// Which conversation the response is added to, determined by the `conversation`
+            /// field in the `response.create` event. If `auto`, the response will be added to
+            /// the default conversation and the value of `conversation_id` will be an id like
+            /// `conv_1234`. If `none`, the response will not be added to any conversation and
+            /// the value of `conversation_id` will be `null`. If responses are being triggered
+            /// by server VAD, the response will be added to the default conversation, thus
+            /// the `conversation_id` will be an id like `conv_1234`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/conversation_id`.
+            public var conversation_id: Swift.String?
+            /// The voice the model used to respond.
+            /// Current voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/voice`.
+            @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
+                case alloy = "alloy"
+                case ash = "ash"
+                case ballad = "ballad"
+                case coral = "coral"
+                case echo = "echo"
+                case sage = "sage"
+                case shimmer = "shimmer"
+                case verse = "verse"
+            }
+            /// The voice the model used to respond.
+            /// Current voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/voice`.
+            public var voice: Components.Schemas.RealtimeResponse.voicePayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/modalitiesPayload`.
+            @frozen public enum modalitiesPayloadPayload: String, Codable, Hashable, Sendable {
+                case text = "text"
+                case audio = "audio"
+            }
+            /// The set of modalities the model used to respond. If there are multiple modalities,
+            /// the model will pick one, for example if `modalities` is `["text", "audio"]`, the model
+            /// could be responding in either text or audio.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/modalities`.
+            public typealias modalitiesPayload = [Components.Schemas.RealtimeResponse.modalitiesPayloadPayload]
+            /// The set of modalities the model used to respond. If there are multiple modalities,
+            /// the model will pick one, for example if `modalities` is `["text", "audio"]`, the model
+            /// could be responding in either text or audio.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/modalities`.
+            public var modalities: Components.Schemas.RealtimeResponse.modalitiesPayload?
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/output_audio_format`.
+            @frozen public enum output_audio_formatPayload: String, Codable, Hashable, Sendable {
+                case pcm16 = "pcm16"
+                case g711_ulaw = "g711_ulaw"
+                case g711_alaw = "g711_alaw"
+            }
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/output_audio_format`.
+            public var output_audio_format: Components.Schemas.RealtimeResponse.output_audio_formatPayload?
+            /// Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/temperature`.
+            public var temperature: Swift.Double?
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls, that was used in this response.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/max_output_tokens`.
+            @frozen public enum max_output_tokensPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/max_output_tokens/case1`.
+                case case1(Swift.Int)
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/max_output_tokens/case2`.
+                @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
+                    case inf = "inf"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponse/max_output_tokens/case2`.
+                case case2(Components.Schemas.RealtimeResponse.max_output_tokensPayload.Case2Payload)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls, that was used in this response.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponse/max_output_tokens`.
+            public var max_output_tokens: Components.Schemas.RealtimeResponse.max_output_tokensPayload?
+            /// Creates a new `RealtimeResponse`.
+            ///
+            /// - Parameters:
+            ///   - id: The unique ID of the response.
+            ///   - object: The object type, must be `realtime.response`.
+            ///   - status: The final status of the response (`completed`, `cancelled`, `failed`, or 
+            ///   - status_details: Additional details about the status.
+            ///   - output: The list of output items generated by the response.
+            ///   - metadata:
+            ///   - usage: Usage statistics for the Response, this will correspond to billing. A 
+            ///   - conversation_id: Which conversation the response is added to, determined by the `conversation`
+            ///   - voice: The voice the model used to respond.
+            ///   - modalities: The set of modalities the model used to respond. If there are multiple modalities,
+            ///   - output_audio_format: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - temperature: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///   - max_output_tokens: Maximum number of output tokens for a single assistant response,
+            public init(
+                id: Swift.String? = nil,
+                object: Components.Schemas.RealtimeResponse.objectPayload? = nil,
+                status: Components.Schemas.RealtimeResponse.statusPayload? = nil,
+                status_details: Components.Schemas.RealtimeResponse.status_detailsPayload? = nil,
+                output: [Components.Schemas.RealtimeConversationItem]? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
+                usage: Components.Schemas.RealtimeResponse.usagePayload? = nil,
+                conversation_id: Swift.String? = nil,
+                voice: Components.Schemas.RealtimeResponse.voicePayload? = nil,
+                modalities: Components.Schemas.RealtimeResponse.modalitiesPayload? = nil,
+                output_audio_format: Components.Schemas.RealtimeResponse.output_audio_formatPayload? = nil,
+                temperature: Swift.Double? = nil,
+                max_output_tokens: Components.Schemas.RealtimeResponse.max_output_tokensPayload? = nil
+            ) {
+                self.id = id
+                self.object = object
+                self.status = status
+                self.status_details = status_details
+                self.output = output
+                self.metadata = metadata
+                self.usage = usage
+                self.conversation_id = conversation_id
+                self.voice = voice
+                self.modalities = modalities
+                self.output_audio_format = output_audio_format
+                self.temperature = temperature
+                self.max_output_tokens = max_output_tokens
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case object
+                case status
+                case status_details
+                case output
+                case metadata
+                case usage
+                case conversation_id
+                case voice
+                case modalities
+                case output_audio_format
+                case temperature
+                case max_output_tokens
+            }
+        }
+        /// Create a new Realtime response with these parameters
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams`.
+        public struct RealtimeResponseCreateParams: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/modalitiesPayload`.
+            @frozen public enum modalitiesPayloadPayload: String, Codable, Hashable, Sendable {
+                case text = "text"
+                case audio = "audio"
+            }
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/modalities`.
+            public typealias modalitiesPayload = [Components.Schemas.RealtimeResponseCreateParams.modalitiesPayloadPayload]
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/modalities`.
+            public var modalities: Components.Schemas.RealtimeResponseCreateParams.modalitiesPayload?
+            /// The default system instructions (i.e. system message) prepended to model 
+            /// calls. This field allows the client to guide the model on desired 
+            /// responses. The model can be instructed on response content and format, 
+            /// (e.g. "be extremely succinct", "act friendly", "here are examples of good 
+            /// responses") and on audio behavior (e.g. "talk quickly", "inject emotion 
+            /// into your voice", "laugh frequently"). The instructions are not guaranteed 
+            /// to be followed by the model, but they provide guidance to the model on the 
+            /// desired behavior.
+            ///
+            /// Note that the server sets default instructions which will be used if this 
+            /// field is not set and are visible in the `session.created` event at the 
+            /// start of the session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/instructions`.
+            public var instructions: Swift.String?
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/voice`.
+            @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
+                case alloy = "alloy"
+                case ash = "ash"
+                case ballad = "ballad"
+                case coral = "coral"
+                case echo = "echo"
+                case sage = "sage"
+                case shimmer = "shimmer"
+                case verse = "verse"
+            }
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/voice`.
+            public var voice: Components.Schemas.RealtimeResponseCreateParams.voicePayload?
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/output_audio_format`.
+            @frozen public enum output_audio_formatPayload: String, Codable, Hashable, Sendable {
+                case pcm16 = "pcm16"
+                case g711_ulaw = "g711_ulaw"
+                case g711_alaw = "g711_alaw"
+            }
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/output_audio_format`.
+            public var output_audio_format: Components.Schemas.RealtimeResponseCreateParams.output_audio_formatPayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/toolsPayload`.
+            public struct toolsPayloadPayload: Codable, Hashable, Sendable {
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/toolsPayload/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case function = "function"
+                }
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/toolsPayload/type`.
+                public var _type: Components.Schemas.RealtimeResponseCreateParams.toolsPayloadPayload._typePayload?
+                /// The name of the function.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/toolsPayload/name`.
+                public var name: Swift.String?
+                /// The description of the function, including guidance on when and how 
+                /// to call it, and guidance about what to tell the user when calling 
+                /// (if anything).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/toolsPayload/description`.
+                public var description: Swift.String?
+                /// Parameters of the function in JSON Schema.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/toolsPayload/parameters`.
+                public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
+                /// Creates a new `toolsPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The type of the tool, i.e. `function`.
+                ///   - name: The name of the function.
+                ///   - description: The description of the function, including guidance on when and how 
+                ///   - parameters: Parameters of the function in JSON Schema.
+                public init(
+                    _type: Components.Schemas.RealtimeResponseCreateParams.toolsPayloadPayload._typePayload? = nil,
+                    name: Swift.String? = nil,
+                    description: Swift.String? = nil,
+                    parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                ) {
+                    self._type = _type
+                    self.name = name
+                    self.description = description
+                    self.parameters = parameters
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case name
+                    case description
+                    case parameters
+                }
+            }
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/tools`.
+            public typealias toolsPayload = [Components.Schemas.RealtimeResponseCreateParams.toolsPayloadPayload]
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/tools`.
+            public var tools: Components.Schemas.RealtimeResponseCreateParams.toolsPayload?
+            /// How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            /// specify a function, like `{"type": "function", "function": {"name": "my_function"}}`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/tool_choice`.
+            public var tool_choice: Swift.String?
+            /// Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/temperature`.
+            public var temperature: Swift.Double?
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/max_response_output_tokens`.
+            @frozen public enum max_response_output_tokensPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/max_response_output_tokens/case1`.
+                case case1(Swift.Int)
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/max_response_output_tokens/case2`.
+                @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
+                    case inf = "inf"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/max_response_output_tokens/case2`.
+                case case2(Components.Schemas.RealtimeResponseCreateParams.max_response_output_tokensPayload.Case2Payload)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/max_response_output_tokens`.
+            public var max_response_output_tokens: Components.Schemas.RealtimeResponseCreateParams.max_response_output_tokensPayload?
+            /// Controls which conversation the response is added to. Currently supports
+            /// `auto` and `none`, with `auto` as the default value. The `auto` value
+            /// means that the contents of the response will be added to the default
+            /// conversation. Set this to `none` to create an out-of-band response which 
+            /// will not add items to default conversation.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/conversation`.
+            @frozen public enum conversationPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/conversation/case1`.
+                case case1(Swift.String)
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/conversation/case2`.
+                @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
+                    case auto = "auto"
+                    case none = "none"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/conversation/case2`.
+                case case2(Components.Schemas.RealtimeResponseCreateParams.conversationPayload.Case2Payload)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// Controls which conversation the response is added to. Currently supports
+            /// `auto` and `none`, with `auto` as the default value. The `auto` value
+            /// means that the contents of the response will be added to the default
+            /// conversation. Set this to `none` to create an out-of-band response which 
+            /// will not add items to default conversation.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/conversation`.
+            public var conversation: Components.Schemas.RealtimeResponseCreateParams.conversationPayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/metadata`.
+            public var metadata: Components.Schemas.Metadata?
+            /// Input items to include in the prompt for the model. Using this field
+            /// creates a new context for this Response instead of using the default
+            /// conversation. An empty array `[]` will clear the context for this Response.
+            /// Note that this can include references to items from the default conversation.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeResponseCreateParams/input`.
+            public var input: [Components.Schemas.RealtimeConversationItemWithReference]?
+            /// Creates a new `RealtimeResponseCreateParams`.
+            ///
+            /// - Parameters:
+            ///   - modalities: The set of modalities the model can respond with. To disable audio,
+            ///   - instructions: The default system instructions (i.e. system message) prepended to model 
+            ///   - voice: The voice the model uses to respond. Voice cannot be changed during the 
+            ///   - output_audio_format: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - tools: Tools (functions) available to the model.
+            ///   - tool_choice: How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            ///   - temperature: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///   - max_response_output_tokens: Maximum number of output tokens for a single assistant response,
+            ///   - conversation: Controls which conversation the response is added to. Currently supports
+            ///   - metadata:
+            ///   - input: Input items to include in the prompt for the model. Using this field
+            public init(
+                modalities: Components.Schemas.RealtimeResponseCreateParams.modalitiesPayload? = nil,
+                instructions: Swift.String? = nil,
+                voice: Components.Schemas.RealtimeResponseCreateParams.voicePayload? = nil,
+                output_audio_format: Components.Schemas.RealtimeResponseCreateParams.output_audio_formatPayload? = nil,
+                tools: Components.Schemas.RealtimeResponseCreateParams.toolsPayload? = nil,
+                tool_choice: Swift.String? = nil,
+                temperature: Swift.Double? = nil,
+                max_response_output_tokens: Components.Schemas.RealtimeResponseCreateParams.max_response_output_tokensPayload? = nil,
+                conversation: Components.Schemas.RealtimeResponseCreateParams.conversationPayload? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
+                input: [Components.Schemas.RealtimeConversationItemWithReference]? = nil
+            ) {
+                self.modalities = modalities
+                self.instructions = instructions
+                self.voice = voice
+                self.output_audio_format = output_audio_format
+                self.tools = tools
+                self.tool_choice = tool_choice
+                self.temperature = temperature
+                self.max_response_output_tokens = max_response_output_tokens
+                self.conversation = conversation
+                self.metadata = metadata
+                self.input = input
+            }
+            public enum CodingKeys: String, CodingKey {
+                case modalities
+                case instructions
+                case voice
+                case output_audio_format
+                case tools
+                case tool_choice
+                case temperature
+                case max_response_output_tokens
+                case conversation
+                case metadata
+                case input
+            }
+        }
         /// Returned when a conversation is created. Emitted right after session creation.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated`.
         public struct RealtimeServerEventConversationCreated: Codable, Hashable, Sendable {
@@ -17856,10 +21056,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "conversation.created".
+            /// The event type, must be `conversation.created`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_created = "conversation.created"
+            }
+            /// The event type, must be `conversation.created`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventConversationCreated._typePayload
             /// The conversation resource.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated/conversation`.
@@ -17868,7 +21074,7 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated/conversation/id`.
                 public var id: Swift.String?
-                /// The object type, must be "realtime.conversation".
+                /// The object type, must be `realtime.conversation`.
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationCreated/conversation/object`.
                 public var object: Swift.String?
@@ -17876,7 +21082,7 @@ public enum Components {
                 ///
                 /// - Parameters:
                 ///   - id: The unique ID of the conversation.
-                ///   - object: The object type, must be "realtime.conversation".
+                ///   - object: The object type, must be `realtime.conversation`.
                 public init(
                     id: Swift.String? = nil,
                     object: Swift.String? = nil
@@ -17897,11 +21103,11 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "conversation.created".
+            ///   - _type: The event type, must be `conversation.created`.
             ///   - conversation: The conversation resource.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventConversationCreated._typePayload,
                 conversation: Components.Schemas.RealtimeServerEventConversationCreated.conversationPayload
             ) {
                 self.event_id = event_id
@@ -17914,7 +21120,17 @@ public enum Components {
                 case conversation
             }
         }
-        /// Returned when a conversation item is created.
+        /// Returned when a conversation item is created. There are several scenarios that 
+        /// produce this event:
+        ///   - The server is generating a Response, which if successful will produce 
+        ///     either one or two Items, which will be of type `message` 
+        ///     (role `assistant`) or type `function_call`.
+        ///   - The input audio buffer has been committed, either by the client or the 
+        ///     server (in `server_vad` mode). The server will take the content of the 
+        ///     input audio buffer and add it to a new user message Item.
+        ///   - The client has sent a `conversation.item.create` event to add a new Item 
+        ///     to the Conversation.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated`.
         public struct RealtimeServerEventConversationItemCreated: Codable, Hashable, Sendable {
@@ -17922,170 +21138,36 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "conversation.item.created".
+            /// The event type, must be `conversation.item.created`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/type`.
-            public var _type: Swift.String
-            /// The ID of the preceding item.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_created = "conversation.item.created"
+            }
+            /// The event type, must be `conversation.item.created`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventConversationItemCreated._typePayload
+            /// The ID of the preceding item in the Conversation context, allows the 
+            /// client to understand the order of the conversation.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/previous_item_id`.
             public var previous_item_id: Swift.String
-            /// The item that was created.
-            ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item`.
-            public struct itemPayload: Codable, Hashable, Sendable {
-                /// The unique ID of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.item".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/object`.
-                public var object: Swift.String?
-                /// The type of the item ("message", "function_call", "function_call_output").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/type`.
-                public var _type: Swift.String?
-                /// The status of the item ("completed", "in_progress", "incomplete").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/status`.
-                public var status: Swift.String?
-                /// The role associated with the item ("user", "assistant", "system").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/role`.
-                public var role: Swift.String?
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/contentPayload`.
-                public struct contentPayloadPayload: Codable, Hashable, Sendable {
-                    /// The content type ("text", "audio", "input_text", "input_audio").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/contentPayload/type`.
-                    public var _type: Swift.String?
-                    /// The text content.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/contentPayload/text`.
-                    public var text: Swift.String?
-                    /// Base64-encoded audio data.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/contentPayload/audio`.
-                    public var audio: Swift.String?
-                    /// The transcript of the audio.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/contentPayload/transcript`.
-                    public var transcript: Swift.String?
-                    /// Creates a new `contentPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The content type ("text", "audio", "input_text", "input_audio").
-                    ///   - text: The text content.
-                    ///   - audio: Base64-encoded audio data.
-                    ///   - transcript: The transcript of the audio.
-                    public init(
-                        _type: Swift.String? = nil,
-                        text: Swift.String? = nil,
-                        audio: Swift.String? = nil,
-                        transcript: Swift.String? = nil
-                    ) {
-                        self._type = _type
-                        self.text = text
-                        self.audio = audio
-                        self.transcript = transcript
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case text
-                        case audio
-                        case transcript
-                    }
-                }
-                /// The content of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/content`.
-                public typealias contentPayload = [Components.Schemas.RealtimeServerEventConversationItemCreated.itemPayload.contentPayloadPayload]
-                /// The content of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/content`.
-                public var content: Components.Schemas.RealtimeServerEventConversationItemCreated.itemPayload.contentPayload?
-                /// The ID of the function call (for "function_call" items).
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/call_id`.
-                public var call_id: Swift.String?
-                /// The name of the function being called.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/name`.
-                public var name: Swift.String?
-                /// The arguments of the function call.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/arguments`.
-                public var arguments: Swift.String?
-                /// The output of the function call (for "function_call_output" items).
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item/output`.
-                public var output: Swift.String?
-                /// Creates a new `itemPayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the item.
-                ///   - object: The object type, must be "realtime.item".
-                ///   - _type: The type of the item ("message", "function_call", "function_call_output").
-                ///   - status: The status of the item ("completed", "in_progress", "incomplete").
-                ///   - role: The role associated with the item ("user", "assistant", "system").
-                ///   - content: The content of the item.
-                ///   - call_id: The ID of the function call (for "function_call" items).
-                ///   - name: The name of the function being called.
-                ///   - arguments: The arguments of the function call.
-                ///   - output: The output of the function call (for "function_call_output" items).
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    _type: Swift.String? = nil,
-                    status: Swift.String? = nil,
-                    role: Swift.String? = nil,
-                    content: Components.Schemas.RealtimeServerEventConversationItemCreated.itemPayload.contentPayload? = nil,
-                    call_id: Swift.String? = nil,
-                    name: Swift.String? = nil,
-                    arguments: Swift.String? = nil,
-                    output: Swift.String? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self._type = _type
-                    self.status = status
-                    self.role = role
-                    self.content = content
-                    self.call_id = call_id
-                    self.name = name
-                    self.arguments = arguments
-                    self.output = output
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case _type = "type"
-                    case status
-                    case role
-                    case content
-                    case call_id
-                    case name
-                    case arguments
-                    case output
-                }
-            }
-            /// The item that was created.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemCreated/item`.
-            public var item: Components.Schemas.RealtimeServerEventConversationItemCreated.itemPayload
+            public var item: Components.Schemas.RealtimeConversationItem
             /// Creates a new `RealtimeServerEventConversationItemCreated`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "conversation.item.created".
-            ///   - previous_item_id: The ID of the preceding item.
-            ///   - item: The item that was created.
+            ///   - _type: The event type, must be `conversation.item.created`.
+            ///   - previous_item_id: The ID of the preceding item in the Conversation context, allows the 
+            ///   - item:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventConversationItemCreated._typePayload,
                 previous_item_id: Swift.String,
-                item: Components.Schemas.RealtimeServerEventConversationItemCreated.itemPayload
+                item: Components.Schemas.RealtimeConversationItem
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -18099,7 +21181,10 @@ public enum Components {
                 case item
             }
         }
-        /// Returned when an item in the conversation is deleted.
+        /// Returned when an item in the conversation is deleted by the client with a 
+        /// `conversation.item.delete` event. This event is used to synchronize the 
+        /// server's understanding of the conversation history with the client's view.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemDeleted`.
         public struct RealtimeServerEventConversationItemDeleted: Codable, Hashable, Sendable {
@@ -18107,10 +21192,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemDeleted/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "conversation.item.deleted".
+            /// The event type, must be `conversation.item.deleted`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemDeleted/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_deleted = "conversation.item.deleted"
+            }
+            /// The event type, must be `conversation.item.deleted`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemDeleted/type`.
+            public var _type: Components.Schemas.RealtimeServerEventConversationItemDeleted._typePayload
             /// The ID of the item that was deleted.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemDeleted/item_id`.
@@ -18119,11 +21210,11 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "conversation.item.deleted".
+            ///   - _type: The event type, must be `conversation.item.deleted`.
             ///   - item_id: The ID of the item that was deleted.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventConversationItemDeleted._typePayload,
                 item_id: Swift.String
             ) {
                 self.event_id = event_id
@@ -18136,7 +21227,17 @@ public enum Components {
                 case item_id
             }
         }
-        /// Returned when input audio transcription is enabled and a transcription succeeds.
+        /// This event is the output of audio transcription for user audio written to the 
+        /// user audio buffer. Transcription begins when the input audio buffer is 
+        /// committed by the client or server (in `server_vad` mode). Transcription runs 
+        /// asynchronously with Response creation, so this event may come before or after 
+        /// the Response events.
+        ///
+        /// Realtime API models accept audio natively, and thus input transcription is a 
+        /// separate process run on a separate ASR (Automatic Speech Recognition) model, 
+        /// currently always `whisper-1`. Thus the transcript may diverge somewhat from 
+        /// the model's interpretation, and should be treated as a rough guide.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted`.
         public struct RealtimeServerEventConversationItemInputAudioTranscriptionCompleted: Codable, Hashable, Sendable {
@@ -18144,11 +21245,21 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "conversation.item.input_audio_transcription.completed".
+            /// The event type, must be
+            /// `conversation.item.input_audio_transcription.completed`.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted/type`.
-            public var _type: Swift.String
-            /// The ID of the user message item.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_input_audio_transcription_period_completed = "conversation.item.input_audio_transcription.completed"
+            }
+            /// The event type, must be
+            /// `conversation.item.input_audio_transcription.completed`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted/type`.
+            public var _type: Components.Schemas.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted._typePayload
+            /// The ID of the user message item containing the audio.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted/item_id`.
             public var item_id: Swift.String
@@ -18164,13 +21275,13 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "conversation.item.input_audio_transcription.completed".
-            ///   - item_id: The ID of the user message item.
+            ///   - _type: The event type, must be
+            ///   - item_id: The ID of the user message item containing the audio.
             ///   - content_index: The index of the content part containing the audio.
             ///   - transcript: The transcribed text.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted._typePayload,
                 item_id: Swift.String,
                 content_index: Swift.Int,
                 transcript: Swift.String
@@ -18189,7 +21300,10 @@ public enum Components {
                 case transcript
             }
         }
-        /// Returned when input audio transcription is configured, and a transcription request for a user message failed.
+        /// Returned when input audio transcription is configured, and a transcription 
+        /// request for a user message failed. These events are separate from other 
+        /// `error` events so that the client can identify the related Item.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed`.
         public struct RealtimeServerEventConversationItemInputAudioTranscriptionFailed: Codable, Hashable, Sendable {
@@ -18197,10 +21311,20 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "conversation.item.input_audio_transcription.failed".
+            /// The event type, must be
+            /// `conversation.item.input_audio_transcription.failed`.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_input_audio_transcription_period_failed = "conversation.item.input_audio_transcription.failed"
+            }
+            /// The event type, must be
+            /// `conversation.item.input_audio_transcription.failed`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed/type`.
+            public var _type: Components.Schemas.RealtimeServerEventConversationItemInputAudioTranscriptionFailed._typePayload
             /// The ID of the user message item.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed/item_id`.
@@ -18262,13 +21386,13 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "conversation.item.input_audio_transcription.failed".
+            ///   - _type: The event type, must be
             ///   - item_id: The ID of the user message item.
             ///   - content_index: The index of the content part containing the audio.
             ///   - error: Details of the transcription error.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventConversationItemInputAudioTranscriptionFailed._typePayload,
                 item_id: Swift.String,
                 content_index: Swift.Int,
                 error: Components.Schemas.RealtimeServerEventConversationItemInputAudioTranscriptionFailed.errorPayload
@@ -18287,7 +21411,13 @@ public enum Components {
                 case error
             }
         }
-        /// Returned when an earlier assistant audio message item is truncated by the client.
+        /// Returned when an earlier assistant audio message item is truncated by the 
+        /// client with a `conversation.item.truncate` event. This event is used to 
+        /// synchronize the server's understanding of the audio with the client's playback.
+        ///
+        /// This action will truncate the audio and remove the server-side text transcript 
+        /// to ensure there is no text in the context that hasn't been heard by the user.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemTruncated`.
         public struct RealtimeServerEventConversationItemTruncated: Codable, Hashable, Sendable {
@@ -18295,10 +21425,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemTruncated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "conversation.item.truncated".
+            /// The event type, must be `conversation.item.truncated`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemTruncated/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case conversation_period_item_period_truncated = "conversation.item.truncated"
+            }
+            /// The event type, must be `conversation.item.truncated`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemTruncated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventConversationItemTruncated._typePayload
             /// The ID of the assistant message item that was truncated.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemTruncated/item_id`.
@@ -18309,19 +21445,20 @@ public enum Components {
             public var content_index: Swift.Int
             /// The duration up to which the audio was truncated, in milliseconds.
             ///
+            ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventConversationItemTruncated/audio_end_ms`.
             public var audio_end_ms: Swift.Int
             /// Creates a new `RealtimeServerEventConversationItemTruncated`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "conversation.item.truncated".
+            ///   - _type: The event type, must be `conversation.item.truncated`.
             ///   - item_id: The ID of the assistant message item that was truncated.
             ///   - content_index: The index of the content part that was truncated.
             ///   - audio_end_ms: The duration up to which the audio was truncated, in milliseconds.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventConversationItemTruncated._typePayload,
                 item_id: Swift.String,
                 content_index: Swift.Int,
                 audio_end_ms: Swift.Int
@@ -18340,7 +21477,10 @@ public enum Components {
                 case audio_end_ms
             }
         }
-        /// Returned when an error occurs.
+        /// Returned when an error occurs, which could be a client problem or a server 
+        /// problem. Most errors are recoverable and the session will stay open, we 
+        /// recommend to implementors to monitor and log error messages by default.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError`.
         public struct RealtimeServerEventError: Codable, Hashable, Sendable {
@@ -18348,18 +21488,25 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "error".
+            /// The event type, must be `error`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case error = "error"
+            }
+            /// The event type, must be `error`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/type`.
+            public var _type: Components.Schemas.RealtimeServerEventError._typePayload
             /// Details of the error.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/error`.
             public struct errorPayload: Codable, Hashable, Sendable {
                 /// The type of error (e.g., "invalid_request_error", "server_error").
                 ///
+                ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/error/type`.
-                public var _type: Swift.String?
+                public var _type: Swift.String
                 /// Error code, if any.
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/error/code`.
@@ -18367,12 +21514,13 @@ public enum Components {
                 /// A human-readable error message.
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/error/message`.
-                public var message: Swift.String?
+                public var message: Swift.String
                 /// Parameter related to the error, if any.
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/error/param`.
                 public var param: Swift.String?
                 /// The event_id of the client event that caused the error, if applicable.
+                ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventError/error/event_id`.
                 public var event_id: Swift.String?
@@ -18385,9 +21533,9 @@ public enum Components {
                 ///   - param: Parameter related to the error, if any.
                 ///   - event_id: The event_id of the client event that caused the error, if applicable.
                 public init(
-                    _type: Swift.String? = nil,
+                    _type: Swift.String,
                     code: Swift.String? = nil,
-                    message: Swift.String? = nil,
+                    message: Swift.String,
                     param: Swift.String? = nil,
                     event_id: Swift.String? = nil
                 ) {
@@ -18413,11 +21561,11 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "error".
+            ///   - _type: The event type, must be `error`.
             ///   - error: Details of the error.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventError._typePayload,
                 error: Components.Schemas.RealtimeServerEventError.errorPayload
             ) {
                 self.event_id = event_id
@@ -18430,7 +21578,9 @@ public enum Components {
                 case error
             }
         }
-        /// Returned when the input audio buffer is cleared by the client.
+        /// Returned when the input audio buffer is cleared by the client with a 
+        /// `input_audio_buffer.clear` event.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCleared`.
         public struct RealtimeServerEventInputAudioBufferCleared: Codable, Hashable, Sendable {
@@ -18438,18 +21588,24 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCleared/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "input_audio_buffer.cleared".
+            /// The event type, must be `input_audio_buffer.cleared`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCleared/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_cleared = "input_audio_buffer.cleared"
+            }
+            /// The event type, must be `input_audio_buffer.cleared`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCleared/type`.
+            public var _type: Components.Schemas.RealtimeServerEventInputAudioBufferCleared._typePayload
             /// Creates a new `RealtimeServerEventInputAudioBufferCleared`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "input_audio_buffer.cleared".
+            ///   - _type: The event type, must be `input_audio_buffer.cleared`.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String
+                _type: Components.Schemas.RealtimeServerEventInputAudioBufferCleared._typePayload
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -18459,7 +21615,11 @@ public enum Components {
                 case _type = "type"
             }
         }
-        /// Returned when an input audio buffer is committed, either by the client or automatically in server VAD mode.
+        /// Returned when an input audio buffer is committed, either by the client or 
+        /// automatically in server VAD mode. The `item_id` property is the ID of the user
+        /// message item that will be created, thus a `conversation.item.created` event 
+        /// will also be sent to the client.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCommitted`.
         public struct RealtimeServerEventInputAudioBufferCommitted: Codable, Hashable, Sendable {
@@ -18467,11 +21627,18 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCommitted/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "input_audio_buffer.committed".
+            /// The event type, must be `input_audio_buffer.committed`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCommitted/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_committed = "input_audio_buffer.committed"
+            }
+            /// The event type, must be `input_audio_buffer.committed`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCommitted/type`.
+            public var _type: Components.Schemas.RealtimeServerEventInputAudioBufferCommitted._typePayload
             /// The ID of the preceding item after which the new item will be inserted.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferCommitted/previous_item_id`.
             public var previous_item_id: Swift.String
@@ -18483,12 +21650,12 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "input_audio_buffer.committed".
+            ///   - _type: The event type, must be `input_audio_buffer.committed`.
             ///   - previous_item_id: The ID of the preceding item after which the new item will be inserted.
             ///   - item_id: The ID of the user message item that will be created.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventInputAudioBufferCommitted._typePayload,
                 previous_item_id: Swift.String,
                 item_id: Swift.String
             ) {
@@ -18504,7 +21671,17 @@ public enum Components {
                 case item_id
             }
         }
-        /// Returned in server turn detection mode when speech is detected.
+        /// Sent by the server when in `server_vad` mode to indicate that speech has been 
+        /// detected in the audio buffer. This can happen any time audio is added to the 
+        /// buffer (unless speech is already detected). The client may want to use this 
+        /// event to interrupt audio playback or provide visual feedback to the user. 
+        ///
+        /// The client should expect to receive a `input_audio_buffer.speech_stopped` event 
+        /// when speech stops. The `item_id` property is the ID of the user message item 
+        /// that will be created when speech stops and will also be included in the 
+        /// `input_audio_buffer.speech_stopped` event (unless the client manually commits 
+        /// the audio buffer during VAD activation).
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted`.
         public struct RealtimeServerEventInputAudioBufferSpeechStarted: Codable, Hashable, Sendable {
@@ -18512,15 +21689,26 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "input_audio_buffer.speech_started".
+            /// The event type, must be `input_audio_buffer.speech_started`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted/type`.
-            public var _type: Swift.String
-            /// Milliseconds since the session started when speech was detected.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_speech_started = "input_audio_buffer.speech_started"
+            }
+            /// The event type, must be `input_audio_buffer.speech_started`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted/type`.
+            public var _type: Components.Schemas.RealtimeServerEventInputAudioBufferSpeechStarted._typePayload
+            /// Milliseconds from the start of all audio written to the buffer during the 
+            /// session when speech was first detected. This will correspond to the 
+            /// beginning of audio sent to the model, and thus includes the 
+            /// `prefix_padding_ms` configured in the Session.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted/audio_start_ms`.
             public var audio_start_ms: Swift.Int
             /// The ID of the user message item that will be created when speech stops.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted/item_id`.
             public var item_id: Swift.String
@@ -18528,12 +21716,12 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "input_audio_buffer.speech_started".
-            ///   - audio_start_ms: Milliseconds since the session started when speech was detected.
+            ///   - _type: The event type, must be `input_audio_buffer.speech_started`.
+            ///   - audio_start_ms: Milliseconds from the start of all audio written to the buffer during the 
             ///   - item_id: The ID of the user message item that will be created when speech stops.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventInputAudioBufferSpeechStarted._typePayload,
                 audio_start_ms: Swift.Int,
                 item_id: Swift.String
             ) {
@@ -18549,7 +21737,10 @@ public enum Components {
                 case item_id
             }
         }
-        /// Returned in server turn detection mode when speech stops.
+        /// Returned in `server_vad` mode when the server detects the end of speech in 
+        /// the audio buffer. The server will also send an `conversation.item.created` 
+        /// event with the user message item that is created from the audio buffer.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped`.
         public struct RealtimeServerEventInputAudioBufferSpeechStopped: Codable, Hashable, Sendable {
@@ -18557,11 +21748,20 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "input_audio_buffer.speech_stopped".
+            /// The event type, must be `input_audio_buffer.speech_stopped`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped/type`.
-            public var _type: Swift.String
-            /// Milliseconds since the session started when speech stopped.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case input_audio_buffer_period_speech_stopped = "input_audio_buffer.speech_stopped"
+            }
+            /// The event type, must be `input_audio_buffer.speech_stopped`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped/type`.
+            public var _type: Components.Schemas.RealtimeServerEventInputAudioBufferSpeechStopped._typePayload
+            /// Milliseconds since the session started when speech stopped. This will 
+            /// correspond to the end of audio sent to the model, and thus includes the 
+            /// `min_silence_duration_ms` configured in the Session.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped/audio_end_ms`.
             public var audio_end_ms: Swift.Int
@@ -18573,12 +21773,12 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "input_audio_buffer.speech_stopped".
-            ///   - audio_end_ms: Milliseconds since the session started when speech stopped.
+            ///   - _type: The event type, must be `input_audio_buffer.speech_stopped`.
+            ///   - audio_end_ms: Milliseconds since the session started when speech stopped. This will 
             ///   - item_id: The ID of the user message item that will be created.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventInputAudioBufferSpeechStopped._typePayload,
                 audio_end_ms: Swift.Int,
                 item_id: Swift.String
             ) {
@@ -18594,7 +21794,11 @@ public enum Components {
                 case item_id
             }
         }
-        /// Emitted after every "response.done" event to indicate the updated rate limits.
+        /// Emitted at the beginning of a Response to indicate the updated rate limits. 
+        /// When a Response is created some tokens will be "reserved" for the output 
+        /// tokens, the rate limits shown here reflect that reservation, which is then 
+        /// adjusted accordingly once the Response is completed.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated`.
         public struct RealtimeServerEventRateLimitsUpdated: Codable, Hashable, Sendable {
@@ -18602,16 +21806,31 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "rate_limits.updated".
+            /// The event type, must be `rate_limits.updated`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case rate_limits_period_updated = "rate_limits.updated"
+            }
+            /// The event type, must be `rate_limits.updated`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventRateLimitsUpdated._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/rate_limitsPayload`.
             public struct rate_limitsPayloadPayload: Codable, Hashable, Sendable {
-                /// The name of the rate limit ("requests", "tokens", "input_tokens", "output_tokens").
+                /// The name of the rate limit (`requests`, `tokens`).
+                ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/rate_limitsPayload/name`.
-                public var name: Swift.String?
+                @frozen public enum namePayload: String, Codable, Hashable, Sendable {
+                    case requests = "requests"
+                    case tokens = "tokens"
+                }
+                /// The name of the rate limit (`requests`, `tokens`).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/rate_limitsPayload/name`.
+                public var name: Components.Schemas.RealtimeServerEventRateLimitsUpdated.rate_limitsPayloadPayload.namePayload?
                 /// The maximum allowed value for the rate limit.
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventRateLimitsUpdated/rate_limitsPayload/limit`.
@@ -18627,12 +21846,12 @@ public enum Components {
                 /// Creates a new `rate_limitsPayloadPayload`.
                 ///
                 /// - Parameters:
-                ///   - name: The name of the rate limit ("requests", "tokens", "input_tokens", "output_tokens").
+                ///   - name: The name of the rate limit (`requests`, `tokens`).
                 ///   - limit: The maximum allowed value for the rate limit.
                 ///   - remaining: The remaining value before the limit is reached.
                 ///   - reset_seconds: Seconds until the rate limit resets.
                 public init(
-                    name: Swift.String? = nil,
+                    name: Components.Schemas.RealtimeServerEventRateLimitsUpdated.rate_limitsPayloadPayload.namePayload? = nil,
                     limit: Swift.Int? = nil,
                     remaining: Swift.Int? = nil,
                     reset_seconds: Swift.Double? = nil
@@ -18661,11 +21880,11 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "rate_limits.updated".
+            ///   - _type: The event type, must be `rate_limits.updated`.
             ///   - rate_limits: List of rate limit information.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventRateLimitsUpdated._typePayload,
                 rate_limits: Components.Schemas.RealtimeServerEventRateLimitsUpdated.rate_limitsPayload
             ) {
                 self.event_id = event_id
@@ -18686,10 +21905,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDelta/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.audio.delta".
+            /// The event type, must be `response.audio.delta`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDelta/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_audio_period_delta = "response.audio.delta"
+            }
+            /// The event type, must be `response.audio.delta`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDelta/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseAudioDelta._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDelta/response_id`.
@@ -18714,7 +21939,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.audio.delta".
+            ///   - _type: The event type, must be `response.audio.delta`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
@@ -18722,7 +21947,7 @@ public enum Components {
             ///   - delta: Base64-encoded audio data delta.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseAudioDelta._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -18747,7 +21972,9 @@ public enum Components {
                 case delta
             }
         }
-        /// Returned when the model-generated audio is done. Also emitted when a Response is interrupted, incomplete, or cancelled.
+        /// Returned when the model-generated audio is done. Also emitted when a Response
+        /// is interrupted, incomplete, or cancelled.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDone`.
         public struct RealtimeServerEventResponseAudioDone: Codable, Hashable, Sendable {
@@ -18755,10 +21982,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.audio.done".
+            /// The event type, must be `response.audio.done`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDone/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_audio_period_done = "response.audio.done"
+            }
+            /// The event type, must be `response.audio.done`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseAudioDone._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioDone/response_id`.
@@ -18779,14 +22012,14 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.audio.done".
+            ///   - _type: The event type, must be `response.audio.done`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
             ///   - content_index: The index of the content part in the item's content array.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseAudioDone._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -18810,16 +22043,23 @@ public enum Components {
         }
         /// Returned when the model-generated transcription of audio output is updated.
         ///
+        ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta`.
         public struct RealtimeServerEventResponseAudioTranscriptDelta: Codable, Hashable, Sendable {
             /// The unique ID of the server event.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.audio_transcript.delta".
+            /// The event type, must be `response.audio_transcript.delta`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_audio_transcript_period_delta = "response.audio_transcript.delta"
+            }
+            /// The event type, must be `response.audio_transcript.delta`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseAudioTranscriptDelta._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta/response_id`.
@@ -18844,7 +22084,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.audio_transcript.delta".
+            ///   - _type: The event type, must be `response.audio_transcript.delta`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
@@ -18852,7 +22092,7 @@ public enum Components {
             ///   - delta: The transcript delta.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseAudioTranscriptDelta._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -18877,7 +22117,10 @@ public enum Components {
                 case delta
             }
         }
-        /// Returned when the model-generated transcription of audio output is done streaming. Also emitted when a Response is interrupted, incomplete, or cancelled.
+        /// Returned when the model-generated transcription of audio output is done
+        /// streaming. Also emitted when a Response is interrupted, incomplete, or
+        /// cancelled.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone`.
         public struct RealtimeServerEventResponseAudioTranscriptDone: Codable, Hashable, Sendable {
@@ -18885,10 +22128,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.audio_transcript.done".
+            /// The event type, must be `response.audio_transcript.done`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_audio_transcript_period_done = "response.audio_transcript.done"
+            }
+            /// The event type, must be `response.audio_transcript.done`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseAudioTranscriptDone._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone/response_id`.
@@ -18913,7 +22162,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.audio_transcript.done".
+            ///   - _type: The event type, must be `response.audio_transcript.done`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
@@ -18921,7 +22170,7 @@ public enum Components {
             ///   - transcript: The final transcript of the audio.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseAudioTranscriptDone._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -18946,7 +22195,9 @@ public enum Components {
                 case transcript
             }
         }
-        /// Returned when a new content part is added to an assistant message item during response generation.
+        /// Returned when a new content part is added to an assistant message item during
+        /// response generation.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded`.
         public struct RealtimeServerEventResponseContentPartAdded: Codable, Hashable, Sendable {
@@ -18954,10 +22205,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.content_part.added".
+            /// The event type, must be `response.content_part.added`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_content_part_period_added = "response.content_part.added"
+            }
+            /// The event type, must be `response.content_part.added`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseContentPartAdded._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/response_id`.
@@ -18981,7 +22238,14 @@ public enum Components {
                 /// The content type ("text", "audio").
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/part/type`.
-                public var _type: Swift.String?
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case audio = "audio"
+                    case text = "text"
+                }
+                /// The content type ("text", "audio").
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/part/type`.
+                public var _type: Components.Schemas.RealtimeServerEventResponseContentPartAdded.partPayload._typePayload?
                 /// The text content (if type is "text").
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartAdded/part/text`.
@@ -19002,7 +22266,7 @@ public enum Components {
                 ///   - audio: Base64-encoded audio data (if type is "audio").
                 ///   - transcript: The transcript of the audio (if type is "audio").
                 public init(
-                    _type: Swift.String? = nil,
+                    _type: Components.Schemas.RealtimeServerEventResponseContentPartAdded.partPayload._typePayload? = nil,
                     text: Swift.String? = nil,
                     audio: Swift.String? = nil,
                     transcript: Swift.String? = nil
@@ -19027,7 +22291,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.content_part.added".
+            ///   - _type: The event type, must be `response.content_part.added`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item to which the content part was added.
             ///   - output_index: The index of the output item in the response.
@@ -19035,7 +22299,7 @@ public enum Components {
             ///   - part: The content part that was added.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseContentPartAdded._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -19060,7 +22324,9 @@ public enum Components {
                 case part
             }
         }
-        /// Returned when a content part is done streaming in an assistant message item. Also emitted when a Response is interrupted, incomplete, or cancelled.
+        /// Returned when a content part is done streaming in an assistant message item.
+        /// Also emitted when a Response is interrupted, incomplete, or cancelled.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone`.
         public struct RealtimeServerEventResponseContentPartDone: Codable, Hashable, Sendable {
@@ -19068,10 +22334,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.content_part.done".
+            /// The event type, must be `response.content_part.done`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_content_part_period_done = "response.content_part.done"
+            }
+            /// The event type, must be `response.content_part.done`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseContentPartDone._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/response_id`.
@@ -19095,7 +22367,14 @@ public enum Components {
                 /// The content type ("text", "audio").
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/part/type`.
-                public var _type: Swift.String?
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case audio = "audio"
+                    case text = "text"
+                }
+                /// The content type ("text", "audio").
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/part/type`.
+                public var _type: Components.Schemas.RealtimeServerEventResponseContentPartDone.partPayload._typePayload?
                 /// The text content (if type is "text").
                 ///
                 /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseContentPartDone/part/text`.
@@ -19116,7 +22395,7 @@ public enum Components {
                 ///   - audio: Base64-encoded audio data (if type is "audio").
                 ///   - transcript: The transcript of the audio (if type is "audio").
                 public init(
-                    _type: Swift.String? = nil,
+                    _type: Components.Schemas.RealtimeServerEventResponseContentPartDone.partPayload._typePayload? = nil,
                     text: Swift.String? = nil,
                     audio: Swift.String? = nil,
                     transcript: Swift.String? = nil
@@ -19141,7 +22420,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.content_part.done".
+            ///   - _type: The event type, must be `response.content_part.done`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
@@ -19149,7 +22428,7 @@ public enum Components {
             ///   - part: The content part that is done.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseContentPartDone._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -19174,7 +22453,9 @@ public enum Components {
                 case part
             }
         }
-        /// Returned when a new Response is created. The first event of response creation, where the response is in an initial state of "in_progress".
+        /// Returned when a new Response is created. The first event of response creation,
+        /// where the response is in an initial state of `in_progress`.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated`.
         public struct RealtimeServerEventResponseCreated: Codable, Hashable, Sendable {
@@ -19182,85 +22463,28 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.created".
+            /// The event type, must be `response.created`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/type`.
-            public var _type: Swift.String
-            /// The response resource.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response`.
-            public struct responsePayload: Codable, Hashable, Sendable {
-                /// The unique ID of the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.response".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response/object`.
-                public var object: Swift.String?
-                /// The status of the response ("in_progress").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response/status`.
-                public var status: Swift.String?
-                /// Additional details about the status.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response/status_details`.
-                public var status_details: OpenAPIRuntime.OpenAPIObjectContainer?
-                /// The list of output items generated by the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response/output`.
-                public var output: [OpenAPIRuntime.OpenAPIObjectContainer]?
-                /// Usage statistics for the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response/usage`.
-                public var usage: OpenAPIRuntime.OpenAPIObjectContainer?
-                /// Creates a new `responsePayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the response.
-                ///   - object: The object type, must be "realtime.response".
-                ///   - status: The status of the response ("in_progress").
-                ///   - status_details: Additional details about the status.
-                ///   - output: The list of output items generated by the response.
-                ///   - usage: Usage statistics for the response.
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    status: Swift.String? = nil,
-                    status_details: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
-                    output: [OpenAPIRuntime.OpenAPIObjectContainer]? = nil,
-                    usage: OpenAPIRuntime.OpenAPIObjectContainer? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self.status = status
-                    self.status_details = status_details
-                    self.output = output
-                    self.usage = usage
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case status
-                    case status_details
-                    case output
-                    case usage
-                }
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_created = "response.created"
             }
-            /// The response resource.
+            /// The event type, must be `response.created`.
             ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseCreated._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseCreated/response`.
-            public var response: Components.Schemas.RealtimeServerEventResponseCreated.responsePayload
+            public var response: Components.Schemas.RealtimeResponse
             /// Creates a new `RealtimeServerEventResponseCreated`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.created".
-            ///   - response: The response resource.
+            ///   - _type: The event type, must be `response.created`.
+            ///   - response:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
-                response: Components.Schemas.RealtimeServerEventResponseCreated.responsePayload
+                _type: Components.Schemas.RealtimeServerEventResponseCreated._typePayload,
+                response: Components.Schemas.RealtimeResponse
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -19272,7 +22496,10 @@ public enum Components {
                 case response
             }
         }
-        /// Returned when a Response is done streaming. Always emitted, no matter the final state.
+        /// Returned when a Response is done streaming. Always emitted, no matter the 
+        /// final state. The Response object included in the `response.done` event will 
+        /// include all output Items in the Response but will omit the raw audio data.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone`.
         public struct RealtimeServerEventResponseDone: Codable, Hashable, Sendable {
@@ -19280,85 +22507,28 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.done".
+            /// The event type, must be `response.done`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/type`.
-            public var _type: Swift.String
-            /// The response resource.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response`.
-            public struct responsePayload: Codable, Hashable, Sendable {
-                /// The unique ID of the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.response".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response/object`.
-                public var object: Swift.String?
-                /// The final status of the response ("completed", "cancelled", "failed", "incomplete").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response/status`.
-                public var status: Swift.String?
-                /// Additional details about the status.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response/status_details`.
-                public var status_details: OpenAPIRuntime.OpenAPIObjectContainer?
-                /// The list of output items generated by the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response/output`.
-                public var output: [OpenAPIRuntime.OpenAPIObjectContainer]?
-                /// Usage statistics for the response.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response/usage`.
-                public var usage: OpenAPIRuntime.OpenAPIObjectContainer?
-                /// Creates a new `responsePayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the response.
-                ///   - object: The object type, must be "realtime.response".
-                ///   - status: The final status of the response ("completed", "cancelled", "failed", "incomplete").
-                ///   - status_details: Additional details about the status.
-                ///   - output: The list of output items generated by the response.
-                ///   - usage: Usage statistics for the response.
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    status: Swift.String? = nil,
-                    status_details: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
-                    output: [OpenAPIRuntime.OpenAPIObjectContainer]? = nil,
-                    usage: OpenAPIRuntime.OpenAPIObjectContainer? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self.status = status
-                    self.status_details = status_details
-                    self.output = output
-                    self.usage = usage
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case status
-                    case status_details
-                    case output
-                    case usage
-                }
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_done = "response.done"
             }
-            /// The response resource.
+            /// The event type, must be `response.done`.
             ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseDone._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseDone/response`.
-            public var response: Components.Schemas.RealtimeServerEventResponseDone.responsePayload
+            public var response: Components.Schemas.RealtimeResponse
             /// Creates a new `RealtimeServerEventResponseDone`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.done".
-            ///   - response: The response resource.
+            ///   - _type: The event type, must be `response.done`.
+            ///   - response:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
-                response: Components.Schemas.RealtimeServerEventResponseDone.responsePayload
+                _type: Components.Schemas.RealtimeServerEventResponseDone._typePayload,
+                response: Components.Schemas.RealtimeResponse
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -19372,16 +22542,25 @@ public enum Components {
         }
         /// Returned when the model-generated function call arguments are updated.
         ///
+        ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta`.
         public struct RealtimeServerEventResponseFunctionCallArgumentsDelta: Codable, Hashable, Sendable {
             /// The unique ID of the server event.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.function_call_arguments.delta".
+            /// The event type, must be `response.function_call_arguments.delta`.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_function_call_arguments_period_delta = "response.function_call_arguments.delta"
+            }
+            /// The event type, must be `response.function_call_arguments.delta`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseFunctionCallArgumentsDelta._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta/response_id`.
@@ -19406,7 +22585,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.function_call_arguments.delta".
+            ///   - _type: The event type, must be `response.function_call_arguments.delta`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the function call item.
             ///   - output_index: The index of the output item in the response.
@@ -19414,7 +22593,7 @@ public enum Components {
             ///   - delta: The arguments delta as a JSON string.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseFunctionCallArgumentsDelta._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -19439,7 +22618,9 @@ public enum Components {
                 case delta
             }
         }
-        /// Returned when the model-generated function call arguments are done streaming. Also emitted when a Response is interrupted, incomplete, or cancelled.
+        /// Returned when the model-generated function call arguments are done streaming.
+        /// Also emitted when a Response is interrupted, incomplete, or cancelled.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone`.
         public struct RealtimeServerEventResponseFunctionCallArgumentsDone: Codable, Hashable, Sendable {
@@ -19447,10 +22628,18 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.function_call_arguments.done".
+            /// The event type, must be `response.function_call_arguments.done`.
+            ///
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_function_call_arguments_period_done = "response.function_call_arguments.done"
+            }
+            /// The event type, must be `response.function_call_arguments.done`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseFunctionCallArgumentsDone._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone/response_id`.
@@ -19475,7 +22664,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.function_call_arguments.done".
+            ///   - _type: The event type, must be `response.function_call_arguments.done`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the function call item.
             ///   - output_index: The index of the output item in the response.
@@ -19483,7 +22672,7 @@ public enum Components {
             ///   - arguments: The final arguments as a JSON string.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseFunctionCallArgumentsDone._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -19508,7 +22697,7 @@ public enum Components {
                 case arguments
             }
         }
-        /// Returned when a new Item is created during response generation.
+        /// Returned when a new Item is created during Response generation.
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded`.
         public struct RealtimeServerEventResponseOutputItemAdded: Codable, Hashable, Sendable {
@@ -19516,144 +22705,40 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.output_item.added".
+            /// The event type, must be `response.output_item.added`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/type`.
-            public var _type: Swift.String
-            /// The ID of the response to which the item belongs.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_output_item_period_added = "response.output_item.added"
+            }
+            /// The event type, must be `response.output_item.added`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseOutputItemAdded._typePayload
+            /// The ID of the Response to which the item belongs.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/response_id`.
             public var response_id: Swift.String
-            /// The index of the output item in the response.
+            /// The index of the output item in the Response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/output_index`.
             public var output_index: Swift.Int
-            /// The item that was added.
-            ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item`.
-            public struct itemPayload: Codable, Hashable, Sendable {
-                /// The unique ID of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.item".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/object`.
-                public var object: Swift.String?
-                /// The type of the item ("message", "function_call", "function_call_output").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/type`.
-                public var _type: Swift.String?
-                /// The status of the item ("in_progress", "completed").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/status`.
-                public var status: Swift.String?
-                /// The role associated with the item ("assistant").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/role`.
-                public var role: Swift.String?
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/contentPayload`.
-                public struct contentPayloadPayload: Codable, Hashable, Sendable {
-                    /// The content type ("text", "audio").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/contentPayload/type`.
-                    public var _type: Swift.String?
-                    /// The text content.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/contentPayload/text`.
-                    public var text: Swift.String?
-                    /// Base64-encoded audio data.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/contentPayload/audio`.
-                    public var audio: Swift.String?
-                    /// The transcript of the audio.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/contentPayload/transcript`.
-                    public var transcript: Swift.String?
-                    /// Creates a new `contentPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The content type ("text", "audio").
-                    ///   - text: The text content.
-                    ///   - audio: Base64-encoded audio data.
-                    ///   - transcript: The transcript of the audio.
-                    public init(
-                        _type: Swift.String? = nil,
-                        text: Swift.String? = nil,
-                        audio: Swift.String? = nil,
-                        transcript: Swift.String? = nil
-                    ) {
-                        self._type = _type
-                        self.text = text
-                        self.audio = audio
-                        self.transcript = transcript
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case text
-                        case audio
-                        case transcript
-                    }
-                }
-                /// The content of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/content`.
-                public typealias contentPayload = [Components.Schemas.RealtimeServerEventResponseOutputItemAdded.itemPayload.contentPayloadPayload]
-                /// The content of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item/content`.
-                public var content: Components.Schemas.RealtimeServerEventResponseOutputItemAdded.itemPayload.contentPayload?
-                /// Creates a new `itemPayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the item.
-                ///   - object: The object type, must be "realtime.item".
-                ///   - _type: The type of the item ("message", "function_call", "function_call_output").
-                ///   - status: The status of the item ("in_progress", "completed").
-                ///   - role: The role associated with the item ("assistant").
-                ///   - content: The content of the item.
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    _type: Swift.String? = nil,
-                    status: Swift.String? = nil,
-                    role: Swift.String? = nil,
-                    content: Components.Schemas.RealtimeServerEventResponseOutputItemAdded.itemPayload.contentPayload? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self._type = _type
-                    self.status = status
-                    self.role = role
-                    self.content = content
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case _type = "type"
-                    case status
-                    case role
-                    case content
-                }
-            }
-            /// The item that was added.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemAdded/item`.
-            public var item: Components.Schemas.RealtimeServerEventResponseOutputItemAdded.itemPayload
+            public var item: Components.Schemas.RealtimeConversationItem
             /// Creates a new `RealtimeServerEventResponseOutputItemAdded`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.output_item.added".
-            ///   - response_id: The ID of the response to which the item belongs.
-            ///   - output_index: The index of the output item in the response.
-            ///   - item: The item that was added.
+            ///   - _type: The event type, must be `response.output_item.added`.
+            ///   - response_id: The ID of the Response to which the item belongs.
+            ///   - output_index: The index of the output item in the Response.
+            ///   - item:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseOutputItemAdded._typePayload,
                 response_id: Swift.String,
                 output_index: Swift.Int,
-                item: Components.Schemas.RealtimeServerEventResponseOutputItemAdded.itemPayload
+                item: Components.Schemas.RealtimeConversationItem
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -19669,7 +22754,9 @@ public enum Components {
                 case item
             }
         }
-        /// Returned when an Item is done streaming. Also emitted when a Response is interrupted, incomplete, or cancelled.
+        /// Returned when an Item is done streaming. Also emitted when a Response is 
+        /// interrupted, incomplete, or cancelled.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone`.
         public struct RealtimeServerEventResponseOutputItemDone: Codable, Hashable, Sendable {
@@ -19677,144 +22764,40 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.output_item.done".
+            /// The event type, must be `response.output_item.done`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/type`.
-            public var _type: Swift.String
-            /// The ID of the response to which the item belongs.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_output_item_period_done = "response.output_item.done"
+            }
+            /// The event type, must be `response.output_item.done`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseOutputItemDone._typePayload
+            /// The ID of the Response to which the item belongs.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/response_id`.
             public var response_id: Swift.String
-            /// The index of the output item in the response.
+            /// The index of the output item in the Response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/output_index`.
             public var output_index: Swift.Int
-            /// The completed item.
-            ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item`.
-            public struct itemPayload: Codable, Hashable, Sendable {
-                /// The unique ID of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.item".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/object`.
-                public var object: Swift.String?
-                /// The type of the item ("message", "function_call", "function_call_output").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/type`.
-                public var _type: Swift.String?
-                /// The final status of the item ("completed", "incomplete").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/status`.
-                public var status: Swift.String?
-                /// The role associated with the item ("assistant").
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/role`.
-                public var role: Swift.String?
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/contentPayload`.
-                public struct contentPayloadPayload: Codable, Hashable, Sendable {
-                    /// The content type ("text", "audio").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/contentPayload/type`.
-                    public var _type: Swift.String?
-                    /// The text content.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/contentPayload/text`.
-                    public var text: Swift.String?
-                    /// Base64-encoded audio data.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/contentPayload/audio`.
-                    public var audio: Swift.String?
-                    /// The transcript of the audio.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/contentPayload/transcript`.
-                    public var transcript: Swift.String?
-                    /// Creates a new `contentPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The content type ("text", "audio").
-                    ///   - text: The text content.
-                    ///   - audio: Base64-encoded audio data.
-                    ///   - transcript: The transcript of the audio.
-                    public init(
-                        _type: Swift.String? = nil,
-                        text: Swift.String? = nil,
-                        audio: Swift.String? = nil,
-                        transcript: Swift.String? = nil
-                    ) {
-                        self._type = _type
-                        self.text = text
-                        self.audio = audio
-                        self.transcript = transcript
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case text
-                        case audio
-                        case transcript
-                    }
-                }
-                /// The content of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/content`.
-                public typealias contentPayload = [Components.Schemas.RealtimeServerEventResponseOutputItemDone.itemPayload.contentPayloadPayload]
-                /// The content of the item.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item/content`.
-                public var content: Components.Schemas.RealtimeServerEventResponseOutputItemDone.itemPayload.contentPayload?
-                /// Creates a new `itemPayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the item.
-                ///   - object: The object type, must be "realtime.item".
-                ///   - _type: The type of the item ("message", "function_call", "function_call_output").
-                ///   - status: The final status of the item ("completed", "incomplete").
-                ///   - role: The role associated with the item ("assistant").
-                ///   - content: The content of the item.
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    _type: Swift.String? = nil,
-                    status: Swift.String? = nil,
-                    role: Swift.String? = nil,
-                    content: Components.Schemas.RealtimeServerEventResponseOutputItemDone.itemPayload.contentPayload? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self._type = _type
-                    self.status = status
-                    self.role = role
-                    self.content = content
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case _type = "type"
-                    case status
-                    case role
-                    case content
-                }
-            }
-            /// The completed item.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseOutputItemDone/item`.
-            public var item: Components.Schemas.RealtimeServerEventResponseOutputItemDone.itemPayload
+            public var item: Components.Schemas.RealtimeConversationItem
             /// Creates a new `RealtimeServerEventResponseOutputItemDone`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.output_item.done".
-            ///   - response_id: The ID of the response to which the item belongs.
-            ///   - output_index: The index of the output item in the response.
-            ///   - item: The completed item.
+            ///   - _type: The event type, must be `response.output_item.done`.
+            ///   - response_id: The ID of the Response to which the item belongs.
+            ///   - output_index: The index of the output item in the Response.
+            ///   - item:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseOutputItemDone._typePayload,
                 response_id: Swift.String,
                 output_index: Swift.Int,
-                item: Components.Schemas.RealtimeServerEventResponseOutputItemDone.itemPayload
+                item: Components.Schemas.RealtimeConversationItem
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -19838,10 +22821,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDelta/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.text.delta".
+            /// The event type, must be `response.text.delta`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDelta/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_text_period_delta = "response.text.delta"
+            }
+            /// The event type, must be `response.text.delta`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDelta/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseTextDelta._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDelta/response_id`.
@@ -19866,7 +22855,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.text.delta".
+            ///   - _type: The event type, must be `response.text.delta`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
@@ -19874,7 +22863,7 @@ public enum Components {
             ///   - delta: The text delta.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseTextDelta._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -19899,7 +22888,9 @@ public enum Components {
                 case delta
             }
         }
-        /// Returned when the text value of a "text" content part is done streaming. Also emitted when a Response is interrupted, incomplete, or cancelled.
+        /// Returned when the text value of a "text" content part is done streaming. Also
+        /// emitted when a Response is interrupted, incomplete, or cancelled.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDone`.
         public struct RealtimeServerEventResponseTextDone: Codable, Hashable, Sendable {
@@ -19907,10 +22898,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDone/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "response.text.done".
+            /// The event type, must be `response.text.done`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDone/type`.
-            public var _type: Swift.String
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case response_period_text_period_done = "response.text.done"
+            }
+            /// The event type, must be `response.text.done`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDone/type`.
+            public var _type: Components.Schemas.RealtimeServerEventResponseTextDone._typePayload
             /// The ID of the response.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventResponseTextDone/response_id`.
@@ -19935,7 +22932,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "response.text.done".
+            ///   - _type: The event type, must be `response.text.done`.
             ///   - response_id: The ID of the response.
             ///   - item_id: The ID of the item.
             ///   - output_index: The index of the output item in the response.
@@ -19943,7 +22940,7 @@ public enum Components {
             ///   - text: The final text content.
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
+                _type: Components.Schemas.RealtimeServerEventResponseTextDone._typePayload,
                 response_id: Swift.String,
                 item_id: Swift.String,
                 output_index: Swift.Int,
@@ -19968,7 +22965,10 @@ public enum Components {
                 case text
             }
         }
-        /// Returned when a session is created. Emitted automatically when a new connection is established.
+        /// Returned when a Session is created. Emitted automatically when a new 
+        /// connection is established as the first server event. This event will contain 
+        /// the default Session configuration.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated`.
         public struct RealtimeServerEventSessionCreated: Codable, Hashable, Sendable {
@@ -19976,311 +22976,28 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "session.created".
+            /// The event type, must be `session.created`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/type`.
-            public var _type: Swift.String
-            /// The session resource.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session`.
-            public struct sessionPayload: Codable, Hashable, Sendable {
-                /// The unique ID of the session.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.session".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/object`.
-                public var object: Swift.String?
-                /// The default model used for this session.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/model`.
-                public var model: Swift.String?
-                /// The set of modalities the model can respond with.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/modalities`.
-                public var modalities: [Swift.String]?
-                /// The default system instructions.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/instructions`.
-                public var instructions: Swift.String?
-                /// The voice the model uses to respond - one of `alloy`, `echo`, or `shimmer`.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/voice`.
-                public var voice: Swift.String?
-                /// The format of input audio.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/input_audio_format`.
-                public var input_audio_format: Swift.String?
-                /// The format of output audio.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/output_audio_format`.
-                public var output_audio_format: Swift.String?
-                /// Configuration for input audio transcription.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/input_audio_transcription`.
-                public struct input_audio_transcriptionPayload: Codable, Hashable, Sendable {
-                    /// Whether input audio transcription is enabled.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/input_audio_transcription/enabled`.
-                    public var enabled: Swift.Bool?
-                    /// The model used for transcription.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/input_audio_transcription/model`.
-                    public var model: Swift.String?
-                    /// Creates a new `input_audio_transcriptionPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - enabled: Whether input audio transcription is enabled.
-                    ///   - model: The model used for transcription.
-                    public init(
-                        enabled: Swift.Bool? = nil,
-                        model: Swift.String? = nil
-                    ) {
-                        self.enabled = enabled
-                        self.model = model
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case enabled
-                        case model
-                    }
-                }
-                /// Configuration for input audio transcription.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/input_audio_transcription`.
-                public var input_audio_transcription: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.input_audio_transcriptionPayload?
-                /// Configuration for turn detection.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/turn_detection`.
-                public struct turn_detectionPayload: Codable, Hashable, Sendable {
-                    /// The type of turn detection ("server_vad" or "none").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/turn_detection/type`.
-                    public var _type: Swift.String?
-                    /// Activation threshold for VAD.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/turn_detection/threshold`.
-                    public var threshold: Swift.Double?
-                    /// Audio included before speech starts (in milliseconds).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/turn_detection/prefix_padding_ms`.
-                    public var prefix_padding_ms: Swift.Int?
-                    /// Duration of silence to detect speech stop (in milliseconds).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/turn_detection/silence_duration_ms`.
-                    public var silence_duration_ms: Swift.Int?
-                    /// Creates a new `turn_detectionPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The type of turn detection ("server_vad" or "none").
-                    ///   - threshold: Activation threshold for VAD.
-                    ///   - prefix_padding_ms: Audio included before speech starts (in milliseconds).
-                    ///   - silence_duration_ms: Duration of silence to detect speech stop (in milliseconds).
-                    public init(
-                        _type: Swift.String? = nil,
-                        threshold: Swift.Double? = nil,
-                        prefix_padding_ms: Swift.Int? = nil,
-                        silence_duration_ms: Swift.Int? = nil
-                    ) {
-                        self._type = _type
-                        self.threshold = threshold
-                        self.prefix_padding_ms = prefix_padding_ms
-                        self.silence_duration_ms = silence_duration_ms
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case threshold
-                        case prefix_padding_ms
-                        case silence_duration_ms
-                    }
-                }
-                /// Configuration for turn detection.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/turn_detection`.
-                public var turn_detection: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.turn_detectionPayload?
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/toolsPayload`.
-                public struct toolsPayloadPayload: Codable, Hashable, Sendable {
-                    /// The type of the tool.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/toolsPayload/type`.
-                    public var _type: Swift.String?
-                    /// The name of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/toolsPayload/name`.
-                    public var name: Swift.String?
-                    /// The description of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/toolsPayload/description`.
-                    public var description: Swift.String?
-                    /// Parameters of the function in JSON Schema.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/toolsPayload/parameters`.
-                    public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
-                    /// Creates a new `toolsPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The type of the tool.
-                    ///   - name: The name of the function.
-                    ///   - description: The description of the function.
-                    ///   - parameters: Parameters of the function in JSON Schema.
-                    public init(
-                        _type: Swift.String? = nil,
-                        name: Swift.String? = nil,
-                        description: Swift.String? = nil,
-                        parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
-                    ) {
-                        self._type = _type
-                        self.name = name
-                        self.description = description
-                        self.parameters = parameters
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case name
-                        case description
-                        case parameters
-                    }
-                }
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/tools`.
-                public typealias toolsPayload = [Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.toolsPayloadPayload]
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/tools`.
-                public var tools: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.toolsPayload?
-                /// How the model chooses tools.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/tool_choice`.
-                public var tool_choice: Swift.String?
-                /// Sampling temperature.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/temperature`.
-                public var temperature: Swift.Double?
-                /// Maximum number of output tokens.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/max_output_tokens`.
-                @frozen public enum max_output_tokensPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/max_output_tokens/case1`.
-                    case case1(Swift.Int)
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/max_output_tokens/case2`.
-                    @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
-                        case inf = "inf"
-                    }
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/max_output_tokens/case2`.
-                    case case2(Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.max_output_tokensPayload.Case2Payload)
-                    public init(from decoder: any Decoder) throws {
-                        var errors: [any Error] = []
-                        do {
-                            self = .case1(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        do {
-                            self = .case2(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
-                            type: Self.self,
-                            codingPath: decoder.codingPath,
-                            errors: errors
-                        )
-                    }
-                    public func encode(to encoder: any Encoder) throws {
-                        switch self {
-                        case let .case1(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        case let .case2(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        }
-                    }
-                }
-                /// Maximum number of output tokens.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session/max_output_tokens`.
-                public var max_output_tokens: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.max_output_tokensPayload?
-                /// Creates a new `sessionPayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the session.
-                ///   - object: The object type, must be "realtime.session".
-                ///   - model: The default model used for this session.
-                ///   - modalities: The set of modalities the model can respond with.
-                ///   - instructions: The default system instructions.
-                ///   - voice: The voice the model uses to respond - one of `alloy`, `echo`, or `shimmer`.
-                ///   - input_audio_format: The format of input audio.
-                ///   - output_audio_format: The format of output audio.
-                ///   - input_audio_transcription: Configuration for input audio transcription.
-                ///   - turn_detection: Configuration for turn detection.
-                ///   - tools: Tools (functions) available to the model.
-                ///   - tool_choice: How the model chooses tools.
-                ///   - temperature: Sampling temperature.
-                ///   - max_output_tokens: Maximum number of output tokens.
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    model: Swift.String? = nil,
-                    modalities: [Swift.String]? = nil,
-                    instructions: Swift.String? = nil,
-                    voice: Swift.String? = nil,
-                    input_audio_format: Swift.String? = nil,
-                    output_audio_format: Swift.String? = nil,
-                    input_audio_transcription: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.input_audio_transcriptionPayload? = nil,
-                    turn_detection: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.turn_detectionPayload? = nil,
-                    tools: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.toolsPayload? = nil,
-                    tool_choice: Swift.String? = nil,
-                    temperature: Swift.Double? = nil,
-                    max_output_tokens: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload.max_output_tokensPayload? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self.model = model
-                    self.modalities = modalities
-                    self.instructions = instructions
-                    self.voice = voice
-                    self.input_audio_format = input_audio_format
-                    self.output_audio_format = output_audio_format
-                    self.input_audio_transcription = input_audio_transcription
-                    self.turn_detection = turn_detection
-                    self.tools = tools
-                    self.tool_choice = tool_choice
-                    self.temperature = temperature
-                    self.max_output_tokens = max_output_tokens
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case model
-                    case modalities
-                    case instructions
-                    case voice
-                    case input_audio_format
-                    case output_audio_format
-                    case input_audio_transcription
-                    case turn_detection
-                    case tools
-                    case tool_choice
-                    case temperature
-                    case max_output_tokens
-                }
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case session_period_created = "session.created"
             }
-            /// The session resource.
+            /// The event type, must be `session.created`.
             ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventSessionCreated._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionCreated/session`.
-            public var session: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload
+            public var session: Components.Schemas.RealtimeSession
             /// Creates a new `RealtimeServerEventSessionCreated`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "session.created".
-            ///   - session: The session resource.
+            ///   - _type: The event type, must be `session.created`.
+            ///   - session:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
-                session: Components.Schemas.RealtimeServerEventSessionCreated.sessionPayload
+                _type: Components.Schemas.RealtimeServerEventSessionCreated._typePayload,
+                session: Components.Schemas.RealtimeSession
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -20292,7 +23009,9 @@ public enum Components {
                 case session
             }
         }
-        /// Returned when a session is updated.
+        /// Returned when a session is updated with a `session.update` event, unless 
+        /// there is an error.
+        ///
         ///
         /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated`.
         public struct RealtimeServerEventSessionUpdated: Codable, Hashable, Sendable {
@@ -20300,311 +23019,28 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/event_id`.
             public var event_id: Swift.String
-            /// The event type, must be "session.updated".
+            /// The event type, must be `session.updated`.
             ///
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/type`.
-            public var _type: Swift.String
-            /// The updated session resource.
-            ///
-            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session`.
-            public struct sessionPayload: Codable, Hashable, Sendable {
-                /// The unique ID of the session.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/id`.
-                public var id: Swift.String?
-                /// The object type, must be "realtime.session".
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/object`.
-                public var object: Swift.String?
-                /// The default model used for this session.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/model`.
-                public var model: Swift.String?
-                /// The set of modalities the model can respond with.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/modalities`.
-                public var modalities: [Swift.String]?
-                /// The default system instructions.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/instructions`.
-                public var instructions: Swift.String?
-                /// The voice the model uses to respond - one of `alloy`, `echo`, or `shimmer`.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/voice`.
-                public var voice: Swift.String?
-                /// The format of input audio.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/input_audio_format`.
-                public var input_audio_format: Swift.String?
-                /// The format of output audio.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/output_audio_format`.
-                public var output_audio_format: Swift.String?
-                /// Configuration for input audio transcription.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/input_audio_transcription`.
-                public struct input_audio_transcriptionPayload: Codable, Hashable, Sendable {
-                    /// Whether input audio transcription is enabled.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/input_audio_transcription/enabled`.
-                    public var enabled: Swift.Bool?
-                    /// The model used for transcription.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/input_audio_transcription/model`.
-                    public var model: Swift.String?
-                    /// Creates a new `input_audio_transcriptionPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - enabled: Whether input audio transcription is enabled.
-                    ///   - model: The model used for transcription.
-                    public init(
-                        enabled: Swift.Bool? = nil,
-                        model: Swift.String? = nil
-                    ) {
-                        self.enabled = enabled
-                        self.model = model
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case enabled
-                        case model
-                    }
-                }
-                /// Configuration for input audio transcription.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/input_audio_transcription`.
-                public var input_audio_transcription: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.input_audio_transcriptionPayload?
-                /// Configuration for turn detection.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/turn_detection`.
-                public struct turn_detectionPayload: Codable, Hashable, Sendable {
-                    /// The type of turn detection ("server_vad" or "none").
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/turn_detection/type`.
-                    public var _type: Swift.String?
-                    /// Activation threshold for VAD.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/turn_detection/threshold`.
-                    public var threshold: Swift.Double?
-                    /// Audio included before speech starts (in milliseconds).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/turn_detection/prefix_padding_ms`.
-                    public var prefix_padding_ms: Swift.Int?
-                    /// Duration of silence to detect speech stop (in milliseconds).
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/turn_detection/silence_duration_ms`.
-                    public var silence_duration_ms: Swift.Int?
-                    /// Creates a new `turn_detectionPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The type of turn detection ("server_vad" or "none").
-                    ///   - threshold: Activation threshold for VAD.
-                    ///   - prefix_padding_ms: Audio included before speech starts (in milliseconds).
-                    ///   - silence_duration_ms: Duration of silence to detect speech stop (in milliseconds).
-                    public init(
-                        _type: Swift.String? = nil,
-                        threshold: Swift.Double? = nil,
-                        prefix_padding_ms: Swift.Int? = nil,
-                        silence_duration_ms: Swift.Int? = nil
-                    ) {
-                        self._type = _type
-                        self.threshold = threshold
-                        self.prefix_padding_ms = prefix_padding_ms
-                        self.silence_duration_ms = silence_duration_ms
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case threshold
-                        case prefix_padding_ms
-                        case silence_duration_ms
-                    }
-                }
-                /// Configuration for turn detection.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/turn_detection`.
-                public var turn_detection: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.turn_detectionPayload?
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/toolsPayload`.
-                public struct toolsPayloadPayload: Codable, Hashable, Sendable {
-                    /// The type of the tool.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/toolsPayload/type`.
-                    public var _type: Swift.String?
-                    /// The name of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/toolsPayload/name`.
-                    public var name: Swift.String?
-                    /// The description of the function.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/toolsPayload/description`.
-                    public var description: Swift.String?
-                    /// Parameters of the function in JSON Schema.
-                    ///
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/toolsPayload/parameters`.
-                    public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
-                    /// Creates a new `toolsPayloadPayload`.
-                    ///
-                    /// - Parameters:
-                    ///   - _type: The type of the tool.
-                    ///   - name: The name of the function.
-                    ///   - description: The description of the function.
-                    ///   - parameters: Parameters of the function in JSON Schema.
-                    public init(
-                        _type: Swift.String? = nil,
-                        name: Swift.String? = nil,
-                        description: Swift.String? = nil,
-                        parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
-                    ) {
-                        self._type = _type
-                        self.name = name
-                        self.description = description
-                        self.parameters = parameters
-                    }
-                    public enum CodingKeys: String, CodingKey {
-                        case _type = "type"
-                        case name
-                        case description
-                        case parameters
-                    }
-                }
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/tools`.
-                public typealias toolsPayload = [Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.toolsPayloadPayload]
-                /// Tools (functions) available to the model.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/tools`.
-                public var tools: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.toolsPayload?
-                /// How the model chooses tools.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/tool_choice`.
-                public var tool_choice: Swift.String?
-                /// Sampling temperature.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/temperature`.
-                public var temperature: Swift.Double?
-                /// Maximum number of output tokens.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/max_output_tokens`.
-                @frozen public enum max_output_tokensPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/max_output_tokens/case1`.
-                    case case1(Swift.Int)
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/max_output_tokens/case2`.
-                    @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
-                        case inf = "inf"
-                    }
-                    /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/max_output_tokens/case2`.
-                    case case2(Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.max_output_tokensPayload.Case2Payload)
-                    public init(from decoder: any Decoder) throws {
-                        var errors: [any Error] = []
-                        do {
-                            self = .case1(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        do {
-                            self = .case2(try decoder.decodeFromSingleValueContainer())
-                            return
-                        } catch {
-                            errors.append(error)
-                        }
-                        throw Swift.DecodingError.failedToDecodeOneOfSchema(
-                            type: Self.self,
-                            codingPath: decoder.codingPath,
-                            errors: errors
-                        )
-                    }
-                    public func encode(to encoder: any Encoder) throws {
-                        switch self {
-                        case let .case1(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        case let .case2(value):
-                            try encoder.encodeToSingleValueContainer(value)
-                        }
-                    }
-                }
-                /// Maximum number of output tokens.
-                ///
-                /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session/max_output_tokens`.
-                public var max_output_tokens: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.max_output_tokensPayload?
-                /// Creates a new `sessionPayload`.
-                ///
-                /// - Parameters:
-                ///   - id: The unique ID of the session.
-                ///   - object: The object type, must be "realtime.session".
-                ///   - model: The default model used for this session.
-                ///   - modalities: The set of modalities the model can respond with.
-                ///   - instructions: The default system instructions.
-                ///   - voice: The voice the model uses to respond - one of `alloy`, `echo`, or `shimmer`.
-                ///   - input_audio_format: The format of input audio.
-                ///   - output_audio_format: The format of output audio.
-                ///   - input_audio_transcription: Configuration for input audio transcription.
-                ///   - turn_detection: Configuration for turn detection.
-                ///   - tools: Tools (functions) available to the model.
-                ///   - tool_choice: How the model chooses tools.
-                ///   - temperature: Sampling temperature.
-                ///   - max_output_tokens: Maximum number of output tokens.
-                public init(
-                    id: Swift.String? = nil,
-                    object: Swift.String? = nil,
-                    model: Swift.String? = nil,
-                    modalities: [Swift.String]? = nil,
-                    instructions: Swift.String? = nil,
-                    voice: Swift.String? = nil,
-                    input_audio_format: Swift.String? = nil,
-                    output_audio_format: Swift.String? = nil,
-                    input_audio_transcription: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.input_audio_transcriptionPayload? = nil,
-                    turn_detection: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.turn_detectionPayload? = nil,
-                    tools: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.toolsPayload? = nil,
-                    tool_choice: Swift.String? = nil,
-                    temperature: Swift.Double? = nil,
-                    max_output_tokens: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload.max_output_tokensPayload? = nil
-                ) {
-                    self.id = id
-                    self.object = object
-                    self.model = model
-                    self.modalities = modalities
-                    self.instructions = instructions
-                    self.voice = voice
-                    self.input_audio_format = input_audio_format
-                    self.output_audio_format = output_audio_format
-                    self.input_audio_transcription = input_audio_transcription
-                    self.turn_detection = turn_detection
-                    self.tools = tools
-                    self.tool_choice = tool_choice
-                    self.temperature = temperature
-                    self.max_output_tokens = max_output_tokens
-                }
-                public enum CodingKeys: String, CodingKey {
-                    case id
-                    case object
-                    case model
-                    case modalities
-                    case instructions
-                    case voice
-                    case input_audio_format
-                    case output_audio_format
-                    case input_audio_transcription
-                    case turn_detection
-                    case tools
-                    case tool_choice
-                    case temperature
-                    case max_output_tokens
-                }
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                case session_period_updated = "session.updated"
             }
-            /// The updated session resource.
+            /// The event type, must be `session.updated`.
             ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/type`.
+            public var _type: Components.Schemas.RealtimeServerEventSessionUpdated._typePayload
             /// - Remark: Generated from `#/components/schemas/RealtimeServerEventSessionUpdated/session`.
-            public var session: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload
+            public var session: Components.Schemas.RealtimeSession
             /// Creates a new `RealtimeServerEventSessionUpdated`.
             ///
             /// - Parameters:
             ///   - event_id: The unique ID of the server event.
-            ///   - _type: The event type, must be "session.updated".
-            ///   - session: The updated session resource.
+            ///   - _type: The event type, must be `session.updated`.
+            ///   - session:
             public init(
                 event_id: Swift.String,
-                _type: Swift.String,
-                session: Components.Schemas.RealtimeServerEventSessionUpdated.sessionPayload
+                _type: Components.Schemas.RealtimeServerEventSessionUpdated._typePayload,
+                session: Components.Schemas.RealtimeSession
             ) {
                 self.event_id = event_id
                 self._type = _type
@@ -20615,6 +23051,1286 @@ public enum Components {
                 case _type = "type"
                 case session
             }
+        }
+        /// Realtime session object configuration.
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeSession`.
+        public struct RealtimeSession: Codable, Hashable, Sendable {
+            /// Unique identifier for the session object.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/id`.
+            public var id: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/modalitiesPayload`.
+            @frozen public enum modalitiesPayloadPayload: String, Codable, Hashable, Sendable {
+                case text = "text"
+                case audio = "audio"
+            }
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/modalities`.
+            public typealias modalitiesPayload = [Components.Schemas.RealtimeSession.modalitiesPayloadPayload]
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/modalities`.
+            public var modalities: Components.Schemas.RealtimeSession.modalitiesPayload?
+            /// The Realtime model used for this session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/model`.
+            public struct modelPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/model/value1`.
+                public var value1: Swift.String?
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/model/value2`.
+                @frozen public enum Value2Payload: String, Codable, Hashable, Sendable {
+                    case gpt_hyphen_4o_hyphen_realtime_hyphen_preview = "gpt-4o-realtime-preview"
+                    case gpt_hyphen_4o_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_10_hyphen_01 = "gpt-4o-realtime-preview-2024-10-01"
+                    case gpt_hyphen_4o_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_12_hyphen_17 = "gpt-4o-realtime-preview-2024-12-17"
+                    case gpt_hyphen_4o_hyphen_mini_hyphen_realtime_hyphen_preview = "gpt-4o-mini-realtime-preview"
+                    case gpt_hyphen_4o_hyphen_mini_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_12_hyphen_17 = "gpt-4o-mini-realtime-preview-2024-12-17"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/model/value2`.
+                public var value2: Components.Schemas.RealtimeSession.modelPayload.Value2Payload?
+                /// Creates a new `modelPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Swift.String? = nil,
+                    value2: Components.Schemas.RealtimeSession.modelPayload.Value2Payload? = nil
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        value1 = try decoder.decodeFromSingleValueContainer()
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        value2 = try decoder.decodeFromSingleValueContainer()
+                    } catch {
+                        errors.append(error)
+                    }
+                    try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
+                        [
+                            value1,
+                            value2
+                        ],
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try encoder.encodeFirstNonNilValueToSingleValueContainer([
+                        value1,
+                        value2
+                    ])
+                }
+            }
+            /// The Realtime model used for this session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/model`.
+            public var model: Components.Schemas.RealtimeSession.modelPayload?
+            /// The default system instructions (i.e. system message) prepended to model 
+            /// calls. This field allows the client to guide the model on desired 
+            /// responses. The model can be instructed on response content and format, 
+            /// (e.g. "be extremely succinct", "act friendly", "here are examples of good 
+            /// responses") and on audio behavior (e.g. "talk quickly", "inject emotion 
+            /// into your voice", "laugh frequently"). The instructions are not guaranteed 
+            /// to be followed by the model, but they provide guidance to the model on the 
+            /// desired behavior.
+            ///
+            /// Note that the server sets default instructions which will be used if this 
+            /// field is not set and are visible in the `session.created` event at the 
+            /// start of the session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/instructions`.
+            public var instructions: Swift.String?
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/voice`.
+            @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
+                case alloy = "alloy"
+                case ash = "ash"
+                case ballad = "ballad"
+                case coral = "coral"
+                case echo = "echo"
+                case sage = "sage"
+                case shimmer = "shimmer"
+                case verse = "verse"
+            }
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/voice`.
+            public var voice: Components.Schemas.RealtimeSession.voicePayload?
+            /// The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, 
+            /// single channel (mono), and little-endian byte order.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/input_audio_format`.
+            @frozen public enum input_audio_formatPayload: String, Codable, Hashable, Sendable {
+                case pcm16 = "pcm16"
+                case g711_ulaw = "g711_ulaw"
+                case g711_alaw = "g711_alaw"
+            }
+            /// The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, 
+            /// single channel (mono), and little-endian byte order.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/input_audio_format`.
+            public var input_audio_format: Components.Schemas.RealtimeSession.input_audio_formatPayload?
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, output audio is sampled at a rate of 24kHz.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/output_audio_format`.
+            @frozen public enum output_audio_formatPayload: String, Codable, Hashable, Sendable {
+                case pcm16 = "pcm16"
+                case g711_ulaw = "g711_ulaw"
+                case g711_alaw = "g711_alaw"
+            }
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, output audio is sampled at a rate of 24kHz.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/output_audio_format`.
+            public var output_audio_format: Components.Schemas.RealtimeSession.output_audio_formatPayload?
+            /// Configuration for input audio transcription, defaults to off and can be 
+            /// set to `null` to turn off once on. Input audio transcription is not native 
+            /// to the model, since the model consumes audio directly. Transcription runs 
+            /// asynchronously through Whisper and should be treated as rough guidance 
+            /// rather than the representation understood by the model.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/input_audio_transcription`.
+            public struct input_audio_transcriptionPayload: Codable, Hashable, Sendable {
+                /// The model to use for transcription, `whisper-1` is the only currently 
+                /// supported model.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/input_audio_transcription/model`.
+                public var model: Swift.String?
+                /// Creates a new `input_audio_transcriptionPayload`.
+                ///
+                /// - Parameters:
+                ///   - model: The model to use for transcription, `whisper-1` is the only currently 
+                public init(model: Swift.String? = nil) {
+                    self.model = model
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case model
+                }
+            }
+            /// Configuration for input audio transcription, defaults to off and can be 
+            /// set to `null` to turn off once on. Input audio transcription is not native 
+            /// to the model, since the model consumes audio directly. Transcription runs 
+            /// asynchronously through Whisper and should be treated as rough guidance 
+            /// rather than the representation understood by the model.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/input_audio_transcription`.
+            public var input_audio_transcription: Components.Schemas.RealtimeSession.input_audio_transcriptionPayload?
+            /// Configuration for turn detection. Can be set to `null` to turn off. Server 
+            /// VAD means that the model will detect the start and end of speech based on 
+            /// audio volume and respond at the end of user speech.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection`.
+            public struct turn_detectionPayload: Codable, Hashable, Sendable {
+                /// Type of turn detection, only `server_vad` is currently supported.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case server_vad = "server_vad"
+                }
+                /// Type of turn detection, only `server_vad` is currently supported.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection/type`.
+                public var _type: Components.Schemas.RealtimeSession.turn_detectionPayload._typePayload?
+                /// Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A 
+                /// higher threshold will require louder audio to activate the model, and 
+                /// thus might perform better in noisy environments.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection/threshold`.
+                public var threshold: Swift.Double?
+                /// Amount of audio to include before the VAD detected speech (in 
+                /// milliseconds). Defaults to 300ms.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection/prefix_padding_ms`.
+                public var prefix_padding_ms: Swift.Int?
+                /// Duration of silence to detect speech stop (in milliseconds). Defaults 
+                /// to 500ms. With shorter values the model will respond more quickly, 
+                /// but may jump in on short pauses from the user.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection/silence_duration_ms`.
+                public var silence_duration_ms: Swift.Int?
+                /// Creates a new `turn_detectionPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: Type of turn detection, only `server_vad` is currently supported.
+                ///   - threshold: Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A 
+                ///   - prefix_padding_ms: Amount of audio to include before the VAD detected speech (in 
+                ///   - silence_duration_ms: Duration of silence to detect speech stop (in milliseconds). Defaults 
+                public init(
+                    _type: Components.Schemas.RealtimeSession.turn_detectionPayload._typePayload? = nil,
+                    threshold: Swift.Double? = nil,
+                    prefix_padding_ms: Swift.Int? = nil,
+                    silence_duration_ms: Swift.Int? = nil
+                ) {
+                    self._type = _type
+                    self.threshold = threshold
+                    self.prefix_padding_ms = prefix_padding_ms
+                    self.silence_duration_ms = silence_duration_ms
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case threshold
+                    case prefix_padding_ms
+                    case silence_duration_ms
+                }
+            }
+            /// Configuration for turn detection. Can be set to `null` to turn off. Server 
+            /// VAD means that the model will detect the start and end of speech based on 
+            /// audio volume and respond at the end of user speech.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/turn_detection`.
+            public var turn_detection: Components.Schemas.RealtimeSession.turn_detectionPayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/toolsPayload`.
+            public struct toolsPayloadPayload: Codable, Hashable, Sendable {
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/toolsPayload/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case function = "function"
+                }
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/toolsPayload/type`.
+                public var _type: Components.Schemas.RealtimeSession.toolsPayloadPayload._typePayload?
+                /// The name of the function.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/toolsPayload/name`.
+                public var name: Swift.String?
+                /// The description of the function, including guidance on when and how 
+                /// to call it, and guidance about what to tell the user when calling 
+                /// (if anything).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/toolsPayload/description`.
+                public var description: Swift.String?
+                /// Parameters of the function in JSON Schema.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/toolsPayload/parameters`.
+                public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
+                /// Creates a new `toolsPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The type of the tool, i.e. `function`.
+                ///   - name: The name of the function.
+                ///   - description: The description of the function, including guidance on when and how 
+                ///   - parameters: Parameters of the function in JSON Schema.
+                public init(
+                    _type: Components.Schemas.RealtimeSession.toolsPayloadPayload._typePayload? = nil,
+                    name: Swift.String? = nil,
+                    description: Swift.String? = nil,
+                    parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                ) {
+                    self._type = _type
+                    self.name = name
+                    self.description = description
+                    self.parameters = parameters
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case name
+                    case description
+                    case parameters
+                }
+            }
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/tools`.
+            public typealias toolsPayload = [Components.Schemas.RealtimeSession.toolsPayloadPayload]
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/tools`.
+            public var tools: Components.Schemas.RealtimeSession.toolsPayload?
+            /// How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            /// specify a function.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/tool_choice`.
+            public var tool_choice: Swift.String?
+            /// Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/temperature`.
+            public var temperature: Swift.Double?
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/max_response_output_tokens`.
+            @frozen public enum max_response_output_tokensPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/max_response_output_tokens/case1`.
+                case case1(Swift.Int)
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/max_response_output_tokens/case2`.
+                @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
+                    case inf = "inf"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeSession/max_response_output_tokens/case2`.
+                case case2(Components.Schemas.RealtimeSession.max_response_output_tokensPayload.Case2Payload)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSession/max_response_output_tokens`.
+            public var max_response_output_tokens: Components.Schemas.RealtimeSession.max_response_output_tokensPayload?
+            /// Creates a new `RealtimeSession`.
+            ///
+            /// - Parameters:
+            ///   - id: Unique identifier for the session object.
+            ///   - modalities: The set of modalities the model can respond with. To disable audio,
+            ///   - model: The Realtime model used for this session.
+            ///   - instructions: The default system instructions (i.e. system message) prepended to model 
+            ///   - voice: The voice the model uses to respond. Voice cannot be changed during the 
+            ///   - input_audio_format: The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - output_audio_format: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - input_audio_transcription: Configuration for input audio transcription, defaults to off and can be 
+            ///   - turn_detection: Configuration for turn detection. Can be set to `null` to turn off. Server 
+            ///   - tools: Tools (functions) available to the model.
+            ///   - tool_choice: How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            ///   - temperature: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///   - max_response_output_tokens: Maximum number of output tokens for a single assistant response,
+            public init(
+                id: Swift.String? = nil,
+                modalities: Components.Schemas.RealtimeSession.modalitiesPayload? = nil,
+                model: Components.Schemas.RealtimeSession.modelPayload? = nil,
+                instructions: Swift.String? = nil,
+                voice: Components.Schemas.RealtimeSession.voicePayload? = nil,
+                input_audio_format: Components.Schemas.RealtimeSession.input_audio_formatPayload? = nil,
+                output_audio_format: Components.Schemas.RealtimeSession.output_audio_formatPayload? = nil,
+                input_audio_transcription: Components.Schemas.RealtimeSession.input_audio_transcriptionPayload? = nil,
+                turn_detection: Components.Schemas.RealtimeSession.turn_detectionPayload? = nil,
+                tools: Components.Schemas.RealtimeSession.toolsPayload? = nil,
+                tool_choice: Swift.String? = nil,
+                temperature: Swift.Double? = nil,
+                max_response_output_tokens: Components.Schemas.RealtimeSession.max_response_output_tokensPayload? = nil
+            ) {
+                self.id = id
+                self.modalities = modalities
+                self.model = model
+                self.instructions = instructions
+                self.voice = voice
+                self.input_audio_format = input_audio_format
+                self.output_audio_format = output_audio_format
+                self.input_audio_transcription = input_audio_transcription
+                self.turn_detection = turn_detection
+                self.tools = tools
+                self.tool_choice = tool_choice
+                self.temperature = temperature
+                self.max_response_output_tokens = max_response_output_tokens
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case modalities
+                case model
+                case instructions
+                case voice
+                case input_audio_format
+                case output_audio_format
+                case input_audio_transcription
+                case turn_detection
+                case tools
+                case tool_choice
+                case temperature
+                case max_response_output_tokens
+            }
+        }
+        /// Realtime session object configuration.
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest`.
+        public struct RealtimeSessionCreateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/modalitiesPayload`.
+            @frozen public enum modalitiesPayloadPayload: String, Codable, Hashable, Sendable {
+                case text = "text"
+                case audio = "audio"
+            }
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/modalities`.
+            public typealias modalitiesPayload = [Components.Schemas.RealtimeSessionCreateRequest.modalitiesPayloadPayload]
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/modalities`.
+            public var modalities: Components.Schemas.RealtimeSessionCreateRequest.modalitiesPayload?
+            /// The Realtime model used for this session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/model`.
+            @frozen public enum modelPayload: String, Codable, Hashable, Sendable {
+                case gpt_hyphen_4o_hyphen_realtime_hyphen_preview = "gpt-4o-realtime-preview"
+                case gpt_hyphen_4o_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_10_hyphen_01 = "gpt-4o-realtime-preview-2024-10-01"
+                case gpt_hyphen_4o_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_12_hyphen_17 = "gpt-4o-realtime-preview-2024-12-17"
+                case gpt_hyphen_4o_hyphen_mini_hyphen_realtime_hyphen_preview = "gpt-4o-mini-realtime-preview"
+                case gpt_hyphen_4o_hyphen_mini_hyphen_realtime_hyphen_preview_hyphen_2024_hyphen_12_hyphen_17 = "gpt-4o-mini-realtime-preview-2024-12-17"
+            }
+            /// The Realtime model used for this session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/model`.
+            public var model: Components.Schemas.RealtimeSessionCreateRequest.modelPayload?
+            /// The default system instructions (i.e. system message) prepended to model 
+            /// calls. This field allows the client to guide the model on desired 
+            /// responses. The model can be instructed on response content and format, 
+            /// (e.g. "be extremely succinct", "act friendly", "here are examples of good 
+            /// responses") and on audio behavior (e.g. "talk quickly", "inject emotion 
+            /// into your voice", "laugh frequently"). The instructions are not guaranteed 
+            /// to be followed by the model, but they provide guidance to the model on the 
+            /// desired behavior.
+            ///
+            /// Note that the server sets default instructions which will be used if this 
+            /// field is not set and are visible in the `session.created` event at the 
+            /// start of the session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/instructions`.
+            public var instructions: Swift.String?
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/voice`.
+            @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
+                case alloy = "alloy"
+                case ash = "ash"
+                case ballad = "ballad"
+                case coral = "coral"
+                case echo = "echo"
+                case sage = "sage"
+                case shimmer = "shimmer"
+                case verse = "verse"
+            }
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/voice`.
+            public var voice: Components.Schemas.RealtimeSessionCreateRequest.voicePayload?
+            /// The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, 
+            /// single channel (mono), and little-endian byte order.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_format`.
+            @frozen public enum input_audio_formatPayload: String, Codable, Hashable, Sendable {
+                case pcm16 = "pcm16"
+                case g711_ulaw = "g711_ulaw"
+                case g711_alaw = "g711_alaw"
+            }
+            /// The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate, 
+            /// single channel (mono), and little-endian byte order.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_format`.
+            public var input_audio_format: Components.Schemas.RealtimeSessionCreateRequest.input_audio_formatPayload?
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, output audio is sampled at a rate of 24kHz.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/output_audio_format`.
+            @frozen public enum output_audio_formatPayload: String, Codable, Hashable, Sendable {
+                case pcm16 = "pcm16"
+                case g711_ulaw = "g711_ulaw"
+                case g711_alaw = "g711_alaw"
+            }
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            /// For `pcm16`, output audio is sampled at a rate of 24kHz.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/output_audio_format`.
+            public var output_audio_format: Components.Schemas.RealtimeSessionCreateRequest.output_audio_formatPayload?
+            /// Configuration for input audio transcription, defaults to off and can be  set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs  asynchronously through [OpenAI Whisper transcription](https://platform.openai.com/docs/api-reference/audio/createTranscription) and should be treated as rough guidance rather than the representation understood by the model. The client can optionally set the language and prompt for transcription, these fields will be passed to the Whisper API.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_transcription`.
+            public struct input_audio_transcriptionPayload: Codable, Hashable, Sendable {
+                /// The model to use for transcription, `whisper-1` is the only currently 
+                /// supported model.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_transcription/model`.
+                public var model: Swift.String?
+                /// The language of the input audio. Supplying the input language in
+                /// [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
+                /// will improve accuracy and latency.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_transcription/language`.
+                public var language: Swift.String?
+                /// An optional text to guide the model's style or continue a previous audio
+                /// segment. The [prompt](/docs/guides/speech-to-text#prompting) should match
+                /// the audio language.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_transcription/prompt`.
+                public var prompt: Swift.String?
+                /// Creates a new `input_audio_transcriptionPayload`.
+                ///
+                /// - Parameters:
+                ///   - model: The model to use for transcription, `whisper-1` is the only currently 
+                ///   - language: The language of the input audio. Supplying the input language in
+                ///   - prompt: An optional text to guide the model's style or continue a previous audio
+                public init(
+                    model: Swift.String? = nil,
+                    language: Swift.String? = nil,
+                    prompt: Swift.String? = nil
+                ) {
+                    self.model = model
+                    self.language = language
+                    self.prompt = prompt
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case model
+                    case language
+                    case prompt
+                }
+            }
+            /// Configuration for input audio transcription, defaults to off and can be  set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs  asynchronously through [OpenAI Whisper transcription](https://platform.openai.com/docs/api-reference/audio/createTranscription) and should be treated as rough guidance rather than the representation understood by the model. The client can optionally set the language and prompt for transcription, these fields will be passed to the Whisper API.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/input_audio_transcription`.
+            public var input_audio_transcription: Components.Schemas.RealtimeSessionCreateRequest.input_audio_transcriptionPayload?
+            /// Configuration for turn detection. Can be set to `null` to turn off. Server 
+            /// VAD means that the model will detect the start and end of speech based on 
+            /// audio volume and respond at the end of user speech.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection`.
+            public struct turn_detectionPayload: Codable, Hashable, Sendable {
+                /// Type of turn detection, only `server_vad` is currently supported.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection/type`.
+                public var _type: Swift.String?
+                /// Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A 
+                /// higher threshold will require louder audio to activate the model, and 
+                /// thus might perform better in noisy environments.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection/threshold`.
+                public var threshold: Swift.Double?
+                /// Amount of audio to include before the VAD detected speech (in 
+                /// milliseconds). Defaults to 300ms.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection/prefix_padding_ms`.
+                public var prefix_padding_ms: Swift.Int?
+                /// Duration of silence to detect speech stop (in milliseconds). Defaults 
+                /// to 500ms. With shorter values the model will respond more quickly, 
+                /// but may jump in on short pauses from the user.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection/silence_duration_ms`.
+                public var silence_duration_ms: Swift.Int?
+                /// Whether or not to automatically generate a response when VAD is
+                /// enabled. `true` by default.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection/create_response`.
+                public var create_response: Swift.Bool?
+                /// Creates a new `turn_detectionPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: Type of turn detection, only `server_vad` is currently supported.
+                ///   - threshold: Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A 
+                ///   - prefix_padding_ms: Amount of audio to include before the VAD detected speech (in 
+                ///   - silence_duration_ms: Duration of silence to detect speech stop (in milliseconds). Defaults 
+                ///   - create_response: Whether or not to automatically generate a response when VAD is
+                public init(
+                    _type: Swift.String? = nil,
+                    threshold: Swift.Double? = nil,
+                    prefix_padding_ms: Swift.Int? = nil,
+                    silence_duration_ms: Swift.Int? = nil,
+                    create_response: Swift.Bool? = nil
+                ) {
+                    self._type = _type
+                    self.threshold = threshold
+                    self.prefix_padding_ms = prefix_padding_ms
+                    self.silence_duration_ms = silence_duration_ms
+                    self.create_response = create_response
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case threshold
+                    case prefix_padding_ms
+                    case silence_duration_ms
+                    case create_response
+                }
+            }
+            /// Configuration for turn detection. Can be set to `null` to turn off. Server 
+            /// VAD means that the model will detect the start and end of speech based on 
+            /// audio volume and respond at the end of user speech.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/turn_detection`.
+            public var turn_detection: Components.Schemas.RealtimeSessionCreateRequest.turn_detectionPayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/toolsPayload`.
+            public struct toolsPayloadPayload: Codable, Hashable, Sendable {
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/toolsPayload/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case function = "function"
+                }
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/toolsPayload/type`.
+                public var _type: Components.Schemas.RealtimeSessionCreateRequest.toolsPayloadPayload._typePayload?
+                /// The name of the function.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/toolsPayload/name`.
+                public var name: Swift.String?
+                /// The description of the function, including guidance on when and how 
+                /// to call it, and guidance about what to tell the user when calling 
+                /// (if anything).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/toolsPayload/description`.
+                public var description: Swift.String?
+                /// Parameters of the function in JSON Schema.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/toolsPayload/parameters`.
+                public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
+                /// Creates a new `toolsPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The type of the tool, i.e. `function`.
+                ///   - name: The name of the function.
+                ///   - description: The description of the function, including guidance on when and how 
+                ///   - parameters: Parameters of the function in JSON Schema.
+                public init(
+                    _type: Components.Schemas.RealtimeSessionCreateRequest.toolsPayloadPayload._typePayload? = nil,
+                    name: Swift.String? = nil,
+                    description: Swift.String? = nil,
+                    parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                ) {
+                    self._type = _type
+                    self.name = name
+                    self.description = description
+                    self.parameters = parameters
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case name
+                    case description
+                    case parameters
+                }
+            }
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/tools`.
+            public typealias toolsPayload = [Components.Schemas.RealtimeSessionCreateRequest.toolsPayloadPayload]
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/tools`.
+            public var tools: Components.Schemas.RealtimeSessionCreateRequest.toolsPayload?
+            /// How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            /// specify a function.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/tool_choice`.
+            public var tool_choice: Swift.String?
+            /// Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/temperature`.
+            public var temperature: Swift.Double?
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/max_response_output_tokens`.
+            @frozen public enum max_response_output_tokensPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/max_response_output_tokens/case1`.
+                case case1(Swift.Int)
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/max_response_output_tokens/case2`.
+                @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
+                    case inf = "inf"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/max_response_output_tokens/case2`.
+                case case2(Components.Schemas.RealtimeSessionCreateRequest.max_response_output_tokensPayload.Case2Payload)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateRequest/max_response_output_tokens`.
+            public var max_response_output_tokens: Components.Schemas.RealtimeSessionCreateRequest.max_response_output_tokensPayload?
+            /// Creates a new `RealtimeSessionCreateRequest`.
+            ///
+            /// - Parameters:
+            ///   - modalities: The set of modalities the model can respond with. To disable audio,
+            ///   - model: The Realtime model used for this session.
+            ///   - instructions: The default system instructions (i.e. system message) prepended to model 
+            ///   - voice: The voice the model uses to respond. Voice cannot be changed during the 
+            ///   - input_audio_format: The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - output_audio_format: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - input_audio_transcription: Configuration for input audio transcription, defaults to off and can be  set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs  asynchronously through [OpenAI Whisper transcription](https://platform.openai.com/docs/api-reference/audio/createTranscription) and should be treated as rough guidance rather than the representation understood by the model. The client can optionally set the language and prompt for transcription, these fields will be passed to the Whisper API.
+            ///   - turn_detection: Configuration for turn detection. Can be set to `null` to turn off. Server 
+            ///   - tools: Tools (functions) available to the model.
+            ///   - tool_choice: How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            ///   - temperature: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///   - max_response_output_tokens: Maximum number of output tokens for a single assistant response,
+            public init(
+                modalities: Components.Schemas.RealtimeSessionCreateRequest.modalitiesPayload? = nil,
+                model: Components.Schemas.RealtimeSessionCreateRequest.modelPayload? = nil,
+                instructions: Swift.String? = nil,
+                voice: Components.Schemas.RealtimeSessionCreateRequest.voicePayload? = nil,
+                input_audio_format: Components.Schemas.RealtimeSessionCreateRequest.input_audio_formatPayload? = nil,
+                output_audio_format: Components.Schemas.RealtimeSessionCreateRequest.output_audio_formatPayload? = nil,
+                input_audio_transcription: Components.Schemas.RealtimeSessionCreateRequest.input_audio_transcriptionPayload? = nil,
+                turn_detection: Components.Schemas.RealtimeSessionCreateRequest.turn_detectionPayload? = nil,
+                tools: Components.Schemas.RealtimeSessionCreateRequest.toolsPayload? = nil,
+                tool_choice: Swift.String? = nil,
+                temperature: Swift.Double? = nil,
+                max_response_output_tokens: Components.Schemas.RealtimeSessionCreateRequest.max_response_output_tokensPayload? = nil
+            ) {
+                self.modalities = modalities
+                self.model = model
+                self.instructions = instructions
+                self.voice = voice
+                self.input_audio_format = input_audio_format
+                self.output_audio_format = output_audio_format
+                self.input_audio_transcription = input_audio_transcription
+                self.turn_detection = turn_detection
+                self.tools = tools
+                self.tool_choice = tool_choice
+                self.temperature = temperature
+                self.max_response_output_tokens = max_response_output_tokens
+            }
+            public enum CodingKeys: String, CodingKey {
+                case modalities
+                case model
+                case instructions
+                case voice
+                case input_audio_format
+                case output_audio_format
+                case input_audio_transcription
+                case turn_detection
+                case tools
+                case tool_choice
+                case temperature
+                case max_response_output_tokens
+            }
+        }
+        /// A new Realtime session configuration, with an ephermeral key. Default TTL
+        /// for keys is one minute.
+        ///
+        ///
+        /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse`.
+        public struct RealtimeSessionCreateResponse: Codable, Hashable, Sendable {
+            /// Ephemeral key returned by the API.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/client_secret`.
+            public struct client_secretPayload: Codable, Hashable, Sendable {
+                /// Ephemeral key usable in client environments to authenticate connections
+                /// to the Realtime API. Use this in client-side environments rather than
+                /// a standard API token, which should only be used server-side.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/client_secret/value`.
+                public var value: Swift.String
+                /// Timestamp for when the token expires. Currently, all tokens expire
+                /// after one minute.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/client_secret/expires_at`.
+                public var expires_at: Swift.Int
+                /// Creates a new `client_secretPayload`.
+                ///
+                /// - Parameters:
+                ///   - value: Ephemeral key usable in client environments to authenticate connections
+                ///   - expires_at: Timestamp for when the token expires. Currently, all tokens expire
+                public init(
+                    value: Swift.String,
+                    expires_at: Swift.Int
+                ) {
+                    self.value = value
+                    self.expires_at = expires_at
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case value
+                    case expires_at
+                }
+            }
+            /// Ephemeral key returned by the API.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/client_secret`.
+            public var client_secret: Components.Schemas.RealtimeSessionCreateResponse.client_secretPayload
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/modalitiesPayload`.
+            @frozen public enum modalitiesPayloadPayload: String, Codable, Hashable, Sendable {
+                case text = "text"
+                case audio = "audio"
+            }
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/modalities`.
+            public typealias modalitiesPayload = [Components.Schemas.RealtimeSessionCreateResponse.modalitiesPayloadPayload]
+            /// The set of modalities the model can respond with. To disable audio,
+            /// set this to ["text"].
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/modalities`.
+            public var modalities: Components.Schemas.RealtimeSessionCreateResponse.modalitiesPayload?
+            /// The default system instructions (i.e. system message) prepended to model 
+            /// calls. This field allows the client to guide the model on desired 
+            /// responses. The model can be instructed on response content and format, 
+            /// (e.g. "be extremely succinct", "act friendly", "here are examples of good 
+            /// responses") and on audio behavior (e.g. "talk quickly", "inject emotion 
+            /// into your voice", "laugh frequently"). The instructions are not guaranteed 
+            /// to be followed by the model, but they provide guidance to the model on the 
+            /// desired behavior.
+            ///
+            /// Note that the server sets default instructions which will be used if this 
+            /// field is not set and are visible in the `session.created` event at the 
+            /// start of the session.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/instructions`.
+            public var instructions: Swift.String?
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/voice`.
+            @frozen public enum voicePayload: String, Codable, Hashable, Sendable {
+                case alloy = "alloy"
+                case ash = "ash"
+                case ballad = "ballad"
+                case coral = "coral"
+                case echo = "echo"
+                case sage = "sage"
+                case shimmer = "shimmer"
+                case verse = "verse"
+            }
+            /// The voice the model uses to respond. Voice cannot be changed during the 
+            /// session once the model has responded with audio at least once. Current 
+            /// voice options are `alloy`, `ash`, `ballad`, `coral`, `echo` `sage`, 
+            /// `shimmer` and `verse`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/voice`.
+            public var voice: Components.Schemas.RealtimeSessionCreateResponse.voicePayload?
+            /// The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/input_audio_format`.
+            public var input_audio_format: Swift.String?
+            /// The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/output_audio_format`.
+            public var output_audio_format: Swift.String?
+            /// Configuration for input audio transcription, defaults to off and can be 
+            /// set to `null` to turn off once on. Input audio transcription is not native 
+            /// to the model, since the model consumes audio directly. Transcription runs 
+            /// asynchronously through Whisper and should be treated as rough guidance 
+            /// rather than the representation understood by the model.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/input_audio_transcription`.
+            public struct input_audio_transcriptionPayload: Codable, Hashable, Sendable {
+                /// The model to use for transcription, `whisper-1` is the only currently 
+                /// supported model.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/input_audio_transcription/model`.
+                public var model: Swift.String?
+                /// Creates a new `input_audio_transcriptionPayload`.
+                ///
+                /// - Parameters:
+                ///   - model: The model to use for transcription, `whisper-1` is the only currently 
+                public init(model: Swift.String? = nil) {
+                    self.model = model
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case model
+                }
+            }
+            /// Configuration for input audio transcription, defaults to off and can be 
+            /// set to `null` to turn off once on. Input audio transcription is not native 
+            /// to the model, since the model consumes audio directly. Transcription runs 
+            /// asynchronously through Whisper and should be treated as rough guidance 
+            /// rather than the representation understood by the model.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/input_audio_transcription`.
+            public var input_audio_transcription: Components.Schemas.RealtimeSessionCreateResponse.input_audio_transcriptionPayload?
+            /// Configuration for turn detection. Can be set to `null` to turn off. Server 
+            /// VAD means that the model will detect the start and end of speech based on 
+            /// audio volume and respond at the end of user speech.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/turn_detection`.
+            public struct turn_detectionPayload: Codable, Hashable, Sendable {
+                /// Type of turn detection, only `server_vad` is currently supported.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/turn_detection/type`.
+                public var _type: Swift.String?
+                /// Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A 
+                /// higher threshold will require louder audio to activate the model, and 
+                /// thus might perform better in noisy environments.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/turn_detection/threshold`.
+                public var threshold: Swift.Double?
+                /// Amount of audio to include before the VAD detected speech (in 
+                /// milliseconds). Defaults to 300ms.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/turn_detection/prefix_padding_ms`.
+                public var prefix_padding_ms: Swift.Int?
+                /// Duration of silence to detect speech stop (in milliseconds). Defaults 
+                /// to 500ms. With shorter values the model will respond more quickly, 
+                /// but may jump in on short pauses from the user.
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/turn_detection/silence_duration_ms`.
+                public var silence_duration_ms: Swift.Int?
+                /// Creates a new `turn_detectionPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: Type of turn detection, only `server_vad` is currently supported.
+                ///   - threshold: Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A 
+                ///   - prefix_padding_ms: Amount of audio to include before the VAD detected speech (in 
+                ///   - silence_duration_ms: Duration of silence to detect speech stop (in milliseconds). Defaults 
+                public init(
+                    _type: Swift.String? = nil,
+                    threshold: Swift.Double? = nil,
+                    prefix_padding_ms: Swift.Int? = nil,
+                    silence_duration_ms: Swift.Int? = nil
+                ) {
+                    self._type = _type
+                    self.threshold = threshold
+                    self.prefix_padding_ms = prefix_padding_ms
+                    self.silence_duration_ms = silence_duration_ms
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case threshold
+                    case prefix_padding_ms
+                    case silence_duration_ms
+                }
+            }
+            /// Configuration for turn detection. Can be set to `null` to turn off. Server 
+            /// VAD means that the model will detect the start and end of speech based on 
+            /// audio volume and respond at the end of user speech.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/turn_detection`.
+            public var turn_detection: Components.Schemas.RealtimeSessionCreateResponse.turn_detectionPayload?
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/toolsPayload`.
+            public struct toolsPayloadPayload: Codable, Hashable, Sendable {
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/toolsPayload/type`.
+                @frozen public enum _typePayload: String, Codable, Hashable, Sendable {
+                    case function = "function"
+                }
+                /// The type of the tool, i.e. `function`.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/toolsPayload/type`.
+                public var _type: Components.Schemas.RealtimeSessionCreateResponse.toolsPayloadPayload._typePayload?
+                /// The name of the function.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/toolsPayload/name`.
+                public var name: Swift.String?
+                /// The description of the function, including guidance on when and how 
+                /// to call it, and guidance about what to tell the user when calling 
+                /// (if anything).
+                ///
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/toolsPayload/description`.
+                public var description: Swift.String?
+                /// Parameters of the function in JSON Schema.
+                ///
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/toolsPayload/parameters`.
+                public var parameters: OpenAPIRuntime.OpenAPIObjectContainer?
+                /// Creates a new `toolsPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - _type: The type of the tool, i.e. `function`.
+                ///   - name: The name of the function.
+                ///   - description: The description of the function, including guidance on when and how 
+                ///   - parameters: Parameters of the function in JSON Schema.
+                public init(
+                    _type: Components.Schemas.RealtimeSessionCreateResponse.toolsPayloadPayload._typePayload? = nil,
+                    name: Swift.String? = nil,
+                    description: Swift.String? = nil,
+                    parameters: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                ) {
+                    self._type = _type
+                    self.name = name
+                    self.description = description
+                    self.parameters = parameters
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _type = "type"
+                    case name
+                    case description
+                    case parameters
+                }
+            }
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/tools`.
+            public typealias toolsPayload = [Components.Schemas.RealtimeSessionCreateResponse.toolsPayloadPayload]
+            /// Tools (functions) available to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/tools`.
+            public var tools: Components.Schemas.RealtimeSessionCreateResponse.toolsPayload?
+            /// How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            /// specify a function.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/tool_choice`.
+            public var tool_choice: Swift.String?
+            /// Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/temperature`.
+            public var temperature: Swift.Double?
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/max_response_output_tokens`.
+            @frozen public enum max_response_output_tokensPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/max_response_output_tokens/case1`.
+                case case1(Swift.Int)
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/max_response_output_tokens/case2`.
+                @frozen public enum Case2Payload: String, Codable, Hashable, Sendable {
+                    case inf = "inf"
+                }
+                /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/max_response_output_tokens/case2`.
+                case case2(Components.Schemas.RealtimeSessionCreateResponse.max_response_output_tokensPayload.Case2Payload)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .case1(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .case2(try decoder.decodeFromSingleValueContainer())
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .case1(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    case let .case2(value):
+                        try encoder.encodeToSingleValueContainer(value)
+                    }
+                }
+            }
+            /// Maximum number of output tokens for a single assistant response,
+            /// inclusive of tool calls. Provide an integer between 1 and 4096 to
+            /// limit output tokens, or `inf` for the maximum available tokens for a
+            /// given model. Defaults to `inf`.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/RealtimeSessionCreateResponse/max_response_output_tokens`.
+            public var max_response_output_tokens: Components.Schemas.RealtimeSessionCreateResponse.max_response_output_tokensPayload?
+            /// Creates a new `RealtimeSessionCreateResponse`.
+            ///
+            /// - Parameters:
+            ///   - client_secret: Ephemeral key returned by the API.
+            ///   - modalities: The set of modalities the model can respond with. To disable audio,
+            ///   - instructions: The default system instructions (i.e. system message) prepended to model 
+            ///   - voice: The voice the model uses to respond. Voice cannot be changed during the 
+            ///   - input_audio_format: The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - output_audio_format: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
+            ///   - input_audio_transcription: Configuration for input audio transcription, defaults to off and can be 
+            ///   - turn_detection: Configuration for turn detection. Can be set to `null` to turn off. Server 
+            ///   - tools: Tools (functions) available to the model.
+            ///   - tool_choice: How the model chooses tools. Options are `auto`, `none`, `required`, or 
+            ///   - temperature: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
+            ///   - max_response_output_tokens: Maximum number of output tokens for a single assistant response,
+            public init(
+                client_secret: Components.Schemas.RealtimeSessionCreateResponse.client_secretPayload,
+                modalities: Components.Schemas.RealtimeSessionCreateResponse.modalitiesPayload? = nil,
+                instructions: Swift.String? = nil,
+                voice: Components.Schemas.RealtimeSessionCreateResponse.voicePayload? = nil,
+                input_audio_format: Swift.String? = nil,
+                output_audio_format: Swift.String? = nil,
+                input_audio_transcription: Components.Schemas.RealtimeSessionCreateResponse.input_audio_transcriptionPayload? = nil,
+                turn_detection: Components.Schemas.RealtimeSessionCreateResponse.turn_detectionPayload? = nil,
+                tools: Components.Schemas.RealtimeSessionCreateResponse.toolsPayload? = nil,
+                tool_choice: Swift.String? = nil,
+                temperature: Swift.Double? = nil,
+                max_response_output_tokens: Components.Schemas.RealtimeSessionCreateResponse.max_response_output_tokensPayload? = nil
+            ) {
+                self.client_secret = client_secret
+                self.modalities = modalities
+                self.instructions = instructions
+                self.voice = voice
+                self.input_audio_format = input_audio_format
+                self.output_audio_format = output_audio_format
+                self.input_audio_transcription = input_audio_transcription
+                self.turn_detection = turn_detection
+                self.tools = tools
+                self.tool_choice = tool_choice
+                self.temperature = temperature
+                self.max_response_output_tokens = max_response_output_tokens
+            }
+            public enum CodingKeys: String, CodingKey {
+                case client_secret
+                case modalities
+                case instructions
+                case voice
+                case input_audio_format
+                case output_audio_format
+                case input_audio_transcription
+                case turn_detection
+                case tools
+                case tool_choice
+                case temperature
+                case max_response_output_tokens
+            }
+        }
+        /// **o1 and o3-mini models only** 
+        ///
+        /// Constrains effort on reasoning for 
+        /// [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+        /// Currently supported values are `low`, `medium`, and `high`. Reducing
+        /// reasoning effort can result in faster responses and fewer tokens used
+        /// on reasoning in a response.
+        ///
+        ///
+        /// - Remark: Generated from `#/components/schemas/ReasoningEffort`.
+        @frozen public enum ReasoningEffort: String, Codable, Hashable, Sendable {
+            case low = "low"
+            case medium = "medium"
+            case high = "high"
         }
         /// - Remark: Generated from `#/components/schemas/ResponseFormatJsonObject`.
         public struct ResponseFormatJsonObject: Codable, Hashable, Sendable {
@@ -21049,11 +24765,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RunObject/tools`.
             public var tools: Components.Schemas.RunObject.toolsPayload
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/RunObject/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// - Remark: Generated from `#/components/schemas/RunObject/usage`.
             public var usage: Components.Schemas.RunCompletionUsage?
             /// The sampling temperature used for this run. If not set, defaults to 1.
@@ -21075,13 +24788,94 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/RunObject/max_completion_tokens`.
             public var max_completion_tokens: Swift.Int?
             /// - Remark: Generated from `#/components/schemas/RunObject/truncation_strategy`.
-            public var truncation_strategy: Components.Schemas.TruncationObject
+            public struct truncation_strategyPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RunObject/truncation_strategy/value1`.
+                public var value1: Components.Schemas.TruncationObject
+                /// - Remark: Generated from `#/components/schemas/RunObject/truncation_strategy/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `truncation_strategyPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.TruncationObject,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/RunObject/truncation_strategy`.
+            public var truncation_strategy: Components.Schemas.RunObject.truncation_strategyPayload?
             /// - Remark: Generated from `#/components/schemas/RunObject/tool_choice`.
-            public var tool_choice: Components.Schemas.AssistantsApiToolChoiceOption
+            public struct tool_choicePayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RunObject/tool_choice/value1`.
+                public var value1: Components.Schemas.AssistantsApiToolChoiceOption
+                /// - Remark: Generated from `#/components/schemas/RunObject/tool_choice/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `tool_choicePayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiToolChoiceOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/RunObject/tool_choice`.
+            public var tool_choice: Components.Schemas.RunObject.tool_choicePayload?
             /// - Remark: Generated from `#/components/schemas/RunObject/parallel_tool_calls`.
             public var parallel_tool_calls: Components.Schemas.ParallelToolCalls
             /// - Remark: Generated from `#/components/schemas/RunObject/response_format`.
-            public var response_format: Components.Schemas.AssistantsApiResponseFormatOption
+            public struct response_formatPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/RunObject/response_format/value1`.
+                public var value1: Components.Schemas.AssistantsApiResponseFormatOption
+                /// - Remark: Generated from `#/components/schemas/RunObject/response_format/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `response_formatPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.AssistantsApiResponseFormatOption,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/RunObject/response_format`.
+            public var response_format: Components.Schemas.RunObject.response_formatPayload?
             /// Creates a new `RunObject`.
             ///
             /// - Parameters:
@@ -21102,7 +24896,7 @@ public enum Components {
             ///   - model: The model that the [assistant](/docs/api-reference/assistants) used for this run.
             ///   - instructions: The instructions that the [assistant](/docs/api-reference/assistants) used for this run.
             ///   - tools: The list of tools that the [assistant](/docs/api-reference/assistants) used for this run.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - usage:
             ///   - temperature: The sampling temperature used for this run. If not set, defaults to 1.
             ///   - top_p: The nucleus sampling value used for this run. If not set, defaults to 1.
@@ -21130,16 +24924,16 @@ public enum Components {
                 model: Swift.String,
                 instructions: Swift.String,
                 tools: Components.Schemas.RunObject.toolsPayload,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 usage: Components.Schemas.RunCompletionUsage? = nil,
                 temperature: Swift.Double? = nil,
                 top_p: Swift.Double? = nil,
                 max_prompt_tokens: Swift.Int? = nil,
                 max_completion_tokens: Swift.Int? = nil,
-                truncation_strategy: Components.Schemas.TruncationObject,
-                tool_choice: Components.Schemas.AssistantsApiToolChoiceOption,
+                truncation_strategy: Components.Schemas.RunObject.truncation_strategyPayload? = nil,
+                tool_choice: Components.Schemas.RunObject.tool_choicePayload? = nil,
                 parallel_tool_calls: Components.Schemas.ParallelToolCalls,
-                response_format: Components.Schemas.AssistantsApiResponseFormatOption
+                response_format: Components.Schemas.RunObject.response_formatPayload? = nil
             ) {
                 self.id = id
                 self.object = object
@@ -22575,11 +26369,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/RunStepObject/completed_at`.
             public var completed_at: Swift.Int?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/RunStepObject/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// - Remark: Generated from `#/components/schemas/RunStepObject/usage`.
             public var usage: Components.Schemas.RunStepCompletionUsage?
             /// Creates a new `RunStepObject`.
@@ -22599,7 +26390,7 @@ public enum Components {
             ///   - cancelled_at: The Unix timestamp (in seconds) for when the run step was cancelled.
             ///   - failed_at: The Unix timestamp (in seconds) for when the run step failed.
             ///   - completed_at: The Unix timestamp (in seconds) for when the run step completed.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             ///   - usage:
             public init(
                 id: Swift.String,
@@ -22616,7 +26407,7 @@ public enum Components {
                 cancelled_at: Swift.Int? = nil,
                 failed_at: Swift.Int? = nil,
                 completed_at: Swift.Int? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                metadata: Components.Schemas.Metadata? = nil,
                 usage: Components.Schemas.RunStepCompletionUsage? = nil
             ) {
                 self.id = id
@@ -23754,11 +27545,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ThreadObject/tool_resources`.
             public var tool_resources: Components.Schemas.ThreadObject.tool_resourcesPayload?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/ThreadObject/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `ThreadObject`.
             ///
             /// - Parameters:
@@ -23766,13 +27554,13 @@ public enum Components {
             ///   - object: The object type, which is always `thread`.
             ///   - created_at: The Unix timestamp (in seconds) for when the thread was created.
             ///   - tool_resources: A set of resources that are made available to the assistant's tools in this thread. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 id: Swift.String,
                 object: Components.Schemas.ThreadObject.objectPayload,
                 created_at: Swift.Int,
                 tool_resources: Components.Schemas.ThreadObject.tool_resourcesPayload? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.id = id
                 self.object = object
@@ -24021,22 +27809,46 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/UpdateVectorStoreRequest/name`.
             public var name: Swift.String?
             /// - Remark: Generated from `#/components/schemas/UpdateVectorStoreRequest/expires_after`.
-            public var expires_after: Components.Schemas.VectorStoreExpirationAfter?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
+            public struct expires_afterPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/UpdateVectorStoreRequest/expires_after/value1`.
+                public var value1: Components.Schemas.VectorStoreExpirationAfter
+                /// - Remark: Generated from `#/components/schemas/UpdateVectorStoreRequest/expires_after/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `expires_afterPayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.VectorStoreExpirationAfter,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/UpdateVectorStoreRequest/expires_after`.
+            public var expires_after: Components.Schemas.UpdateVectorStoreRequest.expires_afterPayload?
             /// - Remark: Generated from `#/components/schemas/UpdateVectorStoreRequest/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `UpdateVectorStoreRequest`.
             ///
             /// - Parameters:
             ///   - name: The name of the vector store.
             ///   - expires_after:
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 name: Swift.String? = nil,
-                expires_after: Components.Schemas.VectorStoreExpirationAfter? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                expires_after: Components.Schemas.UpdateVectorStoreRequest.expires_afterPayload? = nil,
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.name = name
                 self.expires_after = expires_after
@@ -24054,11 +27866,11 @@ public enum Components {
                     forKey: .name
                 )
                 expires_after = try container.decodeIfPresent(
-                    Components.Schemas.VectorStoreExpirationAfter.self,
+                    Components.Schemas.UpdateVectorStoreRequest.expires_afterPayload.self,
                     forKey: .expires_after
                 )
                 metadata = try container.decodeIfPresent(
-                    OpenAPIRuntime.OpenAPIObjectContainer.self,
+                    Components.Schemas.Metadata.self,
                     forKey: .metadata
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -24121,7 +27933,36 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/Upload/object`.
             public var object: Components.Schemas.Upload.objectPayload?
             /// - Remark: Generated from `#/components/schemas/Upload/file`.
-            public var file: Components.Schemas.OpenAIFile?
+            public struct filePayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/Upload/file/value1`.
+                public var value1: Components.Schemas.OpenAIFile
+                /// The ready File object after the Upload is completed.
+                ///
+                /// - Remark: Generated from `#/components/schemas/Upload/file/value2`.
+                public var value2: OpenAPIRuntime.OpenAPIValueContainer
+                /// Creates a new `filePayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2: The ready File object after the Upload is completed.
+                public init(
+                    value1: Components.Schemas.OpenAIFile,
+                    value2: OpenAPIRuntime.OpenAPIValueContainer
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    value1 = try .init(from: decoder)
+                    value2 = try .init(from: decoder)
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try value1.encode(to: encoder)
+                    try value2.encode(to: encoder)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/Upload/file`.
+            public var file: Components.Schemas.Upload.filePayload?
             /// Creates a new `Upload`.
             ///
             /// - Parameters:
@@ -24143,7 +27984,7 @@ public enum Components {
                 status: Components.Schemas.Upload.statusPayload,
                 expires_at: Swift.Int,
                 object: Components.Schemas.Upload.objectPayload? = nil,
-                file: Components.Schemas.OpenAIFile? = nil
+                file: Components.Schemas.Upload.filePayload? = nil
             ) {
                 self.id = id
                 self.created_at = created_at
@@ -24217,6 +28058,751 @@ public enum Components {
                 case created_at
                 case upload_id
                 case object
+            }
+        }
+        /// The aggregated audio speeches usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult`.
+        public struct UsageAudioSpeechesResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_audio_speeches_period_result = "organization.usage.audio_speeches.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/object`.
+            public var object: Components.Schemas.UsageAudioSpeechesResult.objectPayload
+            /// The number of characters processed.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/characters`.
+            public var characters: Swift.Int
+            /// The count of requests made to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/num_model_requests`.
+            public var num_model_requests: Swift.Int
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/project_id`.
+            public var project_id: Swift.String?
+            /// When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/user_id`.
+            public var user_id: Swift.String?
+            /// When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/api_key_id`.
+            public var api_key_id: Swift.String?
+            /// When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioSpeechesResult/model`.
+            public var model: Swift.String?
+            /// Creates a new `UsageAudioSpeechesResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - characters: The number of characters processed.
+            ///   - num_model_requests: The count of requests made to the model.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///   - user_id: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///   - api_key_id: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///   - model: When `group_by=model`, this field provides the model name of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageAudioSpeechesResult.objectPayload,
+                characters: Swift.Int,
+                num_model_requests: Swift.Int,
+                project_id: Swift.String? = nil,
+                user_id: Swift.String? = nil,
+                api_key_id: Swift.String? = nil,
+                model: Swift.String? = nil
+            ) {
+                self.object = object
+                self.characters = characters
+                self.num_model_requests = num_model_requests
+                self.project_id = project_id
+                self.user_id = user_id
+                self.api_key_id = api_key_id
+                self.model = model
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case characters
+                case num_model_requests
+                case project_id
+                case user_id
+                case api_key_id
+                case model
+            }
+        }
+        /// The aggregated audio transcriptions usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult`.
+        public struct UsageAudioTranscriptionsResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_audio_transcriptions_period_result = "organization.usage.audio_transcriptions.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/object`.
+            public var object: Components.Schemas.UsageAudioTranscriptionsResult.objectPayload
+            /// The number of seconds processed.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/seconds`.
+            public var seconds: Swift.Int
+            /// The count of requests made to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/num_model_requests`.
+            public var num_model_requests: Swift.Int
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/project_id`.
+            public var project_id: Swift.String?
+            /// When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/user_id`.
+            public var user_id: Swift.String?
+            /// When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/api_key_id`.
+            public var api_key_id: Swift.String?
+            /// When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageAudioTranscriptionsResult/model`.
+            public var model: Swift.String?
+            /// Creates a new `UsageAudioTranscriptionsResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - seconds: The number of seconds processed.
+            ///   - num_model_requests: The count of requests made to the model.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///   - user_id: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///   - api_key_id: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///   - model: When `group_by=model`, this field provides the model name of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageAudioTranscriptionsResult.objectPayload,
+                seconds: Swift.Int,
+                num_model_requests: Swift.Int,
+                project_id: Swift.String? = nil,
+                user_id: Swift.String? = nil,
+                api_key_id: Swift.String? = nil,
+                model: Swift.String? = nil
+            ) {
+                self.object = object
+                self.seconds = seconds
+                self.num_model_requests = num_model_requests
+                self.project_id = project_id
+                self.user_id = user_id
+                self.api_key_id = api_key_id
+                self.model = model
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case seconds
+                case num_model_requests
+                case project_id
+                case user_id
+                case api_key_id
+                case model
+            }
+        }
+        /// The aggregated code interpreter sessions usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageCodeInterpreterSessionsResult`.
+        public struct UsageCodeInterpreterSessionsResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageCodeInterpreterSessionsResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_code_interpreter_sessions_period_result = "organization.usage.code_interpreter_sessions.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageCodeInterpreterSessionsResult/object`.
+            public var object: Components.Schemas.UsageCodeInterpreterSessionsResult.objectPayload
+            /// The number of code interpreter sessions.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCodeInterpreterSessionsResult/num_sessions`.
+            public var num_sessions: Swift.Int?
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCodeInterpreterSessionsResult/project_id`.
+            public var project_id: Swift.String?
+            /// Creates a new `UsageCodeInterpreterSessionsResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - num_sessions: The number of code interpreter sessions.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageCodeInterpreterSessionsResult.objectPayload,
+                num_sessions: Swift.Int? = nil,
+                project_id: Swift.String? = nil
+            ) {
+                self.object = object
+                self.num_sessions = num_sessions
+                self.project_id = project_id
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case num_sessions
+                case project_id
+            }
+        }
+        /// The aggregated completions usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult`.
+        public struct UsageCompletionsResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_completions_period_result = "organization.usage.completions.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/object`.
+            public var object: Components.Schemas.UsageCompletionsResult.objectPayload
+            /// The aggregated number of text input tokens used, including cached tokens. For customers subscribe to scale tier, this includes scale tier tokens.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/input_tokens`.
+            public var input_tokens: Swift.Int
+            /// The aggregated number of text input tokens that has been cached from previous requests. For customers subscribe to scale tier, this includes scale tier tokens.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/input_cached_tokens`.
+            public var input_cached_tokens: Swift.Int?
+            /// The aggregated number of text output tokens used. For customers subscribe to scale tier, this includes scale tier tokens.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/output_tokens`.
+            public var output_tokens: Swift.Int
+            /// The aggregated number of audio input tokens used, including cached tokens.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/input_audio_tokens`.
+            public var input_audio_tokens: Swift.Int?
+            /// The aggregated number of audio output tokens used.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/output_audio_tokens`.
+            public var output_audio_tokens: Swift.Int?
+            /// The count of requests made to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/num_model_requests`.
+            public var num_model_requests: Swift.Int
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/project_id`.
+            public var project_id: Swift.String?
+            /// When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/user_id`.
+            public var user_id: Swift.String?
+            /// When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/api_key_id`.
+            public var api_key_id: Swift.String?
+            /// When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/model`.
+            public var model: Swift.String?
+            /// When `group_by=batch`, this field tells whether the grouped usage result is batch or not.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageCompletionsResult/batch`.
+            public var batch: Swift.Bool?
+            /// Creates a new `UsageCompletionsResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - input_tokens: The aggregated number of text input tokens used, including cached tokens. For customers subscribe to scale tier, this includes scale tier tokens.
+            ///   - input_cached_tokens: The aggregated number of text input tokens that has been cached from previous requests. For customers subscribe to scale tier, this includes scale tier tokens.
+            ///   - output_tokens: The aggregated number of text output tokens used. For customers subscribe to scale tier, this includes scale tier tokens.
+            ///   - input_audio_tokens: The aggregated number of audio input tokens used, including cached tokens.
+            ///   - output_audio_tokens: The aggregated number of audio output tokens used.
+            ///   - num_model_requests: The count of requests made to the model.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///   - user_id: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///   - api_key_id: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///   - model: When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///   - batch: When `group_by=batch`, this field tells whether the grouped usage result is batch or not.
+            public init(
+                object: Components.Schemas.UsageCompletionsResult.objectPayload,
+                input_tokens: Swift.Int,
+                input_cached_tokens: Swift.Int? = nil,
+                output_tokens: Swift.Int,
+                input_audio_tokens: Swift.Int? = nil,
+                output_audio_tokens: Swift.Int? = nil,
+                num_model_requests: Swift.Int,
+                project_id: Swift.String? = nil,
+                user_id: Swift.String? = nil,
+                api_key_id: Swift.String? = nil,
+                model: Swift.String? = nil,
+                batch: Swift.Bool? = nil
+            ) {
+                self.object = object
+                self.input_tokens = input_tokens
+                self.input_cached_tokens = input_cached_tokens
+                self.output_tokens = output_tokens
+                self.input_audio_tokens = input_audio_tokens
+                self.output_audio_tokens = output_audio_tokens
+                self.num_model_requests = num_model_requests
+                self.project_id = project_id
+                self.user_id = user_id
+                self.api_key_id = api_key_id
+                self.model = model
+                self.batch = batch
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case input_tokens
+                case input_cached_tokens
+                case output_tokens
+                case input_audio_tokens
+                case output_audio_tokens
+                case num_model_requests
+                case project_id
+                case user_id
+                case api_key_id
+                case model
+                case batch
+            }
+        }
+        /// The aggregated embeddings usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult`.
+        public struct UsageEmbeddingsResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_embeddings_period_result = "organization.usage.embeddings.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/object`.
+            public var object: Components.Schemas.UsageEmbeddingsResult.objectPayload
+            /// The aggregated number of input tokens used.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/input_tokens`.
+            public var input_tokens: Swift.Int
+            /// The count of requests made to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/num_model_requests`.
+            public var num_model_requests: Swift.Int
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/project_id`.
+            public var project_id: Swift.String?
+            /// When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/user_id`.
+            public var user_id: Swift.String?
+            /// When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/api_key_id`.
+            public var api_key_id: Swift.String?
+            /// When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageEmbeddingsResult/model`.
+            public var model: Swift.String?
+            /// Creates a new `UsageEmbeddingsResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - input_tokens: The aggregated number of input tokens used.
+            ///   - num_model_requests: The count of requests made to the model.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///   - user_id: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///   - api_key_id: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///   - model: When `group_by=model`, this field provides the model name of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageEmbeddingsResult.objectPayload,
+                input_tokens: Swift.Int,
+                num_model_requests: Swift.Int,
+                project_id: Swift.String? = nil,
+                user_id: Swift.String? = nil,
+                api_key_id: Swift.String? = nil,
+                model: Swift.String? = nil
+            ) {
+                self.object = object
+                self.input_tokens = input_tokens
+                self.num_model_requests = num_model_requests
+                self.project_id = project_id
+                self.user_id = user_id
+                self.api_key_id = api_key_id
+                self.model = model
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case input_tokens
+                case num_model_requests
+                case project_id
+                case user_id
+                case api_key_id
+                case model
+            }
+        }
+        /// The aggregated images usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageImagesResult`.
+        public struct UsageImagesResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_images_period_result = "organization.usage.images.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/object`.
+            public var object: Components.Schemas.UsageImagesResult.objectPayload
+            /// The number of images processed.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/images`.
+            public var images: Swift.Int
+            /// The count of requests made to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/num_model_requests`.
+            public var num_model_requests: Swift.Int
+            /// When `group_by=source`, this field provides the source of the grouped usage result, possible values are `image.generation`, `image.edit`, `image.variation`.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/source`.
+            public var source: Swift.String?
+            /// When `group_by=size`, this field provides the image size of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/size`.
+            public var size: Swift.String?
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/project_id`.
+            public var project_id: Swift.String?
+            /// When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/user_id`.
+            public var user_id: Swift.String?
+            /// When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/api_key_id`.
+            public var api_key_id: Swift.String?
+            /// When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageImagesResult/model`.
+            public var model: Swift.String?
+            /// Creates a new `UsageImagesResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - images: The number of images processed.
+            ///   - num_model_requests: The count of requests made to the model.
+            ///   - source: When `group_by=source`, this field provides the source of the grouped usage result, possible values are `image.generation`, `image.edit`, `image.variation`.
+            ///   - size: When `group_by=size`, this field provides the image size of the grouped usage result.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///   - user_id: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///   - api_key_id: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///   - model: When `group_by=model`, this field provides the model name of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageImagesResult.objectPayload,
+                images: Swift.Int,
+                num_model_requests: Swift.Int,
+                source: Swift.String? = nil,
+                size: Swift.String? = nil,
+                project_id: Swift.String? = nil,
+                user_id: Swift.String? = nil,
+                api_key_id: Swift.String? = nil,
+                model: Swift.String? = nil
+            ) {
+                self.object = object
+                self.images = images
+                self.num_model_requests = num_model_requests
+                self.source = source
+                self.size = size
+                self.project_id = project_id
+                self.user_id = user_id
+                self.api_key_id = api_key_id
+                self.model = model
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case images
+                case num_model_requests
+                case source
+                case size
+                case project_id
+                case user_id
+                case api_key_id
+                case model
+            }
+        }
+        /// The aggregated moderations usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageModerationsResult`.
+        public struct UsageModerationsResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_moderations_period_result = "organization.usage.moderations.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/object`.
+            public var object: Components.Schemas.UsageModerationsResult.objectPayload
+            /// The aggregated number of input tokens used.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/input_tokens`.
+            public var input_tokens: Swift.Int
+            /// The count of requests made to the model.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/num_model_requests`.
+            public var num_model_requests: Swift.Int
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/project_id`.
+            public var project_id: Swift.String?
+            /// When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/user_id`.
+            public var user_id: Swift.String?
+            /// When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/api_key_id`.
+            public var api_key_id: Swift.String?
+            /// When `group_by=model`, this field provides the model name of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageModerationsResult/model`.
+            public var model: Swift.String?
+            /// Creates a new `UsageModerationsResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - input_tokens: The aggregated number of input tokens used.
+            ///   - num_model_requests: The count of requests made to the model.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///   - user_id: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
+            ///   - api_key_id: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
+            ///   - model: When `group_by=model`, this field provides the model name of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageModerationsResult.objectPayload,
+                input_tokens: Swift.Int,
+                num_model_requests: Swift.Int,
+                project_id: Swift.String? = nil,
+                user_id: Swift.String? = nil,
+                api_key_id: Swift.String? = nil,
+                model: Swift.String? = nil
+            ) {
+                self.object = object
+                self.input_tokens = input_tokens
+                self.num_model_requests = num_model_requests
+                self.project_id = project_id
+                self.user_id = user_id
+                self.api_key_id = api_key_id
+                self.model = model
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case input_tokens
+                case num_model_requests
+                case project_id
+                case user_id
+                case api_key_id
+                case model
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/UsageResponse`.
+        public struct UsageResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageResponse/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case page = "page"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageResponse/object`.
+            public var object: Components.Schemas.UsageResponse.objectPayload
+            /// - Remark: Generated from `#/components/schemas/UsageResponse/data`.
+            public var data: [Components.Schemas.UsageTimeBucket]
+            /// - Remark: Generated from `#/components/schemas/UsageResponse/has_more`.
+            public var has_more: Swift.Bool
+            /// - Remark: Generated from `#/components/schemas/UsageResponse/next_page`.
+            public var next_page: Swift.String
+            /// Creates a new `UsageResponse`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - data:
+            ///   - has_more:
+            ///   - next_page:
+            public init(
+                object: Components.Schemas.UsageResponse.objectPayload,
+                data: [Components.Schemas.UsageTimeBucket],
+                has_more: Swift.Bool,
+                next_page: Swift.String
+            ) {
+                self.object = object
+                self.data = data
+                self.has_more = has_more
+                self.next_page = next_page
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case data
+                case has_more
+                case next_page
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/UsageTimeBucket`.
+        public struct UsageTimeBucket: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case bucket = "bucket"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/object`.
+            public var object: Components.Schemas.UsageTimeBucket.objectPayload
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/start_time`.
+            public var start_time: Swift.Int
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/end_time`.
+            public var end_time: Swift.Int
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload`.
+            @frozen public enum resultPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case1`.
+                case UsageCompletionsResult(Components.Schemas.UsageCompletionsResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case2`.
+                case UsageEmbeddingsResult(Components.Schemas.UsageEmbeddingsResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case3`.
+                case UsageModerationsResult(Components.Schemas.UsageModerationsResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case4`.
+                case UsageImagesResult(Components.Schemas.UsageImagesResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case5`.
+                case UsageAudioSpeechesResult(Components.Schemas.UsageAudioSpeechesResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case6`.
+                case UsageAudioTranscriptionsResult(Components.Schemas.UsageAudioTranscriptionsResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case7`.
+                case UsageVectorStoresResult(Components.Schemas.UsageVectorStoresResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case8`.
+                case UsageCodeInterpreterSessionsResult(Components.Schemas.UsageCodeInterpreterSessionsResult)
+                /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/resultPayload/case9`.
+                case CostsResult(Components.Schemas.CostsResult)
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        self = .UsageCompletionsResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageEmbeddingsResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageModerationsResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageImagesResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageAudioSpeechesResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageAudioTranscriptionsResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageVectorStoresResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .UsageCodeInterpreterSessionsResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        self = .CostsResult(try .init(from: decoder))
+                        return
+                    } catch {
+                        errors.append(error)
+                    }
+                    throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    switch self {
+                    case let .UsageCompletionsResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageEmbeddingsResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageModerationsResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageImagesResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageAudioSpeechesResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageAudioTranscriptionsResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageVectorStoresResult(value):
+                        try value.encode(to: encoder)
+                    case let .UsageCodeInterpreterSessionsResult(value):
+                        try value.encode(to: encoder)
+                    case let .CostsResult(value):
+                        try value.encode(to: encoder)
+                    }
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/result`.
+            public typealias resultPayload = [Components.Schemas.UsageTimeBucket.resultPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/UsageTimeBucket/result`.
+            public var result: Components.Schemas.UsageTimeBucket.resultPayload
+            /// Creates a new `UsageTimeBucket`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - start_time:
+            ///   - end_time:
+            ///   - result:
+            public init(
+                object: Components.Schemas.UsageTimeBucket.objectPayload,
+                start_time: Swift.Int,
+                end_time: Swift.Int,
+                result: Components.Schemas.UsageTimeBucket.resultPayload
+            ) {
+                self.object = object
+                self.start_time = start_time
+                self.end_time = end_time
+                self.result = result
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case start_time
+                case end_time
+                case result
+            }
+        }
+        /// The aggregated vector stores usage details of the specific time bucket.
+        ///
+        /// - Remark: Generated from `#/components/schemas/UsageVectorStoresResult`.
+        public struct UsageVectorStoresResult: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UsageVectorStoresResult/object`.
+            @frozen public enum objectPayload: String, Codable, Hashable, Sendable {
+                case organization_period_usage_period_vector_stores_period_result = "organization.usage.vector_stores.result"
+            }
+            /// - Remark: Generated from `#/components/schemas/UsageVectorStoresResult/object`.
+            public var object: Components.Schemas.UsageVectorStoresResult.objectPayload
+            /// The vector stores usage in bytes.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageVectorStoresResult/usage_bytes`.
+            public var usage_bytes: Swift.Int
+            /// When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UsageVectorStoresResult/project_id`.
+            public var project_id: Swift.String?
+            /// Creates a new `UsageVectorStoresResult`.
+            ///
+            /// - Parameters:
+            ///   - object:
+            ///   - usage_bytes: The vector stores usage in bytes.
+            ///   - project_id: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
+            public init(
+                object: Components.Schemas.UsageVectorStoresResult.objectPayload,
+                usage_bytes: Swift.Int,
+                project_id: Swift.String? = nil
+            ) {
+                self.object = object
+                self.usage_bytes = usage_bytes
+                self.project_id = project_id
+            }
+            public enum CodingKeys: String, CodingKey {
+                case object
+                case usage_bytes
+                case project_id
             }
         }
         /// Represents an individual `user` within an organization.
@@ -24826,11 +29412,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/VectorStoreObject/last_active_at`.
             public var last_active_at: Swift.Int?
-            /// Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
-            ///
-            ///
             /// - Remark: Generated from `#/components/schemas/VectorStoreObject/metadata`.
-            public var metadata: OpenAPIRuntime.OpenAPIObjectContainer?
+            public var metadata: Components.Schemas.Metadata?
             /// Creates a new `VectorStoreObject`.
             ///
             /// - Parameters:
@@ -24844,7 +29427,7 @@ public enum Components {
             ///   - expires_after:
             ///   - expires_at: The Unix timestamp (in seconds) for when the vector store will expire.
             ///   - last_active_at: The Unix timestamp (in seconds) for when the vector store was last active.
-            ///   - metadata: Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+            ///   - metadata:
             public init(
                 id: Swift.String,
                 object: Components.Schemas.VectorStoreObject.objectPayload,
@@ -24856,7 +29439,7 @@ public enum Components {
                 expires_after: Components.Schemas.VectorStoreExpirationAfter? = nil,
                 expires_at: Swift.Int? = nil,
                 last_active_at: Swift.Int? = nil,
-                metadata: OpenAPIRuntime.OpenAPIObjectContainer? = nil
+                metadata: Components.Schemas.Metadata? = nil
             ) {
                 self.id = id
                 self.object = object
@@ -24926,7 +29509,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/assistants/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/assistants/GET/query/before`.
@@ -24937,7 +29520,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 public init(
                     limit: Swift.Int? = nil,
                     order: Operations.listAssistants.Input.Query.orderPayload? = nil,
@@ -25870,6 +30453,57 @@ public enum Operations {
                     }
                 }
             }
+            public struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/400/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.createTranscription.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.createTranscription.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// The request was malformed, missing required fields, or invalid parameters
+            ///
+            /// - Remark: Generated from `#/paths//audio/transcriptions/post(createTranscription)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.createTranscription.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            public var badRequest: Operations.createTranscription.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
             public struct Unauthorized: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/audio/transcriptions/POST/responses/401/content`.
                 @frozen public enum Body: Sendable, Hashable {
@@ -26306,6 +30940,57 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/audio/translations/POST/responses/400/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/audio/translations/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.createTranslation.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.createTranslation.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// The request was malformed, missing required fields, or invalid parameters
+            ///
+            /// - Remark: Generated from `#/paths//audio/translations/post(createTranslation)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.createTranslation.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            public var badRequest: Operations.createTranslation.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
                             response: self
                         )
                     }
@@ -26771,7 +31456,7 @@ public enum Operations {
                     ///
                     /// See [upload file](/docs/api-reference/files/create) for how to upload a file.
                     ///
-                    /// Your input file must be formatted as a [JSONL file](/docs/api-reference/batch/request-input), and must be uploaded with the purpose `batch`. The file can contain up to 50,000 requests, and can be up to 100 MB in size.
+                    /// Your input file must be formatted as a [JSONL file](/docs/api-reference/batch/request-input), and must be uploaded with the purpose `batch`. The file can contain up to 50,000 requests, and can be up to 200 MB in size.
                     ///
                     ///
                     /// - Remark: Generated from `#/paths/batches/POST/requestBody/json/input_file_id`.
@@ -26798,42 +31483,20 @@ public enum Operations {
                     ///
                     /// - Remark: Generated from `#/paths/batches/POST/requestBody/json/completion_window`.
                     public var completion_window: Operations.createBatch.Input.Body.jsonPayload.completion_windowPayload
-                    /// Optional custom metadata for the batch.
-                    ///
                     /// - Remark: Generated from `#/paths/batches/POST/requestBody/json/metadata`.
-                    public struct metadataPayload: Codable, Hashable, Sendable {
-                        /// A container of undocumented properties.
-                        public var additionalProperties: [String: Swift.String]
-                        /// Creates a new `metadataPayload`.
-                        ///
-                        /// - Parameters:
-                        ///   - additionalProperties: A container of undocumented properties.
-                        public init(additionalProperties: [String: Swift.String] = .init()) {
-                            self.additionalProperties = additionalProperties
-                        }
-                        public init(from decoder: any Decoder) throws {
-                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
-                        }
-                        public func encode(to encoder: any Encoder) throws {
-                            try encoder.encodeAdditionalProperties(additionalProperties)
-                        }
-                    }
-                    /// Optional custom metadata for the batch.
-                    ///
-                    /// - Remark: Generated from `#/paths/batches/POST/requestBody/json/metadata`.
-                    public var metadata: Operations.createBatch.Input.Body.jsonPayload.metadataPayload?
+                    public var metadata: Components.Schemas.Metadata?
                     /// Creates a new `jsonPayload`.
                     ///
                     /// - Parameters:
                     ///   - input_file_id: The ID of an uploaded file that contains requests for the new batch.
                     ///   - endpoint: The endpoint to be used for all requests in the batch. Currently `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions` are supported. Note that `/v1/embeddings` batches are also restricted to a maximum of 50,000 embedding inputs across all requests in the batch.
                     ///   - completion_window: The time frame within which the batch should be processed. Currently only `24h` is supported.
-                    ///   - metadata: Optional custom metadata for the batch.
+                    ///   - metadata:
                     public init(
                         input_file_id: Swift.String,
                         endpoint: Operations.createBatch.Input.Body.jsonPayload.endpointPayload,
                         completion_window: Operations.createBatch.Input.Body.jsonPayload.completion_windowPayload,
-                        metadata: Operations.createBatch.Input.Body.jsonPayload.metadataPayload? = nil
+                        metadata: Components.Schemas.Metadata? = nil
                     ) {
                         self.input_file_id = input_file_id
                         self.endpoint = endpoint
@@ -27211,6 +31874,12 @@ public enum Operations {
     /// [text generation](/docs/guides/text-generation), [vision](/docs/guides/vision),
     /// and [audio](/docs/guides/audio) guides.
     ///
+    /// Parameter support can differ depending on the model used to generate the
+    /// response, particularly for newer reasoning models. Parameters that are only
+    /// supported for reasoning models are noted below. For the current state of 
+    /// unsupported parameters in reasoning models, 
+    /// [refer to the reasoning guide](/docs/guides/reasoning).
+    ///
     ///
     /// - Remark: HTTP `POST /chat/completions`.
     /// - Remark: Generated from `#/paths//chat/completions/post(createChatCompletion)`.
@@ -27319,6 +31988,57 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/chat/completions/POST/responses/400/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/chat/completions/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.createChatCompletion.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.createChatCompletion.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// The request was malformed, missing required fields, or invalid parameters
+            ///
+            /// - Remark: Generated from `#/paths//chat/completions/post(createChatCompletion)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.createChatCompletion.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            public var badRequest: Operations.createChatCompletion.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
                             response: self
                         )
                     }
@@ -27542,6 +32262,30 @@ public enum Operations {
                             switch self {
                             case let .json(body):
                                 return body
+                            default:
+                                try throwUnexpectedResponseBody(
+                                    expectedContent: "application/json",
+                                    body: self
+                                )
+                            }
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/chat/completions/POST/responses/503/content/text\/event-stream`.
+                    case text_event_hyphen_stream(OpenAPIRuntime.HTTPBody)
+                    /// The associated value of the enum case if `self` is `.text_event_hyphen_stream`.
+                    ///
+                    /// - Throws: An error if `self` is not `.text_event_hyphen_stream`.
+                    /// - SeeAlso: `.text_event_hyphen_stream`.
+                    public var text_event_hyphen_stream: OpenAPIRuntime.HTTPBody {
+                        get throws {
+                            switch self {
+                            case let .text_event_hyphen_stream(body):
+                                return body
+                            default:
+                                try throwUnexpectedResponseBody(
+                                    expectedContent: "text/event-stream",
+                                    body: self
+                                )
                             }
                         }
                     }
@@ -27858,7 +32602,7 @@ public enum Operations {
             }
         }
     }
-    /// Returns a list of files that belong to the user's organization.
+    /// Returns a list of files.
     ///
     /// - Remark: HTTP `GET /files`.
     /// - Remark: Generated from `#/paths//files/get(listFiles)`.
@@ -27871,12 +32615,43 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/files/GET/query/purpose`.
                 public var purpose: Swift.String?
+                /// A limit on the number of objects to be returned. Limit can range between 1 and 10,000, and the default is 10,000.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/files/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// - Remark: Generated from `#/paths/files/GET/query/order`.
+                @frozen public enum orderPayload: String, Codable, Hashable, Sendable {
+                    case asc = "asc"
+                    case desc = "desc"
+                }
+                /// Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/files/GET/query/order`.
+                public var order: Operations.listFiles.Input.Query.orderPayload?
+                /// A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/files/GET/query/after`.
+                public var after: Swift.String?
                 /// Creates a new `Query`.
                 ///
                 /// - Parameters:
                 ///   - purpose: Only return files with the given purpose.
-                public init(purpose: Swift.String? = nil) {
+                ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 10,000, and the default is 10,000.
+                ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
+                ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
+                public init(
+                    purpose: Swift.String? = nil,
+                    limit: Swift.Int? = nil,
+                    order: Operations.listFiles.Input.Query.orderPayload? = nil,
+                    after: Swift.String? = nil
+                ) {
                     self.purpose = purpose
+                    self.limit = limit
+                    self.order = order
+                    self.after = after
                 }
             }
             public var query: Operations.listFiles.Input.Query
@@ -27994,7 +32769,7 @@ public enum Operations {
     ///
     /// The Fine-tuning API only supports `.jsonl` files. The input also has certain required formats for fine-tuning [chat](/docs/api-reference/fine-tuning/chat-input) or [completions](/docs/api-reference/fine-tuning/completions-input) models.
     ///
-    /// The Batch API only supports `.jsonl` files up to 100 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
+    /// The Batch API only supports `.jsonl` files up to 200 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
     ///
     /// Please [contact us](https://help.openai.com/) if you need to increase these storage limits.
     ///
@@ -30214,6 +34989,582 @@ public enum Operations {
             }
         }
     }
+    /// List organization API keys
+    ///
+    /// Retrieve a paginated list of organization admin API keys.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/get(admin-api-keys-list)`.
+    public enum admin_hyphen_api_hyphen_keys_hyphen_list {
+        public static let id: Swift.String = "admin-api-keys-list"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/query/after`.
+                public var after: Swift.String?
+                /// Order results by creation time, ascending or descending.
+                ///
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/query/order`.
+                @frozen public enum orderPayload: String, Codable, Hashable, Sendable {
+                    case asc = "asc"
+                    case desc = "desc"
+                }
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/query/order`.
+                public var order: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Query.orderPayload?
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - after:
+                ///   - order:
+                ///   - limit:
+                public init(
+                    after: Swift.String? = nil,
+                    order: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Query.orderPayload? = nil,
+                    limit: Swift.Int? = nil
+                ) {
+                    self.after = after
+                    self.order = order
+                    self.limit = limit
+                }
+            }
+            public var query: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Query
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_list.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_list.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Query = .init(),
+                headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/admin_api_keys/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.ApiKeyList)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ApiKeyList {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// A list of organization API keys.
+            ///
+            /// - Remark: Generated from `#/paths//organization/admin_api_keys/get(admin-api-keys-list)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Create an organization admin API key
+    ///
+    /// Create a new admin-level API key for the organization.
+    ///
+    /// - Remark: HTTP `POST /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/post(admin-api-keys-create)`.
+    public enum admin_hyphen_api_hyphen_keys_hyphen_create {
+        public static let id: Swift.String = "admin-api-keys-create"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_create.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_create.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Headers
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/requestBody/json/name`.
+                    public var name: Swift.String
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - name:
+                    public init(name: Swift.String) {
+                        self.name = name
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case name
+                    }
+                }
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/requestBody/content/application\/json`.
+                case json(Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Body.jsonPayload)
+            }
+            public var body: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Headers = .init(),
+                body: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/admin_api_keys/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AdminApiKey)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.AdminApiKey {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The newly created admin API key.
+            ///
+            /// - Remark: Generated from `#/paths//organization/admin_api_keys/post(admin-api-keys-create)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Retrieve a single organization API key
+    ///
+    /// Get details for a specific organization API key by its ID.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/get(admin-api-keys-get)`.
+    public enum admin_hyphen_api_hyphen_keys_hyphen_get {
+        public static let id: Swift.String = "admin-api-keys-get"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/GET/path`.
+            public struct Path: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/GET/path/key_id`.
+                public var key_id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - key_id:
+                public init(key_id: Swift.String) {
+                    self.key_id = key_id
+                }
+            }
+            public var path: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input.Path
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_get.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_get.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            public init(
+                path: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input.Path,
+                headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.AdminApiKey)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.AdminApiKey {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Details of the requested API key.
+            ///
+            /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/get(admin-api-keys-get)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Delete an organization admin API key
+    ///
+    /// Delete the specified admin API key.
+    ///
+    /// - Remark: HTTP `DELETE /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/delete(admin-api-keys-delete)`.
+    public enum admin_hyphen_api_hyphen_keys_hyphen_delete {
+        public static let id: Swift.String = "admin-api-keys-delete"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/path`.
+            public struct Path: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/path/key_id`.
+                public var key_id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - key_id:
+                public init(key_id: Swift.String) {
+                    self.key_id = key_id
+                }
+            }
+            public var path: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input.Path
+            /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            public init(
+                path: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input.Path,
+                headers: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/responses/200/content/json/id`.
+                        public var id: Swift.String?
+                        /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/responses/200/content/json/object`.
+                        public var object: Swift.String?
+                        /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/responses/200/content/json/deleted`.
+                        public var deleted: Swift.Bool?
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - id:
+                        ///   - object:
+                        ///   - deleted:
+                        public init(
+                            id: Swift.String? = nil,
+                            object: Swift.String? = nil,
+                            deleted: Swift.Bool? = nil
+                        ) {
+                            self.id = id
+                            self.object = object
+                            self.deleted = deleted
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case id
+                            case object
+                            case deleted
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/organization/admin_api_keys/{key_id}/DELETE/responses/200/content/application\/json`.
+                    case json(Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Confirmation that the API key was deleted.
+            ///
+            /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/delete(admin-api-keys-delete)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
     /// List user actions and configuration changes within this organization.
     ///
     /// - Remark: HTTP `GET /organization/audit_logs`.
@@ -30300,7 +35651,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/organization/audit_logs/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/organization/audit_logs/GET/query/before`.
@@ -30316,7 +35667,7 @@ public enum Operations {
                 ///   - resource_ids_lbrack__rbrack_: Return only events performed on these targets. For example, a project ID updated.
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 public init(
                     effective_at: Operations.list_hyphen_audit_hyphen_logs.Input.Query.effective_atPayload? = nil,
                     project_ids_lbrack__rbrack_: [Swift.String]? = nil,
@@ -30405,6 +35756,192 @@ public enum Operations {
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
             public var ok: Operations.list_hyphen_audit_hyphen_logs.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get costs details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/costs`.
+    /// - Remark: Generated from `#/paths//organization/costs/get(usage-costs)`.
+    public enum usage_hyphen_costs {
+        public static let id: Swift.String = "usage-costs"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/costs/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently only `1d` is supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_costs.Input.Query.bucket_widthPayload?
+                /// Return only costs for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case line_item = "line_item"
+                }
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_costs.Input.Query.group_byPayloadPayload]
+                /// Group the costs by the specified fields. Support fields include `project_id`, `line_item` and any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_costs.Input.Query.group_byPayload?
+                /// A limit on the number of buckets to be returned. Limit can range between 1 and 180, and the default is 7.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/costs/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently only `1d` is supported, default to `1d`.
+                ///   - project_ids: Return only costs for these projects.
+                ///   - group_by: Group the costs by the specified fields. Support fields include `project_id`, `line_item` and any combination of them.
+                ///   - limit: A limit on the number of buckets to be returned. Limit can range between 1 and 180, and the default is 7.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_costs.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_costs.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_costs.Input.Query
+            /// - Remark: Generated from `#/paths/organization/costs/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_costs.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_costs.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_costs.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_costs.Input.Query,
+                headers: Operations.usage_hyphen_costs.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/costs/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/costs/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_costs.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_costs.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Costs data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/costs/get(usage-costs)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_costs.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_costs.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -32177,6 +37714,372 @@ public enum Operations {
             }
         }
     }
+    /// Returns the rate limits per model for a project.
+    ///
+    /// - Remark: HTTP `GET /organization/projects/{project_id}/rate_limits`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/get(list-project-rate-limits)`.
+    public enum list_hyphen_project_hyphen_rate_hyphen_limits {
+        public static let id: Swift.String = "list-project-rate-limits"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/path`.
+            public struct Path: Sendable, Hashable {
+                /// The ID of the project.
+                ///
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/path/project_id`.
+                public var project_id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - project_id: The ID of the project.
+                public init(project_id: Swift.String) {
+                    self.project_id = project_id
+                }
+            }
+            public var path: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Path
+            /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// A limit on the number of objects to be returned. The default is 100.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/query/after`.
+                public var after: Swift.String?
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, beginning with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/query/before`.
+                public var before: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - limit: A limit on the number of objects to be returned. The default is 100.
+                ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, beginning with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                public init(
+                    limit: Swift.Int? = nil,
+                    after: Swift.String? = nil,
+                    before: Swift.String? = nil
+                ) {
+                    self.limit = limit
+                    self.after = after
+                    self.before = before
+                }
+            }
+            public var query: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Query
+            /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.list_hyphen_project_hyphen_rate_hyphen_limits.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.list_hyphen_project_hyphen_rate_hyphen_limits.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            public init(
+                path: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Path,
+                query: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Query = .init(),
+                headers: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.ProjectRateLimitListResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ProjectRateLimitListResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Project rate limits listed successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/get(list-project-rate-limits)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Updates a project rate limit.
+    ///
+    /// - Remark: HTTP `POST /organization/projects/{project_id}/rate_limits/{rate_limit_id}`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/{rate_limit_id}/post(update-project-rate-limits)`.
+    public enum update_hyphen_project_hyphen_rate_hyphen_limits {
+        public static let id: Swift.String = "update-project-rate-limits"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/path`.
+            public struct Path: Sendable, Hashable {
+                /// The ID of the project.
+                ///
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/path/project_id`.
+                public var project_id: Swift.String
+                /// The ID of the rate limit.
+                ///
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/path/rate_limit_id`.
+                public var rate_limit_id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - project_id: The ID of the project.
+                ///   - rate_limit_id: The ID of the rate limit.
+                public init(
+                    project_id: Swift.String,
+                    rate_limit_id: Swift.String
+                ) {
+                    self.project_id = project_id
+                    self.rate_limit_id = rate_limit_id
+                }
+            }
+            public var path: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Path
+            /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.update_hyphen_project_hyphen_rate_hyphen_limits.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.update_hyphen_project_hyphen_rate_hyphen_limits.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Headers
+            /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.ProjectRateLimitUpdateRequest)
+            }
+            public var body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            ///   - body:
+            public init(
+                path: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Path,
+                headers: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Headers = .init(),
+                body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input.Body
+            ) {
+                self.path = path
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.ProjectRateLimit)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ProjectRateLimit {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Project rate limit updated successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/{rate_limit_id}/post(update-project-rate-limits)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct BadRequest: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/responses/400/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/projects/{project_id}/rate_limits/{rate_limit_id}/POST/responses/400/content/application\/json`.
+                    case json(Components.Schemas.ErrorResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.ErrorResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.BadRequest.Body
+                /// Creates a new `BadRequest`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.BadRequest.Body) {
+                    self.body = body
+                }
+            }
+            /// Error response for various conditions.
+            ///
+            /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/{rate_limit_id}/post(update-project-rate-limits)/responses/400`.
+            ///
+            /// HTTP response code: `400 badRequest`.
+            case badRequest(Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.BadRequest)
+            /// The associated value of the enum case if `self` is `.badRequest`.
+            ///
+            /// - Throws: An error if `self` is not `.badRequest`.
+            /// - SeeAlso: `.badRequest`.
+            public var badRequest: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.BadRequest {
+                get throws {
+                    switch self {
+                    case let .badRequest(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badRequest",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
     /// Returns a list of service accounts in the project.
     ///
     /// - Remark: HTTP `GET /organization/projects/{project_id}/service_accounts`.
@@ -33783,6 +39686,1713 @@ public enum Operations {
             }
         }
     }
+    /// Get audio speeches usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_speeches`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_speeches/get(usage-audio-speeches)`.
+    public enum usage_hyphen_audio_hyphen_speeches {
+        public static let id: Swift.String = "usage-audio-speeches"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// Return only usage for these users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/user_ids`.
+                public var user_ids: [Swift.String]?
+                /// Return only usage for these API keys.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/api_key_ids`.
+                public var api_key_ids: [Swift.String]?
+                /// Return only usage for these models.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/models`.
+                public var models: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case user_id = "user_id"
+                    case api_key_id = "api_key_id"
+                    case model = "model"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_audio_hyphen_speeches.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - user_ids: Return only usage for these users.
+                ///   - api_key_ids: Return only usage for these API keys.
+                ///   - models: Return only usage for these models.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    user_ids: [Swift.String]? = nil,
+                    api_key_ids: [Swift.String]? = nil,
+                    models: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.user_ids = user_ids
+                    self.api_key_ids = api_key_ids
+                    self.models = models
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_audio_hyphen_speeches.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_audio_hyphen_speeches.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_audio_hyphen_speeches.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_audio_hyphen_speeches.Input.Query,
+                headers: Operations.usage_hyphen_audio_hyphen_speeches.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/audio_speeches/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_audio_hyphen_speeches.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_audio_hyphen_speeches.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/audio_speeches/get(usage-audio-speeches)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_audio_hyphen_speeches.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_audio_hyphen_speeches.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get audio transcriptions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_transcriptions`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_transcriptions/get(usage-audio-transcriptions)`.
+    public enum usage_hyphen_audio_hyphen_transcriptions {
+        public static let id: Swift.String = "usage-audio-transcriptions"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// Return only usage for these users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/user_ids`.
+                public var user_ids: [Swift.String]?
+                /// Return only usage for these API keys.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/api_key_ids`.
+                public var api_key_ids: [Swift.String]?
+                /// Return only usage for these models.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/models`.
+                public var models: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case user_id = "user_id"
+                    case api_key_id = "api_key_id"
+                    case model = "model"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - user_ids: Return only usage for these users.
+                ///   - api_key_ids: Return only usage for these API keys.
+                ///   - models: Return only usage for these models.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    user_ids: [Swift.String]? = nil,
+                    api_key_ids: [Swift.String]? = nil,
+                    models: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.user_ids = user_ids
+                    self.api_key_ids = api_key_ids
+                    self.models = models
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_audio_hyphen_transcriptions.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_audio_hyphen_transcriptions.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Query,
+                headers: Operations.usage_hyphen_audio_hyphen_transcriptions.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/audio_transcriptions/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_audio_hyphen_transcriptions.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_audio_hyphen_transcriptions.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/audio_transcriptions/get(usage-audio-transcriptions)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_audio_hyphen_transcriptions.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_audio_hyphen_transcriptions.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get code interpreter sessions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/code_interpreter_sessions`.
+    /// - Remark: Generated from `#/paths//organization/usage/code_interpreter_sessions/get(usage-code-interpreter-sessions)`.
+    public enum usage_hyphen_code_hyphen_interpreter_hyphen_sessions {
+        public static let id: Swift.String = "usage-code-interpreter-sessions"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Query,
+                headers: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/code_interpreter_sessions/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/code_interpreter_sessions/get(usage-code-interpreter-sessions)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get completions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/completions`.
+    /// - Remark: Generated from `#/paths//organization/usage/completions/get(usage-completions)`.
+    public enum usage_hyphen_completions {
+        public static let id: Swift.String = "usage-completions"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_completions.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// Return only usage for these users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/user_ids`.
+                public var user_ids: [Swift.String]?
+                /// Return only usage for these API keys.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/api_key_ids`.
+                public var api_key_ids: [Swift.String]?
+                /// Return only usage for these models.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/models`.
+                public var models: [Swift.String]?
+                /// If `true`, return batch jobs only. If `false`, return non-batch jobs only. By default, return both.
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/batch`.
+                public var batch: Swift.Bool?
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case user_id = "user_id"
+                    case api_key_id = "api_key_id"
+                    case model = "model"
+                    case batch = "batch"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_completions.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model`, `batch` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_completions.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - user_ids: Return only usage for these users.
+                ///   - api_key_ids: Return only usage for these API keys.
+                ///   - models: Return only usage for these models.
+                ///   - batch: If `true`, return batch jobs only. If `false`, return non-batch jobs only. By default, return both.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model`, `batch` or any combination of them.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_completions.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    user_ids: [Swift.String]? = nil,
+                    api_key_ids: [Swift.String]? = nil,
+                    models: [Swift.String]? = nil,
+                    batch: Swift.Bool? = nil,
+                    group_by: Operations.usage_hyphen_completions.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.user_ids = user_ids
+                    self.api_key_ids = api_key_ids
+                    self.models = models
+                    self.batch = batch
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_completions.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/completions/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_completions.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_completions.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_completions.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_completions.Input.Query,
+                headers: Operations.usage_hyphen_completions.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/completions/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/completions/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_completions.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_completions.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/completions/get(usage-completions)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_completions.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_completions.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get embeddings usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/embeddings`.
+    /// - Remark: Generated from `#/paths//organization/usage/embeddings/get(usage-embeddings)`.
+    public enum usage_hyphen_embeddings {
+        public static let id: Swift.String = "usage-embeddings"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_embeddings.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// Return only usage for these users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/user_ids`.
+                public var user_ids: [Swift.String]?
+                /// Return only usage for these API keys.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/api_key_ids`.
+                public var api_key_ids: [Swift.String]?
+                /// Return only usage for these models.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/models`.
+                public var models: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case user_id = "user_id"
+                    case api_key_id = "api_key_id"
+                    case model = "model"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_embeddings.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_embeddings.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - user_ids: Return only usage for these users.
+                ///   - api_key_ids: Return only usage for these API keys.
+                ///   - models: Return only usage for these models.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_embeddings.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    user_ids: [Swift.String]? = nil,
+                    api_key_ids: [Swift.String]? = nil,
+                    models: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_embeddings.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.user_ids = user_ids
+                    self.api_key_ids = api_key_ids
+                    self.models = models
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_embeddings.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_embeddings.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_embeddings.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_embeddings.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_embeddings.Input.Query,
+                headers: Operations.usage_hyphen_embeddings.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/embeddings/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_embeddings.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_embeddings.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/embeddings/get(usage-embeddings)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_embeddings.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_embeddings.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get images usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/images`.
+    /// - Remark: Generated from `#/paths//organization/usage/images/get(usage-images)`.
+    public enum usage_hyphen_images {
+        public static let id: Swift.String = "usage-images"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/images/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_images.Input.Query.bucket_widthPayload?
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/sourcesPayload`.
+                @frozen public enum sourcesPayloadPayload: String, Codable, Hashable, Sendable {
+                    case image_period_generation = "image.generation"
+                    case image_period_edit = "image.edit"
+                    case image_period_variation = "image.variation"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/sources`.
+                public typealias sourcesPayload = [Operations.usage_hyphen_images.Input.Query.sourcesPayloadPayload]
+                /// Return only usages for these sources. Possible values are `image.generation`, `image.edit`, `image.variation` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/sources`.
+                public var sources: Operations.usage_hyphen_images.Input.Query.sourcesPayload?
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/sizesPayload`.
+                @frozen public enum sizesPayloadPayload: String, Codable, Hashable, Sendable {
+                    case _256x256 = "256x256"
+                    case _512x512 = "512x512"
+                    case _1024x1024 = "1024x1024"
+                    case _1792x1792 = "1792x1792"
+                    case _1024x1792 = "1024x1792"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/sizes`.
+                public typealias sizesPayload = [Operations.usage_hyphen_images.Input.Query.sizesPayloadPayload]
+                /// Return only usages for these image sizes. Possible values are `256x256`, `512x512`, `1024x1024`, `1792x1792`, `1024x1792` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/sizes`.
+                public var sizes: Operations.usage_hyphen_images.Input.Query.sizesPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// Return only usage for these users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/user_ids`.
+                public var user_ids: [Swift.String]?
+                /// Return only usage for these API keys.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/api_key_ids`.
+                public var api_key_ids: [Swift.String]?
+                /// Return only usage for these models.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/models`.
+                public var models: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case user_id = "user_id"
+                    case api_key_id = "api_key_id"
+                    case model = "model"
+                    case size = "size"
+                    case source = "source"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_images.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model`, `size`, `source` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_images.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - sources: Return only usages for these sources. Possible values are `image.generation`, `image.edit`, `image.variation` or any combination of them.
+                ///   - sizes: Return only usages for these image sizes. Possible values are `256x256`, `512x512`, `1024x1024`, `1792x1792`, `1024x1792` or any combination of them.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - user_ids: Return only usage for these users.
+                ///   - api_key_ids: Return only usage for these API keys.
+                ///   - models: Return only usage for these models.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model`, `size`, `source` or any combination of them.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_images.Input.Query.bucket_widthPayload? = nil,
+                    sources: Operations.usage_hyphen_images.Input.Query.sourcesPayload? = nil,
+                    sizes: Operations.usage_hyphen_images.Input.Query.sizesPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    user_ids: [Swift.String]? = nil,
+                    api_key_ids: [Swift.String]? = nil,
+                    models: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_images.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.sources = sources
+                    self.sizes = sizes
+                    self.project_ids = project_ids
+                    self.user_ids = user_ids
+                    self.api_key_ids = api_key_ids
+                    self.models = models
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_images.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/images/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_images.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_images.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_images.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_images.Input.Query,
+                headers: Operations.usage_hyphen_images.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/images/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/images/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_images.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_images.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/images/get(usage-images)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_images.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_images.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get moderations usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/moderations`.
+    /// - Remark: Generated from `#/paths//organization/usage/moderations/get(usage-moderations)`.
+    public enum usage_hyphen_moderations {
+        public static let id: Swift.String = "usage-moderations"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_moderations.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// Return only usage for these users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/user_ids`.
+                public var user_ids: [Swift.String]?
+                /// Return only usage for these API keys.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/api_key_ids`.
+                public var api_key_ids: [Swift.String]?
+                /// Return only usage for these models.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/models`.
+                public var models: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                    case user_id = "user_id"
+                    case api_key_id = "api_key_id"
+                    case model = "model"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_moderations.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_moderations.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - user_ids: Return only usage for these users.
+                ///   - api_key_ids: Return only usage for these API keys.
+                ///   - models: Return only usage for these models.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`, `user_id`, `api_key_id`, `model` or any combination of them.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_moderations.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    user_ids: [Swift.String]? = nil,
+                    api_key_ids: [Swift.String]? = nil,
+                    models: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_moderations.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.user_ids = user_ids
+                    self.api_key_ids = api_key_ids
+                    self.models = models
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_moderations.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_moderations.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_moderations.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_moderations.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_moderations.Input.Query,
+                headers: Operations.usage_hyphen_moderations.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/moderations/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_moderations.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_moderations.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/moderations/get(usage-moderations)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_moderations.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_moderations.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Get vector stores usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/vector_stores`.
+    /// - Remark: Generated from `#/paths//organization/usage/vector_stores/get(usage-vector-stores)`.
+    public enum usage_hyphen_vector_hyphen_stores {
+        public static let id: Swift.String = "usage-vector-stores"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// Start time (Unix seconds) of the query time range, inclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/start_time`.
+                public var start_time: Swift.Int
+                /// End time (Unix seconds) of the query time range, exclusive.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/end_time`.
+                public var end_time: Swift.Int?
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/bucket_width`.
+                @frozen public enum bucket_widthPayload: String, Codable, Hashable, Sendable {
+                    case _1m = "1m"
+                    case _1h = "1h"
+                    case _1d = "1d"
+                }
+                /// Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/bucket_width`.
+                public var bucket_width: Operations.usage_hyphen_vector_hyphen_stores.Input.Query.bucket_widthPayload?
+                /// Return only usage for these projects.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/project_ids`.
+                public var project_ids: [Swift.String]?
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/group_byPayload`.
+                @frozen public enum group_byPayloadPayload: String, Codable, Hashable, Sendable {
+                    case project_id = "project_id"
+                }
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/group_by`.
+                public typealias group_byPayload = [Operations.usage_hyphen_vector_hyphen_stores.Input.Query.group_byPayloadPayload]
+                /// Group the usage data by the specified fields. Support fields include `project_id`.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/group_by`.
+                public var group_by: Operations.usage_hyphen_vector_hyphen_stores.Input.Query.group_byPayload?
+                /// Specifies the number of buckets to return.
+                /// - `bucket_width=1d`: default: 7, max: 31
+                /// - `bucket_width=1h`: default: 24, max: 168
+                /// - `bucket_width=1m`: default: 60, max: 1440
+                ///
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/limit`.
+                public var limit: Swift.Int?
+                /// A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                ///
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/query/page`.
+                public var page: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - start_time: Start time (Unix seconds) of the query time range, inclusive.
+                ///   - end_time: End time (Unix seconds) of the query time range, exclusive.
+                ///   - bucket_width: Width of each time bucket in response. Currently `1m`, `1h` and `1d` are supported, default to `1d`.
+                ///   - project_ids: Return only usage for these projects.
+                ///   - group_by: Group the usage data by the specified fields. Support fields include `project_id`.
+                ///   - limit: Specifies the number of buckets to return.
+                ///   - page: A cursor for use in pagination. Corresponding to the `next_page` field from the previous response.
+                public init(
+                    start_time: Swift.Int,
+                    end_time: Swift.Int? = nil,
+                    bucket_width: Operations.usage_hyphen_vector_hyphen_stores.Input.Query.bucket_widthPayload? = nil,
+                    project_ids: [Swift.String]? = nil,
+                    group_by: Operations.usage_hyphen_vector_hyphen_stores.Input.Query.group_byPayload? = nil,
+                    limit: Swift.Int? = nil,
+                    page: Swift.String? = nil
+                ) {
+                    self.start_time = start_time
+                    self.end_time = end_time
+                    self.bucket_width = bucket_width
+                    self.project_ids = project_ids
+                    self.group_by = group_by
+                    self.limit = limit
+                    self.page = page
+                }
+            }
+            public var query: Operations.usage_hyphen_vector_hyphen_stores.Input.Query
+            /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_vector_hyphen_stores.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.usage_hyphen_vector_hyphen_stores.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.usage_hyphen_vector_hyphen_stores.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.usage_hyphen_vector_hyphen_stores.Input.Query,
+                headers: Operations.usage_hyphen_vector_hyphen_stores.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/organization/usage/vector_stores/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.UsageResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.UsageResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.usage_hyphen_vector_hyphen_stores.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.usage_hyphen_vector_hyphen_stores.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Usage data retrieved successfully.
+            ///
+            /// - Remark: Generated from `#/paths//organization/usage/vector_stores/get(usage-vector-stores)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.usage_hyphen_vector_hyphen_stores.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.usage_hyphen_vector_hyphen_stores.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
     /// Lists all of the users in the organization.
     ///
     /// - Remark: HTTP `GET /organization/users`.
@@ -33802,17 +41412,24 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/organization/users/GET/query/after`.
                 public var after: Swift.String?
+                /// Filter by the email address of users.
+                ///
+                /// - Remark: Generated from `#/paths/organization/users/GET/query/emails`.
+                public var emails: [Swift.String]?
                 /// Creates a new `Query`.
                 ///
                 /// - Parameters:
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
+                ///   - emails: Filter by the email address of users.
                 public init(
                     limit: Swift.Int? = nil,
-                    after: Swift.String? = nil
+                    after: Swift.String? = nil,
+                    emails: [Swift.String]? = nil
                 ) {
                     self.limit = limit
                     self.after = after
+                    self.emails = emails
                 }
             }
             public var query: Operations.list_hyphen_users.Input.Query
@@ -34280,6 +41897,134 @@ public enum Operations {
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
             public var ok: Operations.delete_hyphen_user.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Undocumented response.
+            ///
+            /// A response with a code that is not documented in the OpenAPI document.
+            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Create an ephemeral API token for use in client-side applications with the
+    /// Realtime API. Can be configured with the same session parameters as the
+    /// `session.update` client event.
+    ///
+    /// It responds with a session object, plus a `client_secret` key which contains
+    /// a usable ephemeral API token that can be used to authenticate browser clients
+    /// for the Realtime API.
+    ///
+    ///
+    /// - Remark: HTTP `POST /realtime/sessions`.
+    /// - Remark: Generated from `#/paths//realtime/sessions/post(create-realtime-session)`.
+    public enum create_hyphen_realtime_hyphen_session {
+        public static let id: Swift.String = "create-realtime-session"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/realtime/sessions/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.create_hyphen_realtime_hyphen_session.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.create_hyphen_realtime_hyphen_session.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.create_hyphen_realtime_hyphen_session.Input.Headers
+            /// - Remark: Generated from `#/paths/realtime/sessions/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/realtime/sessions/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.RealtimeSessionCreateRequest)
+            }
+            public var body: Operations.create_hyphen_realtime_hyphen_session.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.create_hyphen_realtime_hyphen_session.Input.Headers = .init(),
+                body: Operations.create_hyphen_realtime_hyphen_session.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/realtime/sessions/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/realtime/sessions/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.RealtimeSessionCreateResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.RealtimeSessionCreateResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.create_hyphen_realtime_hyphen_session.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.create_hyphen_realtime_hyphen_session.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Session created successfully.
+            ///
+            /// - Remark: Generated from `#/paths//realtime/sessions/post(create-realtime-session)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.create_hyphen_realtime_hyphen_session.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.create_hyphen_realtime_hyphen_session.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -35008,7 +42753,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/messages/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/messages/GET/query/before`.
@@ -35024,7 +42769,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///   - run_id: Filter messages by the run ID that generated them.
                 public init(
                     limit: Swift.Int? = nil,
@@ -35761,7 +43506,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/GET/query/before`.
@@ -35772,7 +43517,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 public init(
                     limit: Swift.Int? = nil,
                     order: Operations.listRuns.Input.Query.orderPayload? = nil,
@@ -35929,7 +43674,7 @@ public enum Operations {
                 public typealias include_lbrack__rbrack_Payload = [Operations.createRun.Input.Query.include_lbrack__rbrack_PayloadPayload]
                 /// A list of additional fields to include in the response. Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the file search result content.
                 ///
-                /// See the [file search tool documentation](/docs/assistants/tools/file-search/customizing-file-search-settings) for more information.
+                /// See the [file search tool documentation](/docs/assistants/tools/file-search#customizing-file-search-settings) for more information.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/POST/query/include[]`.
@@ -36542,7 +44287,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/{run_id}/steps/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/{run_id}/steps/GET/query/before`.
@@ -36555,7 +44300,7 @@ public enum Operations {
                 public typealias include_lbrack__rbrack_Payload = [Operations.listRunSteps.Input.Query.include_lbrack__rbrack_PayloadPayload]
                 /// A list of additional fields to include in the response. Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the file search result content.
                 ///
-                /// See the [file search tool documentation](/docs/assistants/tools/file-search/customizing-file-search-settings) for more information.
+                /// See the [file search tool documentation](/docs/assistants/tools/file-search#customizing-file-search-settings) for more information.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/{run_id}/steps/GET/query/include[]`.
@@ -36566,7 +44311,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///   - include_lbrack__rbrack_: A list of additional fields to include in the response. Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the file search result content.
                 public init(
                     limit: Swift.Int? = nil,
@@ -36742,7 +44487,7 @@ public enum Operations {
                 public typealias include_lbrack__rbrack_Payload = [Operations.getRunStep.Input.Query.include_lbrack__rbrack_PayloadPayload]
                 /// A list of additional fields to include in the response. Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the file search result content.
                 ///
-                /// See the [file search tool documentation](/docs/assistants/tools/file-search/customizing-file-search-settings) for more information.
+                /// See the [file search tool documentation](/docs/assistants/tools/file-search#customizing-file-search-settings) for more information.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/threads/{thread_id}/runs/{run_id}/steps/{step_id}/GET/query/include[]`.
@@ -37021,7 +44766,7 @@ public enum Operations {
     /// Once you complete the Upload, we will create a [File](/docs/api-reference/files/object) object that contains all the parts you uploaded. This File is usable in the rest of our platform as a regular File object.
     ///
     /// For certain `purpose`s, the correct `mime_type` must be specified. Please refer to documentation for the supported MIME types for your use case:
-    /// - [Assistants](/docs/assistants/tools/file-search/supported-files)
+    /// - [Assistants](/docs/assistants/tools/file-search#supported-files)
     ///
     /// For guidance on the proper filename extensions for each purpose, please follow the documentation on [creating a File](/docs/api-reference/files/create).
     ///
@@ -37598,7 +45343,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/vector_stores/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/vector_stores/GET/query/before`.
@@ -37609,7 +45354,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 public init(
                     limit: Swift.Int? = nil,
                     order: Operations.listVectorStores.Input.Query.orderPayload? = nil,
@@ -38722,7 +46467,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/vector_stores/{vector_store_id}/file_batches/{batch_id}/files/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/vector_stores/{vector_store_id}/file_batches/{batch_id}/files/GET/query/before`.
@@ -38744,7 +46489,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///   - filter: Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
                 public init(
                     limit: Swift.Int? = nil,
@@ -38916,7 +46661,7 @@ public enum Operations {
                 ///
                 /// - Remark: Generated from `#/paths/vector_stores/{vector_store_id}/files/GET/query/after`.
                 public var after: Swift.String?
-                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                /// A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///
                 ///
                 /// - Remark: Generated from `#/paths/vector_stores/{vector_store_id}/files/GET/query/before`.
@@ -38938,7 +46683,7 @@ public enum Operations {
                 ///   - limit: A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.
                 ///   - order: Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.
                 ///   - after: A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.
-                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+                ///   - before: A cursor for use in pagination. `before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.
                 ///   - filter: Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
                 public init(
                     limit: Swift.Int? = nil,

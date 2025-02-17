@@ -650,6 +650,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 400:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.createTranscription.Output.BadRequest.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .badRequest(.init(body: body))
                 case 401:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.createTranscription.Output.Unauthorized.Body
@@ -924,6 +946,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 400:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.createTranslation.Output.BadRequest.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .badRequest(.init(body: body))
                 case 401:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.createTranslation.Output.Unauthorized.Body
@@ -1317,6 +1361,12 @@ public struct Client: APIProtocol {
     /// [text generation](/docs/guides/text-generation), [vision](/docs/guides/vision),
     /// and [audio](/docs/guides/audio) guides.
     ///
+    /// Parameter support can differ depending on the model used to generate the
+    /// response, particularly for newer reasoning models. Parameters that are only
+    /// supported for reasoning models are noted below. For the current state of 
+    /// unsupported parameters in reasoning models, 
+    /// [refer to the reasoning guide](/docs/guides/reasoning).
+    ///
     ///
     /// - Remark: HTTP `POST /chat/completions`.
     /// - Remark: Generated from `#/paths//chat/completions/post(createChatCompletion)`.
@@ -1382,6 +1432,28 @@ public struct Client: APIProtocol {
                         preconditionFailure("bestContentType chose an invalid content type.")
                     }
                     return .ok(.init(body: body))
+                case 400:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.createChatCompletion.Output.BadRequest.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .badRequest(.init(body: body))
                 case 401:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
                     let body: Operations.createChatCompletion.Output.Unauthorized.Body
@@ -1476,7 +1548,8 @@ public struct Client: APIProtocol {
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
-                            "application/json"
+                            "application/json",
+                            "text/event-stream"
                         ]
                     )
                     switch chosenContentType {
@@ -1486,6 +1559,14 @@ public struct Client: APIProtocol {
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
+                            }
+                        )
+                    case "text/event-stream":
+                        body = try converter.getResponseBodyAsBinary(
+                            OpenAPIRuntime.HTTPBody.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .text_event_hyphen_stream(value)
                             }
                         )
                     default:
@@ -1642,7 +1723,7 @@ public struct Client: APIProtocol {
             }
         )
     }
-    /// Returns a list of files that belong to the user's organization.
+    /// Returns a list of files.
     ///
     /// - Remark: HTTP `GET /files`.
     /// - Remark: Generated from `#/paths//files/get(listFiles)`.
@@ -1666,6 +1747,27 @@ public struct Client: APIProtocol {
                     explode: true,
                     name: "purpose",
                     value: input.query.purpose
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "order",
+                    value: input.query.order
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "after",
+                    value: input.query.after
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -1715,7 +1817,7 @@ public struct Client: APIProtocol {
     ///
     /// The Fine-tuning API only supports `.jsonl` files. The input also has certain required formats for fine-tuning [chat](/docs/api-reference/fine-tuning/chat-input) or [completions](/docs/api-reference/fine-tuning/completions-input) models.
     ///
-    /// The Batch API only supports `.jsonl` files up to 100 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
+    /// The Batch API only supports `.jsonl` files up to 200 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
     ///
     /// Please [contact us](https://help.openai.com/) if you need to increase these storage limits.
     ///
@@ -3142,6 +3244,288 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// List organization API keys
+    ///
+    /// Retrieve a paginated list of organization admin API keys.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/get(admin-api-keys-list)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_list(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/admin_api_keys",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "after",
+                    value: input.query.after
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "order",
+                    value: input.query.order
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.admin_hyphen_api_hyphen_keys_hyphen_list.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ApiKeyList.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Create an organization admin API key
+    ///
+    /// Create a new admin-level API key for the organization.
+    ///
+    /// - Remark: HTTP `POST /organization/admin_api_keys`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/post(admin-api-keys-create)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_create(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/admin_api_keys",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.admin_hyphen_api_hyphen_keys_hyphen_create.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.AdminApiKey.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Retrieve a single organization API key
+    ///
+    /// Get details for a specific organization API key by its ID.
+    ///
+    /// - Remark: HTTP `GET /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/get(admin-api-keys-get)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_get(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/admin_api_keys/{}",
+                    parameters: [
+                        input.path.key_id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.admin_hyphen_api_hyphen_keys_hyphen_get.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.AdminApiKey.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Delete an organization admin API key
+    ///
+    /// Delete the specified admin API key.
+    ///
+    /// - Remark: HTTP `DELETE /organization/admin_api_keys/{key_id}`.
+    /// - Remark: Generated from `#/paths//organization/admin_api_keys/{key_id}/delete(admin-api-keys-delete)`.
+    public func admin_hyphen_api_hyphen_keys_hyphen_delete(_ input: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Input) async throws -> Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/admin_api_keys/{}",
+                    parameters: [
+                        input.path.key_id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .delete
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.admin_hyphen_api_hyphen_keys_hyphen_delete.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
     /// List user actions and configuration changes within this organization.
     ///
     /// - Remark: HTTP `GET /organization/audit_logs`.
@@ -3244,6 +3628,115 @@ public struct Client: APIProtocol {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
                             Components.Schemas.ListAuditLogsResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get costs details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/costs`.
+    /// - Remark: Generated from `#/paths//organization/costs/get(usage-costs)`.
+    public func usage_hyphen_costs(_ input: Operations.usage_hyphen_costs.Input) async throws -> Operations.usage_hyphen_costs.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_costs.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/costs",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_costs.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
@@ -4123,6 +4616,183 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// Returns the rate limits per model for a project.
+    ///
+    /// - Remark: HTTP `GET /organization/projects/{project_id}/rate_limits`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/get(list-project-rate-limits)`.
+    public func list_hyphen_project_hyphen_rate_hyphen_limits(_ input: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Input) async throws -> Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/projects/{}/rate_limits",
+                    parameters: [
+                        input.path.project_id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "after",
+                    value: input.query.after
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "before",
+                    value: input.query.before
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.list_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProjectRateLimitListResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Updates a project rate limit.
+    ///
+    /// - Remark: HTTP `POST /organization/projects/{project_id}/rate_limits/{rate_limit_id}`.
+    /// - Remark: Generated from `#/paths//organization/projects/{project_id}/rate_limits/{rate_limit_id}/post(update-project-rate-limits)`.
+    public func update_hyphen_project_hyphen_rate_hyphen_limits(_ input: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Input) async throws -> Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/projects/{}/rate_limits/{}",
+                    parameters: [
+                        input.path.project_id,
+                        input.path.rate_limit_id
+                    ]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ProjectRateLimit.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                case 400:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.update_hyphen_project_hyphen_rate_hyphen_limits.Output.BadRequest.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.ErrorResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .badRequest(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
     /// Returns a list of service accounts in the project.
     ///
     /// - Remark: HTTP `GET /organization/projects/{project_id}/service_accounts`.
@@ -4873,6 +5543,1025 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// Get audio speeches usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_speeches`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_speeches/get(usage-audio-speeches)`.
+    public func usage_hyphen_audio_hyphen_speeches(_ input: Operations.usage_hyphen_audio_hyphen_speeches.Input) async throws -> Operations.usage_hyphen_audio_hyphen_speeches.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_audio_hyphen_speeches.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/audio_speeches",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "user_ids",
+                    value: input.query.user_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "api_key_ids",
+                    value: input.query.api_key_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "models",
+                    value: input.query.models
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_audio_hyphen_speeches.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get audio transcriptions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/audio_transcriptions`.
+    /// - Remark: Generated from `#/paths//organization/usage/audio_transcriptions/get(usage-audio-transcriptions)`.
+    public func usage_hyphen_audio_hyphen_transcriptions(_ input: Operations.usage_hyphen_audio_hyphen_transcriptions.Input) async throws -> Operations.usage_hyphen_audio_hyphen_transcriptions.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_audio_hyphen_transcriptions.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/audio_transcriptions",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "user_ids",
+                    value: input.query.user_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "api_key_ids",
+                    value: input.query.api_key_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "models",
+                    value: input.query.models
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_audio_hyphen_transcriptions.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get code interpreter sessions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/code_interpreter_sessions`.
+    /// - Remark: Generated from `#/paths//organization/usage/code_interpreter_sessions/get(usage-code-interpreter-sessions)`.
+    public func usage_hyphen_code_hyphen_interpreter_hyphen_sessions(_ input: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Input) async throws -> Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/code_interpreter_sessions",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_code_hyphen_interpreter_hyphen_sessions.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get completions usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/completions`.
+    /// - Remark: Generated from `#/paths//organization/usage/completions/get(usage-completions)`.
+    public func usage_hyphen_completions(_ input: Operations.usage_hyphen_completions.Input) async throws -> Operations.usage_hyphen_completions.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_completions.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/completions",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "user_ids",
+                    value: input.query.user_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "api_key_ids",
+                    value: input.query.api_key_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "models",
+                    value: input.query.models
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "batch",
+                    value: input.query.batch
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_completions.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get embeddings usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/embeddings`.
+    /// - Remark: Generated from `#/paths//organization/usage/embeddings/get(usage-embeddings)`.
+    public func usage_hyphen_embeddings(_ input: Operations.usage_hyphen_embeddings.Input) async throws -> Operations.usage_hyphen_embeddings.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_embeddings.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/embeddings",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "user_ids",
+                    value: input.query.user_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "api_key_ids",
+                    value: input.query.api_key_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "models",
+                    value: input.query.models
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_embeddings.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get images usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/images`.
+    /// - Remark: Generated from `#/paths//organization/usage/images/get(usage-images)`.
+    public func usage_hyphen_images(_ input: Operations.usage_hyphen_images.Input) async throws -> Operations.usage_hyphen_images.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_images.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/images",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "sources",
+                    value: input.query.sources
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "sizes",
+                    value: input.query.sizes
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "user_ids",
+                    value: input.query.user_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "api_key_ids",
+                    value: input.query.api_key_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "models",
+                    value: input.query.models
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_images.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get moderations usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/moderations`.
+    /// - Remark: Generated from `#/paths//organization/usage/moderations/get(usage-moderations)`.
+    public func usage_hyphen_moderations(_ input: Operations.usage_hyphen_moderations.Input) async throws -> Operations.usage_hyphen_moderations.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_moderations.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/moderations",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "user_ids",
+                    value: input.query.user_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "api_key_ids",
+                    value: input.query.api_key_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "models",
+                    value: input.query.models
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_moderations.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Get vector stores usage details for the organization.
+    ///
+    /// - Remark: HTTP `GET /organization/usage/vector_stores`.
+    /// - Remark: Generated from `#/paths//organization/usage/vector_stores/get(usage-vector-stores)`.
+    public func usage_hyphen_vector_hyphen_stores(_ input: Operations.usage_hyphen_vector_hyphen_stores.Input) async throws -> Operations.usage_hyphen_vector_hyphen_stores.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.usage_hyphen_vector_hyphen_stores.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/organization/usage/vector_stores",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .get
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "start_time",
+                    value: input.query.start_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "end_time",
+                    value: input.query.end_time
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "bucket_width",
+                    value: input.query.bucket_width
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "project_ids",
+                    value: input.query.project_ids
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "group_by",
+                    value: input.query.group_by
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "limit",
+                    value: input.query.limit
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "page",
+                    value: input.query.page
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.usage_hyphen_vector_hyphen_stores.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.UsageResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
     /// Lists all of the users in the organization.
     ///
     /// - Remark: HTTP `GET /organization/users`.
@@ -4904,6 +6593,13 @@ public struct Client: APIProtocol {
                     explode: true,
                     name: "after",
                     value: input.query.after
+                )
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "emails",
+                    value: input.query.emails
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -5121,6 +6817,82 @@ public struct Client: APIProtocol {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
                             Components.Schemas.UserDeleteResponse.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    return .undocumented(
+                        statusCode: response.status.code,
+                        .init(
+                            headerFields: response.headerFields,
+                            body: responseBody
+                        )
+                    )
+                }
+            }
+        )
+    }
+    /// Create an ephemeral API token for use in client-side applications with the
+    /// Realtime API. Can be configured with the same session parameters as the
+    /// `session.update` client event.
+    ///
+    /// It responds with a session object, plus a `client_secret` key which contains
+    /// a usable ephemeral API token that can be used to authenticate browser clients
+    /// for the Realtime API.
+    ///
+    ///
+    /// - Remark: HTTP `POST /realtime/sessions`.
+    /// - Remark: Generated from `#/paths//realtime/sessions/post(create-realtime-session)`.
+    public func create_hyphen_realtime_hyphen_session(_ input: Operations.create_hyphen_realtime_hyphen_session.Input) async throws -> Operations.create_hyphen_realtime_hyphen_session.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.create_hyphen_realtime_hyphen_session.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/realtime/sessions",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.create_hyphen_realtime_hyphen_session.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.RealtimeSessionCreateResponse.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
@@ -6456,7 +8228,7 @@ public struct Client: APIProtocol {
     /// Once you complete the Upload, we will create a [File](/docs/api-reference/files/object) object that contains all the parts you uploaded. This File is usable in the rest of our platform as a regular File object.
     ///
     /// For certain `purpose`s, the correct `mime_type` must be specified. Please refer to documentation for the supported MIME types for your use case:
-    /// - [Assistants](/docs/assistants/tools/file-search/supported-files)
+    /// - [Assistants](/docs/assistants/tools/file-search#supported-files)
     ///
     /// For guidance on the proper filename extensions for each purpose, please follow the documentation on [creating a File](/docs/api-reference/files/create).
     ///
