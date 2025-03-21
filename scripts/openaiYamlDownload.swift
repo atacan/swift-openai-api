@@ -45,6 +45,9 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+            plain/text:
+              schema:
+                type: string
         "503":
           description: The engine is currently overloaded, please try again later
           content:

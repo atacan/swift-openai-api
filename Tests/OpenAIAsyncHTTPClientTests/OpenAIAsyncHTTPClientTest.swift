@@ -204,6 +204,85 @@ struct OpenAIAsyncHTTPClientTest {
         }
 
     }
+    
+    @Test func structuredOutput() async throws {
+        let response = try await client.createChatCompletion(
+            body: .json(
+                .init(
+                    messages: [
+                        .ChatCompletionRequestSystemMessage(
+                            .init(
+                                content: .case1(
+                                    "true if it is positive otherwie return false"
+                                ),
+                                role: .system
+                            )
+                        ),
+                        .ChatCompletionRequestUserMessage(
+                            .init(
+                                content: .case1(
+                                    "I like dictop. It's a great app."
+                                ),
+                                role: .user
+                            )
+                        )
+                    ],
+                    model: .init(value2: .gpt_hyphen_4o),
+//                    store: <#T##Bool?#>,
+//                    reasoning_effort: <#T##Components.Schemas.ReasoningEffort?#>,
+//                    metadata: <#T##Components.Schemas.Metadata?#>,
+//                    frequency_penalty: <#T##Double?#>,
+//                    logit_bias: <#T##Components.Schemas.CreateChatCompletionRequest.logit_biasPayload?#>,
+//                    logprobs: <#T##Bool?#>,
+//                    top_logprobs: <#T##Int?#>,
+//                    max_tokens: <#T##Int?#>,
+//                    max_completion_tokens: <#T##Int?#>,
+//                    n: <#T##Int?#>,
+//                    modalities: <#T##Components.Schemas.ChatCompletionModalities?#>,
+//                    prediction: <#T##Components.Schemas.CreateChatCompletionRequest.predictionPayload?#>,
+//                    audio: <#T##Components.Schemas.CreateChatCompletionRequest.audioPayload?#>,
+//                    presence_penalty: <#T##Double?#>,
+                    response_format: .ResponseFormatJsonSchema(
+                        .init(
+                            _type: .json_schema,
+                            json_schema: .init(
+                                description: "boolean",
+                                name: "sentiment",
+                                schema: .init(
+                                    additionalProperties: .init(
+                                        unvalidatedValue: [
+                                            "type": "object",
+                                            "properties": [
+                                                "sentiment": ["type": "boolean"]
+                                            ],
+                                            "additionalProperties": false,
+                                            "required": ["sentiment"]
+                                        ]
+                                    )
+                                ),
+                                strict: true
+                            )
+                        )
+                    )
+//                    seed: <#T##Int64?#>,
+//                    service_tier: <#T##Components.Schemas.CreateChatCompletionRequest.service_tierPayload?#>,
+//                    stop: <#T##Components.Schemas.CreateChatCompletionRequest.stopPayload?#>,
+//                    stream: <#T##Bool?#>,
+//                    stream_options: <#T##Components.Schemas.ChatCompletionStreamOptions?#>,
+//                    temperature: <#T##Double?#>,
+//                    top_p: <#T##Double?#>,
+//                    tools: <#T##[Components.Schemas.ChatCompletionTool]?#>,
+//                    tool_choice: <#T##Components.Schemas.ChatCompletionToolChoiceOption?#>,
+//                    parallel_tool_calls: <#T##Components.Schemas.ParallelToolCalls?#>,
+//                    user: <#T##String?#>,
+//                    function_call: <#T##Components.Schemas.CreateChatCompletionRequest.function_callPayload?#>,
+//                    functions: <#T##[Components.Schemas.ChatCompletionFunctions]?#>
+                )
+            )
+        )
+        
+        dump(response)
+    }
 }
 
 func undocumentedPayloadPrinter(_ statusCode: Int, _ undocumentedPayload: UndocumentedPayload) async throws {
