@@ -14,3 +14,4 @@ auth/
 *.m4a
 *.aac
 *.ogg
+scripts/.build/index-build/workspace-state.json
