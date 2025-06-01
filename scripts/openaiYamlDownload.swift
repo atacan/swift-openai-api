@@ -4,8 +4,7 @@ let fileURL = URL(
     string: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml"
 )!
 let destinationPaths = [
-    "./Sources/OpenAIUrlSessionClient/openapi.yaml",
-    "./Sources/OpenAIAsyncHTTPClient/openapi.yaml",
+    "./openapi.yaml",
 ]
 
 func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws {
@@ -146,6 +145,74 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
                 $ref: "#/components/schemas/CreateChatCompletionStreamResponse"
 """ + "\n" + errorResponses
                     )
+                    .replacingOccurrences(
+                      of: """
+      tags:
+        - Certificates
+      parameters:
+        - name: cert_id
+""",
+with: """
+      tags:
+        - Certificates
+      parameters:
+        - name: certificate_id
+""")
+                    .replacingOccurrences(
+                      of: """
+      operationId: modifyCertificate
+      tags:
+        - Certificates
+""",
+with: """
+      operationId: modifyCertificate
+      tags:
+        - Certificates
+      parameters:
+        - name: certificate_id
+          in: path
+          description: Unique ID of the certificate to retrieve.
+          required: true
+          schema:
+            type: string
+""")
+                    .replacingOccurrences(
+                      of: """
+      operationId: deleteCertificate
+      tags:
+        - Certificates
+""",
+with: """
+      operationId: deleteCertificate
+      tags:
+        - Certificates
+      parameters:
+        - name: certificate_id
+          in: path
+          description: Unique ID of the certificate to retrieve.
+          required: true
+          schema:
+            type: string
+""")
+                    .replacingOccurrences(
+                      of: """
+      operationId: listProjectCertificates
+      tags:
+        - Certificates
+      parameters:
+""",
+with: """
+      operationId: listProjectCertificates
+      tags:
+        - Certificates
+      parameters:
+        - name: project_id
+          in: path
+          description: The ID of the project.
+          required: true
+          schema:
+            type: string
+""")
 
     // Save to each destination path
     try await withThrowingTaskGroup(of: Void.self) { group in

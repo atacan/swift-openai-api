@@ -34,5 +34,17 @@ download-openapi:
 	swift scripts/openaiYamlDownload.swift
 
 generate-openapi:
-	swift run swift-openapi-generator generate --output-directory Sources/OpenAIAsyncHTTPClient/GeneratedSources --config Sources/OpenAIAsyncHTTPClient/openapi-generator-config.yaml Sources/OpenAIAsyncHTTPClient/openapi.yaml
-	swift run swift-openapi-generator generate --output-directory Sources/OpenAIUrlSessionClient/GeneratedSources --config Sources/OpenAIUrlSessionClient/openapi-generator-config.yaml Sources/OpenAIUrlSessionClient/openapi.yaml
+	swift run swift-openapi-generator generate \
+	  --output-directory Sources/OpenAIAsyncHTTPClient/GeneratedSources \
+	  --config ./openapi-generator-config-client.yaml \
+	  ./openapi.yaml
+
+	swift run swift-openapi-generator generate \
+	  --output-directory Sources/OpenAIUrlSessionClient/GeneratedSources \
+	  --config ./openapi-generator-config-client.yaml \
+	  ./openapi.yaml
+
+	swift run swift-openapi-generator generate \
+	  --output-directory Sources/SwiftOpenAITypes/GeneratedSources \
+	  --config ./openapi-generator-config-types.yaml \
+	  ./openapi.yaml
