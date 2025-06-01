@@ -1,0 +1,21 @@
+generate:
+  - client
+accessModifier: public
+filter:
+  tags:
+    - Assistants
+    - Audio
+    - Audit Logs
+    - Batch
+    - Chat
+    - Completions
+    - Embeddings
+    - Evals
+    - Files
+    - Fine-tuning
+    - Images
+    - Models
+    - Moderations
+    - Uploads
+additionalImports:
+  - SwiftOpenAITypes
