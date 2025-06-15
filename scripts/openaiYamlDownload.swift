@@ -32,6 +32,18 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "413":
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "429":
           description: Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details
           content:
