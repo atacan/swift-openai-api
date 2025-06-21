@@ -295,9 +295,15 @@ struct OpenAIAsyncHTTPClientTest {
         dump(response)
     }
 
-    @Test
-    func tryWSSTranscription() async throws {
+    @Test func tryWSSTranscription() async throws {
+        let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
+        let audioData = try Data(contentsOf: audioFileUrl)
+
         let logger = Logger(label: "AHC Tests")
+
+        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
+        let audioAppendData = try JSONEncoder().encode(audioAppend)
+
         // connect to wss://api.openai.com/v1/realtime?intent=transcription
         // initially send `Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate`
         // first receive `RealtimeServerEventTranscriptionSessionCreated`
@@ -326,24 +332,43 @@ struct OpenAIAsyncHTTPClientTest {
                 _type: .transcription_session_period_update,
                 session: .init()
             )
-            let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
 
+            let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
 
-            for try await frame in inbound {
-                print("frame", frame.description)
-                do {
-                    let event = try JSONDecoder().decode(Components.Schemas.RealtimeClientTranscriptionSessionEvent.self, from: frame.data)
-                    dump(event)
-                } catch {
-                    print("error", error)
-                    let json = try JSONSerialization.jsonObject(with: frame.data)
-                    print("json", json)
+            try await withThrowingTaskGroup { group in
+                group.addTask {
+                    for try await frame in inbound {
+                        print("frame", frame.description)
+                        do {
+                            let event = try JSONDecoder().decode(Components.Schemas.RealtimeServerEvent.self, from: frame.data)
+                            dump(event)
+                        } catch {
+                            print("error", error)
+                            let json = try JSONSerialization.jsonObject(with: frame.data)
+                            print("json", json)
+                        }
+                    }
                 }
+                group.addTask {
+                    try await outbound.write(.binary(.init(data: audioAppendData)))
+                }
+
+//                group.addTask {
+//                    while true {
+//                        try await outbound.write(.pong)
+//                        try await Task.sleep(nanoseconds: 1_000_000_000)
+//                    }
+//                }
+
+                try await group.waitForAll()
             }
+
+
         }
 
-        print("wsCloseFrame", wsCloseFrame)
+//        try await Task.sleep(for: .seconds(5))
+        print("wsCloseFrame", wsCloseFrame!)
 
     }
 }

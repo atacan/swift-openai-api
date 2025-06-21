@@ -213,9 +213,19 @@
             }
         },
         {
+            "target": "$.components.schemas.RealtimeServerEvent",
+            "update": {
+                "anyOf": [
+                    {
+                        "$ref": "#/components/schemas/RealtimeServerEventTranscriptionSessionCreated"
+                    }
+                ]
+            }
+        },
+        {
             "target": "$.components.schemas",
             "update": {
-                "RealtimeClientTranscriptionSessionEvent": {
+                "WSTranscriptionEvent": {
                     "discriminator": {
                         "propertyName": "type",
                         "mapping": {

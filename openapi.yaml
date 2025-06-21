@@ -43293,6 +43293,7 @@ components:
         - $ref: '#/components/schemas/RealtimeServerEventOutputAudioBufferStarted'
         - $ref: '#/components/schemas/RealtimeServerEventOutputAudioBufferStopped'
         - $ref: '#/components/schemas/RealtimeServerEventOutputAudioBufferCleared'
+        - $ref: '#/components/schemas/RealtimeServerEventTranscriptionSessionCreated'
     RealtimeServerEventConversationCreated:
       type: object
       description: |
@@ -52661,7 +52662,7 @@ components:
         - event_id
         - type
         - session
-    RealtimeClientTranscriptionSessionEvent:
+    WSTranscriptionEvent:
       discriminator:
         propertyName: type
         mapping:
