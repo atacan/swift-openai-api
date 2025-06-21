@@ -242,6 +242,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssistantObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create assistant
         group: assistants
@@ -605,6 +656,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssistantObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify assistant
         group: assistants
@@ -847,6 +949,57 @@ paths:
               schema:
                 type: string
                 format: binary
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create speech
         group: audio
@@ -1033,6 +1186,57 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CreateTranscriptionResponseStreamEvent'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create transcription
         group: audio
@@ -1926,6 +2130,57 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/CreateTranslationResponseJson'
                   - $ref: '#/components/schemas/CreateTranslationResponseVerboseJson'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create translation
         group: audio
@@ -2124,6 +2379,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Batch'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create batch
         group: batch
@@ -2646,6 +2952,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Batch'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel batch
         group: batch
@@ -3016,6 +3373,57 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CreateChatCompletionStreamResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create chat completion
         group: chat
@@ -4338,6 +4746,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateChatCompletionResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Update chat completion
         group: chat
@@ -4803,6 +5262,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateCompletionResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create completion
         group: completions
@@ -5239,6 +5749,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ContainerResource'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create container
         group: containers
@@ -5618,6 +6179,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ContainerFileResource'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create container file
         group: containers
@@ -6306,6 +6918,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateEmbeddingResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create embeddings
         group: embeddings
@@ -6683,6 +7346,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Eval'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create eval
         group: evals
@@ -7098,6 +7812,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Eval'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Update an eval
         group: evals
@@ -7575,11 +8340,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/EvalRun'
         '400':
-          description: 'Bad request (for example, missing eval object)'
+          description: 'The request was malformed, missing required fields, or invalid parameters'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create eval run
         group: evals
@@ -8042,6 +8852,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EvalRun'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel eval run
         group: evals
@@ -8995,6 +9856,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OpenAIFile'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Upload file
         group: files
@@ -9500,6 +10412,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunGraderResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Run grader
         beta: true
@@ -9722,6 +10685,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidateGraderResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Validate grader
         beta: true
@@ -10081,6 +11095,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListFineTuningCheckpointPermissionResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create checkpoint permissions
         group: fine-tuning
@@ -10387,6 +11452,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTuningJob'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create fine-tuning job
         group: fine-tuning
@@ -11651,6 +12767,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTuningJob'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel fine-tuning
         group: fine-tuning
@@ -12114,6 +13281,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTuningJob'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Pause fine-tuning
         group: fine-tuning
@@ -12243,6 +13461,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTuningJob'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Resume fine-tuning
         group: fine-tuning
@@ -12368,6 +13637,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImagesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create image edit
         group: images
@@ -12530,6 +13850,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImagesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create image
         group: images
@@ -12675,6 +14046,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImagesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create image variation
         group: images
@@ -13238,6 +14660,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateModerationResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create moderation
         group: moderations
@@ -13689,6 +15162,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminApiKey'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create admin API key
         group: administration
@@ -14063,6 +15587,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Certificate'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Upload certificate
         group: administration
@@ -14111,6 +15686,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListCertificatesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Activate certificates for organization
         group: administration
@@ -14175,6 +15801,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListCertificatesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Deactivate certificates for organization
         group: administration
@@ -14290,6 +15967,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Certificate'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify certificate
         group: administration
@@ -14314,6 +16042,13 @@ paths:
                 "expires_at": 12345678
               }
             }
+      parameters:
+        - name: certificate_id
+          in: path
+          description: Unique ID of the certificate to retrieve.
+          required: true
+          schema:
+            type: string
     delete:
       summary: |
         Delete a certificate from the organization.
@@ -14343,6 +16078,13 @@ paths:
               "object": "certificate.deleted",
               "id": "cert_abc"
             }
+      parameters:
+        - name: certificate_id
+          in: path
+          description: Unique ID of the certificate to retrieve.
+          required: true
+          schema:
+            type: string
   /organization/costs:
     get:
       summary: Get costs details for the organization.
@@ -14521,6 +16263,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Invite'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create invite
         group: administration
@@ -14723,6 +16516,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create project
         group: administration
@@ -14812,7 +16656,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/Project'
         '400':
-          description: Error response when updating the default project.
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
           content:
             application/json:
               schema:
@@ -15027,6 +16916,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Archive project
         group: administration
@@ -15150,6 +17090,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListCertificatesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Activate certificates for project
         group: administration
@@ -15220,6 +17211,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListCertificatesResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Deactivate certificates for project
         group: administration
@@ -15369,7 +17411,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProjectRateLimit'
         '400':
-          description: Error response for various conditions.
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
           content:
             application/json:
               schema:
@@ -15495,7 +17582,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProjectServiceAccountCreateResponse'
         '400':
-          description: Error response when project is archived.
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
           content:
             application/json:
               schema:
@@ -15708,7 +17840,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProjectUser'
         '400':
-          description: Error response for various conditions.
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
           content:
             application/json:
               schema:
@@ -15813,7 +17990,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProjectUser'
         '400':
-          description: Error response for various conditions.
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
           content:
             application/json:
               schema:
@@ -17045,6 +19267,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify user
         group: administration
@@ -17129,6 +19402,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RealtimeSessionCreateResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create session
         group: realtime
@@ -17215,6 +19539,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateResponse'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create transcription session
         group: realtime
@@ -17293,6 +19668,57 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/ResponseStreamEvent'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create a model response
         group: responses
@@ -19166,12 +21592,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response'
-        '404':
-          description: Not Found
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel a response
         group: responses
@@ -19538,6 +22009,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThreadObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create thread
         group: threads
@@ -19735,6 +22257,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create thread and run
         group: threads
@@ -20281,6 +22854,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThreadObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify thread
         group: threads
@@ -20702,6 +23326,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create message
         group: threads
@@ -20986,6 +23661,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify message
         group: threads
@@ -21500,6 +24226,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create run
         group: threads
@@ -22099,6 +24876,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify run
         group: threads
@@ -22270,6 +25098,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel a run
         group: threads
@@ -22786,6 +25665,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Submit tool outputs to run
         group: threads
@@ -23132,6 +26062,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Upload'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create upload
         group: uploads
@@ -23292,6 +26273,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Upload'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel upload
         group: uploads
@@ -23430,6 +26462,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Upload'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Complete upload
         group: uploads
@@ -23592,6 +26675,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadPart'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Add upload part
         group: uploads
@@ -23909,6 +27043,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create vector store
         group: vector_stores
@@ -24168,6 +27353,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Modify vector store
         group: vector_stores
@@ -24436,6 +27672,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreFileBatchObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create vector store file batch
         group: vector_stores
@@ -24745,6 +28032,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreFileBatchObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Cancel vector store file batch
         group: vector_stores
@@ -25284,6 +28622,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreFileObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Create vector store file
         group: vector_stores
@@ -25729,6 +29118,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreFileObject'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Update vector store file attributes
         group: vector_stores
@@ -26050,6 +29490,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VectorStoreSearchResultsPage'
+        '400':
+          description: 'The request was malformed, missing required fields, or invalid parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Country, region, or territory not supported'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: The requested resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 'Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: The server had an error while processing your request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            plain/text:
+              schema:
+                type: string
+        '503':
+          description: 'The engine is currently overloaded, please try again later'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
       x-oaiMeta:
         name: Search vector store
         group: vector_stores
@@ -29419,8 +32910,8 @@ components:
                 - $ref: '#/components/schemas/PredictionContent'
             seed:
               type: integer
-              minimum: -9223372036854776000
-              maximum: 9223372036854776000
+              minimum: -922337203685477600
+              maximum: 922337203685477600
               nullable: true
               description: |
                 This feature is in Beta.
@@ -49151,6 +52642,27 @@ components:
         - id
       title: Item reference
       description: An internal identifier for an item to reference.
+    RealtimeServerEventTranscriptionSessionCreated:
+      type: object
+      description: |
+        Added by me. Returned when a transcription session is created with a `transcription_session.created` event, unless 
+        there is an error.
+      properties:
+        event_id:
+          type: string
+          description: The unique ID of the server event.
+        type:
+          type: string
+          enum:
+            - transcription_session.created
+          description: 'The event type, must be `transcription_session.created`.'
+          x-stainless-const: true
+        session:
+          $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateResponse'
+      required:
+        - event_id
+        - type
+        - session
   securitySchemes:
     ApiKeyAuth:
       type: http

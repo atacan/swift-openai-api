@@ -1,6 +1,8 @@
 import Testing
-@testable import OpenAIAsyncHTTPClient
-@testable import SwiftOpenAITypes
+import Logging
+import OpenAIAsyncHTTPClient
+import SwiftOpenAITypes
+import WSClient
 
 #if os(Linux)
 @preconcurrency import struct Foundation.URL
@@ -117,10 +119,12 @@ struct OpenAIAsyncHTTPClientTest {
                     dump(json)
                 }
 
-            case .plainText(let httpBody):
-                let buffer = try await httpBody.collect(upTo: 1024 * 1035 * 2, using: .init())
-                let text = String(buffer: buffer)
-                print("🥁", text)
+//            case .plainText(let httpBody):
+//                let buffer = try await httpBody.collect(upTo: 1024 * 1035 * 2, using: .init())
+//                let text = String(buffer: buffer)
+//                print("🥁", text)
+            case .text_event_hyphen_stream(_):
+                break
             }
 
         case .undocumented(let statusCode, let undocumentedPayload):
@@ -289,6 +293,48 @@ struct OpenAIAsyncHTTPClientTest {
         )
         
         dump(response)
+    }
+
+    @Test
+    func tryWSSTranscription() async throws {
+        let logger = Logger(label: "AHC Tests")
+        // connect to wss://api.openai.com/v1/realtime?intent=transcription
+        // initially send `Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate`
+        // first receive `RealtimeServerEventTranscriptionSessionCreated`
+        // For each audio send RealtimeClientEventInputAudioBufferAppend
+        let ws = try await WebSocketClient.connect(
+            url: "wss://api.openai.com/v1/realtime?intent=transcription",
+            configuration: WebSocketClientConfiguration(
+                additionalHeaders: .init(
+                    dictionaryLiteral: (
+                        HTTPField.Name.authorization,
+                        "Bearer \(getEnvironmentVariable("OPENAI_API_KEY")!)"
+                    ),
+                    (
+                        HTTPField.Name.init("OpenAI-Beta")!,
+                        "realtime=v1"
+                    )
+                )
+            ),
+            logger: logger
+        ) {
+            inbound,
+            outbound,
+            context in
+            
+            let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
+                _type: .transcription_session_period_update,
+                session: .init()
+            )
+            let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
+
+            try await outbound.write(.binary(.init(data: sessionUpdateData)))
+            // you can convert the inbound stream of frames into a stream of full messages using `messages(maxSize:)`
+            for try await frame in inbound.messages(maxSize: 1 << 14) {
+                context.logger.info("Incoming frame\n\(frame.description)")
+            }
+        }
+
     }
 }
 

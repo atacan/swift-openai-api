@@ -33,9 +33,13 @@ clean_spm_cache:
 download-openapi:
 	# Download the openapi.yaml file from remote repo as original.yaml file
 	curl -o original.yaml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
+	# Create a copy of original.yaml as openapi.yaml
+	cp original.yaml openapi.yaml
+	# Replace 9223372036854776000 with 922337203685477600 
+	sed -i '' 's/9223372036854776000/922337203685477600/g' ./openapi.yaml
 
 overlay-openapi:
-	openapi-format --no-sort original.yaml --overlayFile scripts/overlay.json -o openapi.yaml
+	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay.json -o ./openapi.yaml
 
 generate-openapi:
 	swift run swift-openapi-generator generate \
@@ -52,3 +56,8 @@ generate-openapi:
 	  --output-directory Sources/SwiftOpenAITypes/GeneratedSources \
 	  --config ./openapi-generator-config-types.yaml \
 	  ./openapi.yaml
+
+prepare-openapi:
+	make download-openapi
+	make overlay-openapi
+	make generate-openapi

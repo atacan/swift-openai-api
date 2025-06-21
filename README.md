@@ -35,3 +35,29 @@ targets: [
     ]),
 ]
 ```
+### WebSocket
+
+First incoming message is a `transcription_session.created` event.
+
+```json
+{
+    "type": "transcription_session.created",
+    "event_id": "event_BkolR18obdJWg4a3bKuhW",
+    "session": {
+        "id": "sess_BkolRXnnaIXV7cV3lu7Bv",
+        "object": "realtime.transcription_session",
+        "expires_at": 1750499725,
+        "input_audio_noise_reduction": null,
+        "turn_detection": {
+            "type": "server_vad",
+            "threshold": 0.5,
+            "prefix_padding_ms": 300,
+            "silence_duration_ms": 200
+        },
+        "input_audio_format": "pcm16",
+        "input_audio_transcription": null,
+        "client_secret": null,
+        "include": null
+    }
+}
+```

@@ -16,6 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.8.0"),
         .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.1.0"),
         .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.1.0"),
+        .package(url: "https://github.com/hummingbird-project/swift-websocket", from: "1.3.0"),
 
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
@@ -44,7 +45,10 @@ let package = Package(
         ),
         .testTarget(
             name: "OpenAIAsyncHTTPClientTests",
-            dependencies: ["OpenAIAsyncHTTPClient"],
+            dependencies: [
+                "OpenAIAsyncHTTPClient",
+                .product(name: "WSClient", package: "swift-websocket")
+            ],
             resources: [
                 .copy("Resources")
             ]
