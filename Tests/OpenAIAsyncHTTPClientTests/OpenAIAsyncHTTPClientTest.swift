@@ -307,6 +307,7 @@ struct OpenAIAsyncHTTPClientTest {
 
         let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
         let audioAppendData = try JSONEncoder().encode(audioAppend)
+        let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
         // connect to wss://api.openai.com/v1/realtime?intent=transcription
         // initially send `Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate`
@@ -335,17 +336,17 @@ struct OpenAIAsyncHTTPClientTest {
             let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
                 _type: .transcription_session_period_update,
                 session: .init(
-                    modalities: [.audio],
+//                    modalities: [.audio], // Unknown parameter: 'session.modalities
                     input_audio_format: .pcm16,
                     input_audio_transcription: .init(model: .whisper_hyphen_1),
                     turn_detection: .init(
                         _type: .server_vad,
-                        eagerness: .auto,
+//                        eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
                         threshold: 0.5,
                         prefix_padding_ms: 300,
                         silence_duration_ms: 500,
-                        create_response: true,
-                        interrupt_response: true
+//                        create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
+//                        interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
                     ),
                     input_audio_noise_reduction: .init(_type: .near_field),
                     include: ["item.input_audio_transcription.logprobs"],
@@ -355,8 +356,9 @@ struct OpenAIAsyncHTTPClientTest {
 
             let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
-            try await outbound.write(.binary(.init(data: audioAppendData)))
-            
+//            try await outbound.write(.binary(.init(data: audioAppendData)))
+            try await outbound.write(.text(audioAppendDataString))
+
             try await withThrowingTaskGroup { group in
                 group.addTask {
                     for try await frame in inbound {
@@ -401,7 +403,8 @@ struct OpenAIAsyncHTTPClientTest {
 
         let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
         let audioAppendData = try JSONEncoder().encode(audioAppend)
-        
+        let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
+
         let url = URL(string: "wss://api.openai.com/v1/realtime?intent=transcription")!
         var request = URLRequest(url: url)
         request.addValue("Bearer \(getEnvironmentVariable("OPENAI_API_KEY")!)", forHTTPHeaderField: "Authorization")
@@ -413,17 +416,17 @@ struct OpenAIAsyncHTTPClientTest {
         let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
             _type: .transcription_session_period_update,
             session: .init(
-                modalities: [.audio],
+//                modalities: [.audio], // Unknown parameter: 'session.modalities
                 input_audio_format: .pcm16,
                 input_audio_transcription: .init(model: .whisper_hyphen_1),
                 turn_detection: .init(
                     _type: .server_vad,
-                    eagerness: .auto,
+//                    eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
                     threshold: 0.5,
                     prefix_padding_ms: 300,
                     silence_duration_ms: 500,
-                    create_response: true,
-                    interrupt_response: true
+//                    create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
+//                    interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
                 ),
                 input_audio_noise_reduction: .init(_type: .near_field),
                 include: ["item.input_audio_transcription.logprobs"],
@@ -431,9 +434,8 @@ struct OpenAIAsyncHTTPClientTest {
             )
         )
         let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
-
-        try await webSocketTask.send(.data(sessionUpdateData))
-        try await webSocketTask.send(.data(audioAppendData))
+        let sessionUpdateDataString = String(data: sessionUpdateData, encoding: .utf8)!
+        try await webSocketTask.send(.string(sessionUpdateDataString))
 
         await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask {
@@ -461,7 +463,7 @@ struct OpenAIAsyncHTTPClientTest {
                 }
             }
             group.addTask {
-                try await webSocketTask.send(.data(audioAppendData))
+                try await Task.sleep(for: .seconds(2))
             }
         }
         
