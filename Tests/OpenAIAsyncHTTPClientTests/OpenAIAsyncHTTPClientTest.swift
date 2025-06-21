@@ -306,7 +306,7 @@ struct OpenAIAsyncHTTPClientTest {
         let logger = Logger(label: "AHC Tests")
 
         let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
-        let audioAppendData = try JSONEncoder().encode(audioAppend)
+        let audioAppendData = try JSONEncoder().encode(audioAppend) // does not work. we need to send string
         let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
         // connect to wss://api.openai.com/v1/realtime?intent=transcription
@@ -424,7 +424,7 @@ struct OpenAIAsyncHTTPClientTest {
 //                    eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
                     threshold: 0.5,
                     prefix_padding_ms: 300,
-                    silence_duration_ms: 500,
+                    silence_duration_ms: 500, // Unknown parameter: 'session.turn_detection.silence_duration_ms when type is semantic_vad
 //                    create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
 //                    interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
                 ),
@@ -436,6 +436,7 @@ struct OpenAIAsyncHTTPClientTest {
         let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
         let sessionUpdateDataString = String(data: sessionUpdateData, encoding: .utf8)!
         try await webSocketTask.send(.string(sessionUpdateDataString))
+        try await webSocketTask.send(.string(audioAppendDataString))
 
         await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask {
@@ -463,6 +464,13 @@ struct OpenAIAsyncHTTPClientTest {
                 }
             }
             group.addTask {
+//                let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: Data().base64EncodedString())
+//                let audioAppendData = try JSONEncoder().encode(audioAppend)
+//                let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
+//                try await webSocketTask.send(.string(audioAppendDataString))
+//                try await webSocketTask.send(.string(audioAppendDataString))
+//                try await webSocketTask.send(.string(audioAppendDataString))
+//                try await webSocketTask.send(.string(audioAppendDataString))
                 try await Task.sleep(for: .seconds(2))
             }
         }
