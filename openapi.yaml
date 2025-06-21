@@ -45939,8 +45939,6 @@ components:
                 Duration of silence to detect speech stop (in milliseconds). Defaults 
                 to 500ms. With shorter values the model will respond more quickly, 
                 but may jump in on short pauses from the user.
-      required:
-        - client_secret
       x-oaiMeta:
         name: The transcription session object
         group: realtime

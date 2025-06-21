@@ -178,6 +178,10 @@
             }
         },
         {
+            "target": "$.components.schemas.RealtimeTranscriptionSessionCreateResponse.required",
+            "remove": true
+        },
+        {
             "target": "$.components.schemas",
             "update": {
                 "RealtimeServerEventTranscriptionSessionCreated": {

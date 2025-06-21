@@ -330,8 +330,11 @@ struct OpenAIAsyncHTTPClientTest {
 
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
             // you can convert the inbound stream of frames into a stream of full messages using `messages(maxSize:)`
-            for try await frame in inbound.messages(maxSize: 1 << 14) {
-                context.logger.info("Incoming frame\n\(frame.description)")
+            for try await frame in inbound {
+                let createdEvent = try JSONDecoder().decode(Components.Schemas.RealtimeServerEventTranscriptionSessionCreated.self, from: frame.data)
+                dump(createdEvent)
+                let event = try JSONDecoder().decode(Components.Schemas.RealtimeClientEvent.self, from: frame.data)
+                dump(event)
             }
         }
 
