@@ -330,12 +330,29 @@ struct OpenAIAsyncHTTPClientTest {
             
             let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
                 _type: .transcription_session_period_update,
-                session: .init()
+                session: .init(
+                    modalities: [.audio],
+                    input_audio_format: .pcm16,
+                    input_audio_transcription: .init(model: .whisper_hyphen_1),
+                    turn_detection: .init(
+                        _type: .server_vad,
+                        eagerness: .auto,
+                        threshold: 0.5,
+                        prefix_padding_ms: 300,
+                        silence_duration_ms: 500,
+                        create_response: true,
+                        interrupt_response: true
+                    ),
+                    input_audio_noise_reduction: .init(_type: .near_field),
+                    include: ["item.input_audio_transcription.logprobs"],
+                    client_secret: nil
+                )
             )
 
             let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
-
+            try await outbound.write(.binary(.init(data: audioAppendData)))
+            
             try await withThrowingTaskGroup { group in
                 group.addTask {
                     for try await frame in inbound {
