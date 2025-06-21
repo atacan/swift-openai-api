@@ -42260,7 +42260,6 @@ components:
         - $ref: '#/components/schemas/RealtimeClientEventResponseCreate'
         - $ref: '#/components/schemas/RealtimeClientEventSessionUpdate'
         - $ref: '#/components/schemas/RealtimeClientEventTranscriptionSessionUpdate'
-        - $ref: '#/components/schemas/RealtimeServerEventTranscriptionSessionCreated'
     RealtimeClientEventConversationItemCreate:
       type: object
       description: |
@@ -52662,6 +52661,14 @@ components:
         - event_id
         - type
         - session
+    RealtimeClientTranscriptionSessionEvent:
+      discriminator:
+        propertyName: type
+      description: |
+        A realtime client event.
+      oneOf:
+        - $ref: '#/components/schemas/RealtimeClientEventTranscriptionSessionUpdate'
+        - $ref: '#/components/schemas/RealtimeServerEventTranscriptionSessionCreated'
   securitySchemes:
     ApiKeyAuth:
       type: http

@@ -302,7 +302,7 @@ struct OpenAIAsyncHTTPClientTest {
         // initially send `Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate`
         // first receive `RealtimeServerEventTranscriptionSessionCreated`
         // For each audio send RealtimeClientEventInputAudioBufferAppend
-        let ws = try await WebSocketClient.connect(
+        let wsCloseFrame = try await WebSocketClient.connect(
             url: "wss://api.openai.com/v1/realtime?intent=transcription",
             configuration: WebSocketClientConfiguration(
                 additionalHeaders: .init(
@@ -331,12 +331,19 @@ struct OpenAIAsyncHTTPClientTest {
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
             // you can convert the inbound stream of frames into a stream of full messages using `messages(maxSize:)`
             for try await frame in inbound {
-                let createdEvent = try JSONDecoder().decode(Components.Schemas.RealtimeServerEventTranscriptionSessionCreated.self, from: frame.data)
-                dump(createdEvent)
-                let event = try JSONDecoder().decode(Components.Schemas.RealtimeClientEvent.self, from: frame.data)
-                dump(event)
+                print("frame", frame.description)
+                do {
+                    let event = try JSONDecoder().decode(Components.Schemas.RealtimeClientTranscriptionSessionEvent.self, from: frame.data)
+                    dump(event)
+                } catch {
+                    print("error", error)
+                    let json = try JSONSerialization.jsonObject(with: frame.data)
+                    print("json", json)
+                }
             }
         }
+
+        print("wsCloseFrame", wsCloseFrame)
 
     }
 }

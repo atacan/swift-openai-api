@@ -213,13 +213,22 @@
             }
         },
         {
-            "target": "$.components.schemas.RealtimeClientEvent",
+            "target": "$.components.schemas",
             "update": {
-                "anyOf": [
-                    {
-                        "$ref": "#/components/schemas/RealtimeServerEventTranscriptionSessionCreated"
-                    }
-                ]
+                "RealtimeClientTranscriptionSessionEvent": {
+                    "discriminator": {
+                        "propertyName": "type"
+                    },
+                    "description": "A realtime client event.\n",
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/schemas/RealtimeClientEventTranscriptionSessionUpdate"
+                        },
+                        {
+                            "$ref": "#/components/schemas/RealtimeServerEventTranscriptionSessionCreated"
+                        }
+                    ]
+                }
             }
         }
     ]
