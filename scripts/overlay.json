@@ -242,7 +242,7 @@
             }
         },
         {
-            "target": "$.components.schemas.RealtimeServerEvent.properties.audio",
+            "target": "$.components.schemas.RealtimeClientEventInputAudioBufferAppend.properties.audio",
             "update": {
                 "format": "byte"
             }

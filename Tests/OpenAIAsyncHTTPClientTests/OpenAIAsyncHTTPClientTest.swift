@@ -305,7 +305,7 @@ struct OpenAIAsyncHTTPClientTest {
 
         let logger = Logger(label: "AHC Tests")
 
-        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
+        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: .init(audioData))
         let audioAppendData = try JSONEncoder().encode(audioAppend) // does not work. we need to send string
         let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
@@ -401,7 +401,7 @@ struct OpenAIAsyncHTTPClientTest {
         let wavData = try Data(contentsOf: audioFileUrl)
         let audioData = wavData.subdata(in: 44..<wavData.count)
 
-        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
+        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: .init(audioData))
         let audioAppendData = try JSONEncoder().encode(audioAppend)
         let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
