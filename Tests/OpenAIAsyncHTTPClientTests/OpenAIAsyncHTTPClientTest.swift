@@ -19,6 +19,10 @@ import OpenAPIRuntime
 import OpenAPIAsyncHTTPClient
 import Foundation
 
+#if os(Linux)
+import FoundationNetworking
+#endif
+
 struct OpenAIAsyncHTTPClientTest {
 
     let client = {
@@ -388,6 +392,81 @@ struct OpenAIAsyncHTTPClientTest {
         print("wsCloseFrame", wsCloseFrame!)
 
     }
+
+    #if os(macOS)
+    @Test func tryWSSTranscriptionURLSession() async throws {
+        let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
+        let audioData = try Data(contentsOf: audioFileUrl)
+
+        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
+        let audioAppendData = try JSONEncoder().encode(audioAppend)
+        
+        let url = URL(string: "wss://api.openai.com/v1/realtime?intent=transcription")!
+        var request = URLRequest(url: url)
+        request.addValue("Bearer \(getEnvironmentVariable("OPENAI_API_KEY")!)", forHTTPHeaderField: "Authorization")
+        request.addValue("realtime=v1", forHTTPHeaderField: "OpenAI-Beta")
+
+        let webSocketTask = URLSession.shared.webSocketTask(with: request)
+        webSocketTask.resume()
+        
+        let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
+            _type: .transcription_session_period_update,
+            session: .init(
+                modalities: [.audio],
+                input_audio_format: .pcm16,
+                input_audio_transcription: .init(model: .whisper_hyphen_1),
+                turn_detection: .init(
+                    _type: .server_vad,
+                    eagerness: .auto,
+                    threshold: 0.5,
+                    prefix_padding_ms: 300,
+                    silence_duration_ms: 500,
+                    create_response: true,
+                    interrupt_response: true
+                ),
+                input_audio_noise_reduction: .init(_type: .near_field),
+                include: ["item.input_audio_transcription.logprobs"],
+                client_secret: nil
+            )
+        )
+        let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
+
+        try await webSocketTask.send(.data(sessionUpdateData))
+        try await webSocketTask.send(.data(audioAppendData))
+
+        await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask {
+                while true {
+                    let message = try await webSocketTask.receive()
+                    switch message {
+                    case .data(let data):
+                        print("frame received (data)")
+                        do {
+                            let event = try JSONDecoder().decode(Components.Schemas.RealtimeServerEvent.self, from: data)
+                            dump(event)
+                        } catch {
+                            print("error decoding", error)
+                            if let json = try? JSONSerialization.jsonObject(with: data) {
+                                print("json", json)
+                            } else if let str = String(data: data, encoding: .utf8) {
+                                print("string", str)
+                            }
+                        }
+                    case .string(let text):
+                        print("frame received (string): \(text)")
+                    @unknown default:
+                        fatalError()
+                    }
+                }
+            }
+            group.addTask {
+                try await webSocketTask.send(.data(audioAppendData))
+            }
+        }
+        
+        webSocketTask.cancel(with: .goingAway, reason: nil)
+    }
+    #endif
 }
 
 func undocumentedPayloadPrinter(_ statusCode: Int, _ undocumentedPayload: UndocumentedPayload) async throws {
