@@ -12,6 +12,25 @@
             }
         },
         {
+            "target": "$.paths['/audio/transcriptions'].post.responses['200'].content.application/json.schema",
+            "remove": true
+        },
+        {
+            "target": "$.paths['/audio/transcriptions'].post.responses['200'].content.application/json",
+            "update": {
+                "schema": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/schemas/CreateTranscriptionResponseVerboseJson"
+                        },
+                        {
+                            "$ref": "#/components/schemas/CreateTranscriptionResponseJson"
+                        }
+                    ]
+                }
+            }
+        },
+        {
             "target": "$.paths..[?(@.operationId=='modifyCertificate')]",
             "update": {
                 "parameters": [
@@ -210,6 +229,12 @@
                         "session"
                     ]
                 }
+            }
+        },
+        {
+            "target": "$.components.schemas.RealtimeServerEvent.properties.audio",
+            "update": {
+                "format": "byte"
             }
         },
         {
