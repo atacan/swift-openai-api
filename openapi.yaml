@@ -42260,6 +42260,7 @@ components:
         - $ref: '#/components/schemas/RealtimeClientEventResponseCreate'
         - $ref: '#/components/schemas/RealtimeClientEventSessionUpdate'
         - $ref: '#/components/schemas/RealtimeClientEventTranscriptionSessionUpdate'
+        - $ref: '#/components/schemas/RealtimeServerEventTranscriptionSessionCreated'
     RealtimeClientEventConversationItemCreate:
       type: object
       description: |

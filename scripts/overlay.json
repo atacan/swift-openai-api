@@ -211,6 +211,16 @@
                     ]
                 }
             }
+        },
+        {
+            "target": "$.components.schemas.RealtimeClientEvent",
+            "update": {
+                "anyOf": [
+                    {
+                        "$ref": "#/components/schemas/RealtimeServerEventTranscriptionSessionCreated"
+                    }
+                ]
+            }
         }
     ]
 }
