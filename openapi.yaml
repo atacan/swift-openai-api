@@ -52664,6 +52664,9 @@ components:
     RealtimeClientTranscriptionSessionEvent:
       discriminator:
         propertyName: type
+        mapping:
+          transcription_session.created: '#/components/schemas/RealtimeServerEventTranscriptionSessionCreated'
+          transcription_session.updated: '#/components/schemas/RealtimeClientEventTranscriptionSessionUpdate'
       description: |
         A realtime client event.
       oneOf:
