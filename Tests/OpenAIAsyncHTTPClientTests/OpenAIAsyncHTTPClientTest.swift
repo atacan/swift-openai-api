@@ -329,7 +329,7 @@ struct OpenAIAsyncHTTPClientTest {
             let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
 
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
-            // you can convert the inbound stream of frames into a stream of full messages using `messages(maxSize:)`
+
             for try await frame in inbound {
                 print("frame", frame.description)
                 do {
