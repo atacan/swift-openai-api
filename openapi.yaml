@@ -1186,6 +1186,9 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CreateTranscriptionResponseStreamEvent'
+            text/plain:
+              schema:
+                type: string
         '400':
           description: 'The request was malformed, missing required fields, or invalid parameters'
           content:

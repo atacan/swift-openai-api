@@ -123,10 +123,10 @@ struct OpenAIAsyncHTTPClientTest {
                     dump(json)
                 }
 
-//            case .plainText(let httpBody):
-//                let buffer = try await httpBody.collect(upTo: 1024 * 1035 * 2, using: .init())
-//                let text = String(buffer: buffer)
-//                print("🥁", text)
+            case .plainText(let httpBody):
+                let buffer = try await httpBody.collect(upTo: 1024 * 1035 * 2, using: .init())
+                let text = String(buffer: buffer)
+                print("🥁", text)
             case .text_event_hyphen_stream(_):
                 break
             }
@@ -396,7 +396,8 @@ struct OpenAIAsyncHTTPClientTest {
     #if os(macOS)
     @Test func tryWSSTranscriptionURLSession() async throws {
         let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
-        let audioData = try Data(contentsOf: audioFileUrl)
+        let wavData = try Data(contentsOf: audioFileUrl)
+        let audioData = wavData.subdata(in: 44..<wavData.count)
 
         let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
         let audioAppendData = try JSONEncoder().encode(audioAppend)

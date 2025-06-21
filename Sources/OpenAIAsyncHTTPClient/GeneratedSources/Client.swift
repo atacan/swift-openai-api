@@ -1227,7 +1227,8 @@ public struct Client: APIProtocol {
                         received: contentType,
                         options: [
                             "application/json",
-                            "text/event-stream"
+                            "text/event-stream",
+                            "text/plain"
                         ]
                     )
                     switch chosenContentType {
@@ -1245,6 +1246,14 @@ public struct Client: APIProtocol {
                             from: responseBody,
                             transforming: { value in
                                 .text_event_hyphen_stream(value)
+                            }
+                        )
+                    case "text/plain":
+                        body = try converter.getResponseBodyAsBinary(
+                            OpenAPIRuntime.HTTPBody.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .plainText(value)
                             }
                         )
                     default:

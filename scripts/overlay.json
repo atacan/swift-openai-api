@@ -31,6 +31,16 @@
             }
         },
         {
+            "target": "$.paths['/audio/transcriptions'].post.responses['200'].content",
+            "update": {
+                "text/plain": {
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
             "target": "$.paths..[?(@.operationId=='modifyCertificate')]",
             "update": {
                 "parameters": [
