@@ -1,0 +1,181 @@
+{
+    "overlay": "1.0.0",
+    "info": {
+        "title": "Fix OpenAPI spec for certificate and project operations",
+        "version": "1.0.1"
+    },
+    "actions": [
+        {
+            "target": "$..parameters[?(@.name=='cert_id')]",
+            "update": {
+                "name": "certificate_id"
+            }
+        },
+        {
+            "target": "$.paths..[?(@.operationId=='modifyCertificate')]",
+            "update": {
+                "parameters": [
+                    {
+                        "name": "certificate_id",
+                        "in": "path",
+                        "description": "Unique ID of the certificate to retrieve.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "target": "$.paths..[?(@.operationId=='deleteCertificate')]",
+            "update": {
+                "parameters": [
+                    {
+                        "name": "certificate_id",
+                        "in": "path",
+                        "description": "Unique ID of the certificate to retrieve.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "target": "$.paths..[?(@.operationId=='listProjectCertificates')].parameters",
+            "update": {
+                "name": "project_id",
+                "in": "path",
+                "description": "The ID of the project.",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "target": "$.paths..[?(@.operationId=='activateProjectCertificates')]",
+            "update": {
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "The ID of the project.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "target": "$.paths..[?(@.operationId=='deactivateProjectCertificates')]",
+            "update": {
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "description": "The ID of the project.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "target": "$.paths.*.responses",
+            "update": {
+                "400": {
+                    "description": "The request was malformed, missing required fields, or invalid parameters",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Invalid Authentication, Incorrect API key provided, You must be a member of an organization to use the API",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "403": {
+                    "description": "Country, region, or territory not supported",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "The requested resource was not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "413": {
+                    "description": "Request body too large",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "429": {
+                    "description": "Rate limit reached for requests, You exceeded your current quota, please check your plan and billing details",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "The server had an error while processing your request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        },
+                        "plain/text": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "503": {
+                    "description": "The engine is currently overloaded, please try again later",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ErrorResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

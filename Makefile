@@ -31,7 +31,11 @@ clean_spm_cache:
 	swift package purge-cache
 
 download-openapi:
-	swift scripts/openaiYamlDownload.swift
+	# Download the openapi.yaml file from remote repo as original.yaml file
+	curl -o original.yaml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
+
+overlay-openapi:
+	openapi-format --no-sort original.yaml --overlayFile scripts/overlay.json -o openapi.yaml
 
 generate-openapi:
 	swift run swift-openapi-generator generate \
