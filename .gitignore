@@ -15,3 +15,4 @@ auth/
 *.aac
 *.ogg
 scripts/.build/
+scripts/node_modules/

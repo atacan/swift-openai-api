@@ -35,10 +35,14 @@ download-openapi:
 	curl -o original.yaml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
 	# Create a copy of original.yaml as openapi.yaml
 	cp original.yaml openapi.yaml
-	# Replace 9223372036854776000 with 922337203685477600 
+	# Replace 9223372036854776000 with 922337203685477600
 	sed -i '' 's/9223372036854776000/922337203685477600/g' ./openapi.yaml
 	# Replace `anyOf:` with `oneOf:`
 	sed -i '' 's/anyOf:/oneOf:/g' ./openapi.yaml
+
+cleanup-anyof-nulls:
+	# Run the cleanup script to remove null types from anyOf arrays
+	cd scripts && node cleanup-anyof-nulls.js ../original.yaml ../openapi.yaml
 
 overlay-openapi:
 	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay.json -o ./openapi.yaml
