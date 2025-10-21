@@ -37,12 +37,14 @@ download-openapi:
 	cp original.yaml openapi.yaml
 	# Replace 9223372036854776000 with 922337203685477600
 	sed -i '' 's/9223372036854776000/922337203685477600/g' ./openapi.yaml
-	# Replace `anyOf:` with `oneOf:`
-	sed -i '' 's/anyOf:/oneOf:/g' ./openapi.yaml
 
 cleanup-anyof-nulls:
 	# Run the cleanup script to remove null types from anyOf arrays
 	cd scripts && node cleanup-anyof-nulls.js ../original.yaml ../openapi.yaml
+
+replace-anyof-with-oneof:
+	# Replace `anyOf:` with `oneOf:`
+	sed -i '' 's/anyOf:/oneOf:/g' ./openapi.yaml
 
 overlay-openapi:
 	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay.json -o ./openapi.yaml

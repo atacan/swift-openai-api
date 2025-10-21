@@ -1135,7 +1135,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/CreateTranscriptionResponseJson'
                   - $ref: '#/components/schemas/CreateTranscriptionResponseDiarizedJson'
                     x-stainless-skip:
@@ -2213,7 +2213,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/CreateTranslationResponseJson'
                   - $ref: '#/components/schemas/CreateTranslationResponseVerboseJson'
                     x-stainless-skip:
@@ -29932,7 +29932,7 @@ components:
           example: 1711471533
           description: The Unix timestamp (in seconds) of when the API key was created
         last_used_at:
-          oneOf:
+          anyOf:
             - type: integer
               format: int64
               example: 1711471534
@@ -30030,14 +30030,14 @@ components:
           description: The Unix timestamp (in seconds) for when the assistant was created.
           type: integer
         name:
-          oneOf:
+          anyOf:
             - description: |
                 The name of the assistant. The maximum length is 256 characters.
               type: string
               maxLength: 256
             - type: 'null'
         description:
-          oneOf:
+          anyOf:
             - description: |
                 The description of the assistant. The maximum length is 512 characters.
               type: string
@@ -30051,7 +30051,7 @@ components:
             descriptions of them.
           type: string
         instructions:
-          oneOf:
+          anyOf:
             - description: |
                 The system instructions that the assistant uses. The maximum length is 256,000 characters.
               type: string
@@ -30067,7 +30067,7 @@ components:
           items:
             $ref: '#/components/schemas/AssistantTool'
         tool_resources:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 A set of resources that are used by the assistant's tools. The resources are specific to the
@@ -30103,7 +30103,7 @@ components:
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          oneOf:
+          anyOf:
             - description: >
                 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
                 more random, while lower values like 0.2 will make it more focused and deterministic.
@@ -30114,7 +30114,7 @@ components:
               example: 1
             - type: 'null'
         top_p:
-          oneOf:
+          anyOf:
             - type: number
               minimum: 0
               maximum: 1
@@ -30129,7 +30129,7 @@ components:
                 We generally recommend altering this or temperature but not both.
             - type: 'null'
         response_format:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
             - type: 'null'
       required:
@@ -30203,7 +30203,7 @@ components:
       x-oaiMeta:
         name: Assistant stream events
         beta: true
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ThreadStreamEvent'
         - $ref: '#/components/schemas/RunStreamEvent'
         - $ref: '#/components/schemas/RunStepStreamEvent'
@@ -30349,7 +30349,7 @@ components:
         the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.
         Also note that the message content may be partially cut off if `finish_reason="length"`, which
         indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
-      oneOf:
+      anyOf:
         - type: string
           description: |
             `auto` is the default value
@@ -30372,7 +30372,7 @@ components:
 
         Specifying a particular tool like `{"type": "file_search"}` or `{"type": "function", "function":
         {"name": "my_function"}}` forces the model to call that tool.
-      oneOf:
+      anyOf:
         - type: string
           description: >
             `none` means the model will not call any tools and instead generates a message. `auto` means the
@@ -31486,7 +31486,7 @@ components:
           type: string
           description: A developer-provided per-request id that will be used to match outputs to inputs.
         response:
-          oneOf:
+          anyOf:
             - type: object
               properties:
                 status_code:
@@ -31503,7 +31503,7 @@ components:
                   description: The JSON body of the response
             - type: 'null'
         error:
-          oneOf:
+          anyOf:
             - type: object
               description: >-
                 For requests that failed with a non-HTTP error, this will contain more information on the
@@ -31849,7 +31849,7 @@ components:
                     type: string
                     description: The identifier of the chat message.
                   content_parts:
-                    oneOf:
+                    anyOf:
                       - type: array
                         description: >
                           If a content parts array was provided, this is an array of `text` and `image_url`
@@ -31857,7 +31857,7 @@ components:
 
                           Otherwise, null.
                         items:
-                          oneOf:
+                          anyOf:
                             - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
                             - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartImage'
                       - type: 'null'
@@ -31964,7 +31964,7 @@ components:
       items:
         discriminator:
           propertyName: type
-        oneOf:
+        anyOf:
           - $ref: '#/components/schemas/ChatCompletionMessageToolCall'
           - $ref: '#/components/schemas/ChatCompletionMessageCustomToolCall'
         x-stainless-naming:
@@ -31973,7 +31973,7 @@ components:
             param_model_name: chat_completion_message_tool_call_union_param
         x-stainless-go-variant-constructor: skip
     ChatCompletionModalities:
-      oneOf:
+      anyOf:
         - type: array
           description: >
             Output types that you would like the model to generate for this request.
@@ -32050,11 +32050,11 @@ components:
         Messages sent by the model in response to user messages.
       properties:
         content:
-          oneOf:
+          anyOf:
             - description: >
                 The contents of the assistant message. Required unless `tool_calls` or `function_call` is
                 specified.
-              oneOf:
+              anyOf:
                 - type: string
                   description: The contents of the assistant message.
                   title: Text content
@@ -32068,7 +32068,7 @@ components:
                   minItems: 1
             - type: 'null'
         refusal:
-          oneOf:
+          anyOf:
             - type: string
               description: The refusal message by the assistant.
             - type: 'null'
@@ -32084,7 +32084,7 @@ components:
             An optional name for the participant. Provides the model information to differentiate between
             participants of the same role.
         audio:
-          oneOf:
+          anyOf:
             - type: object
               description: |
                 Data about a previous audio response from the model.
@@ -32100,7 +32100,7 @@ components:
         tool_calls:
           $ref: '#/components/schemas/ChatCompletionMessageToolCalls'
         function_call:
-          oneOf:
+          anyOf:
             - type: object
               deprecated: true
               description: >-
@@ -32128,7 +32128,7 @@ components:
     ChatCompletionRequestAssistantMessageContentPart:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartRefusal'
     ChatCompletionRequestDeveloperMessage:
@@ -32141,7 +32141,7 @@ components:
       properties:
         content:
           description: The contents of the developer message.
-          oneOf:
+          anyOf:
             - type: string
               description: The contents of the developer message.
               title: Text content
@@ -32182,7 +32182,7 @@ components:
           description: The role of the messages author, in this case `function`.
           x-stainless-const: true
         content:
-          oneOf:
+          anyOf:
             - type: string
               description: The contents of the function message.
             - type: 'null'
@@ -32196,7 +32196,7 @@ components:
     ChatCompletionRequestMessage:
       discriminator:
         propertyName: role
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ChatCompletionRequestDeveloperMessage'
         - $ref: '#/components/schemas/ChatCompletionRequestSystemMessage'
         - $ref: '#/components/schemas/ChatCompletionRequestUserMessage'
@@ -32361,7 +32361,7 @@ components:
       properties:
         content:
           description: The contents of the system message.
-          oneOf:
+          anyOf:
             - type: string
               description: The contents of the system message.
               title: Text content
@@ -32391,7 +32391,7 @@ components:
         go:
           variant_constructor: SystemMessage
     ChatCompletionRequestSystemMessageContentPart:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
     ChatCompletionRequestToolMessage:
       type: object
@@ -32405,7 +32405,7 @@ components:
           x-stainless-const: true
         content:
           description: The contents of the tool message.
-          oneOf:
+          anyOf:
             - type: string
               description: The contents of the tool message.
               title: Text content
@@ -32428,7 +32428,7 @@ components:
         go:
           variant_constructor: ToolMessage
     ChatCompletionRequestToolMessageContentPart:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
     ChatCompletionRequestUserMessage:
       type: object
@@ -32440,7 +32440,7 @@ components:
         content:
           description: |
             The contents of the user message.
-          oneOf:
+          anyOf:
             - type: string
               description: The text contents of the message.
               title: Text content
@@ -32471,7 +32471,7 @@ components:
         go:
           variant_constructor: UserMessage
     ChatCompletionRequestUserMessageContentPart:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartImage'
         - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartAudio'
@@ -32483,12 +32483,12 @@ components:
       description: A chat completion message generated by the model.
       properties:
         content:
-          oneOf:
+          anyOf:
             - type: string
               description: The contents of the message.
             - type: 'null'
         refusal:
-          oneOf:
+          anyOf:
             - type: string
               description: The refusal message generated by the model.
             - type: 'null'
@@ -32560,7 +32560,7 @@ components:
             - name
             - arguments
         audio:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 If the audio output modality is requested, this object contains data
@@ -32606,7 +32606,7 @@ components:
         - tool
         - function
     ChatCompletionStreamOptions:
-      oneOf:
+      anyOf:
         - description: |
             Options for streaming response. Only set this when you set `stream: true`.
           type: object
@@ -32638,7 +32638,7 @@ components:
       description: A chat completion delta generated by streamed model responses.
       properties:
         content:
-          oneOf:
+          anyOf:
             - type: string
               description: The contents of the chunk message.
             - type: 'null'
@@ -32672,7 +32672,7 @@ components:
             - tool
           description: The role of the author of this message.
         refusal:
-          oneOf:
+          anyOf:
             - type: string
               description: The refusal message generated by the model.
             - type: 'null'
@@ -32688,7 +32688,7 @@ components:
             value `-9999.0` is used to signify that the token is very unlikely.
           type: number
         bytes:
-          oneOf:
+          anyOf:
             - description: >-
                 A list of integers representing the UTF-8 bytes representation of the token. Useful in
                 instances where characters are represented by multiple tokens and their byte representations
@@ -32715,7 +32715,7 @@ components:
                   the value `-9999.0` is used to signify that the token is very unlikely.
                 type: number
               bytes:
-                oneOf:
+                anyOf:
                   - description: >-
                       A list of integers representing the UTF-8 bytes representation of the token. Useful in
                       instances where characters are represented by multiple tokens and their byte
@@ -32766,7 +32766,7 @@ components:
 
 
         `none` is the default when no tools are present. `auto` is the default if tools are present.
-      oneOf:
+      anyOf:
         - type: string
           title: Auto
           description: >
@@ -32787,7 +32787,7 @@ components:
       description: >-
         The chunking strategy used to chunk the file(s). If not set, will use the `auto` strategy. Only
         applicable if `file_ids` is non-empty.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/AutoChunkingStrategyRequestParam'
         - $ref: '#/components/schemas/StaticChunkingStrategyRequestParam'
       discriminator:
@@ -32861,7 +32861,7 @@ components:
           description: |
             The code interpreter container. Can be a container ID or an object that
             specifies uploaded file IDs to make available to your code.
-          oneOf:
+          anyOf:
             - type: string
               description: The container ID.
             - $ref: '#/components/schemas/CodeInterpreterContainerAuto'
@@ -32902,18 +32902,18 @@ components:
           description: |
             The ID of the container used to run the code.
         code:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The code to run, or null if not available.
             - type: 'null'
         outputs:
-          oneOf:
+          anyOf:
             - type: array
               items:
                 discriminator:
                   propertyName: type
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/CodeInterpreterOutputLogs'
                   - $ref: '#/components/schemas/CodeInterpreterOutputImage'
               discriminator:
@@ -32962,7 +32962,7 @@ components:
           description: The key to compare against the value.
         value:
           description: The value to compare against the attribute key; supports string, number, or boolean types.
-          oneOf:
+          anyOf:
             - type: string
             - type: number
             - type: boolean
@@ -33070,7 +33070,7 @@ components:
           items:
             discriminator:
               propertyName: type
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/ComparisonFilter'
               - $recursiveRef: '#'
       required:
@@ -33081,7 +33081,7 @@ components:
     ComputerAction:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ClickParam'
         - $ref: '#/components/schemas/DoubleClickAction'
         - $ref: '#/components/schemas/Drag'
@@ -33372,7 +33372,7 @@ components:
     Content:
       description: |
         Multi-modal input and output contents.
-      oneOf:
+      anyOf:
         - title: Input content types
           $ref: '#/components/schemas/InputContent'
         - title: Output content types
@@ -33392,7 +33392,7 @@ components:
         object](https://platform.openai.com/docs/api-reference/responses/object#responses/object-output).
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/Message'
         - $ref: '#/components/schemas/FunctionToolCallResource'
         - $ref: '#/components/schemas/FunctionToolCallOutputResource'
@@ -33450,7 +33450,7 @@ components:
 
         Input items and output items from this response are automatically added to this conversation after
         this response completes.
-      oneOf:
+      anyOf:
         - type: string
           title: Conversation ID
           description: |
@@ -33476,12 +33476,12 @@ components:
               type: string
               description: Lowercase ISO-4217 currency e.g. "usd"
         line_item:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=line_item`, this field provides the line item of the grouped costs result.
             - type: 'null'
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped costs result.
             - type: 'null'
@@ -33510,26 +33510,26 @@ components:
             available models, or see our [Model overview](https://platform.openai.com/docs/models) for
             descriptions of them.
           example: gpt-4o
-          oneOf:
+          anyOf:
             - type: string
             - $ref: '#/components/schemas/AssistantSupportedModels'
           x-oaiTypeLabel: string
         name:
-          oneOf:
+          anyOf:
             - description: |
                 The name of the assistant. The maximum length is 256 characters.
               type: string
               maxLength: 256
             - type: 'null'
         description:
-          oneOf:
+          anyOf:
             - description: |
                 The description of the assistant. The maximum length is 512 characters.
               type: string
               maxLength: 512
             - type: 'null'
         instructions:
-          oneOf:
+          anyOf:
             - description: |
                 The system instructions that the assistant uses. The maximum length is 256,000 characters.
               type: string
@@ -33547,7 +33547,7 @@ components:
           items:
             $ref: '#/components/schemas/AssistantTool'
         tool_resources:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 A set of resources that are used by the assistant's tools. The resources are specific to the
@@ -33604,7 +33604,7 @@ components:
                             description: >-
                               The chunking strategy used to chunk the file(s). If not set, will use the `auto`
                               strategy.
-                            oneOf:
+                            anyOf:
                               - type: object
                                 title: Auto Chunking Strategy
                                 description: >-
@@ -33660,7 +33660,7 @@ components:
                               propertyName: type
                           metadata:
                             $ref: '#/components/schemas/Metadata'
-                  oneOf:
+                  anyOf:
                     - required:
                         - vector_store_ids
                     - required:
@@ -33669,7 +33669,7 @@ components:
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          oneOf:
+          anyOf:
             - description: >
                 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
                 more random, while lower values like 0.2 will make it more focused and deterministic.
@@ -33680,7 +33680,7 @@ components:
               example: 1
             - type: 'null'
         top_p:
-          oneOf:
+          anyOf:
             - type: number
               minimum: 0
               maximum: 1
@@ -33695,7 +33695,7 @@ components:
                 We generally recommend altering this or temperature but not both.
             - type: 'null'
         response_format:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
             - type: 'null'
       required:
@@ -33816,7 +33816,7 @@ components:
                 is preferred for models that support it.
               discriminator:
                 propertyName: type
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/ResponseFormatText'
                 - $ref: '#/components/schemas/ResponseFormatJsonSchema'
                 - $ref: '#/components/schemas/ResponseFormatJsonObject'
@@ -33933,7 +33933,7 @@ components:
                 response are known ahead of time. This is most common when you are
 
                 regenerating a file with only minor changes to most of the content.
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/PredictionContent'
               discriminator:
                 propertyName: type
@@ -33962,7 +33962,7 @@ components:
                 [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools) or
                 [function tools](https://platform.openai.com/docs/guides/function-calling).
               items:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/ChatCompletionTool'
                   - $ref: '#/components/schemas/CustomToolChatCompletions'
                 x-stainless-naming:
@@ -33995,7 +33995,7 @@ components:
 
                 `none` is the default when no functions are present. `auto` is the default
                 if functions are present.
-              oneOf:
+              anyOf:
                 - type: string
                   description: >
                     `none` means the model will not call a function and instead generates a message. `auto`
@@ -34061,19 +34061,19 @@ components:
               message:
                 $ref: '#/components/schemas/ChatCompletionResponseMessage'
               logprobs:
-                oneOf:
+                anyOf:
                   - description: Log probability information for the choice.
                     type: object
                     properties:
                       content:
-                        oneOf:
+                        anyOf:
                           - description: A list of message content tokens with log probability information.
                             type: array
                             items:
                               $ref: '#/components/schemas/ChatCompletionTokenLogprob'
                           - type: 'null'
                       refusal:
-                        oneOf:
+                        anyOf:
                           - description: A list of message refusal tokens with log probability information.
                             type: array
                             items:
@@ -34293,7 +34293,7 @@ components:
             models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your
             available models, or see our [Model overview](https://platform.openai.com/docs/models) for
             descriptions of them.
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -34311,7 +34311,7 @@ components:
             Note that <|endoftext|> is the document separator that the model sees during training, so if a
             prompt is not specified the model will generate as if from the beginning of a new document.
           nullable: true
-          oneOf:
+          anyOf:
             - type: string
               default: ''
               example: This is a test.
@@ -34549,7 +34549,7 @@ components:
               index:
                 type: integer
               logprobs:
-                oneOf:
+                anyOf:
                   - type: object
                     properties:
                       text_offset:
@@ -34677,7 +34677,7 @@ components:
             In addition to the per-input token limit, all embedding  models enforce a maximum of 300,000
             tokens summed across all inputs in a  single request.
           example: The quick brown fox jumped over the lazy dog
-          oneOf:
+          anyOf:
             - type: string
               title: string
               description: The string that will be turned into an embedding.
@@ -34716,7 +34716,7 @@ components:
             available models, or see our [Model overview](https://platform.openai.com/docs/models) for
             descriptions of them.
           example: text-embedding-3-small
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -34802,7 +34802,7 @@ components:
             Used when sampling from a model. Dictates the structure of the messages passed into the model. Can
             either be a reference to a prebuilt trajectory (ie, `item.input_trajectory`), or a template with
             variable references to the `item` namespace.
-          oneOf:
+          anyOf:
             - type: object
               title: TemplateInputMessages
               properties:
@@ -34817,7 +34817,7 @@ components:
                     A list of chat messages forming the prompt or context. May include variable references to
                     the `item` namespace, ie {{item.name}}.
                   items:
-                    oneOf:
+                    anyOf:
                       - $ref: '#/components/schemas/EasyInputMessage'
                       - $ref: '#/components/schemas/EvalItem'
               required:
@@ -34871,7 +34871,7 @@ components:
                 Setting to `{ "type": "json_object" }` enables the older JSON mode, which
                 ensures the message the model generates is valid JSON. Using `json_schema`
                 is preferred for models that support it.
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/ResponseFormatText'
                 - $ref: '#/components/schemas/ResponseFormatJsonSchema'
                 - $ref: '#/components/schemas/ResponseFormatJsonObject'
@@ -34888,7 +34888,7 @@ components:
           description: The name of the model to use for generating completions (e.g. "o3-mini").
         source:
           description: Determines what populates the `item` namespace in this run's data source.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/EvalJsonlFileContentSource'
             - $ref: '#/components/schemas/EvalJsonlFileIdSource'
             - $ref: '#/components/schemas/EvalStoredCompletionsSource'
@@ -34973,7 +34973,7 @@ components:
       type: object
       x-oaiMeta:
         name: The chat message object used to configure an individual run
-      oneOf:
+      anyOf:
         - type: object
           title: SimpleInputMessage
           properties:
@@ -35002,7 +35002,7 @@ components:
           x-stainless-const: true
         source:
           description: Determines what populates the `item` namespace in the data source.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/EvalJsonlFileContentSource'
             - $ref: '#/components/schemas/EvalJsonlFileIdSource'
           discriminator:
@@ -35129,7 +35129,7 @@ components:
           description: >-
             The configuration for the data source used for the evaluation runs. Dictates the schema of the
             data used in the evaluation.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/CreateEvalCustomDataSourceConfig'
             - $ref: '#/components/schemas/CreateEvalLogsDataSourceConfig'
             - $ref: '#/components/schemas/CreateEvalStoredCompletionsDataSourceConfig'
@@ -35142,7 +35142,7 @@ components:
             source using double curly braces notation, like `{{item.variable_name}}`. To reference the model's
             output, use the `sample` namespace (ie, `{{sample.output_text}}`).
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/CreateEvalLabelModelGrader'
               - $ref: '#/components/schemas/EvalGraderStringCheck'
               - $ref: '#/components/schemas/EvalGraderTextSimilarity'
@@ -35170,7 +35170,7 @@ components:
             Used when sampling from a model. Dictates the structure of the messages passed into the model. Can
             either be a reference to a prebuilt trajectory (ie, `item.input_trajectory`), or a template with
             variable references to the `item` namespace.
-          oneOf:
+          anyOf:
             - type: object
               title: InputMessagesTemplate
               properties:
@@ -35185,7 +35185,7 @@ components:
                     A list of chat messages forming the prompt or context. May include variable references to
                     the `item` namespace, ie {{item.name}}.
                   items:
-                    oneOf:
+                    anyOf:
                       - type: object
                         title: ChatMessage
                         properties:
@@ -35270,7 +35270,7 @@ components:
           description: The name of the model to use for generating completions (e.g. "o3-mini").
         source:
           description: Determines what populates the `item` namespace in this run's data source.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/EvalJsonlFileContentSource'
             - $ref: '#/components/schemas/EvalJsonlFileIdSource'
             - $ref: '#/components/schemas/EvalResponsesSource'
@@ -35310,7 +35310,7 @@ components:
         data_source:
           type: object
           description: Details about the run's data source.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/CreateEvalJsonlRunDataSource'
             - $ref: '#/components/schemas/CreateEvalCompletionsRunDataSource'
             - $ref: '#/components/schemas/CreateEvalResponsesRunDataSource'
@@ -35385,7 +35385,7 @@ components:
             [supported
             models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
           example: gpt-4o-mini
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -35432,7 +35432,7 @@ components:
                 Number of examples in each batch. A larger batch size means that model parameters
                 are updated less frequently, but with lower variance.
               default: auto
-              oneOf:
+              anyOf:
                 - type: string
                   enum:
                     - auto
@@ -35445,7 +35445,7 @@ components:
               description: |
                 Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
                 overfitting.
-              oneOf:
+              anyOf:
                 - type: string
                   enum:
                     - auto
@@ -35459,7 +35459,7 @@ components:
                 The number of epochs to train the model for. An epoch refers to one full cycle
                 through the training dataset.
               default: auto
-              oneOf:
+              anyOf:
                 - type: string
                   enum:
                     - auto
@@ -35518,7 +35518,7 @@ components:
                 description: >
                   The type of integration to enable. Currently, only "wandb" (Weights and Biases) is
                   supported.
-                oneOf:
+                anyOf:
                   - type: string
                     enum:
                       - wandb
@@ -35588,7 +35588,7 @@ components:
       type: object
       properties:
         image:
-          oneOf:
+          anyOf:
             - type: string
               format: binary
             - type: array
@@ -35639,7 +35639,7 @@ components:
             If `transparent`, the output format needs to support transparency, so it
             should be set to either `png` (default value) or `webp`.
         model:
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -35717,7 +35717,7 @@ components:
             A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
             [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         input_fidelity:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/InputFidelity'
             - type: 'null'
         stream:
@@ -35759,7 +35759,7 @@ components:
           type: string
           example: A cute baby sea otter
         model:
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -35926,7 +35926,7 @@ components:
           x-oaiMeta:
             exampleFilePath: otter.png
         model:
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -35993,7 +35993,7 @@ components:
             - `assistant`: Indicates the message is generated by the assistant. Use this value to insert
             messages from the assistant into the conversation.
         content:
-          oneOf:
+          anyOf:
             - type: string
               description: The text contents of the message.
               title: Text content
@@ -36004,7 +36004,7 @@ components:
                 models](https://platform.openai.com/docs/models).
               title: Array of content parts
               items:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/MessageContentImageFileObject'
                   - $ref: '#/components/schemas/MessageContentImageUrlObject'
                   - $ref: '#/components/schemas/MessageRequestContentTextObject'
@@ -36012,7 +36012,7 @@ components:
                   propertyName: type
               minItems: 1
         attachments:
-          oneOf:
+          anyOf:
             - type: array
               items:
                 type: object
@@ -36024,7 +36024,7 @@ components:
                     description: The tools to add this file to.
                     type: array
                     items:
-                      oneOf:
+                      anyOf:
                         - $ref: '#/components/schemas/AssistantToolsCode'
                         - $ref: '#/components/schemas/AssistantToolsFileSearchTypeOnly'
                       discriminator:
@@ -36055,7 +36055,7 @@ components:
           description: |
             Input (or inputs) to classify. Can be a single string, an array of strings, or
             an array of multi-modal input objects similar to other models.
-          oneOf:
+          anyOf:
             - type: string
               description: A string of text to classify for moderation.
               default: ''
@@ -36069,7 +36069,7 @@ components:
             - type: array
               description: An array of multi-modal inputs to the moderation model.
               items:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/ModerationImageURLInput'
                   - $ref: '#/components/schemas/ModerationTextInput'
                 discriminator:
@@ -36081,7 +36081,7 @@ components:
             [the moderation guide](https://platform.openai.com/docs/guides/moderation), and learn about
             available models [here](https://platform.openai.com/docs/models#moderation).
           nullable: false
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -36135,7 +36135,7 @@ components:
                     type: boolean
                     description: Harassment content that also includes violence or serious harm towards any target.
                   illicit:
-                    oneOf:
+                    anyOf:
                       - type: boolean
                         description: >-
                           Content that includes instructions or advice that facilitate the planning or
@@ -36143,7 +36143,7 @@ components:
                           illicit acts. For example, "how to shoplift" would fit this category.
                       - type: 'null'
                   illicit/violent:
-                    oneOf:
+                    anyOf:
                       - type: boolean
                         description: >-
                           Content that includes instructions or advice that facilitate the planning or
@@ -36479,7 +36479,7 @@ components:
             input:
               $ref: '#/components/schemas/InputParam'
             include:
-              oneOf:
+              anyOf:
                 - type: array
                   description: >-
                     Specify additional output data to include in the model response. Currently supported
@@ -36507,14 +36507,14 @@ components:
                     $ref: '#/components/schemas/IncludeEnum'
                 - type: 'null'
             parallel_tool_calls:
-              oneOf:
+              anyOf:
                 - type: boolean
                   description: |
                     Whether to allow the model to run tool calls in parallel.
                   default: true
                 - type: 'null'
             store:
-              oneOf:
+              anyOf:
                 - type: boolean
                   description: |
                     Whether to store the generated model response for later retrieval via
@@ -36522,7 +36522,7 @@ components:
                   default: true
                 - type: 'null'
             instructions:
-              oneOf:
+              anyOf:
                 - type: string
                   description: |
                     A system (or developer) message inserted into the model's context.
@@ -36532,7 +36532,7 @@ components:
                     to swap out system (or developer) messages in new responses.
                 - type: 'null'
             stream:
-              oneOf:
+              anyOf:
                 - description: >
                     If set to true, the model response data will be streamed to the client
 
@@ -36549,7 +36549,7 @@ components:
             stream_options:
               $ref: '#/components/schemas/ResponseStreamOptions'
             conversation:
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/ConversationParam'
                 - type: 'null'
     CreateRunRequest:
@@ -36566,7 +36566,7 @@ components:
             The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute
             this run. If a value is provided here, it will override the model associated with the assistant.
             If not, the model associated with the assistant will be used.
-          oneOf:
+          anyOf:
             - type: string
             - $ref: '#/components/schemas/AssistantSupportedModels'
           x-oaiTypeLabel: string
@@ -36674,7 +36674,7 @@ components:
           description: >
             One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`,
             `tts-1-hd` or `gpt-4o-mini-tts`.
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -36731,7 +36731,7 @@ components:
         - input
         - voice
     CreateSpeechResponseStreamEvent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/SpeechAudioDeltaEvent'
         - $ref: '#/components/schemas/SpeechAudioDoneEvent'
       discriminator:
@@ -36752,7 +36752,7 @@ components:
             The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute
             this run. If a value is provided here, it will override the model associated with the assistant.
             If not, the model associated with the assistant will be used.
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -36923,7 +36923,7 @@ components:
           items:
             $ref: '#/components/schemas/CreateMessageRequest'
         tool_resources:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 A set of resources that are made available to the assistant's tools in this thread. The
@@ -36980,7 +36980,7 @@ components:
                             description: >-
                               The chunking strategy used to chunk the file(s). If not set, will use the `auto`
                               strategy.
-                            oneOf:
+                            anyOf:
                               - type: object
                                 title: Auto Chunking Strategy
                                 description: >-
@@ -37036,7 +37036,7 @@ components:
                               propertyName: type
                           metadata:
                             $ref: '#/components/schemas/Metadata'
-                  oneOf:
+                  anyOf:
                     - required:
                         - vector_store_ids
                     - required:
@@ -37062,7 +37062,7 @@ components:
             ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `whisper-1`
             (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.
           example: gpt-4o-transcribe
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -37127,7 +37127,7 @@ components:
           default:
             - segment
         stream:
-          oneOf:
+          anyOf:
             - description: >
                 If set to true, the model response data will be streamed to the client
 
@@ -37196,7 +37196,7 @@ components:
           description: Token or duration usage statistics for the request.
           discriminator:
             propertyName: type
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/TranscriptTextUsageTokens'
               title: Token Usage
             - $ref: '#/components/schemas/TranscriptTextUsageDuration'
@@ -37267,7 +37267,7 @@ components:
         usage:
           type: object
           description: Token usage statistics for the request.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/TranscriptTextUsageTokens'
               title: Token Usage
             - $ref: '#/components/schemas/TranscriptTextUsageDuration'
@@ -37294,7 +37294,7 @@ components:
             }
           }
     CreateTranscriptionResponseStreamEvent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/TranscriptTextSegmentEvent'
         - $ref: '#/components/schemas/TranscriptTextDeltaEvent'
         - $ref: '#/components/schemas/TranscriptTextDoneEvent'
@@ -37378,7 +37378,7 @@ components:
             ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is
             currently available.
           example: whisper-1
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -37598,7 +37598,7 @@ components:
           description: |
             The output from the custom tool call generated by your code.
             Can be a string or an list of output content.
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 A string of the output of the custom tool call.
@@ -37641,7 +37641,7 @@ components:
             format:
               description: |
                 The input format for the custom tool. Default is unconstrained text.
-              oneOf:
+              anyOf:
                 - type: object
                   title: Text format
                   description: Unconstrained free-form text.
@@ -37920,7 +37920,7 @@ components:
           description: |
             Text, image, or audio input to the model, used to generate a response.
             Can also contain previous assistant responses.
-          oneOf:
+          anyOf:
             - type: string
               title: Text input
               description: |
@@ -37979,13 +37979,13 @@ components:
       type: object
       properties:
         code:
-          oneOf:
+          anyOf:
             - type: string
             - type: 'null'
         message:
           type: string
         param:
-          oneOf:
+          anyOf:
             - type: string
             - type: 'null'
         type:
@@ -38048,7 +38048,7 @@ components:
         data_source_config:
           type: object
           description: Configuration of data sources used in runs of the evaluation.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/EvalCustomDataSourceConfig'
             - $ref: '#/components/schemas/EvalLogsDataSourceConfig'
             - $ref: '#/components/schemas/EvalStoredCompletionsDataSourceConfig'
@@ -38058,7 +38058,7 @@ components:
           description: A list of testing criteria.
           type: array
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/EvalGraderLabelModel'
               - $ref: '#/components/schemas/EvalGraderStringCheck'
               - $ref: '#/components/schemas/EvalGraderTextSimilarity'
@@ -38274,7 +38274,7 @@ components:
         content:
           description: |
             Inputs to the model - can contain template strings.
-          oneOf:
+          anyOf:
             - type: string
               title: Text input
               description: |
@@ -38541,26 +38541,26 @@ components:
             - responses
           description: The type of run data source. Always `responses`.
         metadata:
-          oneOf:
+          anyOf:
             - type: object
               description: Metadata filter for the responses. This is a query parameter used to select responses.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The name of the model to find responses for. This is a query parameter used to select
                 responses.
             - type: 'null'
         instructions_search:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 Optional string to search the 'instructions' field. This is a query parameter used to select
                 responses.
             - type: 'null'
         created_after:
-          oneOf:
+          anyOf:
             - type: integer
               minimum: 0
               description: >-
@@ -38568,7 +38568,7 @@ components:
                 select responses.
             - type: 'null'
         created_before:
-          oneOf:
+          anyOf:
             - type: integer
               minimum: 0
               description: >-
@@ -38576,29 +38576,29 @@ components:
                 to select responses.
             - type: 'null'
         reasoning_effort:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ReasoningEffort'
               description: Optional reasoning effort parameter. This is a query parameter used to select responses.
             - type: 'null'
         temperature:
-          oneOf:
+          anyOf:
             - type: number
               description: Sampling temperature. This is a query parameter used to select responses.
             - type: 'null'
         top_p:
-          oneOf:
+          anyOf:
             - type: number
               description: Nucleus sampling parameter. This is a query parameter used to select responses.
             - type: 'null'
         users:
-          oneOf:
+          anyOf:
             - type: array
               items:
                 type: string
               description: List of user identifiers. This is a query parameter used to select responses.
             - type: 'null'
         tools:
-          oneOf:
+          anyOf:
             - type: array
               items:
                 type: string
@@ -38730,7 +38730,7 @@ components:
         data_source:
           type: object
           description: Information about the run's data source.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/CreateEvalJsonlRunDataSource'
             - $ref: '#/components/schemas/CreateEvalCompletionsRunDataSource'
             - $ref: '#/components/schemas/CreateEvalResponsesRunDataSource'
@@ -39314,7 +39314,7 @@ components:
           type: boolean
           description: Whether the grader considered the output a pass.
         sample:
-          oneOf:
+          anyOf:
             - type: object
               additionalProperties: true
             - type: 'null'
@@ -39389,22 +39389,22 @@ components:
         metadata:
           $ref: '#/components/schemas/Metadata'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: An optional model to filter by (e.g., 'gpt-4o').
             - type: 'null'
         created_after:
-          oneOf:
+          anyOf:
             - type: integer
               description: An optional Unix timestamp to filter items created after this time.
             - type: 'null'
         created_before:
-          oneOf:
+          anyOf:
             - type: integer
               description: An optional Unix timestamp to filter items created before this time.
             - type: 'null'
         limit:
-          oneOf:
+          anyOf:
             - type: integer
               description: An optional maximum number of items to return.
             - type: 'null'
@@ -39535,7 +39535,7 @@ components:
           description: |
             The queries used to search for files.
         results:
-          oneOf:
+          anyOf:
             - type: array
               description: |
                 The results of the file search tool call.
@@ -39593,7 +39593,7 @@ components:
           type: array
           minItems: 1
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/ChatCompletionRequestSystemMessage'
               - $ref: '#/components/schemas/ChatCompletionRequestUserMessage'
               - $ref: '#/components/schemas/FineTuneChatCompletionRequestAssistantMessage'
@@ -39664,7 +39664,7 @@ components:
           description: >
             The beta value for the DPO method. A higher beta value will increase the weight of the penalty
             between the policy and reference model.
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39678,7 +39678,7 @@ components:
             Number of examples in each batch. A larger batch size means that model parameters are updated less
             frequently, but with lower variance.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39689,7 +39689,7 @@ components:
         learning_rate_multiplier:
           description: |
             Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39702,7 +39702,7 @@ components:
             The number of epochs to train the model for. An epoch refers to one full cycle through the
             training dataset.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39749,7 +39749,7 @@ components:
               type: array
               minItems: 1
               items:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/ChatCompletionRequestSystemMessage'
                   - $ref: '#/components/schemas/ChatCompletionRequestUserMessage'
                   - $ref: '#/components/schemas/FineTuneChatCompletionRequestAssistantMessage'
@@ -39767,14 +39767,14 @@ components:
           description: The preferred completion message for the output.
           maxItems: 1
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/ChatCompletionRequestAssistantMessage'
         non_preferred_output:
           type: array
           description: The non-preferred completion message for the output.
           maxItems: 1
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/ChatCompletionRequestAssistantMessage'
       x-oaiMeta:
         name: Training format for chat models using the preference method
@@ -39807,7 +39807,7 @@ components:
             Number of examples in each batch. A larger batch size means that model parameters are updated less
             frequently, but with lower variance.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39818,7 +39818,7 @@ components:
         learning_rate_multiplier:
           description: |
             Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39831,7 +39831,7 @@ components:
             The number of epochs to train the model for. An epoch refers to one full cycle through the
             training dataset.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39852,7 +39852,7 @@ components:
         compute_multiplier:
           description: |
             Multiplier on amount of compute used for exploring search space during training.
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39865,7 +39865,7 @@ components:
           description: |
             The number of training steps between evaluation runs.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39876,7 +39876,7 @@ components:
           description: |
             Number of evaluation samples to generate per training step.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39890,7 +39890,7 @@ components:
         grader:
           type: object
           description: The grader used for the fine-tuning job.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/GraderStringCheck'
             - $ref: '#/components/schemas/GraderTextSimilarity'
             - $ref: '#/components/schemas/GraderPython'
@@ -39920,7 +39920,7 @@ components:
           type: array
           minItems: 1
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/ChatCompletionRequestDeveloperMessage'
               - $ref: '#/components/schemas/ChatCompletionRequestUserMessage'
               - $ref: '#/components/schemas/FineTuneChatCompletionRequestAssistantMessage'
@@ -39955,7 +39955,7 @@ components:
             Number of examples in each batch. A larger batch size means that model parameters are updated less
             frequently, but with lower variance.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39966,7 +39966,7 @@ components:
         learning_rate_multiplier:
           description: |
             Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -39979,7 +39979,7 @@ components:
             The number of epochs to train the model for. An epoch refers to one full cycle through the
             training dataset.
           default: auto
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -40056,13 +40056,13 @@ components:
               type: string
               example: my-wandb-project
             name:
-              oneOf:
+              anyOf:
                 - description: |
                     A display name to set for the run. If not set, we will use the Job ID as the name.
                   type: string
                 - type: 'null'
             entity:
-              oneOf:
+              anyOf:
                 - description: >
                     The entity to use for the run. This allows you to set the team or username of the WandB
                     user that you would
@@ -40095,7 +40095,7 @@ components:
           type: integer
           description: The Unix timestamp (in seconds) for when the fine-tuning job was created.
         error:
-          oneOf:
+          anyOf:
             - type: object
               description: >-
                 For fine-tuning jobs that have `failed`, this will contain more information on the cause of
@@ -40108,7 +40108,7 @@ components:
                   type: string
                   description: A human-readable error message.
                 param:
-                  oneOf:
+                  anyOf:
                     - type: string
                       description: >-
                         The parameter that was invalid, usually `training_file` or `validation_file`. This
@@ -40120,14 +40120,14 @@ components:
                 - param
             - type: 'null'
         fine_tuned_model:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The name of the fine-tuned model that is being created. The value will be null if the
                 fine-tuning job is still running.
             - type: 'null'
         finished_at:
-          oneOf:
+          anyOf:
             - type: integer
               description: >-
                 The Unix timestamp (in seconds) for when the fine-tuning job was finished. The value will be
@@ -40140,12 +40140,12 @@ components:
             `supervised` jobs.
           properties:
             batch_size:
-              oneOf:
+              anyOf:
                 - description: |
                     Number of examples in each batch. A larger batch size means that model parameters
                     are updated less frequently, but with lower variance.
                   default: auto
-                  oneOf:
+                  anyOf:
                     - type: string
                       enum:
                         - auto
@@ -40160,7 +40160,7 @@ components:
               description: |
                 Scaling factor for the learning rate. A smaller learning rate may be useful to avoid
                 overfitting.
-              oneOf:
+              anyOf:
                 - type: string
                   enum:
                     - auto
@@ -40174,7 +40174,7 @@ components:
                 The number of epochs to train the model for. An epoch refers to one full cycle
                 through the training dataset.
               default: auto
-              oneOf:
+              anyOf:
                 - type: string
                   enum:
                     - auto
@@ -40216,7 +40216,7 @@ components:
             - failed
             - cancelled
         trained_tokens:
-          oneOf:
+          anyOf:
             - type: integer
               description: >-
                 The total number of billable tokens processed by this fine-tuning job. The value will be null
@@ -40228,19 +40228,19 @@ components:
             The file ID used for training. You can retrieve the training data with the [Files
             API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         validation_file:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The file ID used for validation. You can retrieve the validation results with the [Files
                 API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
             - type: 'null'
         integrations:
-          oneOf:
+          anyOf:
             - type: array
               description: A list of integrations to enable for this fine-tuning job.
               maxItems: 5
               items:
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/FineTuningIntegration'
                 discriminator:
                   propertyName: type
@@ -40249,7 +40249,7 @@ components:
           type: integer
           description: The seed used for the fine-tuning job.
         estimated_finish:
-          oneOf:
+          anyOf:
             - type: integer
               description: >-
                 The Unix timestamp (in seconds) for when the fine-tuning job is estimated to finish. The value
@@ -40445,7 +40445,7 @@ components:
     FunctionAndCustomToolCallOutput:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/InputTextContent'
         - $ref: '#/components/schemas/InputImageContent'
         - $ref: '#/components/schemas/InputFileContent'
@@ -40465,7 +40465,7 @@ components:
         parameters:
           $ref: '#/components/schemas/FunctionParameters'
         strict:
-          oneOf:
+          anyOf:
             - type: boolean
               default: false
               description: >-
@@ -40558,7 +40558,7 @@ components:
           description: |
             The output from the function call generated by your code.
             Can be a string or an list of output content.
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 A string of the output of the function call.
@@ -40695,7 +40695,7 @@ components:
           type: string
           description: The name of the grader.
         graders:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/GraderStringCheck'
             - $ref: '#/components/schemas/GraderTextSimilarity'
             - $ref: '#/components/schemas/GraderPython'
@@ -40800,13 +40800,13 @@ components:
           description: The sampling parameters for the model.
           properties:
             seed:
-              oneOf:
+              anyOf:
                 - type: integer
                   description: |
                     A seed value to initialize the randomness, during sampling.
                 - type: 'null'
             top_p:
-              oneOf:
+              anyOf:
                 - type: number
                   default: 1
                   example: 1
@@ -40814,13 +40814,13 @@ components:
                     An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
                 - type: 'null'
             temperature:
-              oneOf:
+              anyOf:
                 - type: number
                   description: |
                     A higher temperature increases randomness in the outputs.
                 - type: 'null'
             max_completions_tokens:
-              oneOf:
+              anyOf:
                 - type: integer
                   minimum: 1
                   description: |
@@ -41162,7 +41162,7 @@ components:
             "partial_image_index": 0
           }
     ImageEditStreamEvent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ImageEditPartialImageEvent'
         - $ref: '#/components/schemas/ImageEditCompletedEvent'
       discriminator:
@@ -41336,7 +41336,7 @@ components:
             "partial_image_index": 0
           }
     ImageGenStreamEvent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ImageGenPartialImageEvent'
         - $ref: '#/components/schemas/ImageGenCompletedEvent'
       discriminator:
@@ -41420,7 +41420,7 @@ components:
             `opaque`, or `auto`. Default: `auto`.
           default: auto
         input_fidelity:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/InputFidelity'
             - type: 'null'
         input_image_mask:
@@ -41475,7 +41475,7 @@ components:
           description: |
             The status of the image generation call.
         result:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The generated image encoded in base64.
@@ -41622,7 +41622,7 @@ components:
         - type
         - input_audio
     InputContent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/InputTextContent'
         - $ref: '#/components/schemas/InputImageContent'
         - $ref: '#/components/schemas/InputFileContent'
@@ -41632,7 +41632,7 @@ components:
     InputItem:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/EasyInputMessage'
         - type: object
           title: Item
@@ -41708,7 +41708,7 @@ components:
         - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
         - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-      oneOf:
+      anyOf:
         - type: string
           title: Text input
           description: |
@@ -41885,7 +41885,7 @@ components:
         Content item used to generate a response.
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/InputMessage'
         - $ref: '#/components/schemas/OutputMessage'
         - $ref: '#/components/schemas/FileSearchToolCall'
@@ -41910,7 +41910,7 @@ components:
         Content item used to generate a response.
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/InputMessageResource'
         - $ref: '#/components/schemas/OutputMessage'
         - $ref: '#/components/schemas/FileSearchToolCall'
@@ -42121,11 +42121,11 @@ components:
             - list
           x-stainless-const: true
         first_id:
-          oneOf:
+          anyOf:
             - type: string
             - type: 'null'
         last_id:
-          oneOf:
+          anyOf:
             - type: string
             - type: 'null'
         has_more:
@@ -42147,11 +42147,11 @@ components:
             - list
           x-stainless-const: true
         first_id:
-          oneOf:
+          anyOf:
             - type: string
             - type: 'null'
         last_id:
-          oneOf:
+          anyOf:
             - type: string
             - type: 'null'
         has_more:
@@ -42391,7 +42391,7 @@ components:
           description: |
             A JSON string of the output of the local shell tool call.
         status:
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - in_progress
@@ -42477,7 +42477,7 @@ components:
             The type of the item. Always `mcp_approval_response`.
           x-stainless-const: true
         id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The unique ID of the approval response
@@ -42491,7 +42491,7 @@ components:
           description: |
             Whether the request was approved.
         reason:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 Optional reason for the decision.
@@ -42527,7 +42527,7 @@ components:
           description: |
             Whether the request was approved.
         reason:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 Optional reason for the decision.
@@ -42566,7 +42566,7 @@ components:
           description: |
             The tools available on the server.
         error:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 Error message if the server could not list tools.
@@ -42587,7 +42587,7 @@ components:
           description: |
             The name of the tool.
         description:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The description of the tool.
@@ -42597,7 +42597,7 @@ components:
           description: |
             The JSON schema describing the tool's input.
         annotations:
-          oneOf:
+          anyOf:
             - type: object
               description: |
                 Additional annotations about the tool.
@@ -42664,7 +42664,7 @@ components:
           description: |
             Optional description of the MCP server, used to provide more context.
         headers:
-          oneOf:
+          anyOf:
             - type: object
               additionalProperties:
                 type: string
@@ -42673,10 +42673,10 @@ components:
                 or other purposes.
             - type: 'null'
         allowed_tools:
-          oneOf:
+          anyOf:
             - description: |
                 List of allowed tool names or a filter object.
-              oneOf:
+              anyOf:
                 - type: array
                   title: MCP allowed tools
                   description: A string array of allowed tool names
@@ -42685,10 +42685,10 @@ components:
                 - $ref: '#/components/schemas/MCPToolFilter'
             - type: 'null'
         require_approval:
-          oneOf:
+          anyOf:
             - description: Specify which of the MCP server's tools require approval.
               default: always
-              oneOf:
+              anyOf:
                 - type: object
                   title: MCP tool approval filter
                   description: |
@@ -42744,13 +42744,13 @@ components:
           description: |
             A JSON string of the arguments passed to the tool.
         output:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The output from the tool call.
             - type: 'null'
         error:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The error from the tool call, if any.
@@ -42761,7 +42761,7 @@ components:
             The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`, or
             `failed`.
         approval_request_id:
-          oneOf:
+          anyOf:
             - type: string
               description: >
                 Unique identifier for the MCP tool call approval request.
@@ -43252,7 +43252,7 @@ components:
             - incomplete
             - completed
         incomplete_details:
-          oneOf:
+          anyOf:
             - description: On an incomplete message, details about why the message is incomplete.
               type: object
               properties:
@@ -43269,12 +43269,12 @@ components:
                 - reason
             - type: 'null'
         completed_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the message was completed.
               type: integer
             - type: 'null'
         incomplete_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the message was marked as incomplete.
               type: integer
             - type: 'null'
@@ -43290,7 +43290,7 @@ components:
           items:
             $ref: '#/components/schemas/MessageContent'
         assistant_id:
-          oneOf:
+          anyOf:
             - description: >-
                 If applicable, the ID of the
                 [assistant](https://platform.openai.com/docs/api-reference/assistants) that authored this
@@ -43298,7 +43298,7 @@ components:
               type: string
             - type: 'null'
         run_id:
-          oneOf:
+          anyOf:
             - description: >-
                 The ID of the [run](https://platform.openai.com/docs/api-reference/runs) associated with the
                 creation of this message. Value is `null` when messages are created manually using the create
@@ -43306,7 +43306,7 @@ components:
               type: string
             - type: 'null'
         attachments:
-          oneOf:
+          anyOf:
             - type: array
               items:
                 type: object
@@ -43318,7 +43318,7 @@ components:
                     description: The tools to add this file to.
                     type: array
                     items:
-                      oneOf:
+                      anyOf:
                         - $ref: '#/components/schemas/AssistantToolsCode'
                         - $ref: '#/components/schemas/AssistantToolsFileSearchTypeOnly'
               description: A list of files attached to the message, and the tools they were added to.
@@ -43382,7 +43382,7 @@ components:
         - type
         - text
     MessageStreamEvent:
-      oneOf:
+      anyOf:
         - type: object
           properties:
             event:
@@ -43471,7 +43471,7 @@ components:
       discriminator:
         propertyName: event
     Metadata:
-      oneOf:
+      anyOf:
         - type: object
           description: |
             Set of 16 key-value pairs that can be attached to an object. This can be
@@ -43518,12 +43518,12 @@ components:
             "owned_by": "openai"
           }
     ModelIds:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ModelIdsShared'
         - $ref: '#/components/schemas/ModelIdsResponses'
     ModelIdsResponses:
       example: gpt-4o
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ModelIdsShared'
         - type: string
           title: ResponsesOnlyModel
@@ -43543,7 +43543,7 @@ components:
             - gpt-5-pro-2025-10-06
     ModelIdsShared:
       example: gpt-4o
-      oneOf:
+      anyOf:
         - type: string
         - $ref: '#/components/schemas/ChatModel'
     ModelResponseProperties:
@@ -43552,7 +43552,7 @@ components:
         metadata:
           $ref: '#/components/schemas/Metadata'
         top_logprobs:
-          oneOf:
+          anyOf:
             - description: |
                 An integer between 0 and 20 specifying the number of most likely tokens to
                 return at each token position, each with an associated log probability.
@@ -43561,7 +43561,7 @@ components:
               maximum: 20
             - type: 'null'
         temperature:
-          oneOf:
+          anyOf:
             - type: number
               minimum: 0
               maximum: 2
@@ -43574,7 +43574,7 @@ components:
                 We generally recommend altering this or `top_p` but not both.
             - type: 'null'
         top_p:
-          oneOf:
+          anyOf:
             - type: number
               minimum: 0
               maximum: 1
@@ -43629,27 +43629,27 @@ components:
             models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your
             available models, or see our [Model overview](https://platform.openai.com/docs/models) for
             descriptions of them.
-          oneOf:
+          anyOf:
             - type: string
             - $ref: '#/components/schemas/AssistantSupportedModels'
         reasoning_effort:
           $ref: '#/components/schemas/ReasoningEffort'
         name:
-          oneOf:
+          anyOf:
             - description: |
                 The name of the assistant. The maximum length is 256 characters.
               type: string
               maxLength: 256
             - type: 'null'
         description:
-          oneOf:
+          anyOf:
             - description: |
                 The description of the assistant. The maximum length is 512 characters.
               type: string
               maxLength: 512
             - type: 'null'
         instructions:
-          oneOf:
+          anyOf:
             - description: |
                 The system instructions that the assistant uses. The maximum length is 256,000 characters.
               type: string
@@ -43665,7 +43665,7 @@ components:
           items:
             $ref: '#/components/schemas/AssistantTool'
         tool_resources:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 A set of resources that are used by the assistant's tools. The resources are specific to the
@@ -43701,7 +43701,7 @@ components:
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          oneOf:
+          anyOf:
             - description: >
                 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
                 more random, while lower values like 0.2 will make it more focused and deterministic.
@@ -43712,7 +43712,7 @@ components:
               example: 1
             - type: 'null'
         top_p:
-          oneOf:
+          anyOf:
             - type: number
               minimum: 0
               maximum: 1
@@ -43727,7 +43727,7 @@ components:
                 We generally recommend altering this or temperature but not both.
             - type: 'null'
         response_format:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
             - type: 'null'
     ModifyCertificateRequest:
@@ -43755,7 +43755,7 @@ components:
       additionalProperties: false
       properties:
         tool_resources:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 A set of resources that are made available to the assistant's tools in this thread. The
@@ -43944,12 +43944,12 @@ components:
     OutputContent:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/OutputTextContent'
         - $ref: '#/components/schemas/RefusalContent'
         - $ref: '#/components/schemas/ReasoningTextContent'
     OutputItem:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/OutputMessage'
         - $ref: '#/components/schemas/FileSearchToolCall'
         - $ref: '#/components/schemas/FunctionToolCall'
@@ -44014,7 +44014,7 @@ components:
     OutputMessageContent:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/OutputTextContent'
         - $ref: '#/components/schemas/RefusalContent'
     ParallelToolCalls:
@@ -44025,7 +44025,7 @@ components:
       type: boolean
       default: true
     PartialImages:
-      oneOf:
+      anyOf:
         - type: integer
           maximum: 3
           minimum: 0
@@ -44062,7 +44062,7 @@ components:
             The content that should be matched when generating a model response.
             If generated tokens would match this content, the entire model response
             can be returned much more quickly.
-          oneOf:
+          anyOf:
             - type: string
               title: Text content
               description: |
@@ -44097,7 +44097,7 @@ components:
           type: integer
           description: The Unix timestamp (in seconds) of when the project was created.
         archived_at:
-          oneOf:
+          anyOf:
             - type: integer
               description: The Unix timestamp (in seconds) of when the project was archived or `null`.
             - type: 'null'
@@ -44635,7 +44635,7 @@ components:
       required:
         - role
     Prompt:
-      oneOf:
+      anyOf:
         - type: object
           description: |
             Reference to a prompt template and its variables.
@@ -44647,7 +44647,7 @@ components:
               type: string
               description: The unique identifier of the prompt template to use.
             version:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Optional version of the prompt template.
                 - type: 'null'
@@ -44655,7 +44655,7 @@ components:
               $ref: '#/components/schemas/ResponsePromptVariables'
         - type: 'null'
     RealtimeAudioFormats:
-      oneOf:
+      anyOf:
         - type: object
           title: PCM audio format
           description: The PCM audio format. Only a 24kHz sample rate is supported.
@@ -45370,7 +45370,7 @@ components:
           description: |
             Maximum number of output tokens for a single assistant response,
             inclusive of tool calls, that was used in this response.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -45449,7 +45449,7 @@ components:
             How the model chooses tools. Provide one of the string modes or force a specific
             function/MCP tool.
           default: auto
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolChoiceOptions'
             - $ref: '#/components/schemas/ToolChoiceFunction'
             - $ref: '#/components/schemas/ToolChoiceMCP'
@@ -45463,7 +45463,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -45476,7 +45476,7 @@ components:
             means that the contents of the response will be added to the default
             conversation. Set this to `none` to create an out-of-band response which 
             will not add items to default conversation.
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               default: auto
@@ -45517,7 +45517,7 @@ components:
           x-stainless-const: true
           const: conversation.item.created
         previous_item_id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The ID of the preceding item in the Conversation context, allows the
@@ -45612,7 +45612,7 @@ components:
           type: string
           description: The transcribed text.
         logprobs:
-          oneOf:
+          anyOf:
             - type: array
               description: The log probabilities of the transcription.
               items:
@@ -45621,7 +45621,7 @@ components:
         usage:
           type: object
           description: Usage statistics for the transcription.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/TranscriptTextUsageTokens'
               title: Token Usage
             - $ref: '#/components/schemas/TranscriptTextUsageDuration'
@@ -45676,7 +45676,7 @@ components:
           type: string
           description: The text delta.
         logprobs:
-          oneOf:
+          anyOf:
             - type: array
               description: The log probabilities of the transcription.
               items:
@@ -45929,7 +45929,7 @@ components:
               description: |
                 The type of error (e.g., "invalid_request_error", "server_error").
             code:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Error code, if any.
                 - type: 'null'
@@ -45937,12 +45937,12 @@ components:
               type: string
               description: A human-readable error message.
             param:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Parameter related to the error, if any.
                 - type: 'null'
             event_id:
-              oneOf:
+              anyOf:
                 - type: string
                   description: |
                     The event_id of the client event that caused the error, if applicable.
@@ -46006,7 +46006,7 @@ components:
           x-stainless-const: true
           const: input_audio_buffer.committed
         previous_item_id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The ID of the preceding item after which the new item will be inserted.
@@ -46824,7 +46824,7 @@ components:
           type: string
           description: The JSON-encoded arguments delta.
         obfuscation:
-          oneOf:
+          anyOf:
             - type: string
               description: If present, indicates the delta text was obfuscated.
             - type: 'null'
@@ -47449,7 +47449,7 @@ components:
         propertyName: type
       description: |
         A realtime client event.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/RealtimeClientEventConversationItemCreate'
         - $ref: '#/components/schemas/RealtimeClientEventConversationItemDelete'
         - $ref: '#/components/schemas/RealtimeClientEventConversationItemRetrieve'
@@ -47907,7 +47907,7 @@ components:
           description: |
             Update the Realtime session. Choose either a realtime
             session or a transcription session.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RealtimeSessionCreateRequestGA'
             - $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateRequestGA'
       required:
@@ -48002,7 +48002,7 @@ components:
           }
     RealtimeConversationItem:
       description: A single item within a Realtime conversation.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/RealtimeConversationItemMessageSystem'
         - $ref: '#/components/schemas/RealtimeConversationItemMessageUser'
         - $ref: '#/components/schemas/RealtimeConversationItemMessageAssistant'
@@ -48448,7 +48448,7 @@ components:
           description: |
             Session configuration to use for the client secret. Choose either a realtime
             session or a transcription session.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RealtimeSessionCreateRequestGA'
             - $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateRequestGA'
           discriminator:
@@ -48471,7 +48471,7 @@ components:
             The session configuration for either a realtime or transcription session.
           discriminator:
             propertyName: type
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RealtimeSessionCreateResponseGA'
             - $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateResponseGA'
       required:
@@ -48605,7 +48605,7 @@ components:
           type: boolean
           description: Whether the request was approved.
         reason:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional reason for the decision.
             - type: 'null'
@@ -48700,19 +48700,19 @@ components:
           type: string
           description: A JSON string of the arguments passed to the tool.
         approval_request_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of an associated approval request, if any.
             - type: 'null'
         output:
-          oneOf:
+          anyOf:
             - type: string
               description: The output from the tool call.
             - type: 'null'
         error:
-          oneOf:
+          anyOf:
             - description: The error from the tool call, if any.
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/RealtimeMCPProtocolError'
                 - $ref: '#/components/schemas/RealtimeMCPToolExecutionError'
                 - $ref: '#/components/schemas/RealtimeMCPHTTPError'
@@ -48916,7 +48916,7 @@ components:
           description: |
             Maximum number of output tokens for a single assistant response,
             inclusive of tool calls, that was used in this response.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -48972,7 +48972,7 @@ components:
           type: array
           description: Tools available to the model.
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/RealtimeFunctionTool'
               - $ref: '#/components/schemas/MCPTool'
         tool_choice:
@@ -48980,7 +48980,7 @@ components:
             How the model chooses tools. Provide one of the string modes or force a specific
             function/MCP tool.
           default: auto
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolChoiceOptions'
             - $ref: '#/components/schemas/ToolChoiceFunction'
             - $ref: '#/components/schemas/ToolChoiceMCP'
@@ -48990,7 +48990,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -49003,7 +49003,7 @@ components:
             means that the contents of the response will be added to the default
             conversation. Set this to `none` to create an out-of-band response which
             will not add items to default conversation.
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               default: auto
@@ -49029,7 +49029,7 @@ components:
         propertyName: type
       description: |
         A realtime server event.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/RealtimeServerEventConversationCreated'
         - $ref: '#/components/schemas/RealtimeServerEventConversationItemCreated'
         - $ref: '#/components/schemas/RealtimeServerEventConversationItemDeleted'
@@ -49141,7 +49141,7 @@ components:
           x-stainless-const: true
           const: conversation.item.added
         previous_item_id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The ID of the item that precedes this one, if any. This is used to
@@ -49195,7 +49195,7 @@ components:
           x-stainless-const: true
           const: conversation.item.created
         previous_item_id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The ID of the preceding item in the Conversation context, allows the
@@ -49272,7 +49272,7 @@ components:
           x-stainless-const: true
           const: conversation.item.done
         previous_item_id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The ID of the item that precedes this one, if any. This is used to
@@ -49340,7 +49340,7 @@ components:
           type: string
           description: The transcribed text.
         logprobs:
-          oneOf:
+          anyOf:
             - type: array
               description: The log probabilities of the transcription.
               items:
@@ -49351,7 +49351,7 @@ components:
           description: >-
             Usage statistics for the transcription, this is billed according to the ASR model's pricing rather
             than the realtime model's pricing.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/TranscriptTextUsageTokens'
               title: TranscriptTextUsageTokens
             - $ref: '#/components/schemas/TranscriptTextUsageDuration'
@@ -49407,7 +49407,7 @@ components:
           type: string
           description: The text delta.
         logprobs:
-          oneOf:
+          anyOf:
             - type: array
               description: >-
                 The log probabilities of the transcription. These can be enabled by configurating the session
@@ -49669,7 +49669,7 @@ components:
               description: |
                 The type of error (e.g., "invalid_request_error", "server_error").
             code:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Error code, if any.
                 - type: 'null'
@@ -49677,12 +49677,12 @@ components:
               type: string
               description: A human-readable error message.
             param:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Parameter related to the error, if any.
                 - type: 'null'
             event_id:
-              oneOf:
+              anyOf:
                 - type: string
                   description: |
                     The event_id of the client event that caused the error, if applicable.
@@ -49746,7 +49746,7 @@ components:
           x-stainless-const: true
           const: input_audio_buffer.committed
         previous_item_id:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The ID of the preceding item after which the new item will be inserted.
@@ -50746,7 +50746,7 @@ components:
           type: string
           description: The JSON-encoded arguments delta.
         obfuscation:
-          oneOf:
+          anyOf:
             - type: string
               description: If present, indicates the delta text was obfuscated.
             - type: 'null'
@@ -51112,7 +51112,7 @@ components:
           const: session.created
         session:
           description: The session configuration.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RealtimeSessionCreateRequestGA'
             - $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateRequestGA'
       required:
@@ -51186,7 +51186,7 @@ components:
           const: session.updated
         session:
           description: The session configuration.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RealtimeSessionCreateRequestGA'
             - $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateRequestGA'
       required:
@@ -51408,7 +51408,7 @@ components:
             The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
             For `pcm16`, output audio is sampled at a rate of 24kHz.
         input_audio_transcription:
-          oneOf:
+          anyOf:
             - allOf:
                 - $ref: '#/components/schemas/AudioTranscription'
               description: >
@@ -51445,7 +51445,7 @@ components:
             the minimum speed. 1.5 is the maximum speed. This value can only be changed
             in between model turns, not while a response is in progress.
         tracing:
-          oneOf:
+          anyOf:
             - title: Tracing Configuration
               description: |
                 Configuration options for tracing. Set to null to disable tracing. Once
@@ -51453,7 +51453,7 @@ components:
 
                 `auto` will create a trace for the session with default values for the
                 workflow name, group id, and metadata.
-              oneOf:
+              anyOf:
                 - type: string
                   default: auto
                   description: |
@@ -51505,7 +51505,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -51515,11 +51515,11 @@ components:
           type: integer
           description: Expiration timestamp for the session, in seconds since epoch.
         prompt:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/Prompt'
             - type: 'null'
         include:
-          oneOf:
+          anyOf:
             - type: array
               items:
                 type: string
@@ -51619,7 +51619,7 @@ components:
 
             `auto` will create a trace for the session with default values for the
             workflow name, group id, and metadata.
-          oneOf:
+          anyOf:
             - type: string
               default: auto
               description: |
@@ -51714,7 +51714,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -51785,7 +51785,7 @@ components:
               - text
               - audio
         model:
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -51907,7 +51907,7 @@ components:
 
             workflow name, group id, and metadata.
           nullable: true
-          oneOf:
+          anyOf:
             - type: string
               default: auto
               description: |
@@ -51939,7 +51939,7 @@ components:
           type: array
           description: Tools available to the model.
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/RealtimeFunctionTool'
               - $ref: '#/components/schemas/MCPTool'
             discriminator:
@@ -51949,7 +51949,7 @@ components:
             How the model chooses tools. Provide one of the string modes or force a specific
             function/MCP tool.
           default: auto
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolChoiceOptions'
             - $ref: '#/components/schemas/ToolChoiceFunction'
             - $ref: '#/components/schemas/ToolChoiceMCP'
@@ -51959,7 +51959,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -52076,7 +52076,7 @@ components:
 
             `auto` will create a trace for the session with default values for the
             workflow name, group id, and metadata.
-          oneOf:
+          anyOf:
             - type: string
               default: auto
               description: |
@@ -52148,7 +52148,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -52239,7 +52239,7 @@ components:
               - text
               - audio
         model:
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -52348,7 +52348,7 @@ components:
 
             `item.input_audio_transcription.logprobs`: Include logprobs for input audio transcription.
         tracing:
-          oneOf:
+          anyOf:
             - title: Tracing Configuration
               description: >
                 Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null
@@ -52360,7 +52360,7 @@ components:
                 `auto` will create a trace for the session with default values for the
 
                 workflow name, group id, and metadata.
-              oneOf:
+              anyOf:
                 - type: string
                   default: auto
                   description: |
@@ -52393,7 +52393,7 @@ components:
           type: array
           description: Tools available to the model.
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/RealtimeFunctionTool'
               - $ref: '#/components/schemas/MCPTool'
         tool_choice:
@@ -52401,7 +52401,7 @@ components:
             How the model chooses tools. Provide one of the string modes or force a specific
             function/MCP tool.
           default: auto
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolChoiceOptions'
             - $ref: '#/components/schemas/ToolChoiceFunction'
             - $ref: '#/components/schemas/ToolChoiceMCP'
@@ -52411,7 +52411,7 @@ components:
             inclusive of tool calls. Provide an integer between 1 and 4096 to
             limit output tokens, or `inf` for the maximum available tokens for a
             given model. Defaults to `inf`.
-          oneOf:
+          anyOf:
             - type: integer
             - type: string
               enum:
@@ -52777,7 +52777,7 @@ components:
       description: |
         Controls how the realtime conversation is truncated prior to model inference.
         The default is `auto`.
-      oneOf:
+      anyOf:
         - type: string
           description: >-
             The truncation strategy to use for the session. `auto` is the default truncation strategy.
@@ -52811,7 +52811,7 @@ components:
             - type
             - retention_ratio
     RealtimeTurnDetection:
-      oneOf:
+      anyOf:
         - title: Realtime Turn Detection
           description: >
             Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to
@@ -52829,7 +52829,7 @@ components:
             useful for more natural conversations, but may have a higher latency.
           discriminator:
             propertyName: type
-          oneOf:
+          anyOf:
             - type: object
               title: Server VAD
               description: >-
@@ -52881,7 +52881,7 @@ components:
                     Whether or not to automatically interrupt any ongoing response with output to the default
                     conversation (i.e. `conversation` of `auto`) when a VAD start event occurs.
                 idle_timeout_ms:
-                  oneOf:
+                  anyOf:
                     - type: integer
                       minimum: 5000
                       maximum: 30000
@@ -52958,7 +52958,7 @@ components:
         effort:
           $ref: '#/components/schemas/ReasoningEffort'
         summary:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 A summary of the reasoning performed by the model. This can be
@@ -52970,7 +52970,7 @@ components:
                 - detailed
             - type: 'null'
         generate_summary:
-          oneOf:
+          anyOf:
             - type: string
               deprecated: true
               description: |
@@ -52985,7 +52985,7 @@ components:
                 - detailed
             - type: 'null'
     ReasoningEffort:
-      oneOf:
+      anyOf:
         - type: string
           enum:
             - minimal
@@ -53023,7 +53023,7 @@ components:
           description: |
             The unique identifier of the reasoning content.
         encrypted_content:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The encrypted content of the reasoning item - populated when a response is
@@ -53091,7 +53091,7 @@ components:
             error:
               $ref: '#/components/schemas/ResponseError'
             incomplete_details:
-              oneOf:
+              anyOf:
                 - type: object
                   description: |
                     Details about why the response is incomplete.
@@ -53117,14 +53117,14 @@ components:
               items:
                 $ref: '#/components/schemas/OutputItem'
             instructions:
-              oneOf:
+              anyOf:
                 - description: |
                     A system (or developer) message inserted into the model's context.
 
                     When using along with `previous_response_id`, the instructions from a previous
                     response will not be carried over to the next response. This makes it simple
                     to swap out system (or developer) messages in new responses.
-                  oneOf:
+                  anyOf:
                     - type: string
                       description: |
                         A text input to the model, equivalent to a text input with the
@@ -53138,7 +53138,7 @@ components:
                         $ref: '#/components/schemas/InputItem'
                 - type: 'null'
             output_text:
-              oneOf:
+              anyOf:
                 - type: string
                   description: |
                     SDK-only convenience property that contains the aggregated text output
@@ -53157,7 +53157,7 @@ components:
                 Whether to allow the model to run tool calls in parallel.
               default: true
             conversation:
-              oneOf:
+              anyOf:
                 - $ref: '#/components/schemas/Conversation-2'
                 - type: 'null'
           required:
@@ -53805,7 +53805,7 @@ components:
             "input": "final complete input text"
           }
     ResponseError:
-      oneOf:
+      anyOf:
         - type: object
           description: |
             An error object returned when the model fails to generate a Response.
@@ -53855,7 +53855,7 @@ components:
             - error
           x-stainless-const: true
         code:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The error code.
@@ -53865,7 +53865,7 @@ components:
           description: |
             The error message.
         param:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The error parameter.
@@ -54111,7 +54111,7 @@ components:
             schema:
               $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
             strict:
-              oneOf:
+              anyOf:
                 - type: boolean
                   default: false
                   description: |
@@ -54926,7 +54926,7 @@ components:
             "item_id": "mcpl_682d4379df088191886b70f4ec39f90403937d5f622d7a90"
           }
     ResponseModalities:
-      oneOf:
+      anyOf:
         - type: array
           description: >
             Output types that you would like the model to generate.
@@ -55103,7 +55103,7 @@ components:
             "sequence_number": 1
           }
     ResponsePromptVariables:
-      oneOf:
+      anyOf:
         - type: object
           title: Prompt Variables
           description: |
@@ -55115,7 +55115,7 @@ components:
           additionalProperties:
             x-oaiExpandable: true
             x-oaiTypeLabel: map
-            oneOf:
+            anyOf:
               - type: string
               - $ref: '#/components/schemas/InputTextContent'
               - $ref: '#/components/schemas/InputImageContent'
@@ -55125,7 +55125,7 @@ components:
       type: object
       properties:
         previous_response_id:
-          oneOf:
+          anyOf:
             - type: string
               description: >
                 The unique ID of the previous response to the model. Use this to
@@ -55147,11 +55147,11 @@ components:
             to browse and compare available models.
           $ref: '#/components/schemas/ModelIdsResponses'
         reasoning:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/Reasoning'
             - type: 'null'
         background:
-          oneOf:
+          anyOf:
             - type: boolean
               description: |
                 Whether to run the model response in the background.
@@ -55159,7 +55159,7 @@ components:
               default: false
             - type: 'null'
         max_output_tokens:
-          oneOf:
+          anyOf:
             - description: >
                 An upper bound for the number of tokens that can be generated for a response, including
                 visible output tokens and [reasoning
@@ -55167,7 +55167,7 @@ components:
               type: integer
             - type: 'null'
         max_tool_calls:
-          oneOf:
+          anyOf:
             - description: >
                 The maximum number of total calls to built-in tools that can be processed in a response. This
                 maximum number applies across all built-in tool calls, not per individual tool. Any further
@@ -55183,7 +55183,7 @@ components:
         prompt:
           $ref: '#/components/schemas/Prompt'
         truncation:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The truncation strategy to use for the model response.
@@ -55666,7 +55666,7 @@ components:
             "sequence_number": 1
           }
     ResponseStreamEvent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ResponseAudioDeltaEvent'
         - $ref: '#/components/schemas/ResponseAudioDoneEvent'
         - $ref: '#/components/schemas/ResponseAudioTranscriptDeltaEvent'
@@ -55723,7 +55723,7 @@ components:
       discriminator:
         propertyName: type
     ResponseStreamOptions:
-      oneOf:
+      anyOf:
         - description: |
             Options for streaming responses. Only set this when you set `stream: true`.
           type: object
@@ -56016,7 +56016,7 @@ components:
             "sequence_number": 0
           }
     RunCompletionUsage:
-      oneOf:
+      anyOf:
         - type: object
           description: >-
             Usage statistics related to the run. This value will be `null` if the run is not in a terminal
@@ -56043,7 +56043,7 @@ components:
         grader:
           type: object
           description: The grader used for the fine-tuning job.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/GraderStringCheck'
             - $ref: '#/components/schemas/GraderTextSimilarity'
             - $ref: '#/components/schemas/GraderPython'
@@ -56103,13 +56103,13 @@ components:
                 python_grader_server_error:
                   type: boolean
                 python_grader_server_error_type:
-                  oneOf:
+                  anyOf:
                     - type: string
                     - type: 'null'
                 python_grader_runtime_error:
                   type: boolean
                 python_grader_runtime_error_details:
-                  oneOf:
+                  anyOf:
                     - type: string
                     - type: 'null'
                 model_grader_server_error:
@@ -56119,7 +56119,7 @@ components:
                 model_grader_parse_error:
                   type: boolean
                 model_grader_server_error_details:
-                  oneOf:
+                  anyOf:
                     - type: string
                     - type: 'null'
               required:
@@ -56143,11 +56143,11 @@ components:
               type: object
               additionalProperties: {}
             token_usage:
-              oneOf:
+              anyOf:
                 - type: integer
                 - type: 'null'
             sampled_model_name:
-              oneOf:
+              anyOf:
                 - type: string
                 - type: 'null'
           required:
@@ -56396,7 +56396,7 @@ components:
             "parallel_tool_calls": true
           }
     RunStepCompletionUsage:
-      oneOf:
+      anyOf:
         - type: object
           description: >-
             Usage statistics related to the run step. This value will be `null` while the run step's status is
@@ -56509,7 +56509,7 @@ components:
                 different object type.
               items:
                 type: object
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/RunStepDeltaStepDetailsToolCallsCodeOutputLogsObject'
                   - $ref: '#/components/schemas/RunStepDeltaStepDetailsToolCallsCodeOutputImageObject'
                 discriminator:
@@ -56610,7 +56610,7 @@ components:
               type: string
               description: The arguments passed to the function.
             output:
-              oneOf:
+              anyOf:
                 - type: string
                   description: >-
                     The output of the function. This will be `null` if the outputs have not been
@@ -56693,7 +56693,7 @@ components:
                 different object type.
               items:
                 type: object
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/RunStepDetailsToolCallsCodeOutputLogsObject'
                   - $ref: '#/components/schemas/RunStepDetailsToolCallsCodeOutputImageObject'
                 discriminator:
@@ -56858,7 +56858,7 @@ components:
               type: string
               description: The arguments passed to the function.
             output:
-              oneOf:
+              anyOf:
                 - type: string
                   description: >-
                     The output of the function. This will be `null` if the outputs have not been
@@ -56944,13 +56944,13 @@ components:
         step_details:
           type: object
           description: The details of the run step.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RunStepDetailsMessageCreationObject'
             - $ref: '#/components/schemas/RunStepDetailsToolCallsObject'
           discriminator:
             propertyName: type
         last_error:
-          oneOf:
+          anyOf:
             - type: object
               description: The last error associated with this run step. Will be `null` if there are no errors.
               properties:
@@ -56968,24 +56968,24 @@ components:
                 - message
             - type: 'null'
         expired_at:
-          oneOf:
+          anyOf:
             - description: >-
                 The Unix timestamp (in seconds) for when the run step expired. A step is considered expired if
                 the parent run is expired.
               type: integer
             - type: 'null'
         cancelled_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the run step was cancelled.
               type: integer
             - type: 'null'
         failed_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the run step failed.
               type: integer
             - type: 'null'
         completed_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the run step completed.
               type: integer
             - type: 'null'
@@ -57041,7 +57041,7 @@ components:
             }
           }
     RunStepStreamEvent:
-      oneOf:
+      anyOf:
         - type: object
           properties:
             event:
@@ -57164,7 +57164,7 @@ components:
       discriminator:
         propertyName: event
     RunStreamEvent:
-      oneOf:
+      anyOf:
         - type: object
           properties:
             event:
@@ -57415,7 +57415,7 @@ components:
         - scroll_x
         - scroll_y
     ServiceTier:
-      oneOf:
+      anyOf:
         - type: string
           description: |
             Specifies the processing type used for serving the request.
@@ -57563,7 +57563,7 @@ components:
         Up to 4 sequences where the API will stop generating further tokens. The
         returned text will not contain the stop sequence.
       nullable: true
-      oneOf:
+      anyOf:
         - type: string
           default: <|endoftext|>
           example: |+
@@ -57594,7 +57594,7 @@ components:
                 type: string
                 description: The output of the tool call to be submitted to continue the run.
         stream:
-          oneOf:
+          anyOf:
             - type: boolean
               description: >
                 If `true`, returns a stream of events that happen during the Run as server-sent events,
@@ -57617,7 +57617,7 @@ components:
         Setting to `{ "type": "json_object" }` enables the older JSON mode, which
         ensures the message the model generates is valid JSON. Using `json_schema`
         is preferred for models that support it.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ResponseFormatText'
         - $ref: '#/components/schemas/TextResponseFormatJsonSchema'
         - $ref: '#/components/schemas/ResponseFormatJsonObject'
@@ -57649,7 +57649,7 @@ components:
         schema:
           $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
         strict:
-          oneOf:
+          anyOf:
             - type: boolean
               default: false
               description: |
@@ -57681,7 +57681,7 @@ components:
           description: The Unix timestamp (in seconds) for when the thread was created.
           type: integer
         tool_resources:
-          oneOf:
+          anyOf:
             - type: object
               description: >
                 A set of resources that are made available to the assistant's tools in this thread. The
@@ -57733,7 +57733,7 @@ components:
             "metadata": {}
           }
     ThreadStreamEvent:
-      oneOf:
+      anyOf:
         - type: object
           properties:
             enabled:
@@ -57773,7 +57773,7 @@ components:
         A tool that can be used to generate a response.
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/FunctionTool'
         - $ref: '#/components/schemas/FileSearchTool'
         - $ref: '#/components/schemas/ComputerUsePreviewTool'
@@ -57884,7 +57884,7 @@ components:
           description: |
             The label of the MCP server to use.
         name:
-          oneOf:
+          anyOf:
             - type: string
               description: |
                 The name of the tool to call on the server.
@@ -57913,7 +57913,7 @@ components:
         How the model should select which tool (or tools) to use when generating
         a response. See the `tools` parameter to see how to specify which tools
         the model can call.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ToolChoiceOptions'
         - $ref: '#/components/schemas/ToolChoiceAllowed'
         - $ref: '#/components/schemas/ToolChoiceTypes'
@@ -58197,14 +58197,14 @@ components:
         - output_tokens
         - total_tokens
     TranscriptionChunkingStrategy:
-      oneOf:
+      anyOf:
         - description: >-
             Controls how the audio is cut into chunks. When set to `"auto"`, the server first normalizes
             loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object
             can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as
             a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30
             seconds. 
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - auto
@@ -58349,7 +58349,7 @@ components:
             - auto
             - last_messages
         last_messages:
-          oneOf:
+          anyOf:
             - type: integer
               description: The number of most recent messages from the thread when constructing the context for the run.
               minimum: 1
@@ -58540,22 +58540,22 @@ components:
           type: integer
           description: The count of requests made to the model.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
         user_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
             - type: 'null'
         api_key_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=model`, this field provides the model name of the grouped usage result.
             - type: 'null'
@@ -58591,22 +58591,22 @@ components:
           type: integer
           description: The count of requests made to the model.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
         user_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
             - type: 'null'
         api_key_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=model`, this field provides the model name of the grouped usage result.
             - type: 'null'
@@ -58639,7 +58639,7 @@ components:
           type: integer
           description: The number of code interpreter sessions.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
@@ -58688,32 +58688,32 @@ components:
           type: integer
           description: The count of requests made to the model.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
         user_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
             - type: 'null'
         api_key_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=model`, this field provides the model name of the grouped usage result.
             - type: 'null'
         batch:
-          oneOf:
+          anyOf:
             - type: boolean
               description: When `group_by=batch`, this field tells whether the grouped usage result is batch or not.
             - type: 'null'
         service_tier:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 When `group_by=service_tier`, this field provides the service tier of the grouped usage
@@ -58758,22 +58758,22 @@ components:
           type: integer
           description: The count of requests made to the model.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
         user_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
             - type: 'null'
         api_key_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=model`, this field provides the model name of the grouped usage result.
             - type: 'null'
@@ -58809,34 +58809,34 @@ components:
           type: integer
           description: The count of requests made to the model.
         source:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 When `group_by=source`, this field provides the source of the grouped usage result, possible
                 values are `image.generation`, `image.edit`, `image.variation`.
             - type: 'null'
         size:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=size`, this field provides the image size of the grouped usage result.
             - type: 'null'
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
         user_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
             - type: 'null'
         api_key_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=model`, this field provides the model name of the grouped usage result.
             - type: 'null'
@@ -58874,22 +58874,22 @@ components:
           type: integer
           description: The count of requests made to the model.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
         user_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=user_id`, this field provides the user ID of the grouped usage result.
             - type: 'null'
         api_key_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=api_key_id`, this field provides the API key ID of the grouped usage result.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=model`, this field provides the model name of the grouped usage result.
             - type: 'null'
@@ -58945,7 +58945,7 @@ components:
         result:
           type: array
           items:
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/UsageCompletionsResult'
               - $ref: '#/components/schemas/UsageEmbeddingsResult'
               - $ref: '#/components/schemas/UsageModerationsResult'
@@ -58975,7 +58975,7 @@ components:
           type: integer
           description: The vector stores usage in bytes.
         project_id:
-          oneOf:
+          anyOf:
             - type: string
               description: When `group_by=project_id`, this field provides the project ID of the grouped usage result.
             - type: 'null'
@@ -59125,7 +59125,7 @@ components:
         grader:
           type: object
           description: The grader used for the fine-tuning job.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/GraderStringCheck'
             - $ref: '#/components/schemas/GraderTextSimilarity'
             - $ref: '#/components/schemas/GraderPython'
@@ -59140,7 +59140,7 @@ components:
         grader:
           type: object
           description: The grader used for the fine-tuning job.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/GraderStringCheck'
             - $ref: '#/components/schemas/GraderTextSimilarity'
             - $ref: '#/components/schemas/GraderPython'
@@ -59166,7 +59166,7 @@ components:
         - anchor
         - days
     VectorStoreFileAttributes:
-      oneOf:
+      anyOf:
         - type: object
           description: |
             Set of 16 key-value pairs that can be attached to an object. This can be
@@ -59179,7 +59179,7 @@ components:
             type: string
             maxLength: 64
           additionalProperties:
-            oneOf:
+            anyOf:
               - type: string
                 maxLength: 512
               - type: number
@@ -59293,7 +59293,7 @@ components:
           type: boolean
           description: Indicates if there are more content pages to fetch.
         next_page:
-          oneOf:
+          anyOf:
             - type: string
               description: The token for the next page, if any.
             - type: 'null'
@@ -59340,7 +59340,7 @@ components:
             - cancelled
             - failed
         last_error:
-          oneOf:
+          anyOf:
             - type: object
               description: The last error associated with this vector store file. Will be `null` if there are no errors.
               properties:
@@ -59449,12 +59449,12 @@ components:
         expires_after:
           $ref: '#/components/schemas/VectorStoreExpirationAfter'
         expires_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the vector store will expire.
               type: integer
             - type: 'null'
         last_active_at:
-          oneOf:
+          anyOf:
             - description: The Unix timestamp (in seconds) for when the vector store was last active.
               type: integer
             - type: 'null'
@@ -59496,7 +59496,7 @@ components:
       properties:
         query:
           description: A query string for a search
-          oneOf:
+          anyOf:
             - type: string
             - type: array
               items:
@@ -59515,7 +59515,7 @@ components:
           maximum: 50
         filters:
           description: A filter to apply based on file attributes.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ComparisonFilter'
             - $ref: '#/components/schemas/CompoundFilter'
         ranking_options:
@@ -59612,7 +59612,7 @@ components:
           type: boolean
           description: Indicates if there are more results to fetch.
         next_page:
-          oneOf:
+          anyOf:
             - type: string
               description: The token for the next page, if any.
             - type: 'null'
@@ -59625,7 +59625,7 @@ components:
       x-oaiMeta:
         name: Vector store search results page
     Verbosity:
-      oneOf:
+      anyOf:
         - type: string
           enum:
             - low
@@ -59639,7 +59639,7 @@ components:
         - type: 'null'
     VoiceIdsShared:
       example: ash
-      oneOf:
+      anyOf:
         - type: string
         - type: string
           enum:
@@ -59763,7 +59763,7 @@ components:
         - type
         - query
     WebSearchApproximateLocation:
-      oneOf:
+      anyOf:
         - type: object
           title: Web search approximate location
           description: |
@@ -59777,24 +59777,24 @@ components:
               default: approximate
               x-stainless-const: true
             country:
-              oneOf:
+              anyOf:
                 - type: string
                   description: >-
                     The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user,
                     e.g. `US`.
                 - type: 'null'
             region:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Free text input for the region of the user, e.g. `California`.
                 - type: 'null'
             city:
-              oneOf:
+              anyOf:
                 - type: string
                   description: Free text input for the city of the user, e.g. `San Francisco`.
                 - type: 'null'
             timezone:
-              oneOf:
+              anyOf:
                 - type: string
                   description: >-
                     The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user, e.g.
@@ -59850,13 +59850,13 @@ components:
           description: The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
           default: web_search
         filters:
-          oneOf:
+          anyOf:
             - type: object
               description: |
                 Filters for the search.
               properties:
                 allowed_domains:
-                  oneOf:
+                  anyOf:
                     - type: array
                       title: Allowed domains for the search.
                       description: |
@@ -59918,7 +59918,7 @@ components:
             Includes details on how the model used the web (search, open_page, find).
           discriminator:
             propertyName: type
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/WebSearchActionSearch'
             - $ref: '#/components/schemas/WebSearchActionOpenPage'
             - $ref: '#/components/schemas/WebSearchActionFind'
@@ -60952,7 +60952,7 @@ components:
     Annotation:
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/FileCitationBody'
         - $ref: '#/components/schemas/UrlCitationBody'
         - $ref: '#/components/schemas/ContainerFileCitationBody'
@@ -61110,14 +61110,14 @@ components:
           default: input_image
           x-stainless-const: true
         image_url:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in
                 a data URL.
             - type: 'null'
         file_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the file to be sent to the model.
             - type: 'null'
@@ -61146,12 +61146,12 @@ components:
           default: computer_screenshot
           x-stainless-const: true
         image_url:
-          oneOf:
+          anyOf:
             - type: string
               description: The URL of the screenshot image.
             - type: 'null'
         file_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The identifier of an uploaded file that contains the screenshot.
             - type: 'null'
@@ -61172,7 +61172,7 @@ components:
           default: input_file
           x-stainless-const: true
         file_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the file to be sent to the model.
             - type: 'null'
@@ -61217,7 +61217,7 @@ components:
           items:
             discriminator:
               propertyName: type
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/InputTextContent'
               - $ref: '#/components/schemas/OutputTextContent'
               - $ref: '#/components/schemas/TextContent'
@@ -61341,12 +61341,12 @@ components:
           type: string
           description: The ID of the pending safety check.
         code:
-          oneOf:
+          anyOf:
             - type: string
               description: The type of the pending safety check.
             - type: 'null'
         message:
-          oneOf:
+          anyOf:
             - type: string
               description: Details about the pending safety check.
             - type: 'null'
@@ -61405,12 +61405,12 @@ components:
           type: array
           description: The command to run.
         timeout_ms:
-          oneOf:
+          anyOf:
             - type: integer
               description: Optional timeout in milliseconds for the command.
             - type: 'null'
         working_directory:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional working directory to run the command in.
             - type: 'null'
@@ -61421,7 +61421,7 @@ components:
           description: Environment variables to set for the command.
           x-oaiTypeLabel: map
         user:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional user to run the command as.
             - type: 'null'
@@ -61455,7 +61455,7 @@ components:
     ComputerCallOutputItemParam:
       properties:
         id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the computer tool call output.
               example: cuo_123
@@ -61475,14 +61475,14 @@ components:
         output:
           $ref: '#/components/schemas/ComputerScreenshotImage'
         acknowledged_safety_checks:
-          oneOf:
+          anyOf:
             - items:
                 $ref: '#/components/schemas/ComputerCallSafetyCheckParam'
               type: array
               description: The safety checks reported by the API that have been acknowledged by the developer.
             - type: 'null'
         status:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/FunctionCallItemStatus'
               description: >-
                 The status of the message input. One of `in_progress`, `completed`, or `incomplete`. Populated
@@ -61524,7 +61524,7 @@ components:
           default: input_image
           x-stainless-const: true
         image_url:
-          oneOf:
+          anyOf:
             - type: string
               maxLength: 20971520
               description: >-
@@ -61532,13 +61532,13 @@ components:
                 a data URL.
             - type: 'null'
         file_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the file to be sent to the model.
               example: file-123
             - type: 'null'
         detail:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/DetailEnum'
               description: >-
                 The detail level of the image to be sent to the model. One of `high`, `low`, or `auto`.
@@ -61561,24 +61561,24 @@ components:
           default: input_file
           x-stainless-const: true
         file_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the file to be sent to the model.
               example: file-123
             - type: 'null'
         filename:
-          oneOf:
+          anyOf:
             - type: string
               description: The name of the file to be sent to the model.
             - type: 'null'
         file_data:
-          oneOf:
+          anyOf:
             - type: string
               maxLength: 33554432
               description: The base64-encoded data of the file to be sent to the model.
             - type: 'null'
         file_url:
-          oneOf:
+          anyOf:
             - type: string
               description: The URL of the file to be sent to the model.
             - type: 'null'
@@ -61590,7 +61590,7 @@ components:
     FunctionCallOutputItemParam:
       properties:
         id:
-          oneOf:
+          anyOf:
             - type: string
               description: The unique ID of the function tool call output. Populated when this item is returned via API.
               example: fc_123
@@ -61609,20 +61609,20 @@ components:
           x-stainless-const: true
         output:
           description: Text, image, or file output of the function tool call.
-          oneOf:
+          anyOf:
             - type: string
               maxLength: 10485760
               description: A JSON string of the output of the function tool call.
             - items:
                 discriminator:
                   propertyName: type
-                oneOf:
+                anyOf:
                   - $ref: '#/components/schemas/InputTextContentParam'
                   - $ref: '#/components/schemas/InputImageContentParamAutoParam'
                   - $ref: '#/components/schemas/InputFileContentParam'
               type: array
         status:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/FunctionCallItemStatus'
               description: >-
                 The status of the item. One of `in_progress`, `completed`, or `incomplete`. Populated when
@@ -61638,7 +61638,7 @@ components:
     ItemReferenceParam:
       properties:
         type:
-          oneOf:
+          anyOf:
             - type: string
               enum:
                 - item_reference
@@ -61694,21 +61694,21 @@ components:
           type: string
           description: The name of the function to call.
         description:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 A description of the function. Used by the model to determine whether or not to call the
                 function.
             - type: 'null'
         parameters:
-          oneOf:
+          anyOf:
             - additionalProperties: {}
               type: object
               description: A JSON schema object describing the parameters of the function.
               x-oaiTypeLabel: map
             - type: 'null'
         strict:
-          oneOf:
+          anyOf:
             - type: boolean
               description: Whether to enforce strict parameter validation. Default `true`.
             - type: 'null'
@@ -61740,7 +61740,7 @@ components:
       type: object
       required: []
     Filters:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/ComparisonFilter'
         - $ref: '#/components/schemas/CompoundFilter'
     FileSearchTool:
@@ -61764,7 +61764,7 @@ components:
           $ref: '#/components/schemas/RankingOptions'
           description: Ranking options for search.
         filters:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/Filters'
               description: A filter to apply.
             - type: 'null'
@@ -61888,7 +61888,7 @@ components:
           description: The input format for the custom tool. Default is unconstrained text.
           discriminator:
             propertyName: type
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/CustomTextFormatParam'
             - $ref: '#/components/schemas/CustomGrammarFormatParam'
       type: object
@@ -61905,24 +61905,24 @@ components:
           default: approximate
           x-stainless-const: true
         country:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user, e.g.
                 `US`.
             - type: 'null'
         region:
-          oneOf:
+          anyOf:
             - type: string
               description: Free text input for the region of the user, e.g. `California`.
             - type: 'null'
         city:
-          oneOf:
+          anyOf:
             - type: string
               description: Free text input for the city of the user, e.g. `San Francisco`.
             - type: 'null'
         timezone:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user, e.g.
@@ -61948,7 +61948,7 @@ components:
           default: web_search_preview
           x-stainless-const: true
         user_location:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ApproximateLocation'
               description: The user's location.
             - type: 'null'
@@ -62025,7 +62025,7 @@ components:
     CreateConversationBody:
       properties:
         metadata:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/Metadata'
               description: >-
                 Set of 16 key-value pairs that can be attached to an object. This can be         useful for
@@ -62034,7 +62034,7 @@ components:
                         Keys are strings with a maximum length of 64 characters. Values are strings         with a maximum length of 512 characters.
             - type: 'null'
         items:
-          oneOf:
+          anyOf:
             - items:
                 $ref: '#/components/schemas/InputItem'
               type: array
@@ -62137,12 +62137,12 @@ components:
           type: integer
           description: Unix timestamp (seconds) for when the job was created.
         completed_at:
-          oneOf:
+          anyOf:
             - type: integer
               description: Unix timestamp (seconds) for when the job completed, if finished.
             - type: 'null'
         expires_at:
-          oneOf:
+          anyOf:
             - type: integer
               description: Unix timestamp (seconds) for when the downloadable assets expire, if set.
             - type: 'null'
@@ -62153,12 +62153,12 @@ components:
           $ref: '#/components/schemas/VideoSeconds'
           description: Duration of the generated clip in seconds.
         remixed_from_video_id:
-          oneOf:
+          anyOf:
             - type: string
               description: Identifier of the source video if this video is a remix.
             - type: 'null'
         error:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/Error-2'
               description: Error payload that explains why generation failed, if applicable.
             - type: 'null'
@@ -62191,12 +62191,12 @@ components:
           type: array
           description: A list of items
         first_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the first item in the list.
             - type: 'null'
         last_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the last item in the list.
             - type: 'null'
@@ -62283,7 +62283,7 @@ components:
     TokenCountsBody:
       properties:
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a wide range of
@@ -62292,9 +62292,9 @@ components:
                 models.
             - type: 'null'
         input:
-          oneOf:
+          anyOf:
             - description: Text, image, or file inputs to the model, used to generate a response
-              oneOf:
+              anyOf:
                 - type: string
                   maxLength: 10485760
                   description: A text input to the model, equivalent to a text input with the `user` role.
@@ -62303,7 +62303,7 @@ components:
                   type: array
             - type: 'null'
         previous_response_id:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 The unique ID of the previous response to the model. Use this to create multi-turn
@@ -62313,7 +62313,7 @@ components:
               example: resp_123
             - type: 'null'
         tools:
-          oneOf:
+          anyOf:
             - items:
                 $ref: '#/components/schemas/Tool'
               type: array
@@ -62322,11 +62322,11 @@ components:
                 to use by setting the `tool_choice` parameter.
             - type: 'null'
         text:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ResponseTextParam'
             - type: 'null'
         reasoning:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/Reasoning'
               description: >-
                 **gpt-5 and o-series models only** Configuration options for [reasoning
@@ -62341,7 +62341,7 @@ components:
             input size will exceed the context window size for a model, the request will fail with a 400
             error.
         instructions:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 A system (or developer) message inserted into the model's context.
@@ -62351,15 +62351,15 @@ components:
                 developer) messages in new responses.
             - type: 'null'
         conversation:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ConversationParam'
             - type: 'null'
         tool_choice:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolChoiceParam'
             - type: 'null'
         parallel_tool_calls:
-          oneOf:
+          anyOf:
             - type: boolean
               description: Whether to allow the model to run tool calls in parallel.
             - type: 'null'
@@ -62399,16 +62399,16 @@ components:
           type: string
           description: Identifier of the workflow backing the session.
         version:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 Specific workflow version used for the session. Defaults to null when using the latest
                 deployment.
             - type: 'null'
         state_variables:
-          oneOf:
+          anyOf:
             - additionalProperties:
-                oneOf:
+                anyOf:
                   - type: string
                   - type: integer
                   - type: boolean
@@ -62462,12 +62462,12 @@ components:
           type: boolean
           description: Indicates if uploads are enabled for the session.
         max_file_size:
-          oneOf:
+          anyOf:
             - type: integer
               description: Maximum upload size in megabytes.
             - type: 'null'
         max_files:
-          oneOf:
+          anyOf:
             - type: integer
               description: Maximum number of uploads allowed during the session.
             - type: 'null'
@@ -62484,7 +62484,7 @@ components:
           type: boolean
           description: Indicates if chat history is persisted for the session.
         recent_threads:
-          oneOf:
+          anyOf:
             - type: integer
               description: >-
                 Number of prior threads surfaced in history views. Defaults to null when all history is
@@ -62583,7 +62583,7 @@ components:
           description: Specific workflow version to run. Defaults to the latest deployed version.
         state_variables:
           additionalProperties:
-            oneOf:
+            anyOf:
               - type: string
                 maxLength: 10485760
               - type: integer
@@ -62780,7 +62780,7 @@ components:
           type: string
           description: MIME type of the attachment.
         preview_url:
-          oneOf:
+          anyOf:
             - type: string
               description: Preview URL for rendering the attachment inline.
             - type: 'null'
@@ -62806,12 +62806,12 @@ components:
     InferenceOptions:
       properties:
         tool_choice:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolChoice'
               description: Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
             - type: 'null'
         model:
-          oneOf:
+          anyOf:
             - type: string
               description: Model name that generated the response. Defaults to null when using the session default.
             - type: 'null'
@@ -62850,7 +62850,7 @@ components:
             description: Content blocks that comprise a user message.
             discriminator:
               propertyName: type
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/UserMessageInputText'
               - $ref: '#/components/schemas/UserMessageQuotedText'
           type: array
@@ -62861,7 +62861,7 @@ components:
           type: array
           description: Attachments associated with the user message. Defaults to an empty list.
         inference_options:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/InferenceOptions'
               description: Inference overrides applied to the message. Defaults to null when unset.
             - type: 'null'
@@ -62966,7 +62966,7 @@ components:
             description: Annotation object describing a cited source.
             discriminator:
               propertyName: type
-            oneOf:
+            anyOf:
               - $ref: '#/components/schemas/FileAnnotation'
               - $ref: '#/components/schemas/UrlAnnotation'
           type: array
@@ -63099,7 +63099,7 @@ components:
           type: string
           description: JSON-encoded arguments that were sent to the tool.
         output:
-          oneOf:
+          anyOf:
             - type: string
               description: JSON-encoded output captured from the tool. Defaults to null while execution is in progress.
             - type: 'null'
@@ -63151,12 +63151,12 @@ components:
           $ref: '#/components/schemas/TaskType'
           description: Subtype for the task.
         heading:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional heading for the task. Defaults to null when not provided.
             - type: 'null'
         summary:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional summary that describes the task. Defaults to null when omitted.
             - type: 'null'
@@ -63178,12 +63178,12 @@ components:
           $ref: '#/components/schemas/TaskType'
           description: Subtype for the grouped task.
         heading:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional heading for the grouped task. Defaults to null when not provided.
             - type: 'null'
         summary:
-          oneOf:
+          anyOf:
             - type: string
               description: Optional summary that describes the grouped task. Defaults to null when omitted.
             - type: 'null'
@@ -63238,7 +63238,7 @@ components:
       title: The thread item
       discriminator:
         propertyName: type
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/UserMessageItem'
         - $ref: '#/components/schemas/AssistantMessageItem'
         - $ref: '#/components/schemas/WidgetMessageItem'
@@ -63258,12 +63258,12 @@ components:
           type: array
           description: A list of items
         first_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the first item in the list.
             - type: 'null'
         last_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the last item in the list.
             - type: 'null'
@@ -63303,7 +63303,7 @@ components:
           default: locked
           x-stainless-const: true
         reason:
-          oneOf:
+          anyOf:
             - type: string
               description: Reason that the thread was locked. Defaults to null when no reason is recorded.
             - type: 'null'
@@ -63323,7 +63323,7 @@ components:
           default: closed
           x-stainless-const: true
         reason:
-          oneOf:
+          anyOf:
             - type: string
               description: Reason that the thread was closed. Defaults to null when no reason is recorded.
             - type: 'null'
@@ -63349,7 +63349,7 @@ components:
           type: integer
           description: Unix timestamp (in seconds) for when the thread was created.
         title:
-          oneOf:
+          anyOf:
             - type: string
               description: >-
                 Optional human-readable title for the thread. Defaults to null when no title has been
@@ -63359,7 +63359,7 @@ components:
           description: Current status for the thread. Defaults to `active` for newly created threads.
           discriminator:
             propertyName: type
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ActiveStatus'
             - $ref: '#/components/schemas/LockedStatus'
             - $ref: '#/components/schemas/ClosedStatus'
@@ -63419,12 +63419,12 @@ components:
           type: array
           description: A list of items
         first_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the first item in the list.
             - type: 'null'
         last_id:
-          oneOf:
+          anyOf:
             - type: string
               description: The ID of the last item in the list.
             - type: 'null'
@@ -63489,13 +63489,13 @@ components:
         - type
         - text
     ComparisonFilterValueItems:
-      oneOf:
+      anyOf:
         - type: string
         - type: number
     ChunkingStrategyResponse:
       type: object
       description: The strategy used to chunk the file.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/StaticChunkingStrategyResponseParam'
         - $ref: '#/components/schemas/OtherChunkingStrategyResponseParam'
       discriminator:
@@ -63523,12 +63523,12 @@ components:
           type: string
           description: A human-readable message providing more details about the error.
         param:
-          oneOf:
+          anyOf:
             - type: string
               description: The name of the parameter that caused the error, if applicable.
             - type: 'null'
         line:
-          oneOf:
+          anyOf:
             - type: integer
               description: The line number of the input file where the error occurred, if applicable.
             - type: 'null'
@@ -63550,40 +63550,40 @@ components:
         - failed
       description: The request counts for different statuses within the batch.
     AssistantTool:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/AssistantToolsCode'
         - $ref: '#/components/schemas/AssistantToolsFileSearch'
         - $ref: '#/components/schemas/AssistantToolsFunction'
       discriminator:
         propertyName: type
     TextAnnotationDelta:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/MessageDeltaContentTextAnnotationsFileCitationObject'
         - $ref: '#/components/schemas/MessageDeltaContentTextAnnotationsFilePathObject'
       discriminator:
         propertyName: type
     TextAnnotation:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/MessageContentTextAnnotationsFileCitationObject'
         - $ref: '#/components/schemas/MessageContentTextAnnotationsFilePathObject'
       discriminator:
         propertyName: type
     RunStepDetailsToolCall:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/RunStepDetailsToolCallsCodeObject'
         - $ref: '#/components/schemas/RunStepDetailsToolCallsFileSearchObject'
         - $ref: '#/components/schemas/RunStepDetailsToolCallsFunctionObject'
       discriminator:
         propertyName: type
     RunStepDeltaStepDetailsToolCall:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/RunStepDeltaStepDetailsToolCallsCodeObject'
         - $ref: '#/components/schemas/RunStepDeltaStepDetailsToolCallsFileSearchObject'
         - $ref: '#/components/schemas/RunStepDeltaStepDetailsToolCallsFunctionObject'
       discriminator:
         propertyName: type
     MessageContent:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/MessageContentImageFileObject'
         - $ref: '#/components/schemas/MessageContentImageUrlObject'
         - $ref: '#/components/schemas/MessageContentTextObject'
@@ -63591,7 +63591,7 @@ components:
       discriminator:
         propertyName: type
     MessageContentDelta:
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/MessageDeltaContentImageFileObject'
         - $ref: '#/components/schemas/MessageDeltaContentTextObject'
         - $ref: '#/components/schemas/MessageDeltaContentRefusalObject'
@@ -63698,7 +63698,7 @@ components:
             The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute
             this run. If a value is provided here, it will override the model associated with the assistant.
             If not, the model associated with the assistant will be used.
-          oneOf:
+          anyOf:
             - type: string
             - type: string
               enum:
@@ -63862,7 +63862,7 @@ components:
             The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute
             this run. If a value is provided here, it will override the model associated with the assistant.
             If not, the model associated with the assistant will be used.
-          oneOf:
+          anyOf:
             - type: string
             - $ref: '#/components/schemas/AssistantSupportedModels'
           x-oaiTypeLabel: string
@@ -63997,7 +63997,7 @@ components:
         step_details:
           type: object
           description: The details of the run step.
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/RunStepDeltaStepDetailsMessageCreationObject'
             - $ref: '#/components/schemas/RunStepDeltaStepDetailsToolCallsObject'
           discriminator:
