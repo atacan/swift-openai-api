@@ -24,7 +24,7 @@ function processConst(obj) {
   const processed = {};
   let hasConst = false;
   let constValue = null;
-  
+
   for (const [key, value] of Object.entries(obj)) {
     if (key === 'const') {
       hasConst = true;
@@ -38,6 +38,17 @@ function processConst(obj) {
 
   // If this object had a 'const' property, convert it to 'enum'
   if (hasConst) {
+    // Add type field if not already present
+    if (!processed['type']) {
+      const valueType = typeof constValue;
+      if (valueType === 'string') {
+        processed['type'] = 'string';
+      } else if (valueType === 'number') {
+        processed['type'] = Number.isInteger(constValue) ? 'integer' : 'number';
+      } else if (valueType === 'boolean') {
+        processed['type'] = 'boolean';
+      }
+    }
     processed['enum'] = [constValue];
   }
 
