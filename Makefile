@@ -40,7 +40,7 @@ download-openapi:
 
 cleanup-anyof-nulls:
 	# Run the cleanup script to remove null types from anyOf arrays
-	cd scripts && node cleanup-anyof-nulls.js ../original.yaml ../openapi.yaml
+	cd scripts && node cleanup-anyof-nulls.js ../openapi.yaml ../openapi.yaml
 
 replace-anyof-with-oneof:
 	# Replace `anyOf:` with `oneOf:`
@@ -67,5 +67,7 @@ generate-openapi:
 
 prepare-openapi:
 	make download-openapi
+	make cleanup-anyof-nulls
+	make replace-anyof-with-oneof
 	make overlay-openapi
 	make generate-openapi
