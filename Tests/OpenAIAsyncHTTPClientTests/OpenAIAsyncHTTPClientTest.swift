@@ -50,13 +50,8 @@ struct OpenAIAsyncHTTPClientTest {
                         .json(
                             .init(
                                 value1: .init(
-                                    value1:
-                                        .init(//                                            metadata: <#T##Components.Schemas.Metadata?#>,
-                                        //                                            temperature: <#T##Double?#>,
-                                        //                                            top_p: <#T##Double?#>,
-                                        //                                            user: <#T##String?#>,
-                                        //                                            service_tier: <#T##Components.Schemas.ServiceTier?#>
-                                        )
+                                    value1: .init(),
+                                    value2: .init()
                                 ),
                                 value2: .init(
                                     messages: [
@@ -67,9 +62,7 @@ struct OpenAIAsyncHTTPClientTest {
                                             )
                                         )
                                     ],
-                                    model: .init(
-                                        value2: .gpt_hyphen_4_period_1_hyphen_nano
-                                    )
+                                    model: .ChatModel(.gpt_hyphen_5_hyphen_nano)
                                 )
                             )
                         )
@@ -195,13 +188,8 @@ struct OpenAIAsyncHTTPClientTest {
                         .json(
                             .init(
                                 value1: .init(
-                                    value1:
-                                        .init(//                                            metadata: <#T##Components.Schemas.Metadata?#>,
-                                        //                                            temperature: <#T##Double?#>,
-                                        //                                            top_p: <#T##Double?#>,
-                                        //                                            user: <#T##String?#>,
-                                        //                                            service_tier: <#T##Components.Schemas.ServiceTier?#>
-                                        )
+                                    value1:.init(),
+                                    value2: .init()
                                 ),
                                 value2: .init(
                                     messages: [
@@ -212,9 +200,7 @@ struct OpenAIAsyncHTTPClientTest {
                                             )
                                         )
                                     ],
-                                    model: .init(
-                                        value2: .gpt_hyphen_4_period_1_hyphen_nano
-                                    ),
+                                    model: .ChatModel(.gpt_hyphen_4_period_1_hyphen_nano),
                                     stream: true
                                 )
                             )
@@ -258,7 +244,7 @@ struct OpenAIAsyncHTTPClientTest {
         let response = try await client.createChatCompletion(
             body: .json(
                 .init(
-                    value1: .init(value1: .init()),
+                    value1: .init(value1: .init(), value2: .init()),
                     value2: .init(
                         messages: [
                             .ChatCompletionRequestSystemMessage(
@@ -278,7 +264,7 @@ struct OpenAIAsyncHTTPClientTest {
                                 )
                             ),
                         ],
-                        model: .init(value2: .gpt_hyphen_4o),
+                        model: .ChatModel(.gpt_hyphen_4o),
                         response_format: .ResponseFormatJsonSchema(
                             .init(
                                 _type: .json_schema,
@@ -317,7 +303,7 @@ struct OpenAIAsyncHTTPClientTest {
         let logger = Logger(label: "AHC Tests")
 
         let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(
-            _type: .input_audio_buffer_period_append, audio: .init(audioData))
+            _type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
         let audioAppendData = try JSONEncoder().encode(audioAppend)  // does not work. we need to send string
         let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
@@ -349,8 +335,6 @@ struct OpenAIAsyncHTTPClientTest {
                 _type: .transcription_session_period_update,
                 session: .init(
                     //                    modalities: [.audio], // Unknown parameter: 'session.modalities
-                    input_audio_format: .pcm16,
-                    input_audio_transcription: .init(model: .whisper_hyphen_1),
                     turn_detection: .init(
                         _type: .server_vad,
                         //                        eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
@@ -361,8 +345,9 @@ struct OpenAIAsyncHTTPClientTest {
                         //                        interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
                     ),
                     input_audio_noise_reduction: .init(_type: .near_field),
-                    include: ["item.input_audio_transcription.logprobs"],
-                    client_secret: nil
+                    input_audio_format: .pcm16,
+                    input_audio_transcription: .init(model: .whisper_hyphen_1),
+                    include: [.item_period_input_audio_transcription_period_logprobs]
                 )
             )
 
@@ -415,7 +400,7 @@ struct OpenAIAsyncHTTPClientTest {
             let audioData = wavData.subdata(in: 44..<wavData.count)
 
             let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(
-                _type: .input_audio_buffer_period_append, audio: .init(audioData))
+                _type: .input_audio_buffer_period_append, audio: audioData.base64EncodedString())
             let audioAppendData = try JSONEncoder().encode(audioAppend)
             let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
@@ -433,8 +418,6 @@ struct OpenAIAsyncHTTPClientTest {
                 _type: .transcription_session_period_update,
                 session: .init(
                     //                modalities: [.audio], // Unknown parameter: 'session.modalities
-                    input_audio_format: .pcm16,
-                    input_audio_transcription: .init(model: .whisper_hyphen_1),
                     turn_detection: .init(
                         _type: .server_vad,
                         //                    eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
@@ -445,8 +428,9 @@ struct OpenAIAsyncHTTPClientTest {
                         //                    interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
                     ),
                     input_audio_noise_reduction: .init(_type: .near_field),
-                    include: ["item.input_audio_transcription.logprobs"],
-                    client_secret: nil
+                    input_audio_format: .pcm16,
+                    input_audio_transcription: .init(model: .whisper_hyphen_1),
+                    include: [.item_period_input_audio_transcription_period_logprobs]
                 )
             )
             let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)

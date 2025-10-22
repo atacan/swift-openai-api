@@ -244,7 +244,7 @@
         {
             "target": "$.components.schemas.RealtimeClientEventInputAudioBufferAppend.properties.audio",
             "update": {
-                "format": "byte"
+                "contentEncoding": "base64"
             }
         },
         {
@@ -286,6 +286,18 @@
         },
         {
             "target": "$..oneOf[1].exclusiveMinimum",
+            "remove": true
+        },
+        {
+            "target": "$.webhooks",
+            "remove": true
+        },
+        {
+            "target": "$.paths['/videos'].post.requestBody.content['application/json']",
+            "remove": true
+        },
+        {
+            "target": "$.paths['/videos/{video_id}/remix'].post.requestBody.content['application/json']",
             "remove": true
         }
     ]

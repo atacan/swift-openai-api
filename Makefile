@@ -41,9 +41,13 @@ download-openapi:
 cleanup-anyof-nulls:
 	# Run the cleanup script to remove null types from anyOf arrays
 	cd scripts && node cleanup-anyof-nulls.js ../openapi.yaml ../openapi.yaml
-const-to-enum-conversion:
+const-to-enum:
 	# Run the cleanup script to remove null types from anyOf arrays
 	cd scripts && node const-to-enum.js ../openapi.yaml ../openapi.yaml
+
+format-byte-to-content-encoding:
+	# Format byte to contentEncoding where applicable
+	cd scripts && node format-byte-to-content-encoding.js ../openapi.yaml ../openapi.yaml
 
 replace-anyof-with-oneof:
 	# Replace `anyOf:` with `oneOf:`
@@ -72,6 +76,7 @@ prepare-openapi:
 	make download-openapi
 	make cleanup-anyof-nulls
 	make replace-anyof-with-oneof
-	make const-to-enum-conversion
+	make const-to-enum
+	make format-byte-to-content-encoding
 	make overlay-openapi
 	make generate-openapi
