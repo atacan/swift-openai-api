@@ -299,6 +299,33 @@
         {
             "target": "$.paths['/videos/{video_id}/remix'].post.requestBody.content['application/json']",
             "remove": true
+        },
+        {
+            "target": "$.components.schemas.ChatCompletionResponseMessage.required",
+            "remove": true
+        },
+        {
+            "target": "$.components.schemas.ChatCompletionResponseMessage",
+            "update": {
+                "required": [
+                    "role",
+                    "content"
+                ]
+            }
+        },
+        {
+            "target": "$.components.schemas.CreateChatCompletionResponse.properties.choices.items.required",
+            "remove": true
+        },
+        {
+            "target": "$.components.schemas.CreateChatCompletionResponse.properties.choices.items",
+            "update": {
+                "required": [
+                    "finish_reason",
+                    "index",
+                    "message"
+                ]
+            }
         }
     ]
 }
