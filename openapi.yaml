@@ -11974,7 +11974,7 @@ paths:
                 fine_tuning_job = openai.fine_tuning.jobs.create(model: :"babbage-002", training_file: "file-abc123")
 
                 puts(fine_tuning_job)
-            response: |-
+            response: |
               {
                 "object": "fine_tuning.job",
                 "id": "ftjob-abc123",
@@ -44320,7 +44320,6 @@ components:
       required:
         - id
         - type
-        - call_id
         - output
     LogProbProperties:
       type: object
@@ -44411,7 +44410,6 @@ components:
             Optional reason for the decision.
       required:
         - type
-        - request_id
         - approve
         - approval_request_id
     MCPApprovalResponseResource:
@@ -44446,7 +44444,6 @@ components:
       required:
         - type
         - id
-        - request_id
         - approve
         - approval_request_id
     MCPListTools:
@@ -54784,14 +54781,8 @@ components:
             - error
             - incomplete_details
             - instructions
-            - model
-            - tools
             - output
             - parallel_tool_calls
-            - metadata
-            - tool_choice
-            - temperature
-            - top_p
     ResponseAudioDeltaEvent:
       type: object
       description: Emitted when there is a partial audio response.
@@ -54843,7 +54834,6 @@ components:
       required:
         - type
         - sequence_number
-        - response_id
       x-oaiMeta:
         name: response.audio.done
         group: responses
@@ -54873,7 +54863,6 @@ components:
           description: The sequence number of this event.
       required:
         - type
-        - response_id
         - delta
         - sequence_number
       x-oaiMeta:
@@ -54902,7 +54891,6 @@ components:
           description: The sequence number of this event.
       required:
         - type
-        - response_id
         - sequence_number
       x-oaiMeta:
         name: response.audio.transcript.done
@@ -57629,7 +57617,7 @@ components:
             the `item` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details. 
         model_sample:
           type: string
-          description: |-
+          description: |
             The model sample to be evaluated. This value will be used to populate 
             the `sample` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details.
             The `output_json` variable will be populated if the model sample is a 
@@ -60051,7 +60039,6 @@ components:
           description: 'When `group_by=project_id`, this field provides the project ID of the grouped usage result.'
       required:
         - object
-        - sessions
       x-oaiMeta:
         name: Code interpreter sessions usage object
         example: |
