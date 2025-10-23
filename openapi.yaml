@@ -30726,6 +30726,10 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateVideoBody'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVideoBody'
+        required: true
       responses:
         '200':
           description: Success
@@ -31355,6 +31359,10 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateVideoRemixBody'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVideoRemixBody'
+        required: true
       responses:
         '200':
           description: Success
@@ -62919,6 +62927,7 @@ components:
         - high
         - low
       description: |2-
+
 
 
                     Control how much effort the model will exert to match the style and features, especially facial features, of input images. This parameter is only supported for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.

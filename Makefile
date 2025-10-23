@@ -54,7 +54,9 @@ replace-anyof-with-oneof:
 	sed -i '' 's/anyOf:/oneOf:/g' ./openapi.yaml
 
 overlay-openapi:
+	node scripts/generate_overlay_for_multipart_required.js ../openapi.yaml
 	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay.json -o ./openapi.yaml
+	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay_generated_for_multipart_required.yaml -o ./openapi.yaml
 
 generate-openapi:
 	swift run swift-openapi-generator generate \
