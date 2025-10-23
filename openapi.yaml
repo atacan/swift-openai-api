@@ -11974,7 +11974,7 @@ paths:
                 fine_tuning_job = openai.fine_tuning.jobs.create(model: :"babbage-002", training_file: "file-abc123")
 
                 puts(fine_tuning_job)
-            response: |
+            response: |-
               {
                 "object": "fine_tuning.job",
                 "id": "ftjob-abc123",
@@ -12295,8 +12295,9 @@ paths:
           name: metadata
           required: false
           schema:
-            type: object
-            nullable: true
+            type:
+              - object
+              - 'null'
             additionalProperties:
               type: string
           style: deepObject
@@ -14822,8 +14823,9 @@ paths:
           name: after
           required: false
           schema:
-            type: string
-            nullable: true
+            type:
+              - string
+              - 'null'
             description: Return keys with IDs that come after this ID in the pagination order.
         - in: query
           name: order
@@ -36195,24 +36197,27 @@ components:
             max_completion_tokens:
               description: |
                 An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
-              type: integer
-              nullable: true
+              type:
+                - integer
+                - 'null'
             frequency_penalty:
-              type: number
+              type:
+                - number
+                - 'null'
               default: 0
               minimum: -2
               maximum: 2
-              nullable: true
               description: |
                 Number between -2.0 and 2.0. Positive values penalize new tokens based on
                 their existing frequency in the text so far, decreasing the model's
                 likelihood to repeat the same line verbatim.
             presence_penalty:
-              type: number
+              type:
+                - number
+                - 'null'
               default: 0
               minimum: -2
               maximum: 2
-              nullable: true
               description: |
                 Number between -2.0 and 2.0. Positive values penalize new tokens based on
                 whether they appear in the text so far, increasing the model's likelihood
@@ -36225,8 +36230,9 @@ components:
                 Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
               properties:
                 user_location:
-                  type: object
-                  nullable: true
+                  type:
+                    - object
+                    - 'null'
                   required:
                     - type
                     - approximate
@@ -36249,10 +36255,11 @@ components:
                 An integer between 0 and 20 specifying the number of most likely tokens to
                 return at each token position, each with an associated log probability.
                 `logprobs` must be set to `true` if this parameter is used.
-              type: integer
+              type:
+                - integer
+                - 'null'
               minimum: 0
               maximum: 20
-              nullable: true
             response_format:
               description: |
                 An object specifying the format that the model must output.
@@ -36272,8 +36279,9 @@ components:
                 - $ref: '#/components/schemas/ResponseFormatJsonSchema'
                 - $ref: '#/components/schemas/ResponseFormatJsonObject'
             audio:
-              type: object
-              nullable: true
+              type:
+                - object
+                - 'null'
               description: |
                 Parameters for audio output. Required when audio output is requested with
                 `modalities: ["audio"]`. [Learn more](https://platform.openai.com/docs/guides/audio).
@@ -36299,9 +36307,10 @@ components:
                     Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
                     `opus`, or `pcm16`.
             store:
-              type: boolean
+              type:
+                - boolean
+                - 'null'
               default: false
-              nullable: true
               description: |
                 Whether or not to store the output of this chat completion request for
                 use in our [model distillation](https://platform.openai.com/docs/guides/distillation) or
@@ -36315,16 +36324,18 @@ components:
                 See the [Streaming section below](https://platform.openai.com/docs/api-reference/chat/streaming)
                 for more information, along with the [streaming responses](https://platform.openai.com/docs/guides/streaming-responses)
                 guide for more information on how to handle the streaming events.
-              type: boolean
-              nullable: true
+              type:
+                - boolean
+                - 'null'
               default: false
             stop:
               $ref: '#/components/schemas/StopConfiguration'
             logit_bias:
-              type: object
+              type:
+                - object
+                - 'null'
               x-oaiTypeLabel: map
               default: null
-              nullable: true
               additionalProperties:
                 type: integer
               description: |
@@ -36341,9 +36352,10 @@ components:
                 Whether to return log probabilities of the output tokens or not. If true,
                 returns the log probabilities of each output token returned in the
                 `content` of `message`.
-              type: boolean
+              type:
+                - boolean
+                - 'null'
               default: false
-              nullable: true
             max_tokens:
               description: |
                 The maximum number of [tokens](/tokenizer) that can be generated in the
@@ -36352,20 +36364,20 @@ components:
 
                 This value is now deprecated in favor of `max_completion_tokens`, and is
                 not compatible with [o-series models](https://platform.openai.com/docs/guides/reasoning).
-              type: integer
-              nullable: true
+              type:
+                - integer
+                - 'null'
               deprecated: true
             'n':
-              type: integer
+              type:
+                - integer
+                - 'null'
               minimum: 1
               maximum: 128
               default: 1
               example: 1
-              nullable: true
               description: How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
             prediction:
-              $ref: '#/components/schemas/PredictionContent'
-              nullable: true
               description: |
                 Configuration for a [Predicted Output](https://platform.openai.com/docs/guides/predicted-outputs),
                 which can greatly improve response times when large parts of the model
@@ -36373,11 +36385,15 @@ components:
                 regenerating a file with only minor changes to most of the content.
               discriminator:
                 propertyName: type
+              anyOf:
+                - $ref: '#/components/schemas/PredictionContent'
+                - type: 'null'
             seed:
-              type: integer
+              type:
+                - integer
+                - 'null'
               minimum: -922337203685477600
               maximum: 922337203685477600
-              nullable: true
               deprecated: true
               description: |
                 This feature is in Beta.
@@ -36597,38 +36613,42 @@ components:
                 $ref: '#/components/schemas/ChatCompletionStreamResponseDelta'
               logprobs:
                 description: Log probability information for the choice.
-                type: object
-                nullable: true
+                type:
+                  - object
+                  - 'null'
                 properties:
                   content:
                     description: A list of message content tokens with log probability information.
-                    type: array
+                    type:
+                      - array
+                      - 'null'
                     items:
                       $ref: '#/components/schemas/ChatCompletionTokenLogprob'
-                    nullable: true
                   refusal:
                     description: A list of message refusal tokens with log probability information.
-                    type: array
+                    type:
+                      - array
+                      - 'null'
                     items:
                       $ref: '#/components/schemas/ChatCompletionTokenLogprob'
-                    nullable: true
                 required:
                   - content
                   - refusal
               finish_reason:
-                type: string
                 description: |
                   The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
                   `length` if the maximum number of tokens specified in the request was reached,
                   `content_filter` if content was omitted due to a flag from our content filters,
                   `tool_calls` if the model called a tool, or `function_call` (deprecated) if the model called a function.
-                enum:
-                  - stop
-                  - length
-                  - tool_calls
-                  - content_filter
-                  - function_call
-                nullable: true
+                oneOf:
+                  - type: string
+                    enum:
+                      - stop
+                      - length
+                      - tool_calls
+                      - content_filter
+                      - function_call
+                  - type: 'null'
               index:
                 type: integer
                 description: The index of the choice in the list of choices.
@@ -36653,8 +36673,6 @@ components:
             - chat.completion.chunk
           x-stainless-const: true
         usage:
-          $ref: '#/components/schemas/CompletionUsage'
-          nullable: true
           description: |
             An optional field that will only be present when you set
             `stream_options: {"include_usage": true}` in your request. When present, it
@@ -36664,6 +36682,9 @@ components:
             **NOTE:** If the stream is interrupted or cancelled, you may not
             receive the final usage chunk which contains the total token usage for
             the request.
+          anyOf:
+            - $ref: '#/components/schemas/CompletionUsage'
+            - type: 'null'
       required:
         - choices
         - created
@@ -36701,7 +36722,6 @@ components:
             The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
 
             Note that <|endoftext|> is the document separator that the model sees during training, so if a prompt is not specified the model will generate as if from the beginning of a new document.
-          nullable: true
           oneOf:
             - type: string
               default: ''
@@ -36725,12 +36745,14 @@ components:
                 items:
                   type: integer
               title: Array of token arrays
+            - type: 'null'
         best_of:
-          type: integer
+          type:
+            - integer
+            - 'null'
           default: 1
           minimum: 0
           maximum: 20
-          nullable: true
           description: |
             Generates `best_of` completions server-side and returns the "best" (the one with the highest log probability per token). Results cannot be streamed.
 
@@ -36738,26 +36760,29 @@ components:
 
             **Note:** Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for `max_tokens` and `stop`.
         echo:
-          type: boolean
+          type:
+            - boolean
+            - 'null'
           default: false
-          nullable: true
           description: |
             Echo back the prompt in addition to the completion
         frequency_penalty:
-          type: number
+          type:
+            - number
+            - 'null'
           default: 0
           minimum: -2
           maximum: 2
-          nullable: true
           description: |
             Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
 
             [See more information about frequency and presence penalties.](https://platform.openai.com/docs/guides/text-generation)
         logit_bias:
-          type: object
+          type:
+            - object
+            - 'null'
           x-oaiTypeLabel: map
           default: null
-          nullable: true
           additionalProperties:
             type: integer
           description: |
@@ -36767,50 +36792,55 @@ components:
 
             As an example, you can pass `{"50256": -100}` to prevent the <|endoftext|> token from being generated.
         logprobs:
-          type: integer
+          type:
+            - integer
+            - 'null'
           minimum: 0
           maximum: 5
           default: null
-          nullable: true
           description: |
             Include the log probabilities on the `logprobs` most likely output tokens, as well the chosen tokens. For example, if `logprobs` is 5, the API will return a list of the 5 most likely tokens. The API will always return the `logprob` of the sampled token, so there may be up to `logprobs+1` elements in the response.
 
             The maximum value for `logprobs` is 5.
         max_tokens:
-          type: integer
+          type:
+            - integer
+            - 'null'
           minimum: 0
           default: 16
           example: 16
-          nullable: true
           description: |
             The maximum number of [tokens](/tokenizer) that can be generated in the completion.
 
             The token count of your prompt plus `max_tokens` cannot exceed the model's context length. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
         'n':
-          type: integer
+          type:
+            - integer
+            - 'null'
           minimum: 1
           maximum: 128
           default: 1
           example: 1
-          nullable: true
           description: |
             How many completions to generate for each prompt.
 
             **Note:** Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for `max_tokens` and `stop`.
         presence_penalty:
-          type: number
+          type:
+            - number
+            - 'null'
           default: 0
           minimum: -2
           maximum: 2
-          nullable: true
           description: |
             Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
 
             [See more information about frequency and presence penalties.](https://platform.openai.com/docs/guides/text-generation)
         seed:
-          type: integer
+          type:
+            - integer
+            - 'null'
           format: int64
-          nullable: true
           description: |
             If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same `seed` and parameters should return the same result.
 
@@ -36820,8 +36850,9 @@ components:
         stream:
           description: |
             Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
-          type: boolean
-          nullable: true
+          type:
+            - boolean
+            - 'null'
           default: false
         stream_options:
           $ref: '#/components/schemas/ChatCompletionStreamOptions'
@@ -36831,27 +36862,30 @@ components:
 
             This parameter is only supported for `gpt-3.5-turbo-instruct`.
           default: null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
           example: test.
         temperature:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 2
           default: 1
           example: 1
-          nullable: true
           description: |
             What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
 
             We generally recommend altering this or `top_p` but not both.
         top_p:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 1
           default: 1
           example: 1
-          nullable: true
           description: |
             An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
@@ -37761,11 +37795,12 @@ components:
             A string of up to 64 characters that will be added to your fine-tuned model name.
 
             For example, a `suffix` of "custom-model-name" would produce a model name like `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
-          type: string
+          type:
+            - string
+            - 'null'
           minLength: 1
           maxLength: 64
           default: null
-          nullable: true
         validation_file:
           description: |
             The ID of an uploaded file that contains validation data.
@@ -37778,13 +37813,15 @@ components:
             Your dataset must be formatted as a JSONL file. You must upload your file with the purpose `fine-tune`.
 
             See the [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization) for more details.
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
           example: file-abc123
         integrations:
-          type: array
+          type:
+            - array
+            - 'null'
           description: A list of integrations to enable for your fine-tuning job.
-          nullable: true
           items:
             type: object
             required:
@@ -37815,14 +37852,16 @@ components:
                   name:
                     description: |
                       A display name to set for the run. If not set, we will use the Job ID as the name.
-                    nullable: true
-                    type: string
+                    type:
+                      - string
+                      - 'null'
                   entity:
                     description: |
                       The entity to use for the run. This allows you to set the team or username of the WandB user that you would
                       like associated with the run. If not set, the default entity for the registered WandB API key is used.
-                    nullable: true
-                    type: string
+                    type:
+                      - string
+                      - 'null'
                   tags:
                     description: |
                       A list of tags to be attached to the newly created run. These tags are passed through directly to WandB. Some
@@ -37835,8 +37874,9 @@ components:
           description: |
             The seed controls the reproducibility of the job. Passing in the same seed and job parameters should produce the same results, but may differ in rare cases.
             If a seed is not specified, one will be generated for you.
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           minimum: 0
           maximum: 2147483647
           example: 42
@@ -37880,14 +37920,8 @@ components:
           x-oaiMeta:
             exampleFilePath: mask.png
         background:
-          type: string
-          enum:
-            - transparent
-            - opaque
-            - auto
           default: auto
           example: transparent
-          nullable: true
           description: |
             Allows to set transparency for the background of the generated image(s).
             This parameter is only supported for `gpt-image-1`. Must be one of
@@ -37896,6 +37930,13 @@ components:
 
             If `transparent`, the output format needs to support transparency, so it
             should be set to either `png` (default value) or `webp`.
+          oneOf:
+            - type: string
+              enum:
+                - transparent
+                - opaque
+                - auto
+            - type: 'null'
         model:
           oneOf:
             - type: string
@@ -37905,57 +37946,62 @@ components:
                 - gpt-image-1
                 - gpt-image-1-mini
               x-stainless-const: true
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
           description: The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1` is used.
         'n':
-          type: integer
+          type:
+            - integer
+            - 'null'
           minimum: 1
           maximum: 10
           default: 1
           example: 1
-          nullable: true
           description: The number of images to generate. Must be between 1 and 10.
         size:
-          type: string
-          enum:
-            - 256x256
-            - 512x512
-            - 1024x1024
-            - 1536x1024
-            - 1024x1536
-            - auto
           default: 1024x1024
           example: 1024x1024
-          nullable: true
           description: 'The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for `gpt-image-1`, and one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`.'
+          oneOf:
+            - type: string
+              enum:
+                - 256x256
+                - 512x512
+                - 1024x1024
+                - 1536x1024
+                - 1024x1536
+                - auto
+            - type: 'null'
         response_format:
-          type: string
-          enum:
-            - url
-            - b64_json
           default: url
           example: url
-          nullable: true
           description: 'The format in which the generated images are returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes after the image has been generated. This parameter is only supported for `dall-e-2`, as `gpt-image-1` will always return base64-encoded images.'
+          oneOf:
+            - type: string
+              enum:
+                - url
+                - b64_json
+            - type: 'null'
         output_format:
-          type: string
-          enum:
-            - png
-            - jpeg
-            - webp
           default: png
           example: png
-          nullable: true
           description: |
             The format in which the generated images are returned. This parameter is
             only supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`.
             The default value is `png`.
+          oneOf:
+            - type: string
+              enum:
+                - png
+                - jpeg
+                - webp
+            - type: 'null'
         output_compression:
-          type: integer
+          type:
+            - integer
+            - 'null'
           default: 100
           example: 100
-          nullable: true
           description: |
             The compression level (0-100%) for the generated images. This parameter
             is only supported for `gpt-image-1` with the `webp` or `jpeg` output
@@ -37968,28 +38014,30 @@ components:
         input_fidelity:
           $ref: '#/components/schemas/InputFidelity'
         stream:
-          type: boolean
+          type:
+            - boolean
+            - 'null'
           default: false
           example: false
-          nullable: true
           description: |
             Edit the image in streaming mode. Defaults to `false`. See the
             [Image generation guide](https://platform.openai.com/docs/guides/image-generation) for more information.
         partial_images:
           $ref: '#/components/schemas/PartialImages'
         quality:
-          type: string
-          enum:
-            - standard
-            - low
-            - medium
-            - high
-            - auto
           default: auto
           example: high
-          nullable: true
           description: |
             The quality of the image that will be generated. `high`, `medium` and `low` are only supported for `gpt-image-1`. `dall-e-2` only supports `standard` quality. Defaults to `auto`.
+          oneOf:
+            - type: string
+              enum:
+                - standard
+                - low
+                - medium
+                - high
+                - auto
+            - type: 'null'
       required:
         - prompt
         - image
@@ -38010,29 +38058,21 @@ components:
                 - gpt-image-1
                 - gpt-image-1-mini
               x-stainless-nominal: false
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
           description: 'The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or `gpt-image-1`. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1` is used.'
         'n':
-          type: integer
+          type:
+            - integer
+            - 'null'
           minimum: 1
           maximum: 10
           default: 1
           example: 1
-          nullable: true
           description: 'The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only `n=1` is supported.'
         quality:
-          type: string
-          enum:
-            - standard
-            - hd
-            - low
-            - medium
-            - high
-            - auto
           default: auto
           example: medium
-          nullable: true
           description: |
             The quality of the image that will be generated.
 
@@ -38040,36 +38080,50 @@ components:
             - `high`, `medium` and `low` are supported for `gpt-image-1`.
             - `hd` and `standard` are supported for `dall-e-3`.
             - `standard` is the only option for `dall-e-2`.
+          oneOf:
+            - type: string
+              enum:
+                - standard
+                - hd
+                - low
+                - medium
+                - high
+                - auto
+            - type: 'null'
         response_format:
-          type: string
-          enum:
-            - url
-            - b64_json
           default: url
           example: url
-          nullable: true
           description: The format in which generated images with `dall-e-2` and `dall-e-3` are returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes after the image has been generated. This parameter isn't supported for `gpt-image-1` which will always return base64-encoded images.
+          oneOf:
+            - type: string
+              enum:
+                - url
+                - b64_json
+            - type: 'null'
         output_format:
-          type: string
-          enum:
-            - png
-            - jpeg
-            - webp
           default: png
           example: png
-          nullable: true
           description: 'The format in which the generated images are returned. This parameter is only supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`.'
+          oneOf:
+            - type: string
+              enum:
+                - png
+                - jpeg
+                - webp
+            - type: 'null'
         output_compression:
-          type: integer
+          type:
+            - integer
+            - 'null'
           default: 100
           example: 100
-          nullable: true
           description: 'The compression level (0-100%) for the generated images. This parameter is only supported for `gpt-image-1` with the `webp` or `jpeg` output formats, and defaults to 100.'
         stream:
-          type: boolean
+          type:
+            - boolean
+            - 'null'
           default: false
           example: false
-          nullable: true
           description: |
             Generate the image in streaming mode. Defaults to `false`. See the
             [Image generation guide](https://platform.openai.com/docs/guides/image-generation) for more information.
@@ -38077,38 +38131,34 @@ components:
         partial_images:
           $ref: '#/components/schemas/PartialImages'
         size:
-          type: string
-          enum:
-            - auto
-            - 1024x1024
-            - 1536x1024
-            - 1024x1536
-            - 256x256
-            - 512x512
-            - 1792x1024
-            - 1024x1792
           default: auto
           example: 1024x1024
-          nullable: true
           description: 'The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for `gpt-image-1`, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.'
+          oneOf:
+            - type: string
+              enum:
+                - auto
+                - 1024x1024
+                - 1536x1024
+                - 1024x1536
+                - 256x256
+                - 512x512
+                - 1792x1024
+                - 1024x1792
+            - type: 'null'
         moderation:
-          type: string
-          enum:
-            - low
-            - auto
           default: auto
           example: low
-          nullable: true
           description: Control the content-moderation level for images generated by `gpt-image-1`. Must be either `low` for less restrictive filtering or `auto` (default value).
+          oneOf:
+            - type: string
+              enum:
+                - low
+                - auto
+            - type: 'null'
         background:
-          type: string
-          enum:
-            - transparent
-            - opaque
-            - auto
           default: auto
           example: transparent
-          nullable: true
           description: |
             Allows to set transparency for the background of the generated image(s).
             This parameter is only supported for `gpt-image-1`. Must be one of
@@ -38117,15 +38167,23 @@ components:
 
             If `transparent`, the output format needs to support transparency, so it
             should be set to either `png` (default value) or `webp`.
+          oneOf:
+            - type: string
+              enum:
+                - transparent
+                - opaque
+                - auto
+            - type: 'null'
         style:
-          type: string
-          enum:
-            - vivid
-            - natural
           default: vivid
           example: vivid
-          nullable: true
           description: 'The style of the generated images. This parameter is only supported for `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images.'
+          oneOf:
+            - type: string
+              enum:
+                - vivid
+                - natural
+            - type: 'null'
         user:
           type: string
           example: user-1234
@@ -38149,36 +38207,39 @@ components:
               enum:
                 - dall-e-2
               x-stainless-const: true
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
           description: The model to use for image generation. Only `dall-e-2` is supported at this time.
         'n':
-          type: integer
+          type:
+            - integer
+            - 'null'
           minimum: 1
           maximum: 10
           default: 1
           example: 1
-          nullable: true
           description: The number of images to generate. Must be between 1 and 10.
         response_format:
-          type: string
-          enum:
-            - url
-            - b64_json
           default: url
           example: url
-          nullable: true
           description: The format in which the generated images are returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes after the image has been generated.
+          oneOf:
+            - type: string
+              enum:
+                - url
+                - b64_json
+            - type: 'null'
         size:
-          type: string
-          enum:
-            - 256x256
-            - 512x512
-            - 1024x1024
           default: 1024x1024
           example: 1024x1024
-          nullable: true
           description: 'The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024`.'
+          oneOf:
+            - type: string
+              enum:
+                - 256x256
+                - 512x512
+                - 1024x1024
+            - type: 'null'
         user:
           type: string
           example: user-1234
@@ -38715,67 +38776,76 @@ components:
           oneOf:
             - type: string
             - $ref: '#/components/schemas/AssistantSupportedModels'
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
         reasoning_effort:
           $ref: '#/components/schemas/ReasoningEffort'
         instructions:
           description: 'Overrides the [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant) of the assistant. This is useful for modifying the behavior on a per-run basis.'
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         additional_instructions:
           description: Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         additional_messages:
           description: Adds additional messages to the thread before creating the run.
-          type: array
+          type:
+            - array
+            - 'null'
           items:
             $ref: '#/components/schemas/CreateMessageRequest'
-          nullable: true
         tools:
           description: Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
           maxItems: 20
           items:
             $ref: '#/components/schemas/AssistantTool'
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 2
           default: 1
           example: 1
-          nullable: true
           description: |
             What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
         top_p:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 1
           default: 1
           example: 1
-          nullable: true
           description: |
             An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
             We generally recommend altering this or temperature but not both.
         stream:
-          type: boolean
-          nullable: true
+          type:
+            - boolean
+            - 'null'
           description: |
             If `true`, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a terminal state with a `data: [DONE]` message.
         max_prompt_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use only the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
         max_completion_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the number of completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
@@ -38790,8 +38860,9 @@ components:
         parallel_tool_calls:
           $ref: '#/components/schemas/ParallelToolCalls'
         response_format:
-          $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
-          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
+            - type: 'null'
       required:
         - assistant_id
     CreateSpeechRequest:
@@ -38908,21 +38979,25 @@ components:
                 - gpt-3.5-turbo-1106
                 - gpt-3.5-turbo-0125
                 - gpt-3.5-turbo-16k-0613
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
         instructions:
           description: Override the default system message of the assistant. This is useful for modifying the behavior on a per-run basis.
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         tools:
           description: Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
           maxItems: 20
           items:
             $ref: '#/components/schemas/AssistantTool'
         tool_resources:
-          type: object
+          type:
+            - object
+            - 'null'
           description: |
             A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
           properties:
@@ -38947,43 +39022,47 @@ components:
                   maxItems: 1
                   items:
                     type: string
-          nullable: true
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 2
           default: 1
           example: 1
-          nullable: true
           description: |
             What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
         top_p:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 1
           default: 1
           example: 1
-          nullable: true
           description: |
             An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
             We generally recommend altering this or temperature but not both.
         stream:
-          type: boolean
-          nullable: true
+          type:
+            - boolean
+            - 'null'
           description: |
             If `true`, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a terminal state with a `data: [DONE]` message.
         max_prompt_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use only the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
         max_completion_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the number of completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
@@ -38998,8 +39077,9 @@ components:
         parallel_tool_calls:
           $ref: '#/components/schemas/ParallelToolCalls'
         response_format:
-          $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
-          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
+            - type: 'null'
       required:
         - assistant_id
     CreateThreadRequest:
@@ -53550,7 +53630,6 @@ components:
 
             `auto` will create a trace for the session with default values for the
             workflow name, group id, and metadata.
-          nullable: true
           oneOf:
             - type: string
               title: auto
@@ -53580,6 +53659,7 @@ components:
                   description: |
                     The arbitrary metadata to attach to this trace to enable
                     filtering in the Traces Dashboard.
+            - type: 'null'
         tools:
           type: array
           description: Tools available to the model.
@@ -57549,7 +57629,7 @@ components:
             the `item` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details. 
         model_sample:
           type: string
-          description: |
+          description: |-
             The model sample to be evaluated. This value will be used to populate 
             the `sample` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details.
             The `output_json` variable will be populated if the model sample is a 
@@ -57670,9 +57750,10 @@ components:
         status:
           $ref: '#/components/schemas/RunStatus'
         required_action:
-          type: object
+          type:
+            - object
+            - 'null'
           description: Details on the action required to continue the run. Will be `null` if no action is required.
-          nullable: true
           properties:
             type:
               description: 'For now, this is always `submit_tool_outputs`.'
@@ -57695,9 +57776,10 @@ components:
             - type
             - submit_tool_outputs
         last_error:
-          type: object
+          type:
+            - object
+            - 'null'
           description: The last error associated with this run. Will be `null` if there are no errors.
-          nullable: true
           properties:
             code:
               type: string
@@ -57714,28 +57796,34 @@ components:
             - message
         expires_at:
           description: The Unix timestamp (in seconds) for when the run will expire.
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
         started_at:
           description: The Unix timestamp (in seconds) for when the run was started.
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
         cancelled_at:
           description: The Unix timestamp (in seconds) for when the run was cancelled.
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
         failed_at:
           description: The Unix timestamp (in seconds) for when the run failed.
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
         completed_at:
           description: The Unix timestamp (in seconds) for when the run was completed.
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
         incomplete_details:
           description: Details on why the run is incomplete. Will be `null` if the run is not incomplete.
-          type: object
-          nullable: true
+          type:
+            - object
+            - 'null'
           properties:
             reason:
               description: The reason why the run is incomplete. This will point to which specific token limit was reached over the course of the run.
@@ -57762,21 +57850,25 @@ components:
           $ref: '#/components/schemas/RunCompletionUsage'
         temperature:
           description: 'The sampling temperature used for this run. If not set, defaults to 1.'
-          type: number
-          nullable: true
+          type:
+            - number
+            - 'null'
         top_p:
           description: 'The nucleus sampling value used for this run. If not set, defaults to 1.'
-          type: number
-          nullable: true
+          type:
+            - number
+            - 'null'
         max_prompt_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of prompt tokens specified to have been used over the course of the run.
           minimum: 256
         max_completion_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of completion tokens specified to have been used over the course of the run.
           minimum: 256
@@ -57791,8 +57883,9 @@ components:
         parallel_tool_calls:
           $ref: '#/components/schemas/ParallelToolCalls'
         response_format:
-          $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
-          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
+            - type: 'null'
       required:
         - id
         - object
@@ -58952,7 +59045,6 @@ components:
 
         Up to 4 sequences where the API will stop generating further tokens. The
         returned text will not contain the stop sequence.
-      nullable: true
       oneOf:
         - type: string
           default: <|endoftext|>
@@ -58965,6 +59057,7 @@ components:
           items:
             type: string
             example: '["\n"]'
+        - type: 'null'
     SubmitToolOutputsRunRequest:
       type: object
       additionalProperties: false
@@ -59727,8 +59820,9 @@ components:
       properties:
         name:
           description: The name of the vector store.
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         expires_after:
           allOf:
             - $ref: '#/components/schemas/VectorStoreExpirationAfter'
@@ -64702,21 +64796,25 @@ components:
                 - gpt-3.5-turbo-1106
                 - gpt-3.5-turbo-0125
                 - gpt-3.5-turbo-16k-0613
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
         instructions:
           description: Override the default system message of the assistant. This is useful for modifying the behavior on a per-run basis.
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         tools:
           description: Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
           maxItems: 20
           items:
             $ref: '#/components/schemas/AssistantTool'
         tool_resources:
-          type: object
+          type:
+            - object
+            - 'null'
           description: |
             A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
           properties:
@@ -64741,38 +64839,41 @@ components:
                   maxItems: 1
                   items:
                     type: string
-          nullable: true
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 2
           default: 1
           example: 1
-          nullable: true
           description: |
             What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
         top_p:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 1
           default: 1
           example: 1
-          nullable: true
           description: |
             An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
             We generally recommend altering this or temperature but not both.
         max_prompt_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use only the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
         max_completion_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the number of completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
@@ -64787,8 +64888,9 @@ components:
         parallel_tool_calls:
           $ref: '#/components/schemas/ParallelToolCalls'
         response_format:
-          $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
-          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
+            - type: 'null'
       required:
         - assistant_id
     CreateRunRequestWithoutStream:
@@ -64803,62 +64905,70 @@ components:
           oneOf:
             - type: string
             - $ref: '#/components/schemas/AssistantSupportedModels'
+            - type: 'null'
           x-oaiTypeLabel: string
-          nullable: true
         reasoning_effort:
           $ref: '#/components/schemas/ReasoningEffort'
         instructions:
           description: 'Overrides the [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant) of the assistant. This is useful for modifying the behavior on a per-run basis.'
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         additional_instructions:
           description: Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.
-          type: string
-          nullable: true
+          type:
+            - string
+            - 'null'
         additional_messages:
           description: Adds additional messages to the thread before creating the run.
-          type: array
+          type:
+            - array
+            - 'null'
           items:
             $ref: '#/components/schemas/CreateMessageRequest'
-          nullable: true
         tools:
           description: Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
           maxItems: 20
           items:
             $ref: '#/components/schemas/AssistantTool'
         metadata:
           $ref: '#/components/schemas/Metadata'
         temperature:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 2
           default: 1
           example: 1
-          nullable: true
           description: |
             What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
         top_p:
-          type: number
+          type:
+            - number
+            - 'null'
           minimum: 0
           maximum: 1
           default: 1
           example: 1
-          nullable: true
           description: |
             An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
             We generally recommend altering this or temperature but not both.
         max_prompt_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use only the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
         max_completion_tokens:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - 'null'
           description: |
             The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the number of completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
           minimum: 256
@@ -64873,8 +64983,9 @@ components:
         parallel_tool_calls:
           $ref: '#/components/schemas/ParallelToolCalls'
         response_format:
-          $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
-          nullable: true
+          anyOf:
+            - $ref: '#/components/schemas/AssistantsApiResponseFormatOption'
+            - type: 'null'
       required:
         - assistant_id
     SubmitToolOutputsRunRequestWithoutStream:

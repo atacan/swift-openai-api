@@ -53,6 +53,12 @@ replace-anyof-with-oneof:
 	# Replace `anyOf:` with `oneOf:`
 	sed -i '' 's/anyOf:/oneOf:/g' ./openapi.yaml
 
+fix-nullable-from-v310:
+	cd scripts && node fix-nullable-from-v310.js ../openapi.yaml ../openapi.yaml
+
+removed-nonexistent-required-properties:
+	cd scripts && node removed-nonexistent-required-properties.js ../openapi.yaml ../openapi.yaml
+
 overlay-openapi:
 	node scripts/generate_overlay_for_multipart_required.js ../openapi.yaml
 	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay.json -o ./openapi.yaml
@@ -80,5 +86,7 @@ prepare-openapi:
 	make replace-anyof-with-oneof
 	make const-to-enum
 	make format-byte-to-content-encoding
+	make fix-nullable-from-v310
+	make removed-nonexistent-required-properties
 	make overlay-openapi
 	make generate-openapi

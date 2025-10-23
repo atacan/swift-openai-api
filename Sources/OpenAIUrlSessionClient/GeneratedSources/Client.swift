@@ -9991,10 +9991,10 @@ public struct Client: APIProtocol {
                             case let .background(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "background",
@@ -10005,10 +10005,10 @@ public struct Client: APIProtocol {
                             case let .model(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "model",
@@ -10033,10 +10033,10 @@ public struct Client: APIProtocol {
                             case let .size(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "size",
@@ -10047,10 +10047,10 @@ public struct Client: APIProtocol {
                             case let .response_format(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "response_format",
@@ -10061,10 +10061,10 @@ public struct Client: APIProtocol {
                             case let .output_format(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "output_format",
@@ -10145,10 +10145,10 @@ public struct Client: APIProtocol {
                             case let .quality(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "quality",
@@ -10723,10 +10723,10 @@ public struct Client: APIProtocol {
                             case let .model(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "model",
@@ -10751,10 +10751,10 @@ public struct Client: APIProtocol {
                             case let .response_format(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "response_format",
@@ -10765,10 +10765,10 @@ public struct Client: APIProtocol {
                             case let .size(wrapped):
                                 var headerFields: HTTPTypes.HTTPFields = .init()
                                 let value = wrapped.payload
-                                let body = try converter.setRequiredRequestBodyAsBinary(
+                                let body = try converter.setRequiredRequestBodyAsJSON(
                                     value.body,
                                     headerFields: &headerFields,
-                                    contentType: "text/plain"
+                                    contentType: "application/json; charset=utf-8"
                                 )
                                 return .init(
                                     name: "size",
