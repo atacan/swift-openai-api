@@ -1263,6 +1263,7 @@ paths:
             application/json:
               schema:
                 oneOf:
+                  - $ref: '#/components/schemas/CreateTranscriptionResponseDiarizedJson'
                   - $ref: '#/components/schemas/CreateTranscriptionResponseVerboseJson'
                   - $ref: '#/components/schemas/CreateTranscriptionResponseJson'
             text/event-stream:
@@ -39225,16 +39226,14 @@ components:
           description: Token or duration usage statistics for the request.
           discriminator:
             propertyName: type
+            mapping:
+              tokens: '#/components/schemas/TranscriptTextUsageTokens'
+              duration: '#/components/schemas/TranscriptTextUsageDuration'
           oneOf:
             - $ref: '#/components/schemas/TranscriptTextUsageTokens'
               title: Token Usage
             - $ref: '#/components/schemas/TranscriptTextUsageDuration'
               title: Duration Usage
-      required:
-        - task
-        - duration
-        - text
-        - segments
       x-oaiMeta:
         name: The transcription object (Diarized JSON)
         group: audio
@@ -39266,6 +39265,9 @@ components:
               "seconds": 43
             }
           }
+      required:
+        - text
+        - segments
     CreateTranscriptionResponseJson:
       type: object
       description: 'Represents a transcription response returned by model, based on the provided input.'

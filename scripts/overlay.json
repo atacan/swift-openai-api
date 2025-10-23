@@ -21,6 +21,9 @@
                 "schema": {
                     "oneOf": [
                         {
+                            "$ref": "#/components/schemas/CreateTranscriptionResponseDiarizedJson"
+                        },
+                        {
                             "$ref": "#/components/schemas/CreateTranscriptionResponseVerboseJson"
                         },
                         {
@@ -325,6 +328,28 @@
                     "index",
                     "message"
                 ]
+            }
+        },
+        {
+            "target": "$.components.schemas.CreateTranscriptionResponseDiarizedJson.required",
+            "remove": true
+        },
+        {
+            "target": "$.components.schemas.CreateTranscriptionResponseDiarizedJson",
+            "update": {
+                "required": [
+                    "text",
+                    "segments"
+                ]
+            }
+        },
+        {
+            "target": "$.components.schemas.CreateTranscriptionResponseDiarizedJson.properties.usage.discriminator",
+            "update": {
+                "mapping": {
+                    "tokens": "#/components/schemas/TranscriptTextUsageTokens",
+                    "duration": "#/components/schemas/TranscriptTextUsageDuration"
+                }
             }
         }
     ]

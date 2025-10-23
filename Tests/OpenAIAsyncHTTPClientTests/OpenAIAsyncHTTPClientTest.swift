@@ -93,12 +93,17 @@ struct OpenAIAsyncHTTPClientTest {
                             filename: audioFileUrl.lastPathComponent
                         )
                     ),
-                    .model(.init(payload: .init(body: .init("whisper-1")))),
+                    .model(
+                        .init(
+                            payload: .init(
+                                body: .init(
+                                    Components.Schemas.AudioTranscription.modelPayload
+                                        .gpt_hyphen_4o_hyphen_transcribe_hyphen_diarize.rawValue)))),
                     .response_format(
                         .init(
                             payload: .init(
                                 body: .init(
-                                    Components.Schemas.AudioResponseFormat.srt.rawValue
+                                    Components.Schemas.AudioResponseFormat.diarized_json.rawValue
                                 )
                             )
                         )
@@ -113,6 +118,9 @@ struct OpenAIAsyncHTTPClientTest {
             switch ok.body {
             case .json(let jsonPayload):
                 switch jsonPayload {
+                case .CreateTranscriptionResponseDiarizedJson(let diarized):
+                    print("🥁")
+                    dump(diarized)
                 case .CreateTranscriptionResponseVerboseJson(let verbose):
                     print("🥁")
                     dump(verbose)
@@ -137,7 +145,7 @@ struct OpenAIAsyncHTTPClientTest {
                 dump(jsonPayload)
             }
         default:
-            break
+            assertionFailure("4xx response")
         }
     }
 
@@ -172,10 +180,62 @@ struct OpenAIAsyncHTTPClientTest {
         let result = try! decoder.decode(
             Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
         switch result {
+        case .CreateTranscriptionResponseDiarizedJson(_):
+            assertionFailure()
         case .CreateTranscriptionResponseVerboseJson(let object):
             #expect(object.text.count >= 1)
         case .CreateTranscriptionResponseJson(_):
             assertionFailure()
+        }
+    }
+
+    @Test func decodingDiarizedJsonString() async throws {
+        let input = """
+            {
+                "segments": [
+                    {
+                    "end": 1.45,
+                    "id": "seg_0",
+                    "speaker": "A",
+                    "start": 0.10000000000000009,
+                    "text": " Amazing things.",
+                    "type": "transcript.text.segment"
+                    }
+                ],
+                "text": "Amazing things.",
+                "usage": {
+                    "input_token_details": {
+                        "audio_tokens": 20,
+                        "text_tokens": 0
+                    },
+                    "input_tokens": 20,
+                    "output_tokens": 99,
+                    "total_tokens": 119,
+                    "type": "tokens"
+                }
+            }
+            """
+        let data = input.data(using: .utf8)!
+        let decoder = JSONDecoder()
+
+        do {
+            let diarizedJsonObject = try! decoder.decode(
+                Components.Schemas.CreateTranscriptionResponseDiarizedJson.self, from: data)
+            #expect(diarizedJsonObject.text.count >= 1)
+            #expect(diarizedJsonObject.segments.count >= 1)
+        }
+
+        do {
+            let result = try! decoder.decode(
+                Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
+            switch result {
+            case .CreateTranscriptionResponseDiarizedJson(let object):
+                #expect(object.text.count >= 1)
+            case .CreateTranscriptionResponseVerboseJson(_):
+                assertionFailure()
+            case .CreateTranscriptionResponseJson(_):
+                assertionFailure()
+            }
         }
     }
 
@@ -188,7 +248,7 @@ struct OpenAIAsyncHTTPClientTest {
                         .json(
                             .init(
                                 value1: .init(
-                                    value1:.init(),
+                                    value1: .init(),
                                     value2: .init()
                                 ),
                                 value2: .init(
@@ -393,7 +453,8 @@ struct OpenAIAsyncHTTPClientTest {
     }
 
     #if os(macOS)
-        @Test func tryWSSTranscriptionURLSession() async throws {
+        // @Test 
+        func tryWSSTranscriptionURLSession() async throws {
             let audioFileUrl = Bundle.module.url(
                 forResource: "Resources/amazing-things", withExtension: "wav")!
             let wavData = try Data(contentsOf: audioFileUrl)
