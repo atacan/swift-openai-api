@@ -39386,6 +39386,9 @@ components:
               title: Duration Usage
           discriminator:
             propertyName: type
+            mapping:
+              tokens: '#/components/schemas/TranscriptTextUsageTokens'
+              duration: '#/components/schemas/TranscriptTextUsageDuration'
       required:
         - text
       x-oaiMeta:

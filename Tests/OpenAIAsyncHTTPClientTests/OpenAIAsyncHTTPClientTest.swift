@@ -103,7 +103,8 @@ struct OpenAIAsyncHTTPClientTest {
                         .init(
                             payload: .init(
                                 body: .init(
-                                    Components.Schemas.AudioResponseFormat.diarized_json.rawValue
+                                    // Components.Schemas.AudioResponseFormat.diarized_json.rawValue
+                                    Components.Schemas.AudioResponseFormat.json.rawValue
                                 )
                             )
                         )
@@ -186,6 +187,37 @@ struct OpenAIAsyncHTTPClientTest {
             #expect(object.text.count >= 1)
         case .CreateTranscriptionResponseJson(_):
             assertionFailure()
+        }
+    }
+
+    @Test func decodingJsonStringFromDiarizationModel() async throws {
+        let input = """
+            {
+              "text": "Amazing things.",
+              "usage": {
+                "input_token_details": {
+                  "audio_tokens": 20,
+                  "text_tokens": 0
+                },
+                "input_tokens": 20,
+                "output_tokens": 100,
+                "total_tokens": 120,
+                "type": "tokens"
+              }
+            }
+            """
+
+        let data = input.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        let result = try! decoder.decode(
+            Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
+        switch result {
+        case .CreateTranscriptionResponseDiarizedJson(_):
+            assertionFailure()
+        case .CreateTranscriptionResponseVerboseJson(_):
+            assertionFailure()
+        case .CreateTranscriptionResponseJson(let object):
+            #expect(object.text.count >= 1)
         }
     }
 

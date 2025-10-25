@@ -351,6 +351,15 @@
                     "duration": "#/components/schemas/TranscriptTextUsageDuration"
                 }
             }
+        },
+        {
+            "target": "$.components.schemas.CreateTranscriptionResponseJson.properties.usage.discriminator",
+            "update": {
+                "mapping": {
+                    "tokens": "#/components/schemas/TranscriptTextUsageTokens",
+                    "duration": "#/components/schemas/TranscriptTextUsageDuration"
+                }
+            }
         }
     ]
 }
