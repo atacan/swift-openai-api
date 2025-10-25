@@ -81,16 +81,12 @@ missingRequiredBodies.forEach(body => {
 const overlayActions = [];
 
 missingRequiredBodies.forEach(body => {
-    // Create the updated request body with required: true
-    const updatedRequestBody = {
-        ...body.requestBody,
-        required: true
-    };
-    
-    // Add update action
+    // Only add/update the required field, don't touch the rest of the requestBody
     overlayActions.push({
         target: body.jsonPath,
-        update: updatedRequestBody
+        update: {
+            required: true
+        }
     });
 });
 

@@ -9,17 +9,11 @@ actions:
         multipart/form-data:
           schema:
             $ref: '#/components/schemas/CreateVideoBody'
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateVideoBody'
       required: true
   - target: $.paths./videos/{video_id}/remix.post.requestBody
     update:
       content:
         multipart/form-data:
-          schema:
-            $ref: '#/components/schemas/CreateVideoRemixBody'
-        application/json:
           schema:
             $ref: '#/components/schemas/CreateVideoRemixBody'
       required: true

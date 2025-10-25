@@ -30728,9 +30728,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateVideoBody'
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateVideoBody'
         required: true
       responses:
         '200':
@@ -31359,9 +31356,6 @@ paths:
       requestBody:
         content:
           multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateVideoRemixBody'
-          application/json:
             schema:
               $ref: '#/components/schemas/CreateVideoRemixBody'
         required: true

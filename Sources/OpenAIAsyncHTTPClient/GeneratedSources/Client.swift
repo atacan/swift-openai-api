@@ -28968,12 +28968,6 @@ public struct Client: APIProtocol {
                             }
                         }
                     )
-                case let .json(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/json; charset=utf-8"
-                    )
                 }
                 return (request, body)
             },
@@ -29475,12 +29469,6 @@ public struct Client: APIProtocol {
                                 return value
                             }
                         }
-                    )
-                case let .json(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/json; charset=utf-8"
                     )
                 }
                 return (request, body)
