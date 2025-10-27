@@ -1,26 +1,26 @@
-import Testing
+import AsyncHTTPClient
+import Foundation
+import HTTPTypes
 import Logging
 import OpenAIAsyncHTTPClient
+import OpenAPIAsyncHTTPClient
+import OpenAPIRuntime
 import SwiftOpenAITypes
+import Testing
 import WSClient
 
 #if os(Linux)
-@preconcurrency import struct Foundation.URL
-@preconcurrency import struct Foundation.Data
-@preconcurrency import struct Foundation.Date
+    @preconcurrency import struct Foundation.URL
+    @preconcurrency import struct Foundation.Data
+    @preconcurrency import struct Foundation.Date
 #else
-import struct Foundation.URL
-import struct Foundation.Data
-import struct Foundation.Date
+    import struct Foundation.URL
+    import struct Foundation.Data
+    import struct Foundation.Date
 #endif
-import AsyncHTTPClient
-import HTTPTypes
-import OpenAPIRuntime
-import OpenAPIAsyncHTTPClient
-import Foundation
 
 #if os(Linux)
-import FoundationNetworking
+    import FoundationNetworking
 #endif
 
 struct OpenAIAsyncHTTPClientTest {
@@ -35,40 +35,37 @@ struct OpenAIAsyncHTTPClientTest {
             serverURL: URL(string: "https://api.openai.com/v1")!,
             transport: AsyncHTTPClientTransport(),
             middlewares: [
-                authMiddleware,
+                authMiddleware
             ]
-        )}()
+        )
+    }()
 
     @Test func makeSimpleRequest() async throws {
 
-        let output = try await client
+        let output =
+            try await client
             .createChatCompletion(
                 .init(
                     body:
-                            .json(
-                                .init(
-                                    value1: .init(
-                                        value1: .init(
-//                                            metadata: <#T##Components.Schemas.Metadata?#>,
-//                                            temperature: <#T##Double?#>,
-//                                            top_p: <#T##Double?#>,
-//                                            user: <#T##String?#>,
-//                                            service_tier: <#T##Components.Schemas.ServiceTier?#>
-                                        )
-                                    ),
-                                    value2: .init(
-                                        messages: [.ChatCompletionRequestSystemMessage(
+                        .json(
+                            .init(
+                                value1: .init(
+                                    value1: .init(),
+                                    value2: .init()
+                                ),
+                                value2: .init(
+                                    messages: [
+                                        .ChatCompletionRequestSystemMessage(
                                             .init(
                                                 content: .case1("Say hello"),
                                                 role: .system
                                             )
-                                        )],
-                                        model: .init(
-                                            value2: .gpt_hyphen_4_period_1_hyphen_nano
                                         )
-                                    )
+                                    ],
+                                    model: .ChatModel(.gpt_hyphen_5_hyphen_nano)
                                 )
                             )
+                        )
                 )
             )
             .ok
@@ -78,7 +75,8 @@ struct OpenAIAsyncHTTPClientTest {
 
     @Test func audioTranscriptionBuffered() async throws {
 
-        let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
+        let audioFileUrl = Bundle.module.url(
+            forResource: "Resources/amazing-things", withExtension: "wav")!
         let audioData = try Data(contentsOf: audioFileUrl)
 
         //        For a buffered example, just provide an array of the part values, such as:
@@ -95,16 +93,22 @@ struct OpenAIAsyncHTTPClientTest {
                             filename: audioFileUrl.lastPathComponent
                         )
                     ),
-                    .model(.init(payload: .init(body: .init("whisper-1")))),
+                    .model(
+                        .init(
+                            payload: .init(
+                                body: .init(
+                                    Components.Schemas.AudioTranscription.modelPayload
+                                        .gpt_hyphen_4o_hyphen_transcribe_hyphen_diarize.rawValue)))),
                     .response_format(
                         .init(
                             payload: .init(
                                 body: .init(
-                                    Components.Schemas.AudioResponseFormat.srt.rawValue
+                                    // Components.Schemas.AudioResponseFormat.diarized_json.rawValue
+                                    Components.Schemas.AudioResponseFormat.json.rawValue
                                 )
                             )
                         )
-                    )
+                    ),
                 ]
             )
         )
@@ -115,6 +119,9 @@ struct OpenAIAsyncHTTPClientTest {
             switch ok.body {
             case .json(let jsonPayload):
                 switch jsonPayload {
+                case .CreateTranscriptionResponseDiarizedJson(let diarized):
+                    print("🥁")
+                    dump(diarized)
                 case .CreateTranscriptionResponseVerboseJson(let verbose):
                     print("🥁")
                     dump(verbose)
@@ -139,7 +146,7 @@ struct OpenAIAsyncHTTPClientTest {
                 dump(jsonPayload)
             }
         default:
-            break
+            assertionFailure("4xx response")
         }
     }
 
@@ -171,8 +178,11 @@ struct OpenAIAsyncHTTPClientTest {
 
         let data = input.data(using: .utf8)!
         let decoder = JSONDecoder()
-        let result = try! decoder.decode(Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
+        let result = try! decoder.decode(
+            Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
         switch result {
+        case .CreateTranscriptionResponseDiarizedJson(_):
+            assertionFailure()
         case .CreateTranscriptionResponseVerboseJson(let object):
             #expect(object.text.count >= 1)
         case .CreateTranscriptionResponseJson(_):
@@ -180,36 +190,113 @@ struct OpenAIAsyncHTTPClientTest {
         }
     }
 
+    @Test func decodingJsonStringFromDiarizationModel() async throws {
+        let input = """
+            {
+              "text": "Amazing things.",
+              "usage": {
+                "input_token_details": {
+                  "audio_tokens": 20,
+                  "text_tokens": 0
+                },
+                "input_tokens": 20,
+                "output_tokens": 100,
+                "total_tokens": 120,
+                "type": "tokens"
+              }
+            }
+            """
+
+        let data = input.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        let result = try! decoder.decode(
+            Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
+        switch result {
+        case .CreateTranscriptionResponseDiarizedJson(_):
+            assertionFailure()
+        case .CreateTranscriptionResponseVerboseJson(_):
+            assertionFailure()
+        case .CreateTranscriptionResponseJson(let object):
+            #expect(object.text.count >= 1)
+        }
+    }
+
+    @Test func decodingDiarizedJsonString() async throws {
+        let input = """
+            {
+                "segments": [
+                    {
+                    "end": 1.45,
+                    "id": "seg_0",
+                    "speaker": "A",
+                    "start": 0.10000000000000009,
+                    "text": " Amazing things.",
+                    "type": "transcript.text.segment"
+                    }
+                ],
+                "text": "Amazing things.",
+                "usage": {
+                    "input_token_details": {
+                        "audio_tokens": 20,
+                        "text_tokens": 0
+                    },
+                    "input_tokens": 20,
+                    "output_tokens": 99,
+                    "total_tokens": 119,
+                    "type": "tokens"
+                }
+            }
+            """
+        let data = input.data(using: .utf8)!
+        let decoder = JSONDecoder()
+
+        do {
+            let diarizedJsonObject = try! decoder.decode(
+                Components.Schemas.CreateTranscriptionResponseDiarizedJson.self, from: data)
+            #expect(diarizedJsonObject.text.count >= 1)
+            #expect(diarizedJsonObject.segments.count >= 1)
+        }
+
+        do {
+            let result = try! decoder.decode(
+                Operations.createTranscription.Output.Ok.Body.jsonPayload.self, from: data)
+            switch result {
+            case .CreateTranscriptionResponseDiarizedJson(let object):
+                #expect(object.text.count >= 1)
+            case .CreateTranscriptionResponseVerboseJson(_):
+                assertionFailure()
+            case .CreateTranscriptionResponseJson(_):
+                assertionFailure()
+            }
+        }
+    }
+
     @Test func streamingChatCompletion() async throws {
-        let response = try await client
+        let response =
+            try await client
             .createChatCompletion(
                 .init(
                     body:
-                            .json(
-                                .init(
-                                    value1: .init(
-                                        value1: .init(
-//                                            metadata: <#T##Components.Schemas.Metadata?#>,
-//                                            temperature: <#T##Double?#>,
-//                                            top_p: <#T##Double?#>,
-//                                            user: <#T##String?#>,
-//                                            service_tier: <#T##Components.Schemas.ServiceTier?#>
-                                        )
-                                    ),
-                                    value2: .init(
-                                        messages: [.ChatCompletionRequestSystemMessage(
+                        .json(
+                            .init(
+                                value1: .init(
+                                    value1: .init(),
+                                    value2: .init()
+                                ),
+                                value2: .init(
+                                    messages: [
+                                        .ChatCompletionRequestSystemMessage(
                                             .init(
                                                 content: .case1("Say hello"),
                                                 role: .system
                                             )
-                                        )],
-                                        model: .init(
-                                            value2: .gpt_hyphen_4_period_1_hyphen_nano
-                                        ),
-                                        stream: true
-                                    )
+                                        )
+                                    ],
+                                    model: .ChatModel(.gpt_hyphen_4_period_1_hyphen_nano),
+                                    stream: true
                                 )
                             )
+                        )
                 )
             )
 
@@ -217,7 +304,8 @@ struct OpenAIAsyncHTTPClientTest {
         case .ok(let ok):
             switch ok.body {
             case .text_event_hyphen_stream(let httpBody):
-                let stream = httpBody.asDecodedServerSentEventsWithJSONData(of: Components.Schemas.CreateChatCompletionStreamResponse.self)
+                let stream = httpBody.asDecodedServerSentEventsWithJSONData(
+                    of: Components.Schemas.CreateChatCompletionStreamResponse.self)
                 do {
                     for try await event in stream {
                         // the last data is "[DONE]", that's why it will throw decoding error
@@ -243,12 +331,12 @@ struct OpenAIAsyncHTTPClientTest {
         }
 
     }
-    
+
     @Test func structuredOutput() async throws {
         let response = try await client.createChatCompletion(
             body: .json(
                 .init(
-                    value1: .init(value1: .init()),
+                    value1: .init(value1: .init(), value2: .init()),
                     value2: .init(
                         messages: [
                             .ChatCompletionRequestSystemMessage(
@@ -266,9 +354,9 @@ struct OpenAIAsyncHTTPClientTest {
                                     ),
                                     role: .user
                                 )
-                            )
+                            ),
                         ],
-                        model: .init(value2: .gpt_hyphen_4o),
+                        model: .ChatModel(.gpt_hyphen_4o),
                         response_format: .ResponseFormatJsonSchema(
                             .init(
                                 _type: .json_schema,
@@ -283,7 +371,7 @@ struct OpenAIAsyncHTTPClientTest {
                                                     "sentiment": ["type": "boolean"]
                                                 ],
                                                 "additionalProperties": false,
-                                                "required": ["sentiment"]
+                                                "required": ["sentiment"],
                                             ]
                                         )
                                     ),
@@ -295,18 +383,20 @@ struct OpenAIAsyncHTTPClientTest {
                 )
             )
         )
-        
+
         dump(response)
     }
 
     @Test func tryWSSTranscription() async throws {
-        let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
+        let audioFileUrl = Bundle.module.url(
+            forResource: "Resources/amazing-things", withExtension: "wav")!
         let audioData = try Data(contentsOf: audioFileUrl)
 
         let logger = Logger(label: "AHC Tests")
 
-        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: .init(audioData))
-        let audioAppendData = try JSONEncoder().encode(audioAppend) // does not work. we need to send string
+        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(
+            _type: .input_audio_buffer_period_append, audio: .init(audioData))
+        let audioAppendData = try JSONEncoder().encode(audioAppend)  // does not work. we need to send string
         let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
         // connect to wss://api.openai.com/v1/realtime?intent=transcription
@@ -332,31 +422,30 @@ struct OpenAIAsyncHTTPClientTest {
             inbound,
             outbound,
             context in
-            
+
             let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
                 _type: .transcription_session_period_update,
                 session: .init(
-//                    modalities: [.audio], // Unknown parameter: 'session.modalities
-                    input_audio_format: .pcm16,
-                    input_audio_transcription: .init(model: .whisper_hyphen_1),
+                    //                    modalities: [.audio], // Unknown parameter: 'session.modalities
                     turn_detection: .init(
                         _type: .server_vad,
-//                        eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
+                        //                        eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
                         threshold: 0.5,
                         prefix_padding_ms: 300,
                         silence_duration_ms: 500,
-//                        create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
-//                        interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
+                        //                        create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
+                        //                        interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
                     ),
                     input_audio_noise_reduction: .init(_type: .near_field),
-                    include: ["item.input_audio_transcription.logprobs"],
-                    client_secret: nil
+                    input_audio_format: .pcm16,
+                    input_audio_transcription: .init(model: .whisper_hyphen_1),
+                    include: [.item_period_input_audio_transcription_period_logprobs]
                 )
             )
 
             let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
             try await outbound.write(.binary(.init(data: sessionUpdateData)))
-//            try await outbound.write(.binary(.init(data: audioAppendData)))
+            //            try await outbound.write(.binary(.init(data: audioAppendData)))
             try await outbound.write(.text(audioAppendDataString))
 
             try await withThrowingTaskGroup { group in
@@ -364,7 +453,8 @@ struct OpenAIAsyncHTTPClientTest {
                     for try await frame in inbound {
                         print("frame", frame.description)
                         do {
-                            let event = try JSONDecoder().decode(Components.Schemas.RealtimeServerEvent.self, from: frame.data)
+                            let event = try JSONDecoder().decode(
+                                Components.Schemas.RealtimeServerEvent.self, from: frame.data)
                             dump(event)
                         } catch {
                             print("error", error)
@@ -377,110 +467,116 @@ struct OpenAIAsyncHTTPClientTest {
                     try await outbound.write(.binary(.init(data: audioAppendData)))
                 }
 
-//                group.addTask {
-//                    while true {
-//                        try await outbound.write(.pong)
-//                        try await Task.sleep(nanoseconds: 1_000_000_000)
-//                    }
-//                }
+                //                group.addTask {
+                //                    while true {
+                //                        try await outbound.write(.pong)
+                //                        try await Task.sleep(nanoseconds: 1_000_000_000)
+                //                    }
+                //                }
 
                 try await group.waitForAll()
             }
 
-
         }
 
-//        try await Task.sleep(for: .seconds(5))
+        //        try await Task.sleep(for: .seconds(5))
         print("wsCloseFrame", wsCloseFrame!)
 
     }
 
     #if os(macOS)
-    @Test func tryWSSTranscriptionURLSession() async throws {
-        let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
-        let wavData = try Data(contentsOf: audioFileUrl)
-        let audioData = wavData.subdata(in: 44..<wavData.count)
+        // @Test 
+        func tryWSSTranscriptionURLSession() async throws {
+            let audioFileUrl = Bundle.module.url(
+                forResource: "Resources/amazing-things", withExtension: "wav")!
+            let wavData = try Data(contentsOf: audioFileUrl)
+            let audioData = wavData.subdata(in: 44..<wavData.count)
 
-        let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: .init(audioData))
-        let audioAppendData = try JSONEncoder().encode(audioAppend)
-        let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
+            let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(
+                _type: .input_audio_buffer_period_append, audio: .init(audioData))
+            let audioAppendData = try JSONEncoder().encode(audioAppend)
+            let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
 
-        let url = URL(string: "wss://api.openai.com/v1/realtime?intent=transcription")!
-        var request = URLRequest(url: url)
-        request.addValue("Bearer \(getEnvironmentVariable("OPENAI_API_KEY")!)", forHTTPHeaderField: "Authorization")
-        request.addValue("realtime=v1", forHTTPHeaderField: "OpenAI-Beta")
+            let url = URL(string: "wss://api.openai.com/v1/realtime?intent=transcription")!
+            var request = URLRequest(url: url)
+            request.addValue(
+                "Bearer \(getEnvironmentVariable("OPENAI_API_KEY")!)",
+                forHTTPHeaderField: "Authorization")
+            request.addValue("realtime=v1", forHTTPHeaderField: "OpenAI-Beta")
 
-        let webSocketTask = URLSession.shared.webSocketTask(with: request)
-        webSocketTask.resume()
-        
-        let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
-            _type: .transcription_session_period_update,
-            session: .init(
-//                modalities: [.audio], // Unknown parameter: 'session.modalities
-                input_audio_format: .pcm16,
-                input_audio_transcription: .init(model: .whisper_hyphen_1),
-                turn_detection: .init(
-                    _type: .server_vad,
-//                    eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
-                    threshold: 0.5,
-                    prefix_padding_ms: 300,
-                    silence_duration_ms: 500, // Unknown parameter: 'session.turn_detection.silence_duration_ms when type is semantic_vad
-//                    create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
-//                    interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
-                ),
-                input_audio_noise_reduction: .init(_type: .near_field),
-                include: ["item.input_audio_transcription.logprobs"],
-                client_secret: nil
+            let webSocketTask = URLSession.shared.webSocketTask(with: request)
+            webSocketTask.resume()
+
+            let sessionUpdate = Components.Schemas.RealtimeClientEventTranscriptionSessionUpdate(
+                _type: .transcription_session_period_update,
+                session: .init(
+                    //                modalities: [.audio], // Unknown parameter: 'session.modalities
+                    turn_detection: .init(
+                        _type: .server_vad,
+                        //                    eagerness: .auto, // Unknown parameter: 'session.turn_detection.eagerness
+                        threshold: 0.5,
+                        prefix_padding_ms: 300,
+                        silence_duration_ms: 500,  // Unknown parameter: 'session.turn_detection.silence_duration_ms when type is semantic_vad
+                        //                    create_response: true, // Unknown parameter: 'session.turn_detection.create_response'
+                        //                    interrupt_response: true // Unknown parameter: 'session.turn_detection.interrupt_response'
+                    ),
+                    input_audio_noise_reduction: .init(_type: .near_field),
+                    input_audio_format: .pcm16,
+                    input_audio_transcription: .init(model: .whisper_hyphen_1),
+                    include: [.item_period_input_audio_transcription_period_logprobs]
+                )
             )
-        )
-        let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
-        let sessionUpdateDataString = String(data: sessionUpdateData, encoding: .utf8)!
-        try await webSocketTask.send(.string(sessionUpdateDataString))
-        try await webSocketTask.send(.string(audioAppendDataString))
+            let sessionUpdateData = try JSONEncoder().encode(sessionUpdate)
+            let sessionUpdateDataString = String(data: sessionUpdateData, encoding: .utf8)!
+            try await webSocketTask.send(.string(sessionUpdateDataString))
+            try await webSocketTask.send(.string(audioAppendDataString))
 
-        await withThrowingTaskGroup(of: Void.self) { group in
-            group.addTask {
-                while true {
-                    let message = try await webSocketTask.receive()
-                    switch message {
-                    case .data(let data):
-                        print("frame received (data)")
-                        do {
-                            let event = try JSONDecoder().decode(Components.Schemas.RealtimeServerEvent.self, from: data)
-                            dump(event)
-                        } catch {
-                            print("error decoding", error)
-                            if let json = try? JSONSerialization.jsonObject(with: data) {
-                                print("json", json)
-                            } else if let str = String(data: data, encoding: .utf8) {
-                                print("string", str)
+            await withThrowingTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    while true {
+                        let message = try await webSocketTask.receive()
+                        switch message {
+                        case .data(let data):
+                            print("frame received (data)")
+                            do {
+                                let event = try JSONDecoder().decode(
+                                    Components.Schemas.RealtimeServerEvent.self, from: data)
+                                dump(event)
+                            } catch {
+                                print("error decoding", error)
+                                if let json = try? JSONSerialization.jsonObject(with: data) {
+                                    print("json", json)
+                                } else if let str = String(data: data, encoding: .utf8) {
+                                    print("string", str)
+                                }
                             }
+                        case .string(let text):
+                            print("frame received (string): \(text)")
+                        @unknown default:
+                            fatalError()
                         }
-                    case .string(let text):
-                        print("frame received (string): \(text)")
-                    @unknown default:
-                        fatalError()
                     }
                 }
+                group.addTask {
+                    //                let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: Data().base64EncodedString())
+                    //                let audioAppendData = try JSONEncoder().encode(audioAppend)
+                    //                let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
+                    //                try await webSocketTask.send(.string(audioAppendDataString))
+                    //                try await webSocketTask.send(.string(audioAppendDataString))
+                    //                try await webSocketTask.send(.string(audioAppendDataString))
+                    //                try await webSocketTask.send(.string(audioAppendDataString))
+                    try await Task.sleep(for: .seconds(2))
+                }
             }
-            group.addTask {
-//                let audioAppend = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(_type: .input_audio_buffer_period_append, audio: Data().base64EncodedString())
-//                let audioAppendData = try JSONEncoder().encode(audioAppend)
-//                let audioAppendDataString = String(data: audioAppendData, encoding: .utf8)!
-//                try await webSocketTask.send(.string(audioAppendDataString))
-//                try await webSocketTask.send(.string(audioAppendDataString))
-//                try await webSocketTask.send(.string(audioAppendDataString))
-//                try await webSocketTask.send(.string(audioAppendDataString))
-                try await Task.sleep(for: .seconds(2))
-            }
+
+            webSocketTask.cancel(with: .goingAway, reason: nil)
         }
-        
-        webSocketTask.cancel(with: .goingAway, reason: nil)
-    }
     #endif
 }
 
-func undocumentedPayloadPrinter(_ statusCode: Int, _ undocumentedPayload: UndocumentedPayload) async throws {
+func undocumentedPayloadPrinter(_ statusCode: Int, _ undocumentedPayload: UndocumentedPayload)
+    async throws
+{
     let buffer = try await undocumentedPayload.body?.collect(upTo: 1024 * 1035 * 2, using: .init())
     let description = String(buffer: buffer!)
     print("❌", statusCode, description)

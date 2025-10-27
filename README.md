@@ -35,6 +35,9 @@ targets: [
     ]),
 ]
 ```
+
+## Notes
+
 ### WebSocket
 
 First incoming message is a `transcription_session.created` event.
@@ -60,4 +63,12 @@ First incoming message is a `transcription_session.created` event.
         "include": null
     }
 }
+```
+
+## RealtimeServerEvent.discriminator
+
+Run the following to find the `type` value for each `RealtimeServerEvent` and use them to create the mapping in the `overlay.json`
+
+```bash
+yq '.components.schemas | .[] | select(key | test("RealtimeServerEvent.*")) | .properties.type.enum[]' openapi.yaml
 ```

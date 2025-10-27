@@ -1,0 +1,14 @@
+{
+  "name": "openapi-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for OpenAPI file processing",
+  "private": true,
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "yaml": "^2.8.1"
+  },
+  "scripts": {
+    "test": "node tes.js",
+    "cleanup": "node cleanup-anyof-nulls.js"
+  }
+}

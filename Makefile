@@ -35,11 +35,34 @@ download-openapi:
 	curl -o original.yaml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
 	# Create a copy of original.yaml as openapi.yaml
 	cp original.yaml openapi.yaml
-	# Replace 9223372036854776000 with 922337203685477600 
+	# Replace 9223372036854776000 with 922337203685477600
 	sed -i '' 's/9223372036854776000/922337203685477600/g' ./openapi.yaml
 
+cleanup-anyof-nulls:
+	# Run the cleanup script to remove null types from anyOf arrays
+	cd scripts && node cleanup-anyof-nulls.js ../openapi.yaml ../openapi.yaml
+const-to-enum:
+	# Run the cleanup script to remove null types from anyOf arrays
+	cd scripts && node const-to-enum.js ../openapi.yaml ../openapi.yaml
+
+format-byte-to-content-encoding:
+	# Format byte to contentEncoding where applicable
+	cd scripts && node format-byte-to-content-encoding.js ../openapi.yaml ../openapi.yaml
+
+replace-anyof-with-oneof:
+	# Replace `anyOf:` with `oneOf:`
+	sed -i '' 's/anyOf:/oneOf:/g' ./openapi.yaml
+
+fix-nullable-from-v310:
+	cd scripts && node fix-nullable-from-v310.js ../openapi.yaml ../openapi.yaml
+
+removed-nonexistent-required-properties:
+	cd scripts && node removed-nonexistent-required-properties.js ../openapi.yaml ../openapi.yaml
+
 overlay-openapi:
+	node scripts/generate_overlay_for_multipart_required.js ../openapi.yaml
 	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay.json -o ./openapi.yaml
+	openapi-format --no-sort ./openapi.yaml --overlayFile scripts/overlay_generated_for_multipart_required.yaml -o ./openapi.yaml
 
 generate-openapi:
 	swift run swift-openapi-generator generate \
@@ -59,5 +82,11 @@ generate-openapi:
 
 prepare-openapi:
 	make download-openapi
+	make cleanup-anyof-nulls
+	make replace-anyof-with-oneof
+	make const-to-enum
+	make format-byte-to-content-encoding
+	make fix-nullable-from-v310
+	make removed-nonexistent-required-properties
 	make overlay-openapi
 	make generate-openapi
