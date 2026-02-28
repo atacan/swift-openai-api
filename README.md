@@ -1,5 +1,8 @@
 ## Swift OpenAI API
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fatacan%2Fswift-openai-api%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/atacan/swift-openai-api)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fatacan%2Fswift-openai-api%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/atacan/swift-openai-api)
+
 This is a Swift package for the OpenAI public API. It is generated from the 
 [official OpenAI OpenAPI specification](https://github.com/openai/openai-openapi) 
 using [Swift OpenAPI Generator](https://swiftpackageindex.com/apple/swift-openapi-generator).
