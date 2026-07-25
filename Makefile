@@ -81,6 +81,12 @@ test-on-linux: ## Run swift tests inside a Docker container
 		$(DOCKER_IMAGE) \
 		swift test
 
+download-openapi:
+	# Download the openapi.yaml file from remote repo as original.yaml file
+	curl -o original_openapi.yaml https://raw.githubusercontent.com/openai/openai-openapi/refs/heads/main/openapi.yaml
+	# Replace 9223372036854776000 with 922337203685477600
+	sed -i '' 's/9223372036854776000/922337203685477600/g' ./original_openapi.yaml
+
 regenerate:
 	uvx --from git+https://github.com/atacan/swift-package-generator-based-on-openapi.git swift-bootstrapper .
 
