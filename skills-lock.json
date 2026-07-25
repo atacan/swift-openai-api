@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "openapi-overlay": {
+      "source": "atacan/agentic-coding-files",
+      "sourceType": "github",
+      "skillPath": "skills/openapi-overlay/SKILL.md",
+      "computedHash": "6b5f17d23026068c2b802e7b8f401f8db0123e66ed598acd17c874f26b464186"
+    }
+  }
+}
