@@ -24395,8 +24395,8 @@ components:
             $ref: '#/components/schemas/PredictionContent'
           seed:
             type: integer
-            minimum: -9223372036854776000
-            maximum: 9223372036854776000
+            minimum: -922337203685477600
+            maximum: 922337203685477600
             deprecated: true
             description: 'This feature is in Beta.
 
