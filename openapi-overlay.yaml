@@ -1,0 +1,40 @@
+# OpenAPI Overlay for SwiftOpenaiApi
+# This file allows you to make manual corrections to the OpenAPI specification
+# without modifying the original file. The bootstrapper will apply this overlay
+# on top of the cleaned openapi.yaml file.
+#
+# For overlay syntax, see: https://github.com/OAI/Overlay-Specification
+
+overlay: 1.0.0
+info:
+  title: SwiftOpenaiApi API Overlay
+  version: 1.0.0
+
+# Example actions (uncomment and modify as needed):
+# actions:
+#   # Make a field required
+#   - target: "$.components.schemas.User"
+#     update:
+#       required:
+#         - user_id
+#         - email
+#
+#   # Add a missing property
+#   - target: "$.components.schemas.Product"
+#     update:
+#       properties:
+#         newField:
+#           type: string
+#           description: "A field that was missing in the original spec"
+#
+#   # Fix an incorrect type
+#   - target: "$.components.schemas.Order.properties.total"
+#     update:
+#       type: number
+#       format: double
+#
+#   # Remove a deprecated field
+#   - target: "$.components.schemas.LegacyModel.properties.oldField"
+#     remove: true
+
+actions: []

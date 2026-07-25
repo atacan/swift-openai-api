@@ -1,0 +1,28 @@
+# Swift Package Manager
+.build/
+.netrc
+.swiftpm/
+/Packages
+DerivedData/
+xcuserdata/
+
+# Environment files (keep .env.example, ignore actual .env)
+.env
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Python (if using the bootstrapper locally)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Temporary files
+*.swp
+*.tmp
+*~
