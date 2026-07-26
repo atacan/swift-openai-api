@@ -11,10 +11,12 @@ import UsefulThings
 @preconcurrency import struct Foundation.URL
 @preconcurrency import struct Foundation.Data
 @preconcurrency import struct Foundation.Date
+@preconcurrency import struct Foundation.UUID
 #else
 import struct Foundation.URL
 import struct Foundation.Data
 import struct Foundation.Date
+import struct Foundation.UUID
 #endif
 
 struct SwiftOpenaiApiTests {
@@ -38,12 +40,12 @@ struct SwiftOpenaiApiTests {
                     value1: Components.Schemas.CreateModelResponseProperties.init(
                         value1: Components.Schemas.ModelResponseProperties.init(
                             metadata: Components.Schemas.Metadata.init(additionalProperties: ["my_metadata": "my_value"]),
-                            top_logprobs: Int?,
-                            temperature: Double?,
-                            top_p: Double?,
-                            user: String?,
-                            safety_identifier: String?,
-                            prompt_cache_key: String?,
+                            top_logprobs: 4,
+                            temperature: 1.2,
+                            top_p: Double?.none,
+                            user: String?.none,
+                            safety_identifier: UUID().uuidString,
+                            prompt_cache_key: "Stable key for similar requests",
                             service_tier: Components.Schemas.ServiceTier.auto,
                             prompt_cache_retention: Components.Schemas.ModelResponseProperties.prompt_cache_retentionPayload.in_memory
                         ),
@@ -52,7 +54,7 @@ struct SwiftOpenaiApiTests {
                                 ttl: Components.Schemas.PromptCacheTTLEnum._30m,
                                 mode: Components.Schemas.PromptCacheModeEnum.implicit
                             ),
-                            top_logprobs: Int?
+                            top_logprobs: 3
                         )
                     ),
                     value2: Components.Schemas.CreateChatCompletionRequest.Value2Payload.init(
@@ -78,5 +80,7 @@ struct SwiftOpenaiApiTests {
                 )
             )
         )
+
+        dump(response)
     }
 }
