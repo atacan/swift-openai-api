@@ -8,6 +8,9 @@ xcuserdata/
 
 # Environment files (keep .env.example, ignore actual .env)
 .env
+**.env
+.envrc
+**.envrc
 
 # macOS
 .DS_Store
