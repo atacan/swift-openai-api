@@ -40,7 +40,7 @@ struct SwiftOpenaiApiTests {
                     value1: Components.Schemas.CreateModelResponseProperties.init(
                         value1: Components.Schemas.ModelResponseProperties.init(
                             metadata: Components.Schemas.Metadata.init(additionalProperties: ["my_metadata": "my_value"]),
-                            top_logprobs: nil, // The 'top_logprobs' parameter is only allowed when 'logprobs' is enabled.,
+                            top_logprobs: nil,  // The 'top_logprobs' parameter is only allowed when 'logprobs' is enabled.,
                             temperature: 1,
                             top_p: Double?.none,
                             user: String?.none,
@@ -54,7 +54,7 @@ struct SwiftOpenaiApiTests {
                                 ttl: Components.Schemas.PromptCacheTTLEnum._30m,
                                 mode: Components.Schemas.PromptCacheModeEnum.implicit
                             ),
-                            top_logprobs: nil // The 'top_logprobs' parameter is only allowed when 'logprobs' is enabled.
+                            top_logprobs: nil  // The 'top_logprobs' parameter is only allowed when 'logprobs' is enabled.
                         )
                     ),
                     value2: Components.Schemas.CreateChatCompletionRequest.Value2Payload.init(
@@ -75,7 +75,45 @@ struct SwiftOpenaiApiTests {
                         model: Components.Schemas.ModelIdsShared.init(
                             value1: String?.none,
                             value2: Components.Schemas.ModelIdsShared.Value2Payload.gpt_hyphen_5_period_6_hyphen_luna
-                        )
+                        ),
+                        modalities: Components.Schemas.ResponseModalities?.none, // Unknown parameter: 'modalities'
+                        verbosity: Components.Schemas.Verbosity.high,
+                        reasoning_effort: Components.Schemas.ReasoningEffort.low,
+                        max_completion_tokens: Int?.none,
+                        frequency_penalty: Double?.none,
+                        presence_penalty: Double?.none,
+                        web_search_options: nil, // Unknown parameter: 'web_search_options'.
+                        // web_search_options: Components.Schemas.CreateChatCompletionRequest.Value2Payload.web_search_optionsPayload.init(
+                        //     user_location:
+                        //         Components.Schemas.CreateChatCompletionRequest.Value2Payload.web_search_optionsPayload.user_locationPayload.init(
+                        //             _type: Components.Schemas.CreateChatCompletionRequest.Value2Payload.web_search_optionsPayload.user_locationPayload._typePayload.approximate,
+                        //             approximate: Components.Schemas.WebSearchLocation.init(country: "USA", region: "CA", city: "SF", timezone: String?.none)
+                        //         ),
+                        //     search_context_size: Components.Schemas.WebSearchContextSize.low
+                        // ),
+                        top_logprobs: Int?.none,
+                        response_format: Components.Schemas.CreateChatCompletionRequest.Value2Payload.response_formatPayload.ResponseFormatText(
+                            Components.Schemas.ResponseFormatText.init(
+                                _type: Components.Schemas.ResponseFormatText._typePayload.text
+                            )
+                        ),
+                        audio: Components.Schemas.CreateChatCompletionRequest.Value2Payload.audioPayload?.none,
+                        store: true,
+                        moderation: Components.Schemas.ModerationParam?.none,
+                        stream: false,
+                        stop: Components.Schemas.StopConfiguration?.none,
+                        logit_bias: Components.Schemas.CreateChatCompletionRequest.Value2Payload.logit_biasPayload?.none,
+                        logprobs: Bool?.none,
+                        max_tokens: Int?.none,
+                        n: Int?.none,
+                        prediction: Components.Schemas.PredictionContent?.none,
+                        seed: Int?.none,
+                        stream_options: Components.Schemas.ChatCompletionStreamOptions?.none,
+                        tools: Components.Schemas.CreateChatCompletionRequest.Value2Payload.toolsPayload?.none,
+                        tool_choice: Components.Schemas.ChatCompletionToolChoiceOption?.none,
+                        parallel_tool_calls: Components.Schemas.ParallelToolCalls?.none,
+                        function_call: Components.Schemas.CreateChatCompletionRequest.Value2Payload.function_callPayload?.none,
+                        functions: [Components.Schemas.ChatCompletionFunctions]?.none
                     )
                 )
             )
