@@ -31,9 +31,52 @@ struct SwiftOpenaiApiTests {
         )
     }()
 
-    @Test func example() async throws {
-        // let response = try await client.<#method#>(
-        //
-        // )
+    @Test func exampleChatCompletion() async throws {
+        let response = try await client.createChatCompletion(
+            body: Operations.createChatCompletion.Input.Body.json(
+                .init(
+                    value1: Components.Schemas.CreateModelResponseProperties.init(
+                        value1: Components.Schemas.ModelResponseProperties.init(
+                            metadata: Components.Schemas.Metadata.init(additionalProperties: ["my_metadata": "my_value"]),
+                            top_logprobs: Int?,
+                            temperature: Double?,
+                            top_p: Double?,
+                            user: String?,
+                            safety_identifier: String?,
+                            prompt_cache_key: String?,
+                            service_tier: Components.Schemas.ServiceTier.auto,
+                            prompt_cache_retention: Components.Schemas.ModelResponseProperties.prompt_cache_retentionPayload.in_memory
+                        ),
+                        value2: Components.Schemas.CreateModelResponseProperties.Value2Payload.init(
+                            prompt_cache_options: Components.Schemas.PromptCacheOptionsParam.init(
+                                ttl: Components.Schemas.PromptCacheTTLEnum._30m,
+                                mode: Components.Schemas.PromptCacheModeEnum.implicit
+                            ),
+                            top_logprobs: Int?
+                        )
+                    ),
+                    value2: Components.Schemas.CreateChatCompletionRequest.Value2Payload.init(
+                        messages: [
+                            Components.Schemas.ChatCompletionRequestMessage.ChatCompletionRequestSystemMessage(
+                                Components.Schemas.ChatCompletionRequestSystemMessage.init(
+                                    content: .case1("You are a helpful assistant."),
+                                    role: Components.Schemas.ChatCompletionRequestSystemMessage.rolePayload.system
+                                )
+                            ),
+                            Components.Schemas.ChatCompletionRequestMessage.ChatCompletionRequestUserMessage(
+                                Components.Schemas.ChatCompletionRequestUserMessage.init(
+                                    content: Components.Schemas.ChatCompletionRequestUserMessage.contentPayload.case1("How are you?"),
+                                    role: Components.Schemas.ChatCompletionRequestUserMessage.rolePayload.user
+                                )
+                            ),
+                        ],
+                        model: Components.Schemas.ModelIdsShared.init(
+                            value1: String?.none,
+                            value2: Components.Schemas.ModelIdsShared.Value2Payload.gpt_hyphen_5_period_4_hyphen_nano
+                        )
+                    )
+                )
+            )
+        )
     }
 }
