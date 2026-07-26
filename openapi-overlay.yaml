@@ -5,7 +5,7 @@
 #
 # For overlay syntax, see: https://github.com/OAI/Overlay-Specification
 
-overlay: 1.0.0
+overlay: 1.1.0
 info:
   title: SwiftOpenaiApi API Overlay
   version: 1.0.0
@@ -40,4 +40,63 @@ info:
 actions:
   # swift-openapi-generator does not support OpenAPI 3.1 webhooks.
   - target: $.webhooks
+    remove: true
+
+  - target: $.paths.*.post.responses
+    update:
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: The request was malformed, missing required fields, or invalid parameters
+      '401':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Invalid Authentication, Incorrect API key provided, You must be a
+          member of an organization to use the API
+      '403':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Country, region, or territory not supported
+      '404':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: The requested resource was not found
+      '413':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Request body too large
+      '429':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Rate limit reached for requests, You exceeded your current quota,
+          please check your plan and billing details
+      '500':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+          plain/text:
+            schema:
+              type: string
+        description: The server had an error while processing your request
+      '503':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: The engine is currently overloaded, please try again later
+  
+  - target: $.components.schemas.Error.required
     remove: true
