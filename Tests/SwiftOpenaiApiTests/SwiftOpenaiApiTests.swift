@@ -40,21 +40,21 @@ struct SwiftOpenaiApiTests {
                     value1: Components.Schemas.CreateModelResponseProperties.init(
                         value1: Components.Schemas.ModelResponseProperties.init(
                             metadata: Components.Schemas.Metadata.init(additionalProperties: ["my_metadata": "my_value"]),
-                            top_logprobs: 4,
-                            temperature: 1.2,
+                            top_logprobs: nil, // The 'top_logprobs' parameter is only allowed when 'logprobs' is enabled.,
+                            temperature: 1,
                             top_p: Double?.none,
                             user: String?.none,
                             safety_identifier: UUID().uuidString,
                             prompt_cache_key: "Stable key for similar requests",
                             service_tier: Components.Schemas.ServiceTier.auto,
-                            prompt_cache_retention: Components.Schemas.ModelResponseProperties.prompt_cache_retentionPayload.in_memory
+                            prompt_cache_retention: Components.Schemas.ModelResponseProperties.prompt_cache_retentionPayload._24h
                         ),
                         value2: Components.Schemas.CreateModelResponseProperties.Value2Payload.init(
                             prompt_cache_options: Components.Schemas.PromptCacheOptionsParam.init(
                                 ttl: Components.Schemas.PromptCacheTTLEnum._30m,
                                 mode: Components.Schemas.PromptCacheModeEnum.implicit
                             ),
-                            top_logprobs: 3
+                            top_logprobs: nil // The 'top_logprobs' parameter is only allowed when 'logprobs' is enabled.
                         )
                     ),
                     value2: Components.Schemas.CreateChatCompletionRequest.Value2Payload.init(
@@ -74,7 +74,7 @@ struct SwiftOpenaiApiTests {
                         ],
                         model: Components.Schemas.ModelIdsShared.init(
                             value1: String?.none,
-                            value2: Components.Schemas.ModelIdsShared.Value2Payload.gpt_hyphen_5_period_4_hyphen_nano
+                            value2: Components.Schemas.ModelIdsShared.Value2Payload.gpt_hyphen_5_period_6_hyphen_luna
                         )
                     )
                 )
