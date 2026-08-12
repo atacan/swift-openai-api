@@ -26,10 +26,8 @@ function processAnyOf(obj) {
   
   for (const [key, value] of Object.entries(obj)) {
     if (key === 'anyOf' && Array.isArray(value)) {
-      // Filter out null types from anyOf array
-      const filteredArray = value.filter(item => {
-        return !(item && typeof item === 'object' && item.type === 'null');
-      });
+      // Preserve null types in anyOf to allow optional decoding for nullable fields
+      const filteredArray = value;
 
       // If only one element remains, replace anyOf with that element
       if (filteredArray.length === 1) {
