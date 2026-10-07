@@ -1,0 +1,19 @@
+# Install with: pre-commit install
+# pre-commit manages the pinned scanners and their Go build environments.
+minimum_pre_commit_version: "3.2.0"
+default_stages: [pre-commit]
+repos:
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v1.9.0
+    hooks:
+      - id: betterleaks
+        stages: [pre-commit]
+        require_serial: true
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.97.9
+    hooks:
+      - id: trufflehog
+        entry: trufflehog filesystem --results=verified --fail --fail-on-scan-errors --no-update
+        pass_filenames: true
+        stages: [pre-commit]
+        require_serial: true

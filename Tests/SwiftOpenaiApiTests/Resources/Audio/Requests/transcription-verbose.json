@@ -1,0 +1,9 @@
+{
+  "file": "speech.wav",
+  "model": "whisper-1",
+  "response_format": "verbose_json",
+  "timestamp_granularities": [
+    "word",
+    "segment"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "model": "swift-openai-fixture-nonexistent-model",
+  "store": false,
+  "max_output_tokens": 128,
+  "input": "Hello"
+}

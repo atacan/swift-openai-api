@@ -1,0 +1,12 @@
+# Generate the selected realtime schemas and their referenced dependencies.
+generate:
+  - types
+
+accessModifier: public
+
+filter:
+  schemas:
+    - RealtimeClientEventTranscriptionSessionUpdate
+    - RealtimeClientEventInputAudioBufferAppend
+    - RealtimeServerEventConversationItemInputAudioTranscriptionCompleted
+    - RealtimeServerEvent

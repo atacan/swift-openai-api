@@ -1,0 +1,26 @@
+data: {"type":"transcript.text.delta","delta":"Hello","logprobs":[{"token":"Hello","logprob":-0.000013902033970225602,"bytes":[72,101,108,108,111]}]}
+
+data: {"type":"transcript.text.delta","delta":",","logprobs":[{"token":",","logprob":0.0,"bytes":[44]}]}
+
+data: {"type":"transcript.text.delta","delta":" this","logprobs":[{"token":" this","logprob":-6.704273118884885e-7,"bytes":[32,116,104,105,115]}]}
+
+data: {"type":"transcript.text.delta","delta":" is","logprobs":[{"token":" is","logprob":0.0,"bytes":[32,105,115]}]}
+
+data: {"type":"transcript.text.delta","delta":" an","logprobs":[{"token":" an","logprob":0.0,"bytes":[32,97,110]}]}
+
+data: {"type":"transcript.text.delta","delta":" audio","logprobs":[{"token":" audio","logprob":-1.5048530030981055e-6,"bytes":[32,97,117,100,105,111]}]}
+
+data: {"type":"transcript.text.delta","delta":" fixture","logprobs":[{"token":" fixture","logprob":-3.531315314830863e-6,"bytes":[32,102,105,120,116,117,114,101]}]}
+
+data: {"type":"transcript.text.delta","delta":" for","logprobs":[{"token":" for","logprob":0.0,"bytes":[32,102,111,114]}]}
+
+data: {"type":"transcript.text.delta","delta":" decoding","logprobs":[{"token":" decoding","logprob":-0.00008828512363834307,"bytes":[32,100,101,99,111,100,105,110,103]}]}
+
+data: {"type":"transcript.text.delta","delta":" tests","logprobs":[{"token":" tests","logprob":-1.1472419600977446e-6,"bytes":[32,116,101,115,116,115]}]}
+
+data: {"type":"transcript.text.delta","delta":".","logprobs":[{"token":".","logprob":0.0,"bytes":[46]}]}
+
+data: {"type":"transcript.text.done","text":"Hello, this is an audio fixture for decoding tests.","logprobs":[{"token":"Hello","logprob":-0.000013902033970225602,"bytes":[72,101,108,108,111]},{"token":",","logprob":0.0,"bytes":[44]},{"token":" this","logprob":-6.704273118884885e-7,"bytes":[32,116,104,105,115]},{"token":" is","logprob":0.0,"bytes":[32,105,115]},{"token":" an","logprob":0.0,"bytes":[32,97,110]},{"token":" audio","logprob":-1.5048530030981055e-6,"bytes":[32,97,117,100,105,111]},{"token":" fixture","logprob":-3.531315314830863e-6,"bytes":[32,102,105,120,116,117,114,101]},{"token":" for","logprob":0.0,"bytes":[32,102,111,114]},{"token":" decoding","logprob":-0.00008828512363834307,"bytes":[32,100,101,99,111,100,105,110,103]},{"token":" tests","logprob":-1.1472419600977446e-6,"bytes":[32,116,101,115,116,115]},{"token":".","logprob":0.0,"bytes":[46]}],"usage":{"type":"tokens","total_tokens":50,"input_tokens":37,"input_token_details":{"text_tokens":0,"audio_tokens":37},"output_tokens":13}}
+
+data: [DONE]
+

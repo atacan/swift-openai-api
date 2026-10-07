@@ -1,0 +1,5 @@
+{
+  "file": "speech.wav",
+  "model": "gpt-4o-transcribe-diarize",
+  "response_format": "diarized_json"
+}

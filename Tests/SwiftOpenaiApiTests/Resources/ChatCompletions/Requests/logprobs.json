@@ -1,0 +1,8 @@
+{
+  "model": "gpt-4.1-mini",
+  "messages": [{"role": "user", "content": "Reply with exactly: Hello."}],
+  "max_completion_tokens": 16,
+  "store": false,
+  "logprobs": true,
+  "top_logprobs": 2
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "name": "text",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:09.824639+00:00"
+  },
+  {
+    "name": "tool-call",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:11.263356+00:00"
+  },
+  {
+    "name": "structured-output",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:12.401587+00:00"
+  },
+  {
+    "name": "incomplete",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:14.783049+00:00"
+  },
+  {
+    "name": "logprobs",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:16.706468+00:00"
+  },
+  {
+    "name": "stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T11:02:17.567398+00:00"
+  },
+  {
+    "name": "tool-call-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T11:02:19.151406+00:00"
+  },
+  {
+    "name": "incomplete-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T11:02:20.056148+00:00"
+  },
+  {
+    "name": "missing-model",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:20.353388+00:00"
+  },
+  {
+    "name": "invalid-max-output-tokens",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:20.644192+00:00"
+  },
+  {
+    "name": "unknown-model",
+    "status": 404,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:21.022785+00:00"
+  },
+  {
+    "name": "unauthenticated",
+    "status": 401,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:02:21.309911+00:00"
+  },
+  {
+    "name": "reasoning",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:05:43.391651+00:00"
+  },
+  {
+    "name": "tool-result",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T11:10:08.133670+00:00"
+  },
+  {
+    "name": "reasoning-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T11:25:06.644657+00:00"
+  }
+]

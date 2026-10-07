@@ -1,0 +1,454 @@
+# OpenAPI Overlay for SwiftOpenaiApi
+# This file allows you to make manual corrections to the OpenAPI specification
+# without modifying the original file. The bootstrapper will apply this overlay
+# on top of the cleaned openapi.yaml file.
+#
+# For overlay syntax, see: https://github.com/OAI/Overlay-Specification
+
+overlay: 1.0.0
+info:
+  title: SwiftOpenaiApi API Overlay
+  version: 1.0.0
+
+# Example actions (uncomment and modify as needed):
+# actions:
+#   # Make a field required
+#   - target: "$.components.schemas.User"
+#     update:
+#       required:
+#         - user_id
+#         - email
+#
+#   # Add a missing property
+#   - target: "$.components.schemas.Product"
+#     update:
+#       properties:
+#         newField:
+#           type: string
+#           description: "A field that was missing in the original spec"
+#
+#   # Fix an incorrect type
+#   - target: "$.components.schemas.Order.properties.total"
+#     update:
+#       type: number
+#       format: double
+#
+#   # Remove a deprecated field
+#   - target: "$.components.schemas.LegacyModel.properties.oldField"
+#     remove: true
+
+actions:
+  # Dispatch realtime server events by their JSON type values.
+  - target: $.components.schemas.RealtimeServerEvent.discriminator
+    update:
+      mapping:
+        conversation.created: '#/components/schemas/RealtimeServerEventConversationCreated'
+        conversation.item.created: '#/components/schemas/RealtimeServerEventConversationItemCreated'
+        conversation.item.deleted: '#/components/schemas/RealtimeServerEventConversationItemDeleted'
+        conversation.item.input_audio_transcription.completed: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted'
+        conversation.item.input_audio_transcription.delta: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionDelta'
+        conversation.item.input_audio_transcription.failed: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed'
+        conversation.item.retrieved: '#/components/schemas/RealtimeServerEventConversationItemRetrieved'
+        conversation.item.truncated: '#/components/schemas/RealtimeServerEventConversationItemTruncated'
+        error: '#/components/schemas/RealtimeServerEventError'
+        input_audio_buffer.cleared: '#/components/schemas/RealtimeServerEventInputAudioBufferCleared'
+        input_audio_buffer.committed: '#/components/schemas/RealtimeServerEventInputAudioBufferCommitted'
+        input_audio_buffer.dtmf_event_received: '#/components/schemas/RealtimeServerEventInputAudioBufferDtmfEventReceived'
+        input_audio_buffer.speech_started: '#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted'
+        input_audio_buffer.speech_stopped: '#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped'
+        rate_limits.updated: '#/components/schemas/RealtimeServerEventRateLimitsUpdated'
+        response.output_audio.delta: '#/components/schemas/RealtimeServerEventResponseAudioDelta'
+        response.output_audio.done: '#/components/schemas/RealtimeServerEventResponseAudioDone'
+        response.output_audio_transcript.delta: '#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta'
+        response.output_audio_transcript.done: '#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone'
+        response.content_part.added: '#/components/schemas/RealtimeServerEventResponseContentPartAdded'
+        response.content_part.done: '#/components/schemas/RealtimeServerEventResponseContentPartDone'
+        response.created: '#/components/schemas/RealtimeServerEventResponseCreated'
+        response.done: '#/components/schemas/RealtimeServerEventResponseDone'
+        response.function_call_arguments.delta: '#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta'
+        response.function_call_arguments.done: '#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone'
+        response.output_item.added: '#/components/schemas/RealtimeServerEventResponseOutputItemAdded'
+        response.output_item.done: '#/components/schemas/RealtimeServerEventResponseOutputItemDone'
+        response.output_text.delta: '#/components/schemas/RealtimeServerEventResponseTextDelta'
+        response.output_text.done: '#/components/schemas/RealtimeServerEventResponseTextDone'
+        session.created: '#/components/schemas/RealtimeServerEventSessionCreated'
+        session.updated: '#/components/schemas/RealtimeServerEventSessionUpdated'
+        output_audio_buffer.started: '#/components/schemas/RealtimeServerEventOutputAudioBufferStarted'
+        output_audio_buffer.stopped: '#/components/schemas/RealtimeServerEventOutputAudioBufferStopped'
+        output_audio_buffer.cleared: '#/components/schemas/RealtimeServerEventOutputAudioBufferCleared'
+        conversation.item.added: '#/components/schemas/RealtimeServerEventConversationItemAdded'
+        conversation.item.done: '#/components/schemas/RealtimeServerEventConversationItemDone'
+        input_audio_buffer.timeout_triggered: '#/components/schemas/RealtimeServerEventInputAudioBufferTimeoutTriggered'
+        conversation.item.input_audio_transcription.segment: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionSegment'
+        mcp_list_tools.in_progress: '#/components/schemas/RealtimeServerEventMCPListToolsInProgress'
+        mcp_list_tools.completed: '#/components/schemas/RealtimeServerEventMCPListToolsCompleted'
+        mcp_list_tools.failed: '#/components/schemas/RealtimeServerEventMCPListToolsFailed'
+        response.mcp_call_arguments.delta: '#/components/schemas/RealtimeServerEventResponseMCPCallArgumentsDelta'
+        response.mcp_call_arguments.done: '#/components/schemas/RealtimeServerEventResponseMCPCallArgumentsDone'
+        response.mcp_call.in_progress: '#/components/schemas/RealtimeServerEventResponseMCPCallInProgress'
+        response.mcp_call.completed: '#/components/schemas/RealtimeServerEventResponseMCPCallCompleted'
+        response.mcp_call.failed: '#/components/schemas/RealtimeServerEventResponseMCPCallFailed'
+
+  # The generator ignores inline oneOf variants when a discriminator is present.
+  # These VAD variants already have distinct, required type values.
+  - target: $.components.schemas.RealtimeTurnDetection.discriminator
+    remove: true
+
+  # Express the nullable noise reduction object using a supported schema shape.
+  # Keep its existing properties and optionality.
+  - target: $.components.schemas.RealtimeTranscriptionSessionCreateRequest.properties.input_audio_noise_reduction.not
+    remove: true
+  - target: $.components.schemas.RealtimeTranscriptionSessionCreateRequest.properties.input_audio_noise_reduction
+    update:
+      type: object
+
+  # swift-openapi-generator does not support OpenAPI 3.1 webhooks.
+  - target: $.webhooks
+    remove: true
+
+  # The API uses wire values (function/custom), while an implicit discriminator
+  # mapping makes swift-openapi-generator expect component names instead.
+  - target: $.components.schemas.ChatCompletionMessageToolCalls.items.discriminator
+    update:
+      mapping:
+        function: '#/components/schemas/ChatCompletionMessageToolCall'
+        custom: '#/components/schemas/ChatCompletionMessageCustomToolCall'
+
+  - target: $.components.schemas.ChatCompletionRequestMessage.discriminator
+    update:
+      mapping:
+        developer: '#/components/schemas/ChatCompletionRequestDeveloperMessage'
+        system: '#/components/schemas/ChatCompletionRequestSystemMessage'
+        user: '#/components/schemas/ChatCompletionRequestUserMessage'
+        assistant: '#/components/schemas/ChatCompletionRequestAssistantMessage'
+        tool: '#/components/schemas/ChatCompletionRequestToolMessage'
+        function: '#/components/schemas/ChatCompletionRequestFunctionMessage'
+
+  # Completed and in-progress Responses contain error: null. Keep the other
+  # required response fields while making the error object optional in Swift.
+  - target: $.components.schemas.Response.allOf[2].required
+    remove: true
+  - target: $.components.schemas.Response.allOf[2]
+    update:
+      required:
+        - id
+        - object
+        - created_at
+        - output
+        - parallel_tool_calls
+
+  # A message can omit its type, and both input and output messages use
+  # type: message. These unions cannot dispatch uniquely on type alone.
+  - target: $.components.schemas.InputItem.discriminator
+    remove: true
+  - target: $.components.schemas.Item.discriminator
+    remove: true
+
+  # Responses discriminators use wire values, rather than component names.
+  - target: $.components.schemas.OutputItem.discriminator
+    update:
+      mapping:
+        message: '#/components/schemas/OutputMessage'
+        file_search_call: '#/components/schemas/FileSearchToolCall'
+        function_call: '#/components/schemas/FunctionToolCall'
+        function_call_output: '#/components/schemas/FunctionToolCallOutputResource'
+        web_search_call: '#/components/schemas/WebSearchToolCall'
+        computer_call: '#/components/schemas/ComputerToolCall'
+        computer_call_output: '#/components/schemas/ComputerToolCallOutputResource'
+        reasoning: '#/components/schemas/ReasoningItem'
+        program: '#/components/schemas/Program'
+        program_output: '#/components/schemas/ProgramOutput'
+        tool_search_call: '#/components/schemas/ToolSearchCall'
+        tool_search_output: '#/components/schemas/ToolSearchOutput'
+        additional_tools: '#/components/schemas/AdditionalTools'
+        compaction: '#/components/schemas/CompactionBody'
+        image_generation_call: '#/components/schemas/ImageGenToolCall'
+        code_interpreter_call: '#/components/schemas/CodeInterpreterToolCall'
+        local_shell_call: '#/components/schemas/LocalShellToolCall'
+        local_shell_call_output: '#/components/schemas/LocalShellToolCallOutput'
+        shell_call: '#/components/schemas/FunctionShellCall'
+        shell_call_output: '#/components/schemas/FunctionShellCallOutput'
+        apply_patch_call: '#/components/schemas/ApplyPatchToolCall'
+        apply_patch_call_output: '#/components/schemas/ApplyPatchToolCallOutput'
+        mcp_call: '#/components/schemas/MCPToolCall'
+        mcp_list_tools: '#/components/schemas/MCPListTools'
+        mcp_approval_request: '#/components/schemas/MCPApprovalRequest'
+        mcp_approval_response: '#/components/schemas/MCPApprovalResponseResource'
+        custom_tool_call: '#/components/schemas/CustomToolCall'
+        custom_tool_call_output: '#/components/schemas/CustomToolCallOutputResource'
+  - target: $.components.schemas.OutputMessageContent.discriminator
+    update:
+      mapping:
+        output_text: '#/components/schemas/OutputTextContent'
+        refusal: '#/components/schemas/RefusalContent'
+  - target: $.components.schemas.OutputContent.discriminator
+    update:
+      mapping:
+        output_text: '#/components/schemas/OutputTextContent'
+        refusal: '#/components/schemas/RefusalContent'
+        reasoning_text: '#/components/schemas/ReasoningTextContent'
+  - target: $.components.schemas.InputContent.discriminator
+    update:
+      mapping:
+        input_text: '#/components/schemas/InputTextContent'
+        input_image: '#/components/schemas/InputImageContent'
+        input_file: '#/components/schemas/InputFileContent'
+  - target: $.components.schemas.Tool.discriminator
+    update:
+      mapping:
+        function: '#/components/schemas/FunctionTool'
+        file_search: '#/components/schemas/FileSearchTool'
+        computer: '#/components/schemas/ComputerTool'
+        computer_use_preview: '#/components/schemas/ComputerUsePreviewTool'
+        web_search: '#/components/schemas/WebSearchTool'
+        web_search_2025_08_26: '#/components/schemas/WebSearchTool'
+        mcp: '#/components/schemas/MCPTool'
+        code_interpreter: '#/components/schemas/CodeInterpreterTool'
+        programmatic_tool_calling: '#/components/schemas/ProgrammaticToolCallingParam'
+        image_generation: '#/components/schemas/ImageGenTool'
+        local_shell: '#/components/schemas/LocalShellToolParam'
+        shell: '#/components/schemas/FunctionShellToolParam'
+        custom: '#/components/schemas/CustomToolParam'
+        namespace: '#/components/schemas/NamespaceToolParam'
+        tool_search: '#/components/schemas/ToolSearchToolParam'
+        web_search_preview: '#/components/schemas/WebSearchPreviewTool'
+        web_search_preview_2025_03_11: '#/components/schemas/WebSearchPreviewTool'
+        apply_patch: '#/components/schemas/ApplyPatchToolParam'
+  - target: $.components.schemas.ResponseStreamEvent.discriminator
+    update:
+      mapping:
+        response.audio.delta: '#/components/schemas/ResponseAudioDeltaEvent'
+        response.audio.done: '#/components/schemas/ResponseAudioDoneEvent'
+        response.audio.transcript.delta: '#/components/schemas/ResponseAudioTranscriptDeltaEvent'
+        response.audio.transcript.done: '#/components/schemas/ResponseAudioTranscriptDoneEvent'
+        response.code_interpreter_call_code.delta: '#/components/schemas/ResponseCodeInterpreterCallCodeDeltaEvent'
+        response.code_interpreter_call_code.done: '#/components/schemas/ResponseCodeInterpreterCallCodeDoneEvent'
+        response.code_interpreter_call.completed: '#/components/schemas/ResponseCodeInterpreterCallCompletedEvent'
+        response.code_interpreter_call.in_progress: '#/components/schemas/ResponseCodeInterpreterCallInProgressEvent'
+        response.code_interpreter_call.interpreting: '#/components/schemas/ResponseCodeInterpreterCallInterpretingEvent'
+        response.compaction.compacting: '#/components/schemas/ResponseCompactionCompactingStreamingEvent'
+        response.completed: '#/components/schemas/ResponseCompletedEvent'
+        response.content_part.added: '#/components/schemas/ResponseContentPartAddedEvent'
+        response.content_part.done: '#/components/schemas/ResponseContentPartDoneEvent'
+        response.created: '#/components/schemas/ResponseCreatedEvent'
+        error: '#/components/schemas/ResponseErrorEvent'
+        response.file_search_call.completed: '#/components/schemas/ResponseFileSearchCallCompletedEvent'
+        response.file_search_call.in_progress: '#/components/schemas/ResponseFileSearchCallInProgressEvent'
+        response.file_search_call.searching: '#/components/schemas/ResponseFileSearchCallSearchingEvent'
+        response.function_call_arguments.delta: '#/components/schemas/ResponseFunctionCallArgumentsDeltaEvent'
+        response.function_call_arguments.done: '#/components/schemas/ResponseFunctionCallArgumentsDoneEvent'
+        response.shell_call_command.added: '#/components/schemas/ResponseShellCallCommandAddedStreamingEvent'
+        response.shell_call_command.delta: '#/components/schemas/ResponseShellCallCommandDeltaStreamingEvent'
+        response.shell_call_command.done: '#/components/schemas/ResponseShellCallCommandDoneStreamingEvent'
+        response.shell_call_output_content.delta: '#/components/schemas/ResponseShellCallOutputContentDeltaStreamingEvent'
+        response.shell_call_output_content.done: '#/components/schemas/ResponseShellCallOutputContentDoneStreamingEvent'
+        response.in_progress: '#/components/schemas/ResponseInProgressEvent'
+        response.failed: '#/components/schemas/ResponseFailedEvent'
+        response.incomplete: '#/components/schemas/ResponseIncompleteEvent'
+        response.output_item.added: '#/components/schemas/ResponseOutputItemAddedEvent'
+        response.output_item.done: '#/components/schemas/ResponseOutputItemDoneEvent'
+        response.reasoning_summary_part.added: '#/components/schemas/ResponseReasoningSummaryPartAddedEvent'
+        response.reasoning_summary_part.done: '#/components/schemas/ResponseReasoningSummaryPartDoneEvent'
+        response.reasoning_summary_text.delta: '#/components/schemas/ResponseReasoningSummaryTextDeltaEvent'
+        response.reasoning_summary_text.done: '#/components/schemas/ResponseReasoningSummaryTextDoneEvent'
+        response.reasoning_text.delta: '#/components/schemas/ResponseReasoningTextDeltaEvent'
+        response.reasoning_text.done: '#/components/schemas/ResponseReasoningTextDoneEvent'
+        response.refusal.delta: '#/components/schemas/ResponseRefusalDeltaEvent'
+        response.refusal.done: '#/components/schemas/ResponseRefusalDoneEvent'
+        response.output_text.delta: '#/components/schemas/ResponseTextDeltaEvent'
+        response.output_text.done: '#/components/schemas/ResponseTextDoneEvent'
+        response.web_search_call.completed: '#/components/schemas/ResponseWebSearchCallCompletedEvent'
+        response.web_search_call.in_progress: '#/components/schemas/ResponseWebSearchCallInProgressEvent'
+        response.web_search_call.searching: '#/components/schemas/ResponseWebSearchCallSearchingEvent'
+        response.image_generation_call.completed: '#/components/schemas/ResponseImageGenCallCompletedEvent'
+        response.image_generation_call.generating: '#/components/schemas/ResponseImageGenCallGeneratingEvent'
+        response.image_generation_call.in_progress: '#/components/schemas/ResponseImageGenCallInProgressEvent'
+        response.image_generation_call.partial_image: '#/components/schemas/ResponseImageGenCallPartialImageEvent'
+        response.mcp_call_arguments.delta: '#/components/schemas/ResponseMCPCallArgumentsDeltaEvent'
+        response.mcp_call_arguments.done: '#/components/schemas/ResponseMCPCallArgumentsDoneEvent'
+        response.mcp_call.completed: '#/components/schemas/ResponseMCPCallCompletedEvent'
+        response.mcp_call.failed: '#/components/schemas/ResponseMCPCallFailedEvent'
+        response.mcp_call.in_progress: '#/components/schemas/ResponseMCPCallInProgressEvent'
+        response.mcp_list_tools.completed: '#/components/schemas/ResponseMCPListToolsCompletedEvent'
+        response.mcp_list_tools.failed: '#/components/schemas/ResponseMCPListToolsFailedEvent'
+        response.mcp_list_tools.in_progress: '#/components/schemas/ResponseMCPListToolsInProgressEvent'
+        response.output_text.annotation.added: '#/components/schemas/ResponseOutputTextAnnotationAddedEvent'
+        response.queued: '#/components/schemas/ResponseQueuedEvent'
+        response.custom_tool_call_input.delta: '#/components/schemas/ResponseCustomToolCallInputDeltaEvent'
+        response.custom_tool_call_input.done: '#/components/schemas/ResponseCustomToolCallInputDoneEvent'
+
+  # Audio events and diarized usage have the same missing wire-value mappings.
+  - target: $.components.schemas.CreateSpeechResponseStreamEvent.discriminator
+    update:
+      mapping:
+        speech.audio.delta: '#/components/schemas/SpeechAudioDeltaEvent'
+        speech.audio.done: '#/components/schemas/SpeechAudioDoneEvent'
+  - target: $.components.schemas.CreateTranscriptionResponseStreamEvent.discriminator
+    update:
+      mapping:
+        transcript.text.segment: '#/components/schemas/TranscriptTextSegmentEvent'
+        transcript.text.delta: '#/components/schemas/TranscriptTextDeltaEvent'
+        transcript.text.done: '#/components/schemas/TranscriptTextDoneEvent'
+  - target: $.components.schemas.CreateTranscriptionResponseDiarizedJson.properties.usage.discriminator
+    update:
+      mapping:
+        tokens: '#/components/schemas/TranscriptTextUsageTokens'
+        duration: '#/components/schemas/TranscriptTextUsageDuration'
+
+  # gpt-transcribe reports duration usage in its terminal event; legacy models
+  # report token usage. Both carry a required, unambiguous type tag.
+  - target: $.components.schemas.TranscriptTextDoneEvent.properties.usage
+    remove: true
+  - target: $.components.schemas.TranscriptTextDoneEvent.properties
+    update:
+      usage:
+        oneOf:
+          - $ref: '#/components/schemas/TranscriptTextUsageTokens'
+          - $ref: '#/components/schemas/TranscriptTextUsageDuration'
+        discriminator:
+          propertyName: type
+          mapping:
+            tokens: '#/components/schemas/TranscriptTextUsageTokens'
+            duration: '#/components/schemas/TranscriptTextUsageDuration'
+
+  # A verbose translation also satisfies the simple text schema. anyOf models
+  # this overlap and retains both views instead of dropping the verbose fields.
+  - target: "$['paths']['/audio/translations']['post']['responses']['200']['content']['application/json']['schema']['oneOf']"
+    remove: true
+  - target: "$['paths']['/audio/translations']['post']['responses']['200']['content']['application/json']['schema']"
+    update:
+      anyOf:
+        - $ref: '#/components/schemas/CreateTranslationResponseJson'
+        - $ref: '#/components/schemas/CreateTranslationResponseVerboseJson'
+
+  # The multipart wire names for arrays include brackets, as in the documented
+  # curl requests. Preserve item types and bounds while correcting those names.
+  - target: $.components.schemas.CreateTranscriptionRequest.properties
+    update:
+      'languages[]':
+        type: array
+        minItems: 1
+        items:
+          type: string
+        description: Possible languages of the input audio, using ISO-639-1 codes. Supported by gpt-transcribe.
+      'keywords[]':
+        type: array
+        items:
+          type: string
+        description: Words or phrases to guide transcription of the input audio. Supported by gpt-transcribe.
+      'include[]':
+        type: array
+        items:
+          $ref: '#/components/schemas/TranscriptionInclude'
+        description: >-
+          Additional information to include in the transcription response. logprobs
+          requires response_format json and is supported by gpt-4o-transcribe,
+          gpt-4o-mini-transcribe, and gpt-4o-mini-transcribe-2025-12-15. Not supported
+          by gpt-4o-transcribe-diarize.
+      'timestamp_granularities[]':
+        type: array
+        items:
+          type: string
+          enum: [word, segment]
+        default: [segment]
+        description: >-
+          Timestamp granularities to include with verbose_json. Either or both
+          word and segment are supported. Word timestamps incur additional latency;
+          segment timestamps do not. Not supported by gpt-4o-transcribe-diarize.
+      'known_speaker_names[]':
+        type: array
+        maxItems: 4
+        items:
+          type: string
+        description: >-
+          Short speaker identifiers matching known_speaker_references[]. Up to
+          four known speakers are supported.
+      'known_speaker_references[]':
+        type: array
+        maxItems: 4
+        items:
+          type: string
+        description: >-
+          Reference audio data URLs matching known_speaker_names[]. Each sample
+          must be between 2 and 10 seconds, using a supported input audio format.
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.languages
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.keywords
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.include
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.timestamp_granularities
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.known_speaker_names
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.known_speaker_references
+    remove: true
+
+  # Uploads contain binary audio. Explicit encoding avoids inferring text/plain
+  # from the legacy format: binary annotation in the OpenAPI 3.1 source.
+  - target: "$['paths']['/audio/transcriptions']['post']['requestBody']['content']['multipart/form-data']"
+    update:
+      encoding:
+        file:
+          contentType: application/octet-stream
+  - target: "$['paths']['/audio/translations']['post']['requestBody']['content']['multipart/form-data']"
+    update:
+      encoding:
+        file:
+          contentType: application/octet-stream
+
+  - target: $.paths.*.post.responses
+    update:
+      '400':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: The request was malformed, missing required fields, or invalid parameters
+      '401':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Invalid Authentication, Incorrect API key provided, You must be a
+          member of an organization to use the API
+      '403':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Country, region, or territory not supported
+      '404':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: The requested resource was not found
+      '413':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Request body too large
+      '429':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: Rate limit reached for requests, You exceeded your current quota,
+          please check your plan and billing details
+      '500':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+          plain/text:
+            schema:
+              type: string
+        description: The server had an error while processing your request
+      '503':
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+        description: The engine is currently overloaded, please try again later

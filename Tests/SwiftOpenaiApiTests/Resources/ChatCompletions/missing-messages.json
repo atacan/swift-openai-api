@@ -1,0 +1,8 @@
+{
+  "error": {
+    "message": "Missing required parameter: 'messages'.",
+    "type": "invalid_request_error",
+    "param": "messages",
+    "code": "missing_required_parameter"
+  }
+}

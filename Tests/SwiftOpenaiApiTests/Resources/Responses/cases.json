@@ -1,0 +1,97 @@
+[
+  {
+    "name": "text",
+    "response": "text.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "tool-call",
+    "response": "tool-call.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "tool-result",
+    "response": "tool-result.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "structured-output",
+    "response": "structured-output.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "reasoning",
+    "response": "reasoning.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "incomplete",
+    "response": "incomplete.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "logprobs",
+    "response": "logprobs.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "stream",
+    "response": "stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "terminal_event": "response.completed"
+  },
+  {
+    "name": "tool-call-stream",
+    "response": "tool-call-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "terminal_event": "response.completed"
+  },
+  {
+    "name": "incomplete-stream",
+    "response": "incomplete-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "terminal_event": "response.incomplete"
+  },
+  {
+    "name": "reasoning-stream",
+    "response": "reasoning-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "terminal_event": "response.completed"
+  },
+  {
+    "name": "missing-model",
+    "response": "missing-model.json",
+    "status": 400,
+    "content_type": "application/json"
+  },
+  {
+    "name": "invalid-max-output-tokens",
+    "response": "invalid-max-output-tokens.json",
+    "status": 400,
+    "content_type": "application/json"
+  },
+  {
+    "name": "unknown-model",
+    "response": "unknown-model.json",
+    "status": 404,
+    "content_type": "application/json"
+  },
+  {
+    "name": "unauthenticated",
+    "response": "unauthenticated.json",
+    "status": 401,
+    "content_type": "application/json",
+    "authenticated": false
+  }
+]

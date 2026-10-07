@@ -1,0 +1,9 @@
+{
+  "model": "gpt-5.6-luna",
+  "store": false,
+  "max_output_tokens": 64,
+  "reasoning": {
+    "effort": "none"
+  },
+  "input": "Reply with exactly Hello."
+}

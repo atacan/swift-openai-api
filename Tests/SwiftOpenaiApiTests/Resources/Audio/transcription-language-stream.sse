@@ -1,0 +1,26 @@
+data: {"type":"transcript.text.delta","delta":"Hello"}
+
+data: {"type":"transcript.text.delta","delta":","}
+
+data: {"type":"transcript.text.delta","delta":" this"}
+
+data: {"type":"transcript.text.delta","delta":" is"}
+
+data: {"type":"transcript.text.delta","delta":" an"}
+
+data: {"type":"transcript.text.delta","delta":" audio"}
+
+data: {"type":"transcript.text.delta","delta":" fixture"}
+
+data: {"type":"transcript.text.delta","delta":" for"}
+
+data: {"type":"transcript.text.delta","delta":" decoding"}
+
+data: {"type":"transcript.text.delta","delta":" tests"}
+
+data: {"type":"transcript.text.delta","delta":"."}
+
+data: {"type":"transcript.text.done","text":"Hello, this is an audio fixture for decoding tests.","usage":{"type":"duration","seconds":4},"languages":[{"code":"en"}]}
+
+data: [DONE]
+

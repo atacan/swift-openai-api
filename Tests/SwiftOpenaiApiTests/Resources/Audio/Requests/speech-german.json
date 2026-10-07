@@ -1,0 +1,6 @@
+{
+  "model": "gpt-4o-mini-tts",
+  "voice": "alloy",
+  "input": "Hallo. Dies ist eine Audiodatei für Dekodierungstests.",
+  "response_format": "wav"
+}

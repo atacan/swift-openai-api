@@ -1,0 +1,12 @@
+{
+  "model": "gpt-5.6-luna",
+  "store": false,
+  "max_output_tokens": 512,
+  "input": "Find the smallest positive integer n such that n mod 7 = 3, n mod 11 = 5, and n mod 13 = 7. Give only the answer.",
+  "reasoning": {
+    "effort": "medium"
+  },
+  "include": [
+    "reasoning.encrypted_content"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "model": "gpt-4.1-mini",
+  "store": false,
+  "max_output_tokens": 128,
+  "input": "Reply with exactly Hello.",
+  "include": [
+    "message.output_text.logprobs"
+  ],
+  "top_logprobs": 2
+}

@@ -1,0 +1,8 @@
+data: {"type":"transcript.text.segment","text":" Hello,","speaker":"A","start":0.0,"end":0.19999999999999996,"id":"seg_0"}
+
+data: {"type":"transcript.text.segment","text":" this is an audio fixture for decoding tests.","speaker":"A","start":0.44999999999999996,"end":3.05,"id":"seg_1"}
+
+data: {"type":"transcript.text.done","text":"Hello, this is an audio fixture for decoding tests.","usage":{"type":"tokens","total_tokens":186,"input_tokens":37,"input_token_details":{"text_tokens":0,"audio_tokens":37},"output_tokens":149}}
+
+data: [DONE]
+

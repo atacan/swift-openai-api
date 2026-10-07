@@ -1,0 +1,46 @@
+{
+  "model": "gpt-4.1-mini",
+  "store": false,
+  "max_output_tokens": 128,
+  "input": [
+    {
+      "role": "user",
+      "content": "Use get_weather for Berlin and report the temperature returned by the tool."
+    },
+    {
+      "id": "fc_01cdf06cad9b36c7016ac626b320a887d2a80f06aeeca1be03",
+      "type": "function_call",
+      "status": "completed",
+      "arguments": "{\"city\":\"Berlin\"}",
+      "call_id": "call_TWyK3zgr5QPAUUgm2JKQPURb",
+      "name": "get_weather"
+    },
+    {
+      "type": "function_call_output",
+      "call_id": "call_TWyK3zgr5QPAUUgm2JKQPURb",
+      "output": "{\"temperature_c\":20}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Get the current weather in a city.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  ],
+  "tool_choice": "auto",
+  "parallel_tool_calls": false
+}
