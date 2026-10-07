@@ -35691,11 +35691,11 @@ components:
                 - input
                 - voice
         CreateSpeechResponseStreamEvent:
-            anyOf:
-                - $ref: '#/components/schemas/SpeechAudioDeltaEvent'
-                - $ref: '#/components/schemas/SpeechAudioDoneEvent'
             discriminator:
                 propertyName: type
+            oneOf:
+                - $ref: '#/components/schemas/SpeechAudioDeltaEvent'
+                - $ref: '#/components/schemas/SpeechAudioDoneEvent'
         CreateSpendAlertBody:
             type: object
             description: Parameters for creating or updating a spend alert.
@@ -36219,12 +36219,12 @@ components:
                 group: audio
                 example: "{\n  \"text\": \"Imagine the wildest idea that you've ever had, and you're curious about how it might scale to something that's a 100, a 1,000 times bigger. This is a place where you can get to do that.\",\n  \"usage\": {\n    \"type\": \"tokens\",\n    \"input_tokens\": 14,\n    \"input_token_details\": {\n      \"text_tokens\": 10,\n      \"audio_tokens\": 4\n    },\n    \"output_tokens\": 101,\n    \"total_tokens\": 115\n  }\n}\n"
         CreateTranscriptionResponseStreamEvent:
-            anyOf:
+            discriminator:
+                propertyName: type
+            oneOf:
                 - $ref: '#/components/schemas/TranscriptTextSegmentEvent'
                 - $ref: '#/components/schemas/TranscriptTextDeltaEvent'
                 - $ref: '#/components/schemas/TranscriptTextDoneEvent'
-            discriminator:
-                propertyName: type
         CreateTranscriptionResponseVerboseJson:
             type: object
             description: Represents a verbose json transcription response returned by model, based on the provided input.
@@ -39874,11 +39874,11 @@ components:
                 group: images
                 example: "{\n  \"type\": \"image_edit.partial_image\",\n  \"b64_json\": \"...\",\n  \"created_at\": 1620000000,\n  \"size\": \"1024x1024\",\n  \"quality\": \"high\",\n  \"background\": \"transparent\",\n  \"output_format\": \"png\",\n  \"partial_image_index\": 0\n}\n"
         ImageEditStreamEvent:
-            anyOf:
-                - $ref: '#/components/schemas/ImageEditPartialImageEvent'
-                - $ref: '#/components/schemas/ImageEditCompletedEvent'
             discriminator:
                 propertyName: type
+            oneOf:
+                - $ref: '#/components/schemas/ImageEditPartialImageEvent'
+                - $ref: '#/components/schemas/ImageEditCompletedEvent'
         ImageGenCompletedEvent:
             type: object
             description: 'Emitted when image generation has completed and the final image is available.
@@ -40043,11 +40043,11 @@ components:
                 group: images
                 example: "{\n  \"type\": \"image_generation.partial_image\",\n  \"b64_json\": \"...\",\n  \"created_at\": 1620000000,\n  \"size\": \"1024x1024\",\n  \"quality\": \"high\",\n  \"background\": \"transparent\",\n  \"output_format\": \"png\",\n  \"partial_image_index\": 0\n}\n"
         ImageGenStreamEvent:
-            anyOf:
-                - $ref: '#/components/schemas/ImageGenPartialImageEvent'
-                - $ref: '#/components/schemas/ImageGenCompletedEvent'
             discriminator:
                 propertyName: type
+            oneOf:
+                - $ref: '#/components/schemas/ImageGenPartialImageEvent'
+                - $ref: '#/components/schemas/ImageGenCompletedEvent'
         ImageGenTool:
             type: object
             title: Image generation tool
@@ -40365,6 +40365,10 @@ components:
                 - $ref: '#/components/schemas/InputFileContent'
             discriminator:
                 propertyName: type
+                mapping:
+                    input_text: '#/components/schemas/InputTextContent'
+                    input_image: '#/components/schemas/InputImageContent'
+                    input_file: '#/components/schemas/InputFileContent'
         InputItem:
             oneOf:
                 - $ref: '#/components/schemas/EasyInputMessage'
@@ -40382,8 +40386,6 @@ components:
                 - $ref: '#/components/schemas/ItemReferenceParam'
                 - $ref: '#/components/schemas/ProgramItemParam'
                 - $ref: '#/components/schemas/ProgramOutputItemParam'
-            discriminator:
-                propertyName: type
         InputMessage:
             type: object
             title: Input message
@@ -40675,8 +40677,6 @@ components:
                 - $ref: '#/components/schemas/MCPToolCall'
                 - $ref: '#/components/schemas/CustomToolCallOutput'
                 - $ref: '#/components/schemas/CustomToolCall'
-            discriminator:
-                propertyName: type
         ItemResource:
             description: 'Content item used to generate a response.
 
@@ -43572,6 +43572,10 @@ components:
                 - $ref: '#/components/schemas/ReasoningTextContent'
             discriminator:
                 propertyName: type
+                mapping:
+                    output_text: '#/components/schemas/OutputTextContent'
+                    refusal: '#/components/schemas/RefusalContent'
+                    reasoning_text: '#/components/schemas/ReasoningTextContent'
         OutputItem:
             oneOf:
                 - $ref: '#/components/schemas/OutputMessage'
@@ -43604,6 +43608,35 @@ components:
                 - $ref: '#/components/schemas/CustomToolCallOutputResource'
             discriminator:
                 propertyName: type
+                mapping:
+                    message: '#/components/schemas/OutputMessage'
+                    file_search_call: '#/components/schemas/FileSearchToolCall'
+                    function_call: '#/components/schemas/FunctionToolCall'
+                    function_call_output: '#/components/schemas/FunctionToolCallOutputResource'
+                    web_search_call: '#/components/schemas/WebSearchToolCall'
+                    computer_call: '#/components/schemas/ComputerToolCall'
+                    computer_call_output: '#/components/schemas/ComputerToolCallOutputResource'
+                    reasoning: '#/components/schemas/ReasoningItem'
+                    program: '#/components/schemas/Program'
+                    program_output: '#/components/schemas/ProgramOutput'
+                    tool_search_call: '#/components/schemas/ToolSearchCall'
+                    tool_search_output: '#/components/schemas/ToolSearchOutput'
+                    additional_tools: '#/components/schemas/AdditionalTools'
+                    compaction: '#/components/schemas/CompactionBody'
+                    image_generation_call: '#/components/schemas/ImageGenToolCall'
+                    code_interpreter_call: '#/components/schemas/CodeInterpreterToolCall'
+                    local_shell_call: '#/components/schemas/LocalShellToolCall'
+                    local_shell_call_output: '#/components/schemas/LocalShellToolCallOutput'
+                    shell_call: '#/components/schemas/FunctionShellCall'
+                    shell_call_output: '#/components/schemas/FunctionShellCallOutput'
+                    apply_patch_call: '#/components/schemas/ApplyPatchToolCall'
+                    apply_patch_call_output: '#/components/schemas/ApplyPatchToolCallOutput'
+                    mcp_call: '#/components/schemas/MCPToolCall'
+                    mcp_list_tools: '#/components/schemas/MCPListTools'
+                    mcp_approval_request: '#/components/schemas/MCPApprovalRequest'
+                    mcp_approval_response: '#/components/schemas/MCPApprovalResponseResource'
+                    custom_tool_call: '#/components/schemas/CustomToolCall'
+                    custom_tool_call_output: '#/components/schemas/CustomToolCallOutputResource'
         OutputMessage:
             type: object
             title: Output message
@@ -43664,6 +43697,9 @@ components:
                 - $ref: '#/components/schemas/RefusalContent'
             discriminator:
                 propertyName: type
+                mapping:
+                    output_text: '#/components/schemas/OutputTextContent'
+                    refusal: '#/components/schemas/RefusalContent'
         ParallelToolCalls:
             description: Whether to enable [parallel function calling](https://developers.openai.com/api/docs/guides/function-calling#parallel-function-calling) during tool use.
             type: boolean
@@ -46852,7 +46888,7 @@ components:
             description: 'A realtime client event.
 
 '
-            anyOf:
+            oneOf:
                 - $ref: '#/components/schemas/RealtimeClientEventConversationItemCreate'
                 - $ref: '#/components/schemas/RealtimeClientEventConversationItemDelete'
                 - $ref: '#/components/schemas/RealtimeClientEventConversationItemRetrieve'
@@ -48220,7 +48256,7 @@ components:
             description: 'A realtime server event.
 
 '
-            anyOf:
+            oneOf:
                 - $ref: '#/components/schemas/RealtimeServerEventConversationCreated'
                 - $ref: '#/components/schemas/RealtimeServerEventConversationItemCreated'
                 - $ref: '#/components/schemas/RealtimeServerEventConversationItemDeleted'
@@ -51633,7 +51669,7 @@ components:
             description: 'A Realtime translation client event.
 
 '
-            anyOf:
+            oneOf:
                 - $ref: '#/components/schemas/RealtimeTranslationClientEventSessionUpdate'
                 - $ref: '#/components/schemas/RealtimeTranslationClientEventInputAudioBufferAppend'
                 - $ref: '#/components/schemas/RealtimeTranslationClientEventSessionClose'
@@ -51820,7 +51856,7 @@ components:
             description: 'A Realtime translation server event.
 
 '
-            anyOf:
+            oneOf:
                 - $ref: '#/components/schemas/RealtimeServerEventError'
                 - $ref: '#/components/schemas/RealtimeTranslationServerEventSessionCreated'
                 - $ref: '#/components/schemas/RealtimeTranslationServerEventSessionUpdated'
@@ -52759,7 +52795,6 @@ components:
                     - id
                     - object
                     - created_at
-                    - error
                     - output
                     - parallel_tool_calls
             example:
@@ -55248,11 +55283,11 @@ components:
                 - $ref: '#/components/schemas/ResponseSteerInputItemList'
         ResponseSteerInputItem:
             title: Response steer input item
-            anyOf:
-                - $ref: '#/components/schemas/UserMessageItemParam'
-                - $ref: '#/components/schemas/FunctionCallOutputItemParam'
             discriminator:
                 propertyName: type
+            oneOf:
+                - $ref: '#/components/schemas/UserMessageItemParam'
+                - $ref: '#/components/schemas/FunctionCallOutputItemParam'
         ResponseSteerInputItemList:
             type: array
             title: Response steer input item list
@@ -55524,7 +55559,69 @@ components:
                 propertyName: type
         ResponseStreamEvent:
             description: Event emitted while a response is streamed.
-            anyOf:
+            discriminator:
+                propertyName: type
+                mapping:
+                    response.audio.delta: '#/components/schemas/ResponseAudioDeltaEvent'
+                    response.audio.done: '#/components/schemas/ResponseAudioDoneEvent'
+                    response.audio.transcript.delta: '#/components/schemas/ResponseAudioTranscriptDeltaEvent'
+                    response.audio.transcript.done: '#/components/schemas/ResponseAudioTranscriptDoneEvent'
+                    response.code_interpreter_call_code.delta: '#/components/schemas/ResponseCodeInterpreterCallCodeDeltaEvent'
+                    response.code_interpreter_call_code.done: '#/components/schemas/ResponseCodeInterpreterCallCodeDoneEvent'
+                    response.code_interpreter_call.completed: '#/components/schemas/ResponseCodeInterpreterCallCompletedEvent'
+                    response.code_interpreter_call.in_progress: '#/components/schemas/ResponseCodeInterpreterCallInProgressEvent'
+                    response.code_interpreter_call.interpreting: '#/components/schemas/ResponseCodeInterpreterCallInterpretingEvent'
+                    response.compaction.compacting: '#/components/schemas/ResponseCompactionCompactingStreamingEvent'
+                    response.completed: '#/components/schemas/ResponseCompletedEvent'
+                    response.content_part.added: '#/components/schemas/ResponseContentPartAddedEvent'
+                    response.content_part.done: '#/components/schemas/ResponseContentPartDoneEvent'
+                    response.created: '#/components/schemas/ResponseCreatedEvent'
+                    error: '#/components/schemas/ResponseErrorEvent'
+                    response.file_search_call.completed: '#/components/schemas/ResponseFileSearchCallCompletedEvent'
+                    response.file_search_call.in_progress: '#/components/schemas/ResponseFileSearchCallInProgressEvent'
+                    response.file_search_call.searching: '#/components/schemas/ResponseFileSearchCallSearchingEvent'
+                    response.function_call_arguments.delta: '#/components/schemas/ResponseFunctionCallArgumentsDeltaEvent'
+                    response.function_call_arguments.done: '#/components/schemas/ResponseFunctionCallArgumentsDoneEvent'
+                    response.shell_call_command.added: '#/components/schemas/ResponseShellCallCommandAddedStreamingEvent'
+                    response.shell_call_command.delta: '#/components/schemas/ResponseShellCallCommandDeltaStreamingEvent'
+                    response.shell_call_command.done: '#/components/schemas/ResponseShellCallCommandDoneStreamingEvent'
+                    response.shell_call_output_content.delta: '#/components/schemas/ResponseShellCallOutputContentDeltaStreamingEvent'
+                    response.shell_call_output_content.done: '#/components/schemas/ResponseShellCallOutputContentDoneStreamingEvent'
+                    response.in_progress: '#/components/schemas/ResponseInProgressEvent'
+                    response.failed: '#/components/schemas/ResponseFailedEvent'
+                    response.incomplete: '#/components/schemas/ResponseIncompleteEvent'
+                    response.output_item.added: '#/components/schemas/ResponseOutputItemAddedEvent'
+                    response.output_item.done: '#/components/schemas/ResponseOutputItemDoneEvent'
+                    response.reasoning_summary_part.added: '#/components/schemas/ResponseReasoningSummaryPartAddedEvent'
+                    response.reasoning_summary_part.done: '#/components/schemas/ResponseReasoningSummaryPartDoneEvent'
+                    response.reasoning_summary_text.delta: '#/components/schemas/ResponseReasoningSummaryTextDeltaEvent'
+                    response.reasoning_summary_text.done: '#/components/schemas/ResponseReasoningSummaryTextDoneEvent'
+                    response.reasoning_text.delta: '#/components/schemas/ResponseReasoningTextDeltaEvent'
+                    response.reasoning_text.done: '#/components/schemas/ResponseReasoningTextDoneEvent'
+                    response.refusal.delta: '#/components/schemas/ResponseRefusalDeltaEvent'
+                    response.refusal.done: '#/components/schemas/ResponseRefusalDoneEvent'
+                    response.output_text.delta: '#/components/schemas/ResponseTextDeltaEvent'
+                    response.output_text.done: '#/components/schemas/ResponseTextDoneEvent'
+                    response.web_search_call.completed: '#/components/schemas/ResponseWebSearchCallCompletedEvent'
+                    response.web_search_call.in_progress: '#/components/schemas/ResponseWebSearchCallInProgressEvent'
+                    response.web_search_call.searching: '#/components/schemas/ResponseWebSearchCallSearchingEvent'
+                    response.image_generation_call.completed: '#/components/schemas/ResponseImageGenCallCompletedEvent'
+                    response.image_generation_call.generating: '#/components/schemas/ResponseImageGenCallGeneratingEvent'
+                    response.image_generation_call.in_progress: '#/components/schemas/ResponseImageGenCallInProgressEvent'
+                    response.image_generation_call.partial_image: '#/components/schemas/ResponseImageGenCallPartialImageEvent'
+                    response.mcp_call_arguments.delta: '#/components/schemas/ResponseMCPCallArgumentsDeltaEvent'
+                    response.mcp_call_arguments.done: '#/components/schemas/ResponseMCPCallArgumentsDoneEvent'
+                    response.mcp_call.completed: '#/components/schemas/ResponseMCPCallCompletedEvent'
+                    response.mcp_call.failed: '#/components/schemas/ResponseMCPCallFailedEvent'
+                    response.mcp_call.in_progress: '#/components/schemas/ResponseMCPCallInProgressEvent'
+                    response.mcp_list_tools.completed: '#/components/schemas/ResponseMCPListToolsCompletedEvent'
+                    response.mcp_list_tools.failed: '#/components/schemas/ResponseMCPListToolsFailedEvent'
+                    response.mcp_list_tools.in_progress: '#/components/schemas/ResponseMCPListToolsInProgressEvent'
+                    response.output_text.annotation.added: '#/components/schemas/ResponseOutputTextAnnotationAddedEvent'
+                    response.queued: '#/components/schemas/ResponseQueuedEvent'
+                    response.custom_tool_call_input.delta: '#/components/schemas/ResponseCustomToolCallInputDeltaEvent'
+                    response.custom_tool_call_input.done: '#/components/schemas/ResponseCustomToolCallInputDoneEvent'
+            oneOf:
                 - $ref: '#/components/schemas/ResponseAudioDeltaEvent'
                 - $ref: '#/components/schemas/ResponseAudioDoneEvent'
                 - $ref: '#/components/schemas/ResponseAudioTranscriptDeltaEvent'
@@ -55586,8 +55683,6 @@ components:
                 - $ref: '#/components/schemas/ResponseQueuedEvent'
                 - $ref: '#/components/schemas/ResponseCustomToolCallInputDeltaEvent'
                 - $ref: '#/components/schemas/ResponseCustomToolCallInputDoneEvent'
-            discriminator:
-                propertyName: type
         ResponseStreamOptions:
             description: 'Options for streaming responses. Only set this when you set `stream: true`.
 
@@ -58616,6 +58711,25 @@ components:
 '
             discriminator:
                 propertyName: type
+                mapping:
+                    function: '#/components/schemas/FunctionTool'
+                    file_search: '#/components/schemas/FileSearchTool'
+                    computer: '#/components/schemas/ComputerTool'
+                    computer_use_preview: '#/components/schemas/ComputerUsePreviewTool'
+                    web_search: '#/components/schemas/WebSearchTool'
+                    web_search_2025_08_26: '#/components/schemas/WebSearchTool'
+                    mcp: '#/components/schemas/MCPTool'
+                    code_interpreter: '#/components/schemas/CodeInterpreterTool'
+                    programmatic_tool_calling: '#/components/schemas/ProgrammaticToolCallingParam'
+                    image_generation: '#/components/schemas/ImageGenTool'
+                    local_shell: '#/components/schemas/LocalShellToolParam'
+                    shell: '#/components/schemas/FunctionShellToolParam'
+                    custom: '#/components/schemas/CustomToolParam'
+                    namespace: '#/components/schemas/NamespaceToolParam'
+                    tool_search: '#/components/schemas/ToolSearchToolParam'
+                    web_search_preview: '#/components/schemas/WebSearchPreviewTool'
+                    web_search_preview_2025_03_11: '#/components/schemas/WebSearchPreviewTool'
+                    apply_patch: '#/components/schemas/ApplyPatchToolParam'
             oneOf:
                 - $ref: '#/components/schemas/FunctionTool'
                 - $ref: '#/components/schemas/FileSearchTool'
@@ -90776,11 +90890,11 @@ components:
                 $ref: '#/components/schemas/BetaResponseSteerInputItem'
         BetaResponseSteerInputItem:
             title: Response steer input item
-            anyOf:
-                - $ref: '#/components/schemas/BetaUserMessageItemParam'
-                - $ref: '#/components/schemas/BetaFunctionCallOutputItemParam'
             discriminator:
                 propertyName: type
+            oneOf:
+                - $ref: '#/components/schemas/BetaUserMessageItemParam'
+                - $ref: '#/components/schemas/BetaFunctionCallOutputItemParam'
         BetaUserMessageItemParam:
             properties:
                 agent:
@@ -92874,7 +92988,9 @@ components:
                         maximum: 20
         BetaResponseStreamEvent:
             description: Event emitted while a response is streamed.
-            anyOf:
+            discriminator:
+                propertyName: type
+            oneOf:
                 - $ref: '#/components/schemas/BetaResponseAudioDeltaEvent'
                 - $ref: '#/components/schemas/BetaResponseAudioDoneEvent'
                 - $ref: '#/components/schemas/BetaResponseAudioTranscriptDeltaEvent'
@@ -92936,8 +93052,6 @@ components:
                 - $ref: '#/components/schemas/BetaResponseQueuedEvent'
                 - $ref: '#/components/schemas/BetaResponseCustomToolCallInputDeltaEvent'
                 - $ref: '#/components/schemas/BetaResponseCustomToolCallInputDoneEvent'
-            discriminator:
-                propertyName: type
     responses:
         TooManyRequests:
             description: The request was rejected because a rate limit was exceeded.

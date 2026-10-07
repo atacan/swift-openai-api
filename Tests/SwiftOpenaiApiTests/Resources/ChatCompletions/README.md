@@ -45,7 +45,7 @@ Capture fixtures separately from testing:
 
 ```bash
 export OPENAI_API_KEY=...  # Or load your existing credential environment.
-python3 scripts/capture-chat-completions.py
+python3 scripts/capture-api-fixtures.py chat-completions
 swift test
 ```
 

@@ -60,6 +60,159 @@ actions:
         tool: '#/components/schemas/ChatCompletionRequestToolMessage'
         function: '#/components/schemas/ChatCompletionRequestFunctionMessage'
 
+  # Completed and in-progress Responses contain error: null. Keep the other
+  # required response fields while making the error object optional in Swift.
+  - target: $.components.schemas.Response.allOf[2].required
+    remove: true
+  - target: $.components.schemas.Response.allOf[2]
+    update:
+      required:
+        - id
+        - object
+        - created_at
+        - output
+        - parallel_tool_calls
+
+  # A message can omit its type, and both input and output messages use
+  # type: message. These unions cannot dispatch uniquely on type alone.
+  - target: $.components.schemas.InputItem.discriminator
+    remove: true
+  - target: $.components.schemas.Item.discriminator
+    remove: true
+
+  # Responses discriminators use wire values, rather than component names.
+  - target: $.components.schemas.OutputItem.discriminator
+    update:
+      mapping:
+        message: '#/components/schemas/OutputMessage'
+        file_search_call: '#/components/schemas/FileSearchToolCall'
+        function_call: '#/components/schemas/FunctionToolCall'
+        function_call_output: '#/components/schemas/FunctionToolCallOutputResource'
+        web_search_call: '#/components/schemas/WebSearchToolCall'
+        computer_call: '#/components/schemas/ComputerToolCall'
+        computer_call_output: '#/components/schemas/ComputerToolCallOutputResource'
+        reasoning: '#/components/schemas/ReasoningItem'
+        program: '#/components/schemas/Program'
+        program_output: '#/components/schemas/ProgramOutput'
+        tool_search_call: '#/components/schemas/ToolSearchCall'
+        tool_search_output: '#/components/schemas/ToolSearchOutput'
+        additional_tools: '#/components/schemas/AdditionalTools'
+        compaction: '#/components/schemas/CompactionBody'
+        image_generation_call: '#/components/schemas/ImageGenToolCall'
+        code_interpreter_call: '#/components/schemas/CodeInterpreterToolCall'
+        local_shell_call: '#/components/schemas/LocalShellToolCall'
+        local_shell_call_output: '#/components/schemas/LocalShellToolCallOutput'
+        shell_call: '#/components/schemas/FunctionShellCall'
+        shell_call_output: '#/components/schemas/FunctionShellCallOutput'
+        apply_patch_call: '#/components/schemas/ApplyPatchToolCall'
+        apply_patch_call_output: '#/components/schemas/ApplyPatchToolCallOutput'
+        mcp_call: '#/components/schemas/MCPToolCall'
+        mcp_list_tools: '#/components/schemas/MCPListTools'
+        mcp_approval_request: '#/components/schemas/MCPApprovalRequest'
+        mcp_approval_response: '#/components/schemas/MCPApprovalResponseResource'
+        custom_tool_call: '#/components/schemas/CustomToolCall'
+        custom_tool_call_output: '#/components/schemas/CustomToolCallOutputResource'
+  - target: $.components.schemas.OutputMessageContent.discriminator
+    update:
+      mapping:
+        output_text: '#/components/schemas/OutputTextContent'
+        refusal: '#/components/schemas/RefusalContent'
+  - target: $.components.schemas.OutputContent.discriminator
+    update:
+      mapping:
+        output_text: '#/components/schemas/OutputTextContent'
+        refusal: '#/components/schemas/RefusalContent'
+        reasoning_text: '#/components/schemas/ReasoningTextContent'
+  - target: $.components.schemas.InputContent.discriminator
+    update:
+      mapping:
+        input_text: '#/components/schemas/InputTextContent'
+        input_image: '#/components/schemas/InputImageContent'
+        input_file: '#/components/schemas/InputFileContent'
+  - target: $.components.schemas.Tool.discriminator
+    update:
+      mapping:
+        function: '#/components/schemas/FunctionTool'
+        file_search: '#/components/schemas/FileSearchTool'
+        computer: '#/components/schemas/ComputerTool'
+        computer_use_preview: '#/components/schemas/ComputerUsePreviewTool'
+        web_search: '#/components/schemas/WebSearchTool'
+        web_search_2025_08_26: '#/components/schemas/WebSearchTool'
+        mcp: '#/components/schemas/MCPTool'
+        code_interpreter: '#/components/schemas/CodeInterpreterTool'
+        programmatic_tool_calling: '#/components/schemas/ProgrammaticToolCallingParam'
+        image_generation: '#/components/schemas/ImageGenTool'
+        local_shell: '#/components/schemas/LocalShellToolParam'
+        shell: '#/components/schemas/FunctionShellToolParam'
+        custom: '#/components/schemas/CustomToolParam'
+        namespace: '#/components/schemas/NamespaceToolParam'
+        tool_search: '#/components/schemas/ToolSearchToolParam'
+        web_search_preview: '#/components/schemas/WebSearchPreviewTool'
+        web_search_preview_2025_03_11: '#/components/schemas/WebSearchPreviewTool'
+        apply_patch: '#/components/schemas/ApplyPatchToolParam'
+  - target: $.components.schemas.ResponseStreamEvent.discriminator
+    update:
+      mapping:
+        response.audio.delta: '#/components/schemas/ResponseAudioDeltaEvent'
+        response.audio.done: '#/components/schemas/ResponseAudioDoneEvent'
+        response.audio.transcript.delta: '#/components/schemas/ResponseAudioTranscriptDeltaEvent'
+        response.audio.transcript.done: '#/components/schemas/ResponseAudioTranscriptDoneEvent'
+        response.code_interpreter_call_code.delta: '#/components/schemas/ResponseCodeInterpreterCallCodeDeltaEvent'
+        response.code_interpreter_call_code.done: '#/components/schemas/ResponseCodeInterpreterCallCodeDoneEvent'
+        response.code_interpreter_call.completed: '#/components/schemas/ResponseCodeInterpreterCallCompletedEvent'
+        response.code_interpreter_call.in_progress: '#/components/schemas/ResponseCodeInterpreterCallInProgressEvent'
+        response.code_interpreter_call.interpreting: '#/components/schemas/ResponseCodeInterpreterCallInterpretingEvent'
+        response.compaction.compacting: '#/components/schemas/ResponseCompactionCompactingStreamingEvent'
+        response.completed: '#/components/schemas/ResponseCompletedEvent'
+        response.content_part.added: '#/components/schemas/ResponseContentPartAddedEvent'
+        response.content_part.done: '#/components/schemas/ResponseContentPartDoneEvent'
+        response.created: '#/components/schemas/ResponseCreatedEvent'
+        error: '#/components/schemas/ResponseErrorEvent'
+        response.file_search_call.completed: '#/components/schemas/ResponseFileSearchCallCompletedEvent'
+        response.file_search_call.in_progress: '#/components/schemas/ResponseFileSearchCallInProgressEvent'
+        response.file_search_call.searching: '#/components/schemas/ResponseFileSearchCallSearchingEvent'
+        response.function_call_arguments.delta: '#/components/schemas/ResponseFunctionCallArgumentsDeltaEvent'
+        response.function_call_arguments.done: '#/components/schemas/ResponseFunctionCallArgumentsDoneEvent'
+        response.shell_call_command.added: '#/components/schemas/ResponseShellCallCommandAddedStreamingEvent'
+        response.shell_call_command.delta: '#/components/schemas/ResponseShellCallCommandDeltaStreamingEvent'
+        response.shell_call_command.done: '#/components/schemas/ResponseShellCallCommandDoneStreamingEvent'
+        response.shell_call_output_content.delta: '#/components/schemas/ResponseShellCallOutputContentDeltaStreamingEvent'
+        response.shell_call_output_content.done: '#/components/schemas/ResponseShellCallOutputContentDoneStreamingEvent'
+        response.in_progress: '#/components/schemas/ResponseInProgressEvent'
+        response.failed: '#/components/schemas/ResponseFailedEvent'
+        response.incomplete: '#/components/schemas/ResponseIncompleteEvent'
+        response.output_item.added: '#/components/schemas/ResponseOutputItemAddedEvent'
+        response.output_item.done: '#/components/schemas/ResponseOutputItemDoneEvent'
+        response.reasoning_summary_part.added: '#/components/schemas/ResponseReasoningSummaryPartAddedEvent'
+        response.reasoning_summary_part.done: '#/components/schemas/ResponseReasoningSummaryPartDoneEvent'
+        response.reasoning_summary_text.delta: '#/components/schemas/ResponseReasoningSummaryTextDeltaEvent'
+        response.reasoning_summary_text.done: '#/components/schemas/ResponseReasoningSummaryTextDoneEvent'
+        response.reasoning_text.delta: '#/components/schemas/ResponseReasoningTextDeltaEvent'
+        response.reasoning_text.done: '#/components/schemas/ResponseReasoningTextDoneEvent'
+        response.refusal.delta: '#/components/schemas/ResponseRefusalDeltaEvent'
+        response.refusal.done: '#/components/schemas/ResponseRefusalDoneEvent'
+        response.output_text.delta: '#/components/schemas/ResponseTextDeltaEvent'
+        response.output_text.done: '#/components/schemas/ResponseTextDoneEvent'
+        response.web_search_call.completed: '#/components/schemas/ResponseWebSearchCallCompletedEvent'
+        response.web_search_call.in_progress: '#/components/schemas/ResponseWebSearchCallInProgressEvent'
+        response.web_search_call.searching: '#/components/schemas/ResponseWebSearchCallSearchingEvent'
+        response.image_generation_call.completed: '#/components/schemas/ResponseImageGenCallCompletedEvent'
+        response.image_generation_call.generating: '#/components/schemas/ResponseImageGenCallGeneratingEvent'
+        response.image_generation_call.in_progress: '#/components/schemas/ResponseImageGenCallInProgressEvent'
+        response.image_generation_call.partial_image: '#/components/schemas/ResponseImageGenCallPartialImageEvent'
+        response.mcp_call_arguments.delta: '#/components/schemas/ResponseMCPCallArgumentsDeltaEvent'
+        response.mcp_call_arguments.done: '#/components/schemas/ResponseMCPCallArgumentsDoneEvent'
+        response.mcp_call.completed: '#/components/schemas/ResponseMCPCallCompletedEvent'
+        response.mcp_call.failed: '#/components/schemas/ResponseMCPCallFailedEvent'
+        response.mcp_call.in_progress: '#/components/schemas/ResponseMCPCallInProgressEvent'
+        response.mcp_list_tools.completed: '#/components/schemas/ResponseMCPListToolsCompletedEvent'
+        response.mcp_list_tools.failed: '#/components/schemas/ResponseMCPListToolsFailedEvent'
+        response.mcp_list_tools.in_progress: '#/components/schemas/ResponseMCPListToolsInProgressEvent'
+        response.output_text.annotation.added: '#/components/schemas/ResponseOutputTextAnnotationAddedEvent'
+        response.queued: '#/components/schemas/ResponseQueuedEvent'
+        response.custom_tool_call_input.delta: '#/components/schemas/ResponseCustomToolCallInputDeltaEvent'
+        response.custom_tool_call_input.done: '#/components/schemas/ResponseCustomToolCallInputDoneEvent'
+
   - target: $.paths.*.post.responses
     update:
       '400':

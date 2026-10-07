@@ -29,28 +29,32 @@ requires [Speakeasy's OpenAPI CLI](https://github.com/speakeasy-api/openapi)
 - `AuthenticationMiddleware` is provided to add API key authentication.
 - Check out [Tests](/Tests)
 
-### Chat Completions fixtures
+### Chat Completions and Responses fixtures
 
 `swift test` runs offline using captured payloads in
-[Tests/SwiftOpenaiApiTests/Resources](Tests/SwiftOpenaiApiTests/Resources).
+[ChatCompletions](Tests/SwiftOpenaiApiTests/Resources/ChatCompletions) and
+[Responses](Tests/SwiftOpenaiApiTests/Resources/Responses), with separate test suites.
 It checks JSON decoding and replays HTTP success and error responses through the
-generated client. Streaming coverage includes individual chunks, final usage,
-and the `[DONE]` frame.
+generated client. Chat streaming checks individual chunks, final usage, and
+the `[DONE]` frame. Responses streaming checks typed events, text and function
+argument deltas, reasoning items, and complete or incomplete terminal responses.
 
 To deliberately refresh the fixtures, export `OPENAI_API_KEY` and run:
 
 ```bash
-python3 scripts/capture-chat-completions.py
+python3 scripts/capture-api-fixtures.py chat-completions
+python3 scripts/capture-api-fixtures.py responses
 # Refresh just one scenario:
-python3 scripts/capture-chat-completions.py --case tool-call
+python3 scripts/capture-api-fixtures.py responses --case tool-call
 ```
 
 This makes real, billable requests with curl. Requests, expected HTTP statuses,
 and capture timestamps are saved alongside the unchanged response bodies.
 The capture script preserves an existing fixture when the HTTP status or
 content type differs from the expected result. See the
-[fixture notes](Tests/SwiftOpenaiApiTests/Resources/ChatCompletions/README.md)
-for the observed specification mismatches.
+[Chat fixture notes](Tests/SwiftOpenaiApiTests/Resources/ChatCompletions/README.md)
+and [Responses fixture notes](Tests/SwiftOpenaiApiTests/Resources/Responses/README.md)
+for the observed specification mismatches and coverage.
 
 ### Installation
 

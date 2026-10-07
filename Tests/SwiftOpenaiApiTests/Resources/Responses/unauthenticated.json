@@ -1,0 +1,8 @@
+{
+  "error": {
+    "message": "Missing bearer or basic authentication in header",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": null
+  }
+}
