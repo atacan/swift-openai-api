@@ -97,6 +97,3 @@ actions:
             schema:
               $ref: '#/components/schemas/ErrorResponse'
         description: The engine is currently overloaded, please try again later
-  
-  - target: $.components.schemas.Error.required
-    remove: true

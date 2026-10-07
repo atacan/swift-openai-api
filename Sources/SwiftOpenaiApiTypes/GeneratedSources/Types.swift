@@ -6041,13 +6041,13 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/Error`.
         public struct _Error: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/Error/code`.
-            public var code: Swift.String?
+            public var code: Swift.String
             /// - Remark: Generated from `#/components/schemas/Error/message`.
-            public var message: Swift.String?
+            public var message: Swift.String
             /// - Remark: Generated from `#/components/schemas/Error/param`.
-            public var param: Swift.String?
+            public var param: Swift.String
             /// - Remark: Generated from `#/components/schemas/Error/type`.
-            public var _type: Swift.String?
+            public var _type: Swift.String
             /// Creates a new `_Error`.
             ///
             /// - Parameters:
@@ -6056,10 +6056,10 @@ public enum Components {
             ///   - param:
             ///   - _type:
             public init(
-                code: Swift.String? = nil,
-                message: Swift.String? = nil,
-                param: Swift.String? = nil,
-                _type: Swift.String? = nil
+                code: Swift.String,
+                message: Swift.String,
+                param: Swift.String,
+                _type: Swift.String
             ) {
                 self.code = code
                 self.message = message

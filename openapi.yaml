@@ -28420,6 +28420,11 @@ components:
                     type: string
                 type:
                     type: string
+            required:
+                - type
+                - message
+                - param
+                - code
         ErrorEvent:
             type: object
             properties:
