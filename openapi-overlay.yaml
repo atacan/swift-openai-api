@@ -38,6 +38,70 @@ info:
 #     remove: true
 
 actions:
+  # Dispatch realtime server events by their JSON type values.
+  - target: $.components.schemas.RealtimeServerEvent.discriminator
+    update:
+      mapping:
+        conversation.created: '#/components/schemas/RealtimeServerEventConversationCreated'
+        conversation.item.created: '#/components/schemas/RealtimeServerEventConversationItemCreated'
+        conversation.item.deleted: '#/components/schemas/RealtimeServerEventConversationItemDeleted'
+        conversation.item.input_audio_transcription.completed: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionCompleted'
+        conversation.item.input_audio_transcription.delta: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionDelta'
+        conversation.item.input_audio_transcription.failed: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionFailed'
+        conversation.item.retrieved: '#/components/schemas/RealtimeServerEventConversationItemRetrieved'
+        conversation.item.truncated: '#/components/schemas/RealtimeServerEventConversationItemTruncated'
+        error: '#/components/schemas/RealtimeServerEventError'
+        input_audio_buffer.cleared: '#/components/schemas/RealtimeServerEventInputAudioBufferCleared'
+        input_audio_buffer.committed: '#/components/schemas/RealtimeServerEventInputAudioBufferCommitted'
+        input_audio_buffer.dtmf_event_received: '#/components/schemas/RealtimeServerEventInputAudioBufferDtmfEventReceived'
+        input_audio_buffer.speech_started: '#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStarted'
+        input_audio_buffer.speech_stopped: '#/components/schemas/RealtimeServerEventInputAudioBufferSpeechStopped'
+        rate_limits.updated: '#/components/schemas/RealtimeServerEventRateLimitsUpdated'
+        response.output_audio.delta: '#/components/schemas/RealtimeServerEventResponseAudioDelta'
+        response.output_audio.done: '#/components/schemas/RealtimeServerEventResponseAudioDone'
+        response.output_audio_transcript.delta: '#/components/schemas/RealtimeServerEventResponseAudioTranscriptDelta'
+        response.output_audio_transcript.done: '#/components/schemas/RealtimeServerEventResponseAudioTranscriptDone'
+        response.content_part.added: '#/components/schemas/RealtimeServerEventResponseContentPartAdded'
+        response.content_part.done: '#/components/schemas/RealtimeServerEventResponseContentPartDone'
+        response.created: '#/components/schemas/RealtimeServerEventResponseCreated'
+        response.done: '#/components/schemas/RealtimeServerEventResponseDone'
+        response.function_call_arguments.delta: '#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDelta'
+        response.function_call_arguments.done: '#/components/schemas/RealtimeServerEventResponseFunctionCallArgumentsDone'
+        response.output_item.added: '#/components/schemas/RealtimeServerEventResponseOutputItemAdded'
+        response.output_item.done: '#/components/schemas/RealtimeServerEventResponseOutputItemDone'
+        response.output_text.delta: '#/components/schemas/RealtimeServerEventResponseTextDelta'
+        response.output_text.done: '#/components/schemas/RealtimeServerEventResponseTextDone'
+        session.created: '#/components/schemas/RealtimeServerEventSessionCreated'
+        session.updated: '#/components/schemas/RealtimeServerEventSessionUpdated'
+        output_audio_buffer.started: '#/components/schemas/RealtimeServerEventOutputAudioBufferStarted'
+        output_audio_buffer.stopped: '#/components/schemas/RealtimeServerEventOutputAudioBufferStopped'
+        output_audio_buffer.cleared: '#/components/schemas/RealtimeServerEventOutputAudioBufferCleared'
+        conversation.item.added: '#/components/schemas/RealtimeServerEventConversationItemAdded'
+        conversation.item.done: '#/components/schemas/RealtimeServerEventConversationItemDone'
+        input_audio_buffer.timeout_triggered: '#/components/schemas/RealtimeServerEventInputAudioBufferTimeoutTriggered'
+        conversation.item.input_audio_transcription.segment: '#/components/schemas/RealtimeServerEventConversationItemInputAudioTranscriptionSegment'
+        mcp_list_tools.in_progress: '#/components/schemas/RealtimeServerEventMCPListToolsInProgress'
+        mcp_list_tools.completed: '#/components/schemas/RealtimeServerEventMCPListToolsCompleted'
+        mcp_list_tools.failed: '#/components/schemas/RealtimeServerEventMCPListToolsFailed'
+        response.mcp_call_arguments.delta: '#/components/schemas/RealtimeServerEventResponseMCPCallArgumentsDelta'
+        response.mcp_call_arguments.done: '#/components/schemas/RealtimeServerEventResponseMCPCallArgumentsDone'
+        response.mcp_call.in_progress: '#/components/schemas/RealtimeServerEventResponseMCPCallInProgress'
+        response.mcp_call.completed: '#/components/schemas/RealtimeServerEventResponseMCPCallCompleted'
+        response.mcp_call.failed: '#/components/schemas/RealtimeServerEventResponseMCPCallFailed'
+
+  # The generator ignores inline oneOf variants when a discriminator is present.
+  # These VAD variants already have distinct, required type values.
+  - target: $.components.schemas.RealtimeTurnDetection.discriminator
+    remove: true
+
+  # Express the nullable noise reduction object using a supported schema shape.
+  # Keep its existing properties and optionality.
+  - target: $.components.schemas.RealtimeTranscriptionSessionCreateRequest.properties.input_audio_noise_reduction.not
+    remove: true
+  - target: $.components.schemas.RealtimeTranscriptionSessionCreateRequest.properties.input_audio_noise_reduction
+    update:
+      type: object
+
   # swift-openapi-generator does not support OpenAPI 3.1 webhooks.
   - target: $.webhooks
     remove: true

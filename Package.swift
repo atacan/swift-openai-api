@@ -20,6 +20,10 @@ let package = Package(
             targets: ["SwiftOpenaiApiTypes"]
         ),
         .library(
+            name: "SwiftOpenaiApiRealtimeTypes",
+            targets: ["SwiftOpenaiApiRealtimeTypes"]
+        ),
+        .library(
             name: "SwiftOpenaiApi",
             targets: ["SwiftOpenaiApi"]
         ),
@@ -34,6 +38,13 @@ let package = Package(
         // Types target: Contains generated types from OpenAPI spec
         .target(
             name: "SwiftOpenaiApiTypes",
+            dependencies: [
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
+            ]
+        ),
+        // Realtime target: Contains generated WebSocket event types
+        .target(
+            name: "SwiftOpenaiApiRealtimeTypes",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
             ]
@@ -57,6 +68,12 @@ let package = Package(
                 .product(name: "HTTPTypes", package: "swift-http-types"),
             ],
             resources: [.copy("Resources")]
+        ),
+        .testTarget(
+            name: "SwiftOpenaiApiRealtimeTypesTests",
+            dependencies: [
+                .target(name: "SwiftOpenaiApiRealtimeTypes")
+            ]
         ),
     ]
 )

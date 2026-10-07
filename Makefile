@@ -27,7 +27,7 @@ RESET  := $(ESC)[0m
 # Meta Targets
 # ------------------------------------------------------------------------------
 
-.PHONY: all help check-clean merge-main format test-on-linux generate build test
+.PHONY: all help check-clean merge-main format test-on-linux regenerate generate generate-realtime build test
 
 # Default target runs help
 all: help
@@ -89,6 +89,7 @@ download-openapi:
 
 regenerate:
 	swift-bootstrapper bootstrap .
+	$(MAKE) generate-realtime
 
 generate: ## Generate Swift code from OpenAPI spec
 	@echo "$(YELLOW)Generating Swift code from OpenAPI specification...$(RESET)"
@@ -100,7 +101,14 @@ generate: ## Generate Swift code from OpenAPI spec
 		--config openapi-generator-config-client.yaml \
 		openapi.yaml \
 		--output-directory Sources/SwiftOpenaiApi/GeneratedSources
+	$(MAKE) generate-realtime
 	@echo "$(GREEN)Code generation complete!$(RESET)"
+
+generate-realtime: ## Generate realtime WebSocket types from OpenAPI schemas
+	swift run swift-openapi-generator generate \
+		--config openapi-generator-config-realtime.yaml \
+		openapi.yaml \
+		--output-directory Sources/SwiftOpenaiApiRealtimeTypes/GeneratedSources
 
 build: ## Build the Swift package
 	@echo "$(YELLOW)Building SwiftOpenaiApi...$(RESET)"

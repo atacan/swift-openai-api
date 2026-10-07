@@ -29,6 +29,54 @@ requires [Speakeasy's OpenAPI CLI](https://github.com/speakeasy-api/openapi)
 - `AuthenticationMiddleware` is provided to add API key authentication.
 - Check out [Tests](/Tests)
 
+### Realtime WebSocket types
+
+Add the independently importable `SwiftOpenaiApiRealtimeTypes` product to your target:
+
+```swift
+.product(name: "SwiftOpenaiApiRealtimeTypes", package: "swift-openai-api")
+```
+
+The library provides public `Codable` types under `Components.Schemas` for
+encoding client events and decoding server events:
+
+```swift
+import Foundation
+import SwiftOpenaiApiRealtimeTypes
+
+let event = Components.Schemas.RealtimeClientEventInputAudioBufferAppend(
+    _type: .input_audio_buffer_period_append,
+    audio: Data([1, 2, 3]).base64EncodedString()
+)
+let message = try JSONEncoder().encode(event)
+
+// Decode an incoming JSON WebSocket message:
+let serverEvent = try JSONDecoder().decode(
+    Components.Schemas.RealtimeServerEvent.self,
+    from: incomingMessage
+)
+```
+
+When importing both types libraries, qualify the namespace as
+`SwiftOpenaiApiRealtimeTypes.Components.Schemas` to distinguish it from the HTTP types.
+WebSocket connection handling is supplied by your application.
+
+[openapi-generator-config-realtime.yaml](openapi-generator-config-realtime.yaml)
+hardcodes four root schemas: `RealtimeClientEventTranscriptionSessionUpdate`,
+`RealtimeClientEventInputAudioBufferAppend`,
+`RealtimeServerEventConversationItemInputAudioTranscriptionCompleted`, and
+`RealtimeServerEvent`. The generator's native `filter.schemas` includes their
+referenced dependencies, including all variants of `RealtimeServerEvent`, with zero paths.
+To add another root schema, extend that configuration's `schemas` list.
+
+```bash
+make generate-realtime # Generate only realtime types from the transformed openapi.yaml
+make generate          # Generate HTTP types, the HTTP client, and realtime types
+make regenerate        # Transform the original specification, apply overlays, and generate all targets
+```
+
+`swift test` also runs the offline [realtime tests](Tests/SwiftOpenaiApiRealtimeTypesTests).
+
 ### Chat Completions, Responses, and Audio fixtures
 
 `swift test` runs offline using captured payloads in
@@ -109,8 +157,7 @@ First incoming message is a `transcription_session.created` event.
 
 ## RealtimeServerEvent.discriminator
 
-Run the following to find the `type` value for each `RealtimeServerEvent` and use them to create the mapping in the `overlay.json`
-
-```bash
-yq '.components.schemas | .[] | select(key | test("RealtimeServerEvent.*")) | .properties.type.enum[]' openapi.yaml
-```
+[openapi-overlay.yaml](openapi-overlay.yaml) maps every `RealtimeServerEvent.oneOf`
+variant to its JSON `type` value, so the generated enum decodes event names such as
+`conversation.item.input_audio_transcription.completed`. When adding a variant to
+the specification, keep this mapping in sync with its `type` enum.
