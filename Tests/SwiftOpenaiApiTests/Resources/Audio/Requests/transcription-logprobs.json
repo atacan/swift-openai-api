@@ -1,0 +1,8 @@
+{
+  "file": "speech.wav",
+  "model": "gpt-4o-mini-transcribe",
+  "response_format": "json",
+  "include": [
+    "logprobs"
+  ]
+}

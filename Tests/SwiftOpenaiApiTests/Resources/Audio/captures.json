@@ -1,0 +1,164 @@
+[
+  {
+    "name": "speech-wav",
+    "status": 200,
+    "content_type": "audio/wav",
+    "captured_at": "2026-10-07T15:53:17.283907+00:00"
+  },
+  {
+    "name": "speech-mp3",
+    "status": 200,
+    "content_type": "audio/mpeg",
+    "captured_at": "2026-10-07T15:57:07.355340+00:00"
+  },
+  {
+    "name": "speech-german",
+    "status": 200,
+    "content_type": "audio/wav",
+    "captured_at": "2026-10-07T15:57:08.621003+00:00"
+  },
+  {
+    "name": "speech-pcm",
+    "status": 200,
+    "content_type": "audio/pcm",
+    "captured_at": "2026-10-07T15:57:11.936278+00:00"
+  },
+  {
+    "name": "speech-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T15:57:48.522974+00:00"
+  },
+  {
+    "name": "transcription-json",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:57:49.165449+00:00"
+  },
+  {
+    "name": "transcription-logprobs",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:57:49.757177+00:00"
+  },
+  {
+    "name": "transcription-verbose",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:57:51.215519+00:00"
+  },
+  {
+    "name": "transcription-text",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "captured_at": "2026-10-07T15:57:52.525859+00:00"
+  },
+  {
+    "name": "transcription-srt",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "captured_at": "2026-10-07T15:57:54.019184+00:00"
+  },
+  {
+    "name": "transcription-vtt",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "captured_at": "2026-10-07T15:58:29.042547+00:00"
+  },
+  {
+    "name": "transcription-diarized",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:58:31.319425+00:00"
+  },
+  {
+    "name": "transcription-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T15:58:31.906680+00:00"
+  },
+  {
+    "name": "transcription-diarized-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T15:58:34.932058+00:00"
+  },
+  {
+    "name": "translation-json",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:58:36.618687+00:00"
+  },
+  {
+    "name": "translation-verbose",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:58:37.410850+00:00"
+  },
+  {
+    "name": "translation-text",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "captured_at": "2026-10-07T15:58:38.466266+00:00"
+  },
+  {
+    "name": "translation-vtt",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "captured_at": "2026-10-07T15:58:39.281730+00:00"
+  },
+  {
+    "name": "speech-missing-input",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:58:39.522924+00:00"
+  },
+  {
+    "name": "speech-unauthenticated",
+    "status": 401,
+    "content_type": "application/json; charset=utf-8",
+    "captured_at": "2026-10-07T15:58:39.728604+00:00"
+  },
+  {
+    "name": "transcription-missing-file",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:58:40.085415+00:00"
+  },
+  {
+    "name": "transcription-invalid-format",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:58:40.717255+00:00"
+  },
+  {
+    "name": "translation-invalid-model",
+    "status": 404,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T15:59:28.483312+00:00"
+  },
+  {
+    "name": "transcription-language-stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T16:02:31.569993+00:00"
+  },
+  {
+    "name": "speech-aac",
+    "status": 200,
+    "content_type": "audio/aac",
+    "captured_at": "2026-10-07T16:13:21.650410+00:00"
+  },
+  {
+    "name": "speech-flac",
+    "status": 200,
+    "content_type": "audio/flac",
+    "captured_at": "2026-10-07T16:13:30.813613+00:00"
+  },
+  {
+    "name": "speech-opus",
+    "status": 200,
+    "content_type": "audio/opus",
+    "captured_at": "2026-10-07T16:13:32.284124+00:00"
+  }
+]

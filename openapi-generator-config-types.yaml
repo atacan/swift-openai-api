@@ -6,10 +6,19 @@ generate:
 
 accessModifier: public
 
+# Use ordinary Swift names for bracketed multipart fields.
+nameOverrides:
+  'languages[]': languages
+  'keywords[]': keywords
+  'include[]': include
+  'timestamp_granularities[]': timestamp_granularities
+  'known_speaker_names[]': known_speaker_names
+  'known_speaker_references[]': known_speaker_references
+
 filter:
   tags:
     # - Assistants
-    # - Audio
+    - Audio
     # - Audit Logs
     # - Batch
     - Chat

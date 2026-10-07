@@ -6,13 +6,22 @@ generate:
 
 accessModifier: public
 
+# Keep these overrides in sync with the types configuration.
+nameOverrides:
+  'languages[]': languages
+  'keywords[]': keywords
+  'include[]': include
+  'timestamp_granularities[]': timestamp_granularities
+  'known_speaker_names[]': known_speaker_names
+  'known_speaker_references[]': known_speaker_references
+
 additionalImports:
   - SwiftOpenaiApiTypes
 
 filter:
   tags:
     # - Assistants
-    # - Audio
+    - Audio
     # - Audit Logs
     # - Batch
     - Chat

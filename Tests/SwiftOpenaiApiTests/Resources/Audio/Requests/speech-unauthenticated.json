@@ -1,0 +1,5 @@
+{
+  "model": "gpt-4o-mini-tts",
+  "voice": "alloy",
+  "input": "Hello. This is an audio fixture for decoding tests."
+}

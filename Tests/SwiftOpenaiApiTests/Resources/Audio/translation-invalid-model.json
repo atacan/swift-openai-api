@@ -1,0 +1,12 @@
+{
+  "detail": {
+    "code": null,
+    "message": "Invalid URL (POST /v1/audio/translations)"
+  },
+  "error": {
+    "code": null,
+    "message": "Invalid URL (POST /v1/audio/translations)",
+    "param": null,
+    "type": "invalid_request_error"
+  }
+}

@@ -1,0 +1,213 @@
+[
+  {
+    "name": "speech-wav",
+    "endpoint": "audio/speech",
+    "response": "speech.wav",
+    "status": 200,
+    "content_type": "audio/wav"
+  },
+  {
+    "name": "speech-mp3",
+    "endpoint": "audio/speech",
+    "response": "speech.mp3",
+    "status": 200,
+    "content_type": "audio/mpeg"
+  },
+  {
+    "name": "speech-german",
+    "endpoint": "audio/speech",
+    "response": "speech-german.wav",
+    "status": 200,
+    "content_type": "audio/wav"
+  },
+  {
+    "name": "speech-pcm",
+    "endpoint": "audio/speech",
+    "response": "speech.pcm",
+    "status": 200,
+    "content_type": "audio/pcm"
+  },
+  {
+    "name": "speech-stream",
+    "endpoint": "audio/speech",
+    "response": "speech-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "terminal_event": "speech.audio.done"
+  },
+  {
+    "name": "transcription-json",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-json.json",
+    "status": 200,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-logprobs",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-logprobs.json",
+    "status": 200,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-verbose",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-verbose.json",
+    "status": 200,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-text",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-text.txt",
+    "status": 200,
+    "content_type": "text/plain",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-srt",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-srt.srt",
+    "status": 200,
+    "content_type": "text/plain",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-vtt",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-vtt.vtt",
+    "status": 200,
+    "content_type": "text/plain",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-diarized",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-diarized.json",
+    "status": 200,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-stream",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "request_content_type": "multipart/form-data",
+    "terminal_event": "transcript.text.done"
+  },
+  {
+    "name": "transcription-diarized-stream",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-diarized-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "request_content_type": "multipart/form-data",
+    "terminal_event": "transcript.text.done"
+  },
+  {
+    "name": "translation-json",
+    "endpoint": "audio/translations",
+    "response": "translation-json.json",
+    "status": 200,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "translation-verbose",
+    "endpoint": "audio/translations",
+    "response": "translation-verbose.json",
+    "status": 200,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "translation-text",
+    "endpoint": "audio/translations",
+    "response": "translation-text.txt",
+    "status": 200,
+    "content_type": "text/plain",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "translation-vtt",
+    "endpoint": "audio/translations",
+    "response": "translation-vtt.vtt",
+    "status": 200,
+    "content_type": "text/plain",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "speech-missing-input",
+    "endpoint": "audio/speech",
+    "response": "speech-missing-input.json",
+    "status": 400,
+    "content_type": "application/json"
+  },
+  {
+    "name": "speech-unauthenticated",
+    "endpoint": "audio/speech",
+    "response": "speech-unauthenticated.json",
+    "status": 401,
+    "content_type": "application/json",
+    "authenticated": false
+  },
+  {
+    "name": "transcription-missing-file",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-missing-file.json",
+    "status": 400,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-invalid-format",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-invalid-format.json",
+    "status": 400,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "translation-invalid-model",
+    "endpoint": "audio/translations",
+    "response": "translation-invalid-model.json",
+    "status": 404,
+    "content_type": "application/json",
+    "request_content_type": "multipart/form-data"
+  },
+  {
+    "name": "transcription-language-stream",
+    "endpoint": "audio/transcriptions",
+    "response": "transcription-language-stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream",
+    "request_content_type": "multipart/form-data",
+    "terminal_event": "transcript.text.done"
+  },
+  {
+    "name": "speech-aac",
+    "endpoint": "audio/speech",
+    "response": "speech.aac",
+    "status": 200,
+    "content_type": "audio/aac"
+  },
+  {
+    "name": "speech-flac",
+    "endpoint": "audio/speech",
+    "response": "speech.flac",
+    "status": 200,
+    "content_type": "audio/flac"
+  },
+  {
+    "name": "speech-opus",
+    "endpoint": "audio/speech",
+    "response": "speech.opus",
+    "status": 200,
+    "content_type": "audio/opus"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "error": {
+    "message": "[{'type': 'enum', 'loc': ('body', 'response_format'), 'msg': \"Input should be 'json', 'text', 'vtt', 'srt' or 'verbose_json'\", 'ctx': {'expected': \"'json', 'text', 'vtt', 'srt' or 'verbose_json'\"}}]",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": null
+  }
+}

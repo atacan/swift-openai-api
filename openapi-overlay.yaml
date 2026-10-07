@@ -213,6 +213,126 @@ actions:
         response.custom_tool_call_input.delta: '#/components/schemas/ResponseCustomToolCallInputDeltaEvent'
         response.custom_tool_call_input.done: '#/components/schemas/ResponseCustomToolCallInputDoneEvent'
 
+  # Audio events and diarized usage have the same missing wire-value mappings.
+  - target: $.components.schemas.CreateSpeechResponseStreamEvent.discriminator
+    update:
+      mapping:
+        speech.audio.delta: '#/components/schemas/SpeechAudioDeltaEvent'
+        speech.audio.done: '#/components/schemas/SpeechAudioDoneEvent'
+  - target: $.components.schemas.CreateTranscriptionResponseStreamEvent.discriminator
+    update:
+      mapping:
+        transcript.text.segment: '#/components/schemas/TranscriptTextSegmentEvent'
+        transcript.text.delta: '#/components/schemas/TranscriptTextDeltaEvent'
+        transcript.text.done: '#/components/schemas/TranscriptTextDoneEvent'
+  - target: $.components.schemas.CreateTranscriptionResponseDiarizedJson.properties.usage.discriminator
+    update:
+      mapping:
+        tokens: '#/components/schemas/TranscriptTextUsageTokens'
+        duration: '#/components/schemas/TranscriptTextUsageDuration'
+
+  # gpt-transcribe reports duration usage in its terminal event; legacy models
+  # report token usage. Both carry a required, unambiguous type tag.
+  - target: $.components.schemas.TranscriptTextDoneEvent.properties.usage
+    remove: true
+  - target: $.components.schemas.TranscriptTextDoneEvent.properties
+    update:
+      usage:
+        oneOf:
+          - $ref: '#/components/schemas/TranscriptTextUsageTokens'
+          - $ref: '#/components/schemas/TranscriptTextUsageDuration'
+        discriminator:
+          propertyName: type
+          mapping:
+            tokens: '#/components/schemas/TranscriptTextUsageTokens'
+            duration: '#/components/schemas/TranscriptTextUsageDuration'
+
+  # A verbose translation also satisfies the simple text schema. anyOf models
+  # this overlap and retains both views instead of dropping the verbose fields.
+  - target: "$['paths']['/audio/translations']['post']['responses']['200']['content']['application/json']['schema']['oneOf']"
+    remove: true
+  - target: "$['paths']['/audio/translations']['post']['responses']['200']['content']['application/json']['schema']"
+    update:
+      anyOf:
+        - $ref: '#/components/schemas/CreateTranslationResponseJson'
+        - $ref: '#/components/schemas/CreateTranslationResponseVerboseJson'
+
+  # The multipart wire names for arrays include brackets, as in the documented
+  # curl requests. Preserve item types and bounds while correcting those names.
+  - target: $.components.schemas.CreateTranscriptionRequest.properties
+    update:
+      'languages[]':
+        type: array
+        minItems: 1
+        items:
+          type: string
+        description: Possible languages of the input audio, using ISO-639-1 codes. Supported by gpt-transcribe.
+      'keywords[]':
+        type: array
+        items:
+          type: string
+        description: Words or phrases to guide transcription of the input audio. Supported by gpt-transcribe.
+      'include[]':
+        type: array
+        items:
+          $ref: '#/components/schemas/TranscriptionInclude'
+        description: >-
+          Additional information to include in the transcription response. logprobs
+          requires response_format json and is supported by gpt-4o-transcribe,
+          gpt-4o-mini-transcribe, and gpt-4o-mini-transcribe-2025-12-15. Not supported
+          by gpt-4o-transcribe-diarize.
+      'timestamp_granularities[]':
+        type: array
+        items:
+          type: string
+          enum: [word, segment]
+        default: [segment]
+        description: >-
+          Timestamp granularities to include with verbose_json. Either or both
+          word and segment are supported. Word timestamps incur additional latency;
+          segment timestamps do not. Not supported by gpt-4o-transcribe-diarize.
+      'known_speaker_names[]':
+        type: array
+        maxItems: 4
+        items:
+          type: string
+        description: >-
+          Short speaker identifiers matching known_speaker_references[]. Up to
+          four known speakers are supported.
+      'known_speaker_references[]':
+        type: array
+        maxItems: 4
+        items:
+          type: string
+        description: >-
+          Reference audio data URLs matching known_speaker_names[]. Each sample
+          must be between 2 and 10 seconds, using a supported input audio format.
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.languages
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.keywords
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.include
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.timestamp_granularities
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.known_speaker_names
+    remove: true
+  - target: $.components.schemas.CreateTranscriptionRequest.properties.known_speaker_references
+    remove: true
+
+  # Uploads contain binary audio. Explicit encoding avoids inferring text/plain
+  # from the legacy format: binary annotation in the OpenAPI 3.1 source.
+  - target: "$['paths']['/audio/transcriptions']['post']['requestBody']['content']['multipart/form-data']"
+    update:
+      encoding:
+        file:
+          contentType: application/octet-stream
+  - target: "$['paths']['/audio/translations']['post']['requestBody']['content']['multipart/form-data']"
+    update:
+      encoding:
+        file:
+          contentType: application/octet-stream
+
   - target: $.paths.*.post.responses
     update:
       '400':

@@ -29,3 +29,8 @@ venv/
 *.swp
 *.tmp
 *~
+
+**.wav
+**.mp3
+!Tests/SwiftOpenaiApiTests/Resources/Audio/*.wav
+!Tests/SwiftOpenaiApiTests/Resources/Audio/*.mp3

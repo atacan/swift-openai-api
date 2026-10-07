@@ -1,0 +1,5 @@
+{
+  "file": "speech-german.wav",
+  "model": "whisper-1",
+  "response_format": "text"
+}

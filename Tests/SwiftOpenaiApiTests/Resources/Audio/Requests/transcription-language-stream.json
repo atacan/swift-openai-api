@@ -1,0 +1,9 @@
+{
+  "file": "speech.wav",
+  "model": "gpt-transcribe",
+  "response_format": "json",
+  "languages": [
+    "en"
+  ],
+  "stream": true
+}

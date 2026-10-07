@@ -12,7 +12,7 @@ import tempfile
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("api", choices=["chat-completions", "responses"])
+    parser.add_argument("api", choices=["chat-completions", "responses", "audio"])
     parser.add_argument(
         "--case",
         action="append",
@@ -23,6 +23,7 @@ def main():
     directory, endpoint = {
         "chat-completions": ("ChatCompletions", "chat/completions"),
         "responses": ("Responses", "responses"),
+        "audio": ("Audio", None),
     }[args.api]
     resources = (
         Path(__file__).resolve().parents[1]
@@ -46,7 +47,28 @@ def main():
             continue
         request = resources / "Requests" / (case["name"] + ".json")
         response = resources / case["response"]
-        config = 'header = "Content-Type: application/json"\n'
+        content_type = case.get("request_content_type", "application/json")
+        config = ""
+        if content_type == "multipart/form-data":
+            fields = json.loads(request.read_text())
+            request_args = []
+            for name, value in fields.items():
+                if name == "file":
+                    upload = resources / value
+                    if not upload.is_file():
+                        raise SystemExit(
+                            f"{case['name']}: missing audio input {value}."
+                        )
+                    request_args += ["--form", f"{name}=@{upload}"]
+                else:
+                    values = value if isinstance(value, list) else [value]
+                    field_name = name + "[]" if isinstance(value, list) else name
+                    for item in values:
+                        encoded = item if isinstance(item, str) else json.dumps(item)
+                        request_args += ["--form-string", f"{field_name}={encoded}"]
+        else:
+            config += 'header = "Content-Type: application/json"\n'
+            request_args = ["--data-binary", f"@{request}"]
         if case.get("authenticated", True):
             # Pass credentials over stdin, keeping them out of argv and fixtures.
             escaped_key = api_key.replace("\\", "\\\\").replace('"', '\\"')
@@ -65,13 +87,12 @@ def main():
                     "-",
                     "--request",
                     "POST",
-                    "--data-binary",
-                    f"@{request}",
+                    *request_args,
                     "--output",
                     str(payload),
                     "--write-out",
                     "%{http_code}\\n%{content_type}",
-                    f"https://api.openai.com/v1/{endpoint}",
+                    f"https://api.openai.com/v1/{case.get('endpoint', endpoint)}",
                 ],
                 input=config,
                 text=True,
@@ -89,7 +110,7 @@ def main():
             raw = payload.read_bytes()
             if media_type == "application/json":
                 json.loads(raw)
-            else:
+            elif media_type == "text/event-stream":
                 frames = raw.decode().replace("\r\n", "\n").split("\n\n")
                 data = [
                     "\n".join(
@@ -103,15 +124,22 @@ def main():
                 for event in data:
                     if event != "[DONE]":
                         json.loads(event)
-                complete = bool(data) and (
+                events = [event for event in data if event != "[DONE]"]
+                complete = bool(events) and (
                     data[-1] == "[DONE]"
                     if args.api == "chat-completions"
-                    else json.loads(data[-1]).get("type") == case["terminal_event"]
+                    else json.loads(events[-1]).get("type") == case["terminal_event"]
                 )
+                if args.api == "audio":
+                    complete = complete and data[-1] == "[DONE]"
                 if not complete:
                     raise SystemExit(
                         f"{case['name']}: incomplete SSE stream; fixture preserved."
                     )
+            elif media_type.startswith("text/"):
+                raw.decode("utf-8")
+            if not raw:
+                raise SystemExit(f"{case['name']}: empty response; fixture preserved.")
             if api_key.encode() in raw:
                 raise SystemExit(
                     f"{case['name']}: credential in response; fixture not saved."
