@@ -147,7 +147,7 @@ ensure_new_commits_since_tag() {
     return 0
   fi
 
-  if ! git log --oneline "$previous_tag..HEAD" | grep -q .; then
+  if [ "$(git rev-list --count "$previous_tag..HEAD")" -eq 0 ]; then
     die "No commits found since '$previous_tag'. Refusing to push a new release tag with duplicate contents."
   fi
 }
