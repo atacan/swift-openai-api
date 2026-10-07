@@ -9,9 +9,15 @@ using [Swift OpenAPI Generator](https://swiftpackageindex.com/apple/swift-openap
 
 ## Why not generate it yourself?
 
-OpenAI's OpenAPI specification has some [issues](https://github.com/openai/openai-openapi/issues). Some of them are fixed in the [download script](/scripts/openaiYamlDownload.swift) with string replacements.
+OpenAI's OpenAPI specification has some [issues](https://github.com/openai/openai-openapi/issues).
+We transform `original_openapi.yaml` using the Python
+[Swift OpenAPI Bootstrapper](https://github.com/atacan/swift-package-generator-based-on-openapi),
+then apply [openapi-overlay.yaml](openapi-overlay.yaml). Run `make regenerate` to
+rebuild the specification and Swift sources.
 
-For example, duplicate models are removed, type mismatches are fixed.
+Regeneration uses the bootstrapper's nullable-first transformation pipeline and
+requires [Speakeasy's OpenAPI CLI](https://github.com/speakeasy-api/openapi)
+(`brew install openapi`) to apply overlays without corrupting Int64 bounds.
 
 ## Additions
 
@@ -22,6 +28,29 @@ For example, duplicate models are removed, type mismatches are fixed.
 
 - `AuthenticationMiddleware` is provided to add API key authentication.
 - Check out [Tests](/Tests)
+
+### Chat Completions fixtures
+
+`swift test` runs offline using captured payloads in
+[Tests/SwiftOpenaiApiTests/Resources](Tests/SwiftOpenaiApiTests/Resources).
+It checks JSON decoding and replays HTTP success and error responses through the
+generated client. Streaming coverage includes individual chunks, final usage,
+and the `[DONE]` frame.
+
+To deliberately refresh the fixtures, export `OPENAI_API_KEY` and run:
+
+```bash
+python3 scripts/capture-chat-completions.py
+# Refresh just one scenario:
+python3 scripts/capture-chat-completions.py --case tool-call
+```
+
+This makes real, billable requests with curl. Requests, expected HTTP statuses,
+and capture timestamps are saved alongside the unchanged response bodies.
+The capture script preserves an existing fixture when the HTTP status or
+content type differs from the expected result. See the
+[fixture notes](Tests/SwiftOpenaiApiTests/Resources/ChatCompletions/README.md)
+for the observed specification mismatches.
 
 ### Installation
 

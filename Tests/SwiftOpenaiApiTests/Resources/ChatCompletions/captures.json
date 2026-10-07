@@ -1,0 +1,50 @@
+[
+  {
+    "name": "text",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T10:16:46.156262+00:00"
+  },
+  {
+    "name": "unsupported-reasoning",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T10:18:25.727863+00:00"
+  },
+  {
+    "name": "tool-call",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T10:18:27.240838+00:00"
+  },
+  {
+    "name": "logprobs",
+    "status": 200,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T10:18:28.392006+00:00"
+  },
+  {
+    "name": "stream",
+    "status": 200,
+    "content_type": "text/event-stream; charset=utf-8",
+    "captured_at": "2026-10-07T10:18:29.563762+00:00"
+  },
+  {
+    "name": "missing-messages",
+    "status": 400,
+    "content_type": "application/json",
+    "captured_at": "2026-10-07T10:18:29.835964+00:00"
+  },
+  {
+    "name": "unknown-model",
+    "status": 404,
+    "content_type": "application/json; charset=utf-8",
+    "captured_at": "2026-10-07T10:18:30.132865+00:00"
+  },
+  {
+    "name": "unauthenticated",
+    "status": 401,
+    "content_type": "application/json; charset=utf-8",
+    "captured_at": "2026-10-07T10:18:30.389382+00:00"
+  }
+]

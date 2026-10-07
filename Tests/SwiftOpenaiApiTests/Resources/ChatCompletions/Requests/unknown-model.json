@@ -1,0 +1,6 @@
+{
+  "model": "swift-openai-api-nonexistent-model",
+  "messages": [{"role": "user", "content": "Hello."}],
+  "max_completion_tokens": 1,
+  "store": false
+}

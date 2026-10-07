@@ -28597,9 +28597,9 @@ components:
                     example: key_abc
                     description: The identifier, which can be referenced in API endpoints
                 name:
-                    type: string
                     example: Administration Key
                     description: The name of the API key
+                    type: string
                 redacted_value:
                     type: string
                     example: sk-admin...def
@@ -28651,7 +28651,6 @@ components:
                 - object
                 - redacted_value
                 - created_at
-                - expires_at
                 - id
                 - owner
             x-oaiMeta:
@@ -28686,11 +28685,11 @@ components:
                     type: boolean
                     example: false
                 first_id:
-                    type: string
                     example: key_abc
-                last_id:
                     type: string
+                last_id:
                     example: key_xyz
+                    type: string
             required:
                 - object
                 - data
@@ -28717,28 +28716,29 @@ components:
                     type: boolean
                     description: Whether the role is predefined by OpenAI.
                 description:
-                    type: string
                     description: Description of the role.
-                created_at:
-                    type: integer
-                    format: unixtime
-                    description: When the role was created.
-                updated_at:
-                    type: integer
-                    format: unixtime
-                    description: When the role was last updated.
-                created_by:
                     type: string
+                created_at:
+                    description: When the role was created.
+                    type: integer
+                    format: unixtime
+                updated_at:
+                    description: When the role was last updated.
+                    type: integer
+                    format: unixtime
+                created_by:
                     description: Identifier of the actor who created the role.
+                    type: string
                 created_by_user_obj:
-                    type: object
-                    additionalProperties: true
                     description: User details for the actor that created the role, when available.
-                metadata:
                     type: object
                     additionalProperties: true
+                metadata:
                     description: Arbitrary metadata stored on the role.
+                    type: object
+                    additionalProperties: true
                 assignment_sources:
+                    description: Principals from which the role assignment is inherited, when available.
                     type: array
                     items:
                         type: object
@@ -28750,20 +28750,12 @@ components:
                         required:
                             - principal_id
                             - principal_type
-                    description: Principals from which the role assignment is inherited, when available.
             required:
                 - id
                 - name
                 - permissions
                 - resource_type
                 - predefined_role
-                - description
-                - created_at
-                - updated_at
-                - created_by
-                - created_by_user_obj
-                - metadata
-                - assignment_sources
         AssistantObject:
             type: object
             title: Assistant
@@ -28875,10 +28867,7 @@ components:
                 - id
                 - object
                 - created_at
-                - name
-                - description
                 - model
-                - instructions
                 - tools
                 - metadata
             x-oaiMeta:
@@ -30509,8 +30498,8 @@ components:
                     type: string
                     description: The identifier, which can be referenced in API endpoints
                 name:
-                    type: string
                     description: The name of the certificate.
+                    type: string
                 created_at:
                     type: integer
                     format: unixtime
@@ -30535,7 +30524,6 @@ components:
             required:
                 - object
                 - id
-                - name
                 - created_at
                 - certificate_details
             x-oaiMeta:
@@ -30797,8 +30785,6 @@ components:
                         required:
                             - id
                             - role
-                            - content
-                            - content_parts
                         type: object
                 first_id:
                     type: string
@@ -30884,6 +30870,9 @@ components:
                     - $ref: '#/components/schemas/ChatCompletionMessageCustomToolCall'
                 discriminator:
                     propertyName: type
+                    mapping:
+                        function: '#/components/schemas/ChatCompletionMessageToolCall'
+                        custom: '#/components/schemas/ChatCompletionMessageCustomToolCall'
         ChatCompletionModalities:
             type: array
             description: 'Output types that you would like the model to generate for this request.
@@ -31142,7 +31131,6 @@ components:
                     description: The name of the function to call.
             required:
                 - role
-                - content
                 - name
         ChatCompletionRequestMessage:
             oneOf:
@@ -31154,6 +31142,13 @@ components:
                 - $ref: '#/components/schemas/ChatCompletionRequestFunctionMessage'
             discriminator:
                 propertyName: role
+                mapping:
+                    developer: '#/components/schemas/ChatCompletionRequestDeveloperMessage'
+                    system: '#/components/schemas/ChatCompletionRequestSystemMessage'
+                    user: '#/components/schemas/ChatCompletionRequestUserMessage'
+                    assistant: '#/components/schemas/ChatCompletionRequestAssistantMessage'
+                    tool: '#/components/schemas/ChatCompletionRequestToolMessage'
+                    function: '#/components/schemas/ChatCompletionRequestFunctionMessage'
         ChatCompletionRequestMessageContentPartAudio:
             type: object
             title: Audio content part
@@ -31525,7 +31520,6 @@ components:
                             description: Transcript of the audio generated by the model.
             required:
                 - role
-                - content
         ChatCompletionRole:
             type: string
             description: The role of the author of a message
@@ -31680,11 +31674,9 @@ components:
                         required:
                             - token
                             - logprob
-                            - bytes
             required:
                 - token
                 - logprob
-                - bytes
                 - top_logprobs
         ChatCompletionTool:
             type: object
@@ -31897,8 +31889,6 @@ components:
                 - id
                 - status
                 - container_id
-                - code
-                - outputs
         ComparisonFilter:
             type: object
             additionalProperties: false
@@ -32514,11 +32504,11 @@ components:
             description: The aggregated costs details of the specific time bucket.
             properties:
                 api_source:
+                    description: When grouped by `api_source`, `agents_api` identifies attributed Agents API activity and `unlabeled` includes all records without published source attribution, including historical and unknown origins. Unlabeled does not imply direct API usage. Without source grouping, this field is null.
                     type: string
                     enum:
                         - agents_api
                         - unlabeled
-                    description: When grouped by `api_source`, `agents_api` identifies attributed Agents API activity and `unlabeled` includes all records without published source attribution, including historical and unknown origins. Unlabeled does not imply direct API usage. Without source grouping, this field is null.
                 object:
                     type: string
                     enum:
@@ -33047,7 +33037,6 @@ components:
                         example: 1
                         description: How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
                     prediction:
-                        $ref: '#/components/schemas/PredictionContent'
                         description: 'Configuration for a [Predicted Output](https://developers.openai.com/api/docs/guides/predicted-outputs),
 
                             which can greatly improve response times when large parts of the model
@@ -33057,6 +33046,7 @@ components:
                             regenerating a file with only minor changes to most of the content.
 
 '
+                        $ref: '#/components/schemas/PredictionContent'
                     seed:
                         type: integer
                         format: int64
@@ -33160,7 +33150,6 @@ components:
                             - finish_reason
                             - index
                             - message
-                            - logprobs
                         properties:
                             finish_reason:
                                 type: string
@@ -33200,9 +33189,6 @@ components:
                                         type: array
                                         items:
                                             $ref: '#/components/schemas/ChatCompletionTokenLogprob'
-                                required:
-                                    - content
-                                    - refusal
                 created:
                     type: integer
                     format: unixtime
@@ -33346,7 +33332,6 @@ components:
                         - chat.completion.chunk
                     x-stainless-const: true
                 usage:
-                    $ref: '#/components/schemas/CompletionUsage'
                     description: 'An optional field that will only be present when you set
 
                         `stream_options: {"include_usage": true}` in your request. When present, it
@@ -33363,6 +33348,7 @@ components:
                         the request.
 
 '
+                    $ref: '#/components/schemas/CompletionUsage'
                 moderation:
                     $ref: '#/components/schemas/ChatCompletionModeration'
                     description: 'Moderation results for the request input and generated output. Present
@@ -33603,7 +33589,6 @@ components:
 '
             required:
                 - model
-                - prompt
         CreateCompletionResponse:
             type: object
             description: 'Represents a completion response from the API. Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint).
@@ -33619,17 +33604,10 @@ components:
                     items:
                         type: object
                         required:
-                            - finish_reason
                             - index
-                            - logprobs
                             - text
                         properties:
                             finish_reason:
-                                type: string
-                                enum:
-                                    - stop
-                                    - length
-                                    - content_filter
                                 description: 'The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 
                                     `length` if the maximum number of tokens specified in the request was reached,
@@ -33637,6 +33615,11 @@ components:
                                     or `content_filter` if content was omitted due to a flag from our content filters. The value is null while a streamed completion is unfinished.
 
 '
+                                type: string
+                                enum:
+                                    - stop
+                                    - length
+                                    - content_filter
                             index:
                                 type: integer
                             logprobs:
@@ -34635,11 +34618,6 @@ components:
                     type: string
                     format: binary
                 background:
-                    type: string
-                    enum:
-                        - transparent
-                        - opaque
-                        - auto
                     default: auto
                     example: transparent
                     description: 'Set the background of the generated image(s). This parameter is only supported for
@@ -34662,6 +34640,11 @@ components:
                         set the output format to `png` or `webp`.
 
 '
+                    type: string
+                    enum:
+                        - transparent
+                        - opaque
+                        - auto
                 model:
                     anyOf:
                         - type: string
@@ -34720,11 +34703,6 @@ components:
                     deprecated: true
                     description: Legacy response format parameter for retired image models. Unsupported for GPT image models, which always return base64-encoded images.
                 output_format:
-                    type: string
-                    enum:
-                        - png
-                        - jpeg
-                        - webp
                     default: png
                     example: png
                     description: 'The format in which the generated images are returned. This parameter is
@@ -34734,6 +34712,11 @@ components:
                         The default value is `png`.
 
 '
+                    type: string
+                    enum:
+                        - png
+                        - jpeg
+                        - webp
                 output_compression:
                     type: integer
                     default: 100
@@ -34765,6 +34748,11 @@ components:
                 partial_images:
                     $ref: '#/components/schemas/PartialImages'
                 quality:
+                    default: auto
+                    example: high
+                    description: 'The quality of the image that will be generated for GPT image models. The GPT image models support `low`, `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08` snapshots, also support `xhigh` and `max`. Defaults to `auto`.
+
+'
                     type: string
                     enum:
                         - low
@@ -34777,11 +34765,6 @@ components:
                     x-openai-enum-deprecations:
                         standard:
                             message: This quality was only supported by retired DALL·E models. Use a GPT image quality instead.
-                    default: auto
-                    example: high
-                    description: 'The quality of the image that will be generated for GPT image models. The GPT image models support `low`, `medium`, and `high`. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08` snapshots, also support `xhigh` and `max`. Defaults to `auto`.
-
-'
             required:
                 - model
                 - prompt
@@ -34826,6 +34809,9 @@ components:
                     example: 1
                     description: The number of images to generate. Must be between 1 and 10.
                 quality:
+                    default: auto
+                    example: medium
+                    description: "The quality of the image that will be generated.\n\n- `auto` (default value) will automatically select the best quality for the given\n  model.\n- `high`, `medium` and `low` are supported for the GPT image models.\n- `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`\n  snapshots, also support `xhigh` and `max`.\n"
                     type: string
                     enum:
                         - low
@@ -34841,9 +34827,6 @@ components:
                             message: This quality was only supported by retired DALL·E models. Use a GPT image quality instead.
                         hd:
                             message: This quality was only supported by retired DALL·E models. Use a GPT image quality instead.
-                    default: auto
-                    example: medium
-                    description: "The quality of the image that will be generated.\n\n- `auto` (default value) will automatically select the best quality for the given\n  model.\n- `high`, `medium` and `low` are supported for the GPT image models.\n- `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08`\n  snapshots, also support `xhigh` and `max`.\n"
                 response_format:
                     type: string
                     enum:
@@ -34853,14 +34836,14 @@ components:
                     deprecated: true
                     description: Legacy response format parameter for retired image models. Unsupported for GPT image models, which always return base64-encoded images.
                 output_format:
+                    default: png
+                    example: png
+                    description: The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
                     type: string
                     enum:
                         - png
                         - jpeg
                         - webp
-                    default: png
-                    example: png
-                    description: The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
                 output_compression:
                     type: integer
                     default: 100
@@ -34905,19 +34888,14 @@ components:
                     example: 1024x1024
                     description: The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models; `auto` is supported for models that allow automatic sizing.
                 moderation:
+                    default: auto
+                    example: low
+                    description: Control the content-moderation level for images generated by the GPT image models. Must be either `low` for less restrictive filtering or `auto` (default value).
                     type: string
                     enum:
                         - low
                         - auto
-                    default: auto
-                    example: low
-                    description: Control the content-moderation level for images generated by the GPT image models. Must be either `low` for less restrictive filtering or `auto` (default value).
                 background:
-                    type: string
-                    enum:
-                        - transparent
-                        - opaque
-                        - auto
                     default: auto
                     example: transparent
                     description: 'Set the background of the generated image(s). This parameter is only supported for
@@ -34940,6 +34918,11 @@ components:
                         set the output format to `png` or `webp`.
 
 '
+                    type: string
+                    enum:
+                        - transparent
+                        - opaque
+                        - auto
                 style:
                     type: string
                     enum:
@@ -35234,8 +35217,6 @@ components:
                                     - hate/threatening
                                     - harassment
                                     - harassment/threatening
-                                    - illicit
-                                    - illicit/violent
                                     - self-harm
                                     - self-harm/intent
                                     - self-harm/instructions
@@ -35447,13 +35428,13 @@ components:
                     service_tier:
                         $ref: '#/components/schemas/ServiceTierResponses'
                     truncation:
+                        deprecated: true
                         type: string
                         description: "The truncation strategy to use for the model response.\n- `auto`: If the input to this Response exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping items from the beginning of the conversation.\n- `disabled` (default): If the input size will exceed the context window\n  size for a model, the request will fail with a 400 error.\n"
                         enum:
                             - auto
                             - disabled
                         default: disabled
-                        deprecated: true
                     reasoning:
                         $ref: '#/components/schemas/Reasoning'
                     input:
@@ -37104,21 +37085,13 @@ components:
                     example: Add a watercolor effect and keep the subject centered
                     description: A text description of the desired image edit.
                 n:
-                    type: integer
-                    minimum: 1
-                    maximum: 10
                     default: 1
                     example: 1
                     description: The number of edited images to generate.
+                    type: integer
+                    minimum: 1
+                    maximum: 10
                 quality:
-                    type: string
-                    enum:
-                        - low
-                        - medium
-                        - high
-                        - xhigh
-                        - max
-                        - auto
                     default: auto
                     example: high
                     description: 'Output quality for GPT image models. The GPT image models support `low`, `medium`,
@@ -37128,12 +37101,20 @@ components:
                         `2026-09-08` snapshots, also support `xhigh` and `max`. Defaults to `auto`.
 
 '
+                    type: string
+                    enum:
+                        - low
+                        - medium
+                        - high
+                        - xhigh
+                        - max
+                        - auto
                 input_fidelity:
+                    description: Control how much effort the model will exert to match the style and features, especially facial features, of input images. Supports `high` and `low` on `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
                     type: string
                     enum:
                         - high
                         - low
-                    description: Control how much effort the model will exert to match the style and features, especially facial features, of input images. Supports `high` and `low` on `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
                 size:
                     anyOf:
                         - type: string
@@ -37155,42 +37136,42 @@ components:
 
 '
                 output_format:
+                    default: png
+                    example: png
+                    description: Output image format. Supported for GPT image models.
                     type: string
                     enum:
                         - png
                         - jpeg
                         - webp
-                    default: png
-                    example: png
-                    description: Output image format. Supported for GPT image models.
                 output_compression:
+                    example: 100
+                    description: Compression level for `jpeg` or `webp` output.
                     type: integer
                     minimum: 0
                     maximum: 100
-                    example: 100
-                    description: Compression level for `jpeg` or `webp` output.
                 moderation:
+                    default: auto
+                    example: auto
+                    description: Moderation level for GPT image models.
                     type: string
                     enum:
                         - low
                         - auto
-                    default: auto
-                    example: auto
-                    description: Moderation level for GPT image models.
                 background:
+                    default: auto
+                    example: transparent
+                    description: Set the background of the generated image output. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08` snapshots, support `opaque` and `transparent` backgrounds. Transparent backgrounds are available for supported GPT Image models. For `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`, set the output format to `png` or `webp`.
                     type: string
                     enum:
                         - transparent
                         - opaque
                         - auto
-                    default: auto
-                    example: transparent
-                    description: Set the background of the generated image output. `gpt-image-2.5-sunburst` and `gpt-image-2.5-flare`, including their `2026-09-08` snapshots, support `opaque` and `transparent` backgrounds. Transparent backgrounds are available for supported GPT Image models. For `gpt-image-2` and `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`, set the output format to `png` or `webp`.
                 stream:
-                    type: boolean
                     default: false
                     example: false
                     description: Stream partial image results as events.
+                    type: boolean
                 partial_images:
                     $ref: '#/components/schemas/PartialImages'
             required:
@@ -37245,8 +37226,6 @@ components:
             required:
                 - type
                 - message
-                - param
-                - code
         ErrorEvent:
             type: object
             properties:
@@ -37873,7 +37852,6 @@ components:
                 - result_counts
                 - data_source
                 - metadata
-                - error
             x-oaiMeta:
                 name: The eval run object
                 group: evals
@@ -38041,7 +38019,6 @@ components:
                         - finish_reason
                         - model
                         - usage
-                        - error
                         - temperature
                         - max_completion_tokens
                         - top_p
@@ -38123,9 +38100,9 @@ components:
                     type: boolean
                     description: Whether the grader considered the output a pass.
                 sample:
+                    description: Optional sample or intermediate data produced by the grader.
                     type: object
                     additionalProperties: true
-                    description: Optional sample or intermediate data produced by the grader.
             additionalProperties: true
             required:
                 - name
@@ -38712,7 +38689,6 @@ components:
                           required:
                             - code
                             - message
-                            - param
                         - type: object
                           maxProperties: 0
                 fine_tuned_model:
@@ -38828,18 +38804,13 @@ components:
                     $ref: '#/components/schemas/Metadata'
             required:
                 - created_at
-                - error
-                - finished_at
-                - fine_tuned_model
                 - id
                 - model
                 - object
                 - organization_id
                 - result_files
                 - status
-                - trained_tokens
                 - training_file
-                - validation_file
             if:
                 properties:
                     method:
@@ -39532,13 +39503,12 @@ components:
                     type: boolean
                     description: Whether additional groups are available when paginating.
                 next:
-                    type: string
                     description: Cursor to fetch the next page of results, or `null` if there are no more results.
+                    type: string
             required:
                 - object
                 - data
                 - has_more
-                - next
             x-oaiMeta:
                 name: Group list
                 example: "{\n    \"object\": \"list\",\n    \"data\": [\n        {\n            \"id\": \"group_01J1F8ABCDXYZ\",\n            \"name\": \"Support Team\",\n            \"created_at\": 1711471533,\n            \"group_type\": \"group\",\n            \"is_scim_managed\": false\n        },\n        {\n            \"id\": \"group_01J1F8PQRMNO\",\n            \"name\": \"Sales\",\n            \"created_at\": 1711472599,\n            \"group_type\": \"group\",\n            \"is_scim_managed\": true\n        }\n    ],\n    \"has_more\": false,\n    \"next\": null\n}\n"
@@ -39553,14 +39523,14 @@ components:
                     type: string
                     description: Display name of the user.
                 email:
-                    type: string
                     description: Email address of the user, or `null` for users without an email.
-                picture:
                     type: string
+                picture:
                     description: URL of the user's profile picture, if available.
+                    type: string
                 is_service_account:
-                    type: boolean
                     description: Whether the user is a service account.
+                    type: boolean
                 user_type:
                     type: string
                     enum:
@@ -39570,9 +39540,6 @@ components:
             required:
                 - id
                 - name
-                - email
-                - picture
-                - is_service_account
                 - user_type
             x-oaiMeta:
                 name: The group member user object
@@ -39665,12 +39632,11 @@ components:
                     type: string
                     description: The name of the user.
                 email:
-                    type: string
                     description: The email address of the user.
+                    type: string
             required:
                 - id
                 - name
-                - email
         GroupUserAssignment:
             type: object
             description: Confirmation payload returned after adding a user to a group.
@@ -40548,13 +40514,13 @@ components:
                     format: unixtime
                     description: The Unix timestamp (in seconds) of when the invite was sent.
                 expires_at:
-                    type: integer
-                    format: unixtime
                     description: The Unix timestamp (in seconds) of when the invite expires.
-                accepted_at:
                     type: integer
                     format: unixtime
+                accepted_at:
                     description: The Unix timestamp (in seconds) of when the invite was accepted.
+                    type: integer
+                    format: unixtime
                 projects:
                     type: array
                     description: The projects that were granted membership upon acceptance of the invite.
@@ -40615,11 +40581,11 @@ components:
                     items:
                         $ref: '#/components/schemas/Invite'
                 first_id:
-                    type: string
                     description: The first `invite_id` in the retrieved `list`
-                last_id:
                     type: string
+                last_id:
                     description: The last `invite_id` in the retrieved `list`
+                    type: string
                 has_more:
                     type: boolean
                     description: The `has_more` property is used for pagination to indicate there are additional results.
@@ -40790,11 +40756,11 @@ components:
                     items:
                         $ref: '#/components/schemas/AuditLog'
                 first_id:
-                    type: string
                     example: audit_log-defb456h8dks
-                last_id:
                     type: string
+                last_id:
                     example: audit_log-hnbkd8s93s
+                    type: string
                 has_more:
                     type: boolean
             required:
@@ -40833,11 +40799,11 @@ components:
                     items:
                         $ref: '#/components/schemas/OrganizationCertificate'
                 first_id:
-                    type: string
                     example: cert_abc
+                    type: string
                 last_id:
-                    type: string
                     example: cert_abc
+                    type: string
                 has_more:
                     type: boolean
                 object:
@@ -40849,8 +40815,6 @@ components:
                 - object
                 - data
                 - has_more
-                - first_id
-                - last_id
         ListFilesResponse:
             type: object
             properties:
@@ -41003,11 +40967,11 @@ components:
                     items:
                         $ref: '#/components/schemas/OrganizationProjectCertificate'
                 first_id:
-                    type: string
                     example: cert_abc
+                    type: string
                 last_id:
-                    type: string
                     example: cert_abc
+                    type: string
                 has_more:
                     type: boolean
                 object:
@@ -41019,8 +40983,6 @@ components:
                 - object
                 - data
                 - has_more
-                - first_id
-                - last_id
         ListRunStepsResponse:
             properties:
                 object:
@@ -42006,8 +41968,8 @@ components:
 
 '
                 error:
-                    $ref: '#/components/schemas/MCPToolCallError'
                     description: The error from the tool call, if any.
+                    $ref: '#/components/schemas/MCPToolCallError'
                 status:
                     $ref: '#/components/schemas/MCPToolCallStatus'
                     description: 'The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`, or `failed`.
@@ -42547,14 +42509,8 @@ components:
                 - created_at
                 - thread_id
                 - status
-                - incomplete_details
-                - completed_at
-                - incomplete_at
                 - role
                 - content
-                - assistant_id
-                - run_id
-                - attachments
                 - metadata
             x-oaiMeta:
                 name: The message object
@@ -42704,9 +42660,9 @@ components:
                     type: string
                     description: The organization that owns the model.
                 shutdown_date:
+                    description: The date when the model will shut down, or null if not announced.
                     type: string
                     format: date
-                    description: The date when the model will shut down, or null if not announced.
             required:
                 - id
                 - object
@@ -43079,12 +43035,12 @@ components:
 
 '
                 prompt_cache_retention:
+                    deprecated: true
                     type: string
                     enum:
                         - in_memory
                         - 24h
                     description: "Deprecated. Use `prompt_cache_options.ttl` instead.\n\nThe retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours. [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).\nThis field expresses a maximum retention policy, while\n`prompt_cache_options.ttl` expresses a minimum cache lifetime. The two\nfields are independent and do not interact.\nFor `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.\n\nFor older models that support both `in_memory` and `24h`, the default depends on your organization's data retention policy:\n  - Organizations without ZDR enabled default to `24h`.\n  - Organizations with ZDR enabled default to `in_memory` when `prompt_cache_retention` is not specified.\n"
-                    deprecated: true
         ModifyAssistantRequest:
             type: object
             additionalProperties: false
@@ -43326,8 +43282,8 @@ components:
                     type: string
                     description: The identifier, which can be referenced in API endpoints
                 name:
-                    type: string
                     description: The name of the certificate.
+                    type: string
                 created_at:
                     type: integer
                     format: unixtime
@@ -43349,7 +43305,6 @@ components:
             required:
                 - object
                 - id
-                - name
                 - created_at
                 - certificate_details
                 - active
@@ -43423,8 +43378,8 @@ components:
                     type: string
                     description: The identifier, which can be referenced in API endpoints
                 name:
-                    type: string
                     description: The name of the certificate.
+                    type: string
                 created_at:
                     type: integer
                     format: unixtime
@@ -43446,7 +43401,6 @@ components:
             required:
                 - object
                 - id
-                - name
                 - created_at
                 - certificate_details
                 - active
@@ -43556,19 +43510,17 @@ components:
                     items:
                         $ref: '#/components/schemas/OrganizationSpendAlert'
                 first_id:
-                    type: string
                     description: The ID of the first spend alert in this page.
-                last_id:
                     type: string
+                last_id:
                     description: The ID of the last spend alert in this page.
+                    type: string
                 has_more:
                     type: boolean
                     description: Whether more spend alerts are available when paginating.
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         OtherChunkingStrategyResponseParam:
             type: object
@@ -43803,8 +43755,8 @@ components:
                     description: The object type, which is always `organization.project`
                     x-stainless-const: true
                 name:
-                    type: string
                     description: The name of the project. This appears in reporting.
+                    type: string
                 created_at:
                     type: integer
                     format: unixtime
@@ -43814,11 +43766,11 @@ components:
                     format: unixtime
                     description: The Unix timestamp (in seconds) of when the project was archived or `null`.
                 status:
-                    type: string
                     description: '`active` or `archived`'
-                external_key_id:
                     type: string
+                external_key_id:
                     description: The external key associated with the project.
+                    type: string
                 residency:
                     $ref: '#/components/schemas/PublicProjectResidency'
                     description: The residency configuration for the project.
@@ -43850,13 +43802,13 @@ components:
                     format: unixtime
                     description: The Unix timestamp (in seconds) of when the API key was created
                 expires_at:
-                    type: integer
-                    format: unixtime
                     description: The Unix timestamp (in seconds) when the API key expires, or null if it does not expire.
-                last_used_at:
                     type: integer
                     format: unixtime
+                last_used_at:
                     description: The Unix timestamp (in seconds) of when the API key was last used.
+                    type: integer
+                    format: unixtime
                 id:
                     type: string
                     description: The identifier, which can be referenced in API endpoints
@@ -43884,7 +43836,6 @@ components:
                 - redacted_value
                 - name
                 - created_at
-                - last_used_at
                 - id
                 - owner_project_access
                 - owner
@@ -43984,17 +43935,17 @@ components:
                     type: string
                     description: The friendly name of the project, this name appears in reports.
                 geography:
-                    type: string
                     deprecated: true
                     description: 'Create the project with the specified data residency region. Your organization must have access to Data residency functionality in order to use. See [data residency controls](https://developers.openai.com/api/docs/guides/your-data#data-residency-controls) to review the functionality and limitations of setting this field.
 
                         Deprecated: use `residency` instead. Do not provide both `geography` and `residency`.'
-                residency:
-                    $ref: '#/components/schemas/PublicProjectResidency'
-                    description: Create the project with the specified residency configuration. Your organization must have access to the requested residency configuration in order to use it. See [data residency controls](https://developers.openai.com/api/docs/guides/your-data#data-residency-controls) to review the functionality and limitations of setting this field.
-                external_key_id:
                     type: string
+                residency:
+                    description: Create the project with the specified residency configuration. Your organization must have access to the requested residency configuration in order to use it. See [data residency controls](https://developers.openai.com/api/docs/guides/your-data#data-residency-controls) to review the functionality and limitations of setting this field.
+                    $ref: '#/components/schemas/PublicProjectResidency'
+                external_key_id:
                     description: External key ID to associate with the project.
+                    type: string
             required:
                 - name
         ProjectDataRetention:
@@ -44100,13 +44051,12 @@ components:
                     type: boolean
                     description: Whether additional project group memberships are available.
                 next:
-                    type: string
                     description: Cursor to fetch the next page of results, or `null` when there are no more results.
+                    type: string
             required:
                 - object
                 - data
                 - has_more
-                - next
             x-oaiMeta:
                 name: Project group list
                 example: "{\n    \"object\": \"list\",\n    \"data\": [\n        {\n            \"object\": \"project.group\",\n            \"project_id\": \"proj_abc123\",\n            \"group_id\": \"group_01J1F8ABCDXYZ\",\n            \"group_name\": \"Support Team\",\n            \"group_type\": \"group\",\n            \"created_at\": 1711471533\n        }\n    ],\n    \"has_more\": false,\n    \"next\": null\n}\n"
@@ -44137,20 +44087,20 @@ components:
             type: object
             properties:
                 file_search:
-                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                     description: The file search permission update.
+                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                 web_search:
-                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                     description: The web search permission update.
+                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                 image_generation:
-                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                     description: The image generation permission update.
+                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                 mcp:
-                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
                     description: The MCP permission update.
-                code_interpreter:
                     $ref: '#/components/schemas/HostedToolPermissionUpdate'
+                code_interpreter:
                     description: The code interpreter permission update.
+                    $ref: '#/components/schemas/HostedToolPermissionUpdate'
         ProjectListResponse:
             type: object
             properties:
@@ -44376,9 +44326,9 @@ components:
                     type: integer
                     format: unixtime
                 expires_at:
+                    description: The Unix timestamp (in seconds) when the API key expires, or null if it does not expire.
                     type: integer
                     format: unixtime
-                    description: The Unix timestamp (in seconds) when the API key expires, or null if it does not expire.
                 id:
                     type: string
             required:
@@ -44397,10 +44347,10 @@ components:
                     type: boolean
                     description: Create the service account without default roles or an API key.
                 expires_in_seconds:
+                    description: Number of seconds until the initial API key expires. If omitted or null, the key does not expire unless the effective organization or project policy requires an expiration. When a policy sets a maximum lifetime, this value must be provided and must not exceed that limit. A non-null value cannot be used when `create_service_account_only` is true.
                     type: integer
                     minimum: 1
                     maximum: 31536000
-                    description: Number of seconds until the initial API key expires. If omitted or null, the key does not expire unless the effective organization or project policy requires an expiration. When a policy sets a maximum lifetime, this value must be provided and must not exceed that limit. A non-null value cannot be used when `create_service_account_only` is true.
             required:
                 - name
         ProjectServiceAccountCreateResponse:
@@ -44434,7 +44384,6 @@ components:
                 - name
                 - role
                 - created_at
-                - api_key
         ProjectServiceAccountDeleteResponse:
             type: object
             properties:
@@ -44547,35 +44496,33 @@ components:
                     items:
                         $ref: '#/components/schemas/ProjectSpendAlert'
                 first_id:
-                    type: string
                     description: The ID of the first spend alert in this page.
-                last_id:
                     type: string
+                last_id:
                     description: The ID of the last spend alert in this page.
+                    type: string
                 has_more:
                     type: boolean
                     description: Whether more spend alerts are available when paginating.
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         ProjectUpdateRequest:
             type: object
             properties:
                 name:
-                    type: string
                     description: The updated name of the project, this name appears in reports.
+                    type: string
                 external_key_id:
-                    type: string
                     description: External key ID to associate with the project.
-                geography:
                     type: string
+                geography:
                     deprecated: true
                     description: 'Geography for the project.
 
                         Deprecated: use `residency` when creating a project to configure data residency. This field is retained for backward compatibility.'
+                    type: string
         ProjectUser:
             type: object
             description: Represents an individual user in a project.
@@ -44590,11 +44537,11 @@ components:
                     type: string
                     description: The identifier, which can be referenced in API endpoints
                 name:
-                    type: string
                     description: The name of the user
-                email:
                     type: string
+                email:
                     description: The email address of the user
+                    type: string
                 role:
                     type: string
                     description: '`owner` or `member`'
@@ -44614,11 +44561,11 @@ components:
             type: object
             properties:
                 user_id:
-                    type: string
                     description: The ID of the user.
-                email:
                     type: string
+                email:
                     description: Email of the user to add.
+                    type: string
                 role:
                     type: string
                     description: '`owner` or `member`'
@@ -44663,8 +44610,8 @@ components:
             type: object
             properties:
                 role:
-                    type: string
                     description: '`owner` or `member`'
+                    type: string
         Prompt:
             type: object
             description: 'Reference to a prompt template and its variables.
@@ -44707,8 +44654,8 @@ components:
                     items:
                         type: string
                 description:
-                    type: string
                     description: Optional description of the role.
+                    type: string
             required:
                 - role_name
                 - permissions
@@ -44733,13 +44680,12 @@ components:
                     type: boolean
                     description: Whether more roles are available when paginating.
                 next:
-                    type: string
                     description: Cursor to fetch the next page of results, or `null` when there are no additional roles.
+                    type: string
             required:
                 - object
                 - data
                 - has_more
-                - next
             x-oaiMeta:
                 name: Role list
                 example: "{\n    \"object\": \"list\",\n    \"data\": [\n        {\n            \"object\": \"role\",\n            \"id\": \"role_01J1F8ROLE01\",\n            \"name\": \"API Group Manager\",\n            \"description\": \"Allows managing organization groups\",\n            \"permissions\": [\n                \"api.groups.read\",\n                \"api.groups.write\"\n            ],\n            \"resource_type\": \"api.organization\",\n            \"predefined_role\": false\n        }\n    ],\n    \"has_more\": false,\n    \"next\": null\n}\n"
@@ -44748,16 +44694,16 @@ components:
             description: Request payload for updating an existing role.
             properties:
                 permissions:
+                    description: Updated set of permissions for the role.
                     type: array
                     items:
                         type: string
-                    description: Updated set of permissions for the role.
                 description:
-                    type: string
                     description: New description for the role.
-                role_name:
                     type: string
+                role_name:
                     description: New name for the role.
+                    type: string
             x-oaiMeta:
                 example: "{\n    \"role_name\": \"API Group Manager\",\n    \"permissions\": [\n        \"api.groups.read\",\n        \"api.groups.write\"\n    ],\n    \"description\": \"Allows managing organization groups\"\n}\n"
         RealtimeAudioFormats:
@@ -50719,6 +50665,7 @@ components:
 '
                 tracing:
                     title: Tracing Configuration
+                    default: null
                     description: 'Realtime API can write session traces to the [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to disable tracing. Once
 
                         tracing is enabled for a session, the configuration cannot be modified.
@@ -51149,10 +51096,10 @@ components:
                                     $ref: '#/components/schemas/RealtimeAudioFormats'
                                     description: The format of the input audio.
                                 transcription:
-                                    $ref: '#/components/schemas/AudioTranscriptionResponse'
                                     description: 'Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
 
 '
+                                    $ref: '#/components/schemas/AudioTranscriptionResponse'
                                 noise_reduction:
                                     type: object
                                     default: null
@@ -51217,6 +51164,7 @@ components:
 '
                 tracing:
                     title: Tracing Configuration
+                    default: null
                     description: 'Realtime API can write session traces to the [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to disable tracing. Once
 
                         tracing is enabled for a session, the configuration cannot be modified.
@@ -51623,10 +51571,10 @@ components:
                                 format:
                                     $ref: '#/components/schemas/RealtimeAudioFormats'
                                 transcription:
-                                    $ref: '#/components/schemas/AudioTranscriptionResponse'
                                     description: 'Configuration of the transcription model.
 
 '
+                                    $ref: '#/components/schemas/AudioTranscriptionResponse'
                                 noise_reduction:
                                     type: object
                                     description: 'Configuration for input audio noise reduction.
@@ -51636,14 +51584,10 @@ components:
                                         type:
                                             $ref: '#/components/schemas/NoiseReductionType'
                                 turn_detection:
-                                    type: object
-                                    description: 'Configuration for turn detection. Can be set to `null` to turn off. Server
-
-                                        VAD means that the model will detect the start and end of speech based on
-
-                                        audio volume and respond at the end of user speech. For `gpt-realtime-whisper`, this must be `null`; VAD is not supported.
+                                    description: 'Configuration for turn detection. For `gpt-realtime-whisper`, this must be `null`; VAD is not supported.
 
 '
+                                    type: object
                                     properties:
                                         type:
                                             type: string
@@ -52804,6 +52748,7 @@ components:
 '
                         default: true
                     conversation:
+                        default: null
                         $ref: '#/components/schemas/ResponseConversation'
                     max_output_tokens:
                         description: 'An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
@@ -52811,13 +52756,10 @@ components:
 '
                         type: integer
                   required:
-                    - access_programs
                     - id
                     - object
                     - created_at
                     - error
-                    - incomplete_details
-                    - instructions
                     - output
                     - parallel_tool_calls
             example:
@@ -53491,9 +53433,7 @@ components:
                     description: The sequence number of this event.
             required:
                 - type
-                - code
                 - message
-                - param
                 - sequence_number
             x-oaiMeta:
                 name: error
@@ -54507,15 +54447,14 @@ components:
                     type: integer
                     description: The sequence number of this event.
                 annotation:
-                    $ref: '#/components/schemas/Annotation'
                     description: The annotation object being added. (See annotation schema for details.)
+                    $ref: '#/components/schemas/Annotation'
             required:
                 - type
                 - item_id
                 - output_index
                 - content_index
                 - annotation_index
-                - annotation
                 - sequence_number
             x-oaiMeta:
                 name: response.output_text.annotation.added
@@ -57061,8 +57000,8 @@ components:
                     type: string
                     description: Unique name for the role.
                 description:
-                    type: string
                     description: Optional description of the role.
+                    type: string
                 permissions:
                     type: array
                     description: Permissions granted by the role.
@@ -57078,7 +57017,6 @@ components:
                 - object
                 - id
                 - name
-                - description
                 - permissions
                 - resource_type
                 - predefined_role
@@ -57127,13 +57065,12 @@ components:
                     type: boolean
                     description: Whether additional assignments are available when paginating.
                 next:
-                    type: string
                     description: Cursor to fetch the next page of results, or `null` when there are no more assignments.
+                    type: string
             required:
                 - object
                 - data
                 - has_more
-                - next
             x-oaiMeta:
                 name: Assigned role list
                 example: "{\n    \"object\": \"list\",\n    \"data\": [\n        {\n            \"id\": \"role_01J1F8ROLE01\",\n            \"name\": \"API Group Manager\",\n            \"permissions\": [\n                \"api.groups.read\",\n                \"api.groups.write\"\n            ],\n            \"resource_type\": \"api.organization\",\n            \"predefined_role\": false,\n            \"description\": \"Allows managing organization groups\",\n            \"created_at\": 1711471533,\n            \"updated_at\": 1711472599,\n            \"created_by\": \"user_abc123\",\n            \"created_by_user_obj\": {\n                \"id\": \"user_abc123\",\n                \"name\": \"Ada Lovelace\",\n                \"email\": \"ada@example.com\"\n            },\n            \"metadata\": {},\n            \"assignment_sources\": null\n        }\n    ],\n    \"has_more\": false,\n    \"next\": null\n}\n"
@@ -57239,13 +57176,10 @@ components:
                                 - invalid_variable_error
                                 - other_error
                                 - python_grader_server_error
-                                - python_grader_server_error_type
                                 - python_grader_runtime_error
-                                - python_grader_runtime_error_details
                                 - model_grader_server_error
                                 - model_grader_refusal_error
                                 - model_grader_parse_error
-                                - model_grader_server_error_details
                         execution_time:
                             type: number
                         scores:
@@ -57273,8 +57207,6 @@ components:
                         - errors
                         - execution_time
                         - scores
-                        - token_usage
-                        - sampled_model_name
                 sub_rewards:
                     type: object
                     additionalProperties: {}
@@ -57452,10 +57384,7 @@ components:
                 - tools
                 - metadata
                 - usage
-                - truncation_strategy
-                - tool_choice
                 - parallel_tool_calls
-                - response_format
             x-oaiMeta:
                 name: The run object
                 beta: true
@@ -57891,7 +57820,6 @@ components:
                     required:
                         - name
                         - arguments
-                        - output
             required:
                 - id
                 - type
@@ -58016,11 +57944,6 @@ components:
                 - type
                 - status
                 - step_details
-                - last_error
-                - expired_at
-                - cancelled_at
-                - failed_at
-                - completed_at
                 - metadata
                 - usage
             x-oaiMeta:
@@ -58417,8 +58340,8 @@ components:
                     items:
                         type: string
                 subject_prefix:
-                    type: string
                     description: Optional subject prefix for alert emails.
+                    type: string
             required:
                 - type
                 - recipients
@@ -58484,6 +58407,7 @@ components:
                 returned text will not contain the stop sequence.
 
 '
+            default: null
             oneOf:
                 - type: string
                   default: <|endoftext|>
@@ -58650,7 +58574,6 @@ components:
                 - id
                 - object
                 - created_at
-                - tool_resources
                 - metadata
             x-oaiMeta:
                 name: The thread object
@@ -59419,8 +59342,8 @@ components:
                         - upload
                     x-stainless-const: true
                 file:
-                    $ref: '#/components/schemas/OpenAIFile'
                     description: The ready File object after the Upload is completed.
+                    $ref: '#/components/schemas/OpenAIFile'
             required:
                 - bytes
                 - created_at
@@ -59569,11 +59492,11 @@ components:
             description: The aggregated completions usage details of the specific time bucket.
             properties:
                 api_source:
+                    description: When grouped by `api_source`, `agents_api` identifies attributed Agents API activity and `unlabeled` includes all records without published source attribution, including historical and unknown origins. Unlabeled does not imply direct API usage. Without source grouping, this field is null.
                     type: string
                     enum:
                         - agents_api
                         - unlabeled
-                    description: When grouped by `api_source`, `agents_api` identifies attributed Agents API activity and `unlabeled` includes all records without published source attribution, including historical and unknown origins. Unlabeled does not imply direct API usage. Without source grouping, this field is null.
                 object:
                     type: string
                     enum:
@@ -59811,7 +59734,6 @@ components:
                 - object
                 - data
                 - has_more
-                - next_page
         UsageTimeBucket:
             type: object
             properties:
@@ -59872,11 +59794,11 @@ components:
             description: The aggregated web search calls usage details of the specific time bucket.
             properties:
                 api_source:
+                    description: When grouped by `api_source`, `agents_api` identifies attributed Agents API activity and `unlabeled` includes all records without published source attribution, including historical and unknown origins. Unlabeled does not imply direct API usage. Without source grouping, this field is null.
                     type: string
                     enum:
                         - agents_api
                         - unlabeled
-                    description: When grouped by `api_source`, `agents_api` identifies attributed Agents API activity and `unlabeled` includes all records without published source attribution, including historical and unknown origins. Unlabeled does not imply direct API usage. Without source grouping, this field is null.
                 object:
                     type: string
                     enum:
@@ -59924,14 +59846,14 @@ components:
                     type: string
                     description: The identifier, which can be referenced in API endpoints
                 name:
-                    type: string
                     description: The name of the user
+                    type: string
                 email:
-                    type: string
                     description: The email address of the user
-                role:
                     type: string
+                role:
                     description: '`owner` or `reader`'
+                    type: string
                 added_at:
                     type: integer
                     format: unixtime
@@ -59974,22 +59896,23 @@ components:
                     type: boolean
                     description: Whether the user is a service account.
                 is_scale_tier_authorized_purchaser:
-                    type: boolean
                     description: Whether the user is an authorized purchaser for Scale Tier.
+                    type: boolean
                 is_scim_managed:
                     type: boolean
                     description: Whether the user is managed through SCIM.
                 api_key_last_used_at:
+                    description: The Unix timestamp (in seconds) of the user's last API key usage.
                     type: integer
                     format: unixtime
-                    description: The Unix timestamp (in seconds) of the user's last API key usage.
                 technical_level:
-                    type: string
                     description: The technical level metadata for the user.
-                developer_persona:
                     type: string
+                developer_persona:
                     description: The developer persona metadata for the user.
+                    type: string
                 projects:
+                    description: Projects associated with the user, if included.
                     type: object
                     properties:
                         object:
@@ -60011,7 +59934,6 @@ components:
                     required:
                         - object
                         - data
-                    description: Projects associated with the user, if included.
             required:
                 - object
                 - id
@@ -60054,13 +59976,12 @@ components:
                     type: boolean
                     description: Whether more users are available when paginating.
                 next:
-                    type: string
                     description: Cursor to fetch the next page of results, or `null` when no further users are available.
+                    type: string
             required:
                 - object
                 - data
                 - has_more
-                - next
             x-oaiMeta:
                 name: Group user list
                 example: "{\n    \"object\": \"list\",\n    \"data\": [\n        {\n            \"id\": \"user_abc123\",\n            \"name\": \"Ada Lovelace\",\n            \"email\": \"ada@example.com\"\n        }\n    ],\n    \"has_more\": false,\n    \"next\": null\n}\n"
@@ -60111,17 +60032,17 @@ components:
             type: object
             properties:
                 role:
-                    type: string
                     description: '`owner` or `reader`'
+                    type: string
                 role_id:
-                    type: string
                     description: Role ID to assign to the user.
+                    type: string
                 technical_level:
-                    type: string
                     description: Technical level metadata.
-                developer_persona:
                     type: string
+                developer_persona:
                     description: Developer persona metadata.
+                    type: string
         VadConfig:
             type: object
             additionalProperties: false
@@ -60312,7 +60233,6 @@ components:
                 - object
                 - data
                 - has_more
-                - next_page
         VectorStoreFileObject:
             type: object
             title: Vector store files
@@ -60377,7 +60297,6 @@ components:
                 - created_at
                 - vector_store_id
                 - status
-                - last_error
             x-oaiMeta:
                 name: The vector store file object
                 beta: true
@@ -60455,7 +60374,6 @@ components:
                 - usage_bytes
                 - created_at
                 - status
-                - last_active_at
                 - name
                 - file_counts
                 - metadata
@@ -60591,7 +60509,6 @@ components:
                 - search_query
                 - data
                 - has_more
-                - next_page
             x-oaiMeta:
                 name: Vector store search results page
         Verbosity:
@@ -60809,11 +60726,11 @@ components:
 '
                     x-stainless-const: true
                 url:
-                    type: string
-                    format: uri
                     description: 'The URL opened by the model.
 
 '
+                    type: string
+                    format: uri
             required:
                 - type
         WebSearchActionSearch:
@@ -63139,8 +63056,6 @@ components:
             type: object
             required:
                 - type
-                - image_url
-                - file_id
                 - detail
             title: Computer screenshot
             description: A screenshot of a computer.
@@ -63386,17 +63301,17 @@ components:
                         - auto
                     description: The quality of the image generated by the image generation tool call. One of `low`, `medium`, `high`, `xhigh`, `max`, or `auto`.
                 action:
+                    x-openai-go-optional-enum: true
                     $ref: '#/components/schemas/ImageGenActionEnum'
                     description: The action used for image generation.
-                    x-openai-go-optional-enum: true
                 background:
+                    x-openai-go-optional-enum: true
                     $ref: '#/components/schemas/ImageBackground'
                     description: The background setting used for generation.
-                    x-openai-go-optional-enum: true
                 output_format:
+                    x-openai-go-optional-enum: true
                     $ref: '#/components/schemas/ImageOutputFormat'
                     description: The output format used for generation.
-                    x-openai-go-optional-enum: true
                 revised_prompt:
                     type: string
                     description: The prompt that was used after any model prompt rewriting.
@@ -63405,7 +63320,6 @@ components:
                 - type
                 - id
                 - status
-                - result
             title: Image generation call
             description: An image generation request made by the model.
         ClickButtonType:
@@ -63472,7 +63386,6 @@ components:
                 - type
                 - x
                 - y
-                - keys
             title: DoubleClick
             description: A double click action.
         CoordParam:
@@ -63699,7 +63612,6 @@ components:
             required:
                 - type
                 - id
-                - call_id
                 - execution
                 - arguments
                 - status
@@ -63750,8 +63662,6 @@ components:
             required:
                 - type
                 - name
-                - strict
-                - parameters
             title: Function
             description: Defines a function in your own code the model can choose to call. Learn more about [function calling](https://developers.openai.com/api/docs/guides/function-calling).
             x-openai-structured-output: function
@@ -64349,7 +64259,6 @@ components:
             required:
                 - type
                 - id
-                - call_id
                 - execution
                 - tools
                 - status
@@ -64554,8 +64463,6 @@ components:
             type: object
             required:
                 - commands
-                - timeout_ms
-                - max_output_length
             title: Shell exec action
             description: Execute a shell command.
         FunctionShellCallStatus:
@@ -64635,7 +64542,6 @@ components:
                 - call_id
                 - action
                 - status
-                - environment
             title: Shell tool call
             description: A tool call that executes one or more shell commands in a managed environment.
         FunctionShellCallOutputStatusEnum:
@@ -64741,7 +64647,6 @@ components:
                 - call_id
                 - status
                 - output
-                - max_output_length
             title: Shell call output
             description: The output of a shell tool call that was emitted.
         ApplyPatchCallStatus:
@@ -67470,7 +67375,6 @@ components:
                 - object
                 - created_at
                 - entity_identifier
-                - reason
                 - notice
         SafetyAlertErrorType:
             type: string
@@ -67516,7 +67420,6 @@ components:
                 - model
                 - request_paused
                 - error_type
-                - reason
         ExternalStorageOrder:
             type: string
             enum:
@@ -67585,8 +67488,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         AwsExternalStorageProviderParams:
             properties:
@@ -67958,9 +67859,6 @@ components:
                 - type
                 - outcome
                 - validation_state
-                - issuer
-                - model
-                - generated_at
         SynthIDProvenanceResult:
             properties:
                 type:
@@ -67985,8 +67883,6 @@ components:
             required:
                 - type
                 - outcome
-                - model
-                - generated_at
         ProvenanceResource:
             properties:
                 object:
@@ -68118,13 +68014,8 @@ components:
                 - status
                 - progress
                 - created_at
-                - completed_at
-                - expires_at
-                - prompt
                 - size
                 - seconds
-                - remixed_from_video_id
-                - error
             title: Video job
             description: Structured information describing a generated video job.
         VideoListResource:
@@ -68154,8 +68045,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         ImageRefParam-2:
             properties:
@@ -68257,8 +68146,6 @@ components:
                     description: Unix timestamp (in seconds) when the character was created.
             type: object
             required:
-                - id
-                - name
                 - created_at
         VideoReferenceInputParam:
             properties:
@@ -68686,8 +68573,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         CreateSkillBody:
             properties:
@@ -68798,8 +68683,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         CreateSkillVersionBody:
             properties:
@@ -68877,8 +68760,6 @@ components:
             type: object
             required:
                 - id
-                - version
-                - state_variables
                 - tracing
             title: Workflow
             description: Workflow metadata and state returned for the session.
@@ -68922,8 +68803,6 @@ components:
             type: object
             required:
                 - enabled
-                - max_file_size
-                - max_files
             title: File upload settings
             description: Upload permissions and limits applied to the session.
         ChatSessionHistory:
@@ -68937,7 +68816,6 @@ components:
             type: object
             required:
                 - enabled
-                - recent_threads
             title: History settings
             description: History retention preferences returned for the session.
         ChatSessionChatkitConfiguration:
@@ -69242,7 +69120,6 @@ components:
                 - id
                 - name
                 - mime_type
-                - preview_url
             title: Attachment
             description: Attachment metadata included on thread items.
         ToolChoice:
@@ -69264,9 +69141,6 @@ components:
                     type: string
                     description: Model name that generated the response. Defaults to null when using the session default.
             type: object
-            required:
-                - tool_choice
-                - model
             title: Inference options
             description: Model and tool overrides applied when generating the assistant response.
         UserMessageItem:
@@ -69321,7 +69195,6 @@ components:
                 - type
                 - content
                 - attachments
-                - inference_options
             title: User Message Item
             description: User-authored messages within a thread.
         FileAnnotationSource:
@@ -69563,7 +69436,6 @@ components:
                 - call_id
                 - name
                 - arguments
-                - output
             title: Client tool call
             description: Record of a client side tool invocation initiated by the assistant.
         TaskType:
@@ -69614,8 +69486,6 @@ components:
                 - thread_id
                 - type
                 - task_type
-                - heading
-                - summary
             title: Task item
             description: Task emitted by the workflow to show progress and status updates.
         TaskGroupTask:
@@ -69632,8 +69502,6 @@ components:
             type: object
             required:
                 - type
-                - heading
-                - summary
             title: Task group task
             description: Task entry that appears within a TaskGroup.
         TaskGroupItem:
@@ -69715,8 +69583,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
             title: Thread Items
             description: A paginated list of thread items rendered for the ChatKit API.
@@ -69749,7 +69615,6 @@ components:
             type: object
             required:
                 - type
-                - reason
             title: Locked thread status
             description: Indicates that a thread is locked and cannot accept new input.
         ClosedStatus:
@@ -69767,7 +69632,6 @@ components:
             type: object
             required:
                 - type
-                - reason
             title: Closed thread status
             description: Indicates that a thread has been closed.
         ThreadResource:
@@ -69805,7 +69669,6 @@ components:
                 - id
                 - object
                 - created_at
-                - title
                 - status
                 - user
             title: The thread object
@@ -69867,8 +69730,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
             title: Threads
             description: A paginated list of ChatKit threads.
@@ -69906,9 +69767,9 @@ components:
                     pattern: '^data:'
                     description: A base64-encoded image in a data URL.
                 detail:
-                    $ref: '#/components/schemas/ImageDetailParam'
                     description: The image detail level, using the selected model's image profile. Defaults to auto.
                     default: auto
+                    $ref: '#/components/schemas/ImageDetailParam'
                 type:
                     type: string
                     enum:
@@ -71036,15 +70897,14 @@ components:
                     $ref: '#/components/schemas/OutputItemStatusResource'
                     description: The status of the message. User messages are always `completed`.
                 phase:
-                    $ref: '#/components/schemas/MessagePhaseResource'
                     description: The phase of an assistant message. Null for user messages.
+                    $ref: '#/components/schemas/MessagePhaseResource'
             required:
                 - type
                 - turn_id
                 - role
                 - content
                 - status
-                - phase
             additionalProperties: false
             description: A user or assistant message recorded in a session.
         SummaryTextResource:
@@ -71092,14 +70952,13 @@ components:
                     maxItems: 2000
                     description: The reasoning summaries produced by the agent.
                 status:
-                    $ref: '#/components/schemas/OutputItemStatusResource'
                     description: The status of the reasoning item.
+                    $ref: '#/components/schemas/OutputItemStatusResource'
             required:
                 - type
                 - id
                 - turn_id
                 - summary
-                - status
             additionalProperties: false
             description: A reasoning item produced by the agent.
         FunctionCallStatusResource:
@@ -71243,8 +71102,8 @@ components:
                     $ref: '#/components/schemas/FunctionCallStatusResource'
                     description: The status of the function call.
                 output:
-                    $ref: '#/components/schemas/FunctionCallOutputResource'
                     description: The function result, if the call succeeded.
+                    $ref: '#/components/schemas/FunctionCallOutputResource'
                 error:
                     type: string
                     minLength: 0
@@ -71255,7 +71114,6 @@ components:
                 - type
                 - call_id
                 - status
-                - output
             additionalProperties: false
             description: The result supplied for a function call.
         AgentMessageItemResource:
@@ -71343,8 +71201,6 @@ components:
                 - name
                 - arguments
                 - status
-                - output
-                - error
             additionalProperties: false
             description: A call to a tool on an MCP server.
         ComputerScreenshotResource:
@@ -71392,14 +71248,13 @@ components:
                     $ref: '#/components/schemas/FunctionCallStatusResource'
                     description: The execution status of the activity.
                 output:
-                    $ref: '#/components/schemas/ComputerScreenshotResource'
                     description: The last screenshot emitted by the model. Null when screenshot inclusion is disabled or the call emitted no screenshot.
+                    $ref: '#/components/schemas/ComputerScreenshotResource'
             required:
                 - type
                 - id
                 - turn_id
                 - status
-                - output
             additionalProperties: false
             description: One execution of the platform-provided computer-use capability.
         BrowserAuthenticationFieldResource:
@@ -71735,14 +71590,13 @@ components:
                     $ref: '#/components/schemas/OutputItemStatusResource'
                     description: The status of the web search call.
                 action:
-                    $ref: '#/components/schemas/WebSearchActionResource'
                     description: The action performed by the web search tool.
+                    $ref: '#/components/schemas/WebSearchActionResource'
             required:
                 - type
                 - id
                 - turn_id
                 - status
-                - action
             additionalProperties: false
             description: A web search call produced by the agent.
         CommandExecutionItemResource:
@@ -72328,11 +72182,11 @@ components:
                     format: int64
                     description: The Unix timestamp, in seconds, when the turn reached a terminal state.
                 error:
-                    $ref: '#/components/schemas/SessionTurnErrorResource'
                     description: A customer-safe error. Non-null only for a failed turn.
+                    $ref: '#/components/schemas/SessionTurnErrorResource'
                 usage:
-                    $ref: '#/components/schemas/TokenUsageResource'
                     description: Best-effort token usage for the turn, or null if unknown. Recorded usage may change.
+                    $ref: '#/components/schemas/TokenUsageResource'
             required:
                 - id
                 - object
@@ -72340,8 +72194,6 @@ components:
                 - agent_id
                 - status
                 - created_at
-                - error
-                - usage
             additionalProperties: false
             description: The canonical public representation of a session turn.
         SessionTurnListResource:
@@ -72404,14 +72256,11 @@ components:
             type: object
             properties:
                 effort:
-                    $ref: '#/components/schemas/ReasoningEffortResource'
                     description: The requested reasoning effort, or `null` when the model selects its own default.
+                    $ref: '#/components/schemas/ReasoningEffortResource'
                 summary:
-                    $ref: '#/components/schemas/ReasoningSummaryResource'
                     description: The requested reasoning summary format, or `null` when summaries are disabled.
-            required:
-                - effort
-                - summary
+                    $ref: '#/components/schemas/ReasoningSummaryResource'
             additionalProperties: false
             description: The reasoning configuration used by an agent.
         TextFormatResourceText:
@@ -72767,13 +72616,12 @@ components:
                     maxItems: 2000
                     description: Allowed search domains, or `null` when the search is unrestricted.
                 location:
-                    $ref: '#/components/schemas/WebSearchLocationResource'
                     description: Approximate location used to localize search results, if provided.
+                    $ref: '#/components/schemas/WebSearchLocationResource'
             required:
                 - type
                 - mode
                 - context_size
-                - location
             additionalProperties: false
             description: Web search.
         PersistedAgentToolResourceComputerUse:
@@ -72972,11 +72820,11 @@ components:
             type: object
             properties:
                 effort:
-                    $ref: '#/components/schemas/ReasoningEffortParam'
                     description: The amount of reasoning effort the model should use. Omission lets the model select it.
+                    $ref: '#/components/schemas/ReasoningEffortParam'
                 summary:
-                    $ref: '#/components/schemas/ReasoningSummaryParam'
                     description: Controls whether the response includes a reasoning summary.
+                    $ref: '#/components/schemas/ReasoningSummaryParam'
             additionalProperties: false
             description: Reasoning configuration for the agent.
         TextFormatParamText:
@@ -73046,11 +72894,11 @@ components:
             type: object
             properties:
                 format:
-                    $ref: '#/components/schemas/TextFormatParam'
                     description: 'The output format. Omission uses ordinary text (`{"type": "text"}`).'
+                    $ref: '#/components/schemas/TextFormatParam'
                 verbosity:
-                    $ref: '#/components/schemas/VerbosityParam'
                     description: The amount of text the model should produce. Defaults to `medium`, matching Responses.
+                    $ref: '#/components/schemas/VerbosityParam'
             additionalProperties: false
             description: Configuration for text generated by the agent.
         ServiceTierParam:
@@ -73287,8 +73135,8 @@ components:
                     default: false
                     description: Whether this MCP server must initialize before the first turn. Defaults to `false`.
                 connection_origin:
-                    $ref: '#/components/schemas/McpConnectionOriginParam'
                     description: Selects where outbound MCP HTTP connections originate.
+                    $ref: '#/components/schemas/McpConnectionOriginParam'
             required:
                 - type
                 - server_label
@@ -73349,11 +73197,11 @@ components:
                     x-stainless-const: true
                     description: The type of the object. Always `web_search`.
                 mode:
-                    $ref: '#/components/schemas/WebSearchModeParam'
                     description: The source used for web search results. Defaults to `live`.
+                    $ref: '#/components/schemas/WebSearchModeParam'
                 context_size:
-                    $ref: '#/components/schemas/WebSearchContextSizeParam'
                     description: The amount of search context made available to the model. Defaults to `medium`.
+                    $ref: '#/components/schemas/WebSearchContextSizeParam'
                 allowed_domains:
                     type: array
                     items:
@@ -73364,8 +73212,8 @@ components:
                     maxItems: 16384
                     description: Domains the search may include.
                 location:
-                    $ref: '#/components/schemas/WebSearchLocationParam'
                     description: Approximate location used to localize search results.
+                    $ref: '#/components/schemas/WebSearchLocationParam'
             required:
                 - type
             additionalProperties: false
@@ -73456,14 +73304,14 @@ components:
                     maxLength: 1048576
                     description: The model to use for the agent. The requested model name is preserved.
                 reasoning:
-                    $ref: '#/components/schemas/ReasoningParam'
                     description: Configuration for model reasoning. Omission uses the model's default effort.
+                    $ref: '#/components/schemas/ReasoningParam'
                 text:
-                    $ref: '#/components/schemas/TextParam'
                     description: Configuration for generated text. Defaults to the `text` format and medium verbosity.
+                    $ref: '#/components/schemas/TextParam'
                 service_tier:
-                    $ref: '#/components/schemas/ServiceTierParam'
                     description: The service tier used for model requests. Defaults to `auto`.
+                    $ref: '#/components/schemas/ServiceTierParam'
                 instructions:
                     type: string
                     minLength: 0
@@ -73477,8 +73325,8 @@ components:
                     maxItems: 2000
                     description: Tools available to the agent. Defaults to an empty list. The tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
                 multi_agent:
-                    $ref: '#/components/schemas/MultiAgentConfigCurrentParam'
                     description: Configuration for creating and coordinating subagents. Subagent tools are disabled by default.
+                    $ref: '#/components/schemas/MultiAgentConfigCurrentParam'
             required:
                 - model
             additionalProperties: false
@@ -73492,22 +73340,22 @@ components:
                     maxLength: 1048576
                     description: The model to use for the agent. The requested model name is preserved.
                 reasoning:
-                    $ref: '#/components/schemas/ReasoningParam'
                     description: Configuration for model reasoning. Omit to keep the current settings; pass `null` to reset to the model's default effort.
+                    $ref: '#/components/schemas/ReasoningParam'
                 text:
-                    $ref: '#/components/schemas/TextParam'
                     description: Configuration for text generated by the agent.
+                    $ref: '#/components/schemas/TextParam'
                 service_tier:
-                    $ref: '#/components/schemas/ServiceTierParam'
                     description: The service tier used for model requests.
+                    $ref: '#/components/schemas/ServiceTierParam'
                 instructions:
                     type: string
                     minLength: 0
                     maxLength: 1048576
                     description: Additional instructions appended to the agent's default base instructions. Omit to leave unchanged.
                 multi_agent:
-                    $ref: '#/components/schemas/MultiAgentConfigCurrentParam'
                     description: Configuration for creating and coordinating subagents.
+                    $ref: '#/components/schemas/MultiAgentConfigCurrentParam'
                 metadata:
                     type: object
                     additionalProperties:
@@ -74116,8 +73964,8 @@ components:
             type: object
             properties:
                 packages:
-                    $ref: '#/components/schemas/EnvironmentPackagesParam'
                     description: Packages to install in the environment. Defaults to empty package lists.
+                    $ref: '#/components/schemas/EnvironmentPackagesParam'
                 setup_commands:
                     type: array
                     items:
@@ -74126,11 +73974,11 @@ components:
                     maxItems: 16
                     description: Ordered, confidential setup commands. Command bodies are never returned.
                 network:
-                    $ref: '#/components/schemas/NetworkPolicyParam'
                     description: Network access policy for the environment. If omitted, the API version determines whether network access is enabled or disabled.
+                    $ref: '#/components/schemas/NetworkPolicyParam'
                 desktop:
-                    $ref: '#/components/schemas/DesktopParam'
                     description: Desktop provisioning. Omission or null inherits the template setting, or defaults to disabled.
+                    $ref: '#/components/schemas/DesktopParam'
                 env:
                     type: object
                     additionalProperties:
@@ -74190,8 +74038,8 @@ components:
                     maxLength: 256
                     description: A replacement human-readable display name, or `null` to clear the name.
                 packages:
-                    $ref: '#/components/schemas/EnvironmentPackagesParam'
                     description: Packages installed before the runtime network policy applies.
+                    $ref: '#/components/schemas/EnvironmentPackagesParam'
                 setup_commands:
                     type: array
                     items:
@@ -74200,11 +74048,11 @@ components:
                     maxItems: 16
                     description: Replacement confidential setup commands, never included in returned resources.
                 network:
-                    $ref: '#/components/schemas/NetworkPolicyParam'
                     description: Network access available after setup completes. Omit to preserve the current policy, or pass `null` to reset to the default policy.
+                    $ref: '#/components/schemas/NetworkPolicyParam'
                 desktop:
-                    $ref: '#/components/schemas/DesktopParam'
                     description: Replacement desktop configuration, or null to disable the desktop.
+                    $ref: '#/components/schemas/DesktopParam'
                 env:
                     type: object
                     additionalProperties:
@@ -74660,13 +74508,12 @@ components:
                     maxItems: 2000
                     description: Allowed search domains, or `null` when the search is unrestricted.
                 location:
-                    $ref: '#/components/schemas/WebSearchLocationResource'
                     description: Approximate location used to localize search results, if provided.
+                    $ref: '#/components/schemas/WebSearchLocationResource'
             required:
                 - type
                 - mode
                 - context_size
-                - location
             additionalProperties: false
             description: Web search.
         AgentToolResourceComputerUse:
@@ -74793,8 +74640,8 @@ components:
                     minLength: 0
                     description: The public ID of the environment.
                 container_size:
-                    $ref: '#/components/schemas/ContainerSizeResource'
                     description: The effective CPU and memory tier, or null when unknown or outside the public tiers.
+                    $ref: '#/components/schemas/ContainerSizeResource'
                 packages:
                     $ref: '#/components/schemas/EnvironmentPackagesResource'
                     description: Packages installed in the environment.
@@ -74960,8 +74807,8 @@ components:
                     maxItems: 2000
                     description: The IDs of vaults made available to the session.
                 usage:
-                    $ref: '#/components/schemas/TokenUsageResource'
                     description: Best-effort token usage for the session, or null if unknown. Recorded usage may change.
+                    $ref: '#/components/schemas/TokenUsageResource'
             required:
                 - metadata
                 - id
@@ -74973,7 +74820,6 @@ components:
                 - agent
                 - environment
                 - vault_ids
-                - usage
             additionalProperties: false
             description: A Managed Agents session.
         SessionListResource:
@@ -75238,8 +75084,8 @@ components:
                     default: false
                     description: Whether this MCP server must initialize before the first turn. Defaults to `false`.
                 connection_origin:
-                    $ref: '#/components/schemas/McpConnectionOriginParam'
                     description: Selects where outbound MCP HTTP connections originate. Omitted or `service` uses the Managed Agents service network; `environment` uses the session's selected environment.
+                    $ref: '#/components/schemas/McpConnectionOriginParam'
             required:
                 - type
                 - server_label
@@ -75257,11 +75103,11 @@ components:
                     x-stainless-const: true
                     description: The type of the object. Always `web_search`.
                 mode:
-                    $ref: '#/components/schemas/WebSearchModeParam'
                     description: The source used for web search results. Defaults to `live`.
+                    $ref: '#/components/schemas/WebSearchModeParam'
                 context_size:
-                    $ref: '#/components/schemas/WebSearchContextSizeParam'
                     description: The amount of search context made available to the model. Defaults to `medium`.
+                    $ref: '#/components/schemas/WebSearchContextSizeParam'
                 allowed_domains:
                     type: array
                     items:
@@ -75272,8 +75118,8 @@ components:
                     maxItems: 16384
                     description: Domains the search may include.
                 location:
-                    $ref: '#/components/schemas/WebSearchLocationParam'
                     description: Approximate location used to localize search results.
+                    $ref: '#/components/schemas/WebSearchLocationParam'
             required:
                 - type
             additionalProperties: false
@@ -75330,22 +75176,22 @@ components:
                     maxLength: 1048576
                     description: The model to use for the agent. The requested model name is preserved.
                 reasoning:
-                    $ref: '#/components/schemas/ReasoningParam'
                     description: Configuration for model reasoning. Omit to keep the current settings; pass `null` to reset to the model's default effort.
+                    $ref: '#/components/schemas/ReasoningParam'
                 text:
-                    $ref: '#/components/schemas/TextParam'
                     description: Configuration for text generated by the agent.
+                    $ref: '#/components/schemas/TextParam'
                 service_tier:
-                    $ref: '#/components/schemas/ServiceTierParam'
                     description: The service tier used for model requests.
+                    $ref: '#/components/schemas/ServiceTierParam'
                 instructions:
                     type: string
                     minLength: 0
                     maxLength: 1048576
                     description: Additional instructions appended to the agent's default base instructions. Omit to leave unchanged.
                 multi_agent:
-                    $ref: '#/components/schemas/MultiAgentConfigCurrentParam'
                     description: Configuration for creating and coordinating subagents.
+                    $ref: '#/components/schemas/MultiAgentConfigCurrentParam'
                 tools:
                     type: array
                     items:
@@ -75387,8 +75233,8 @@ components:
                     x-stainless-const: true
                     description: The type of the object. Always `openai_hosted`.
                 packages:
-                    $ref: '#/components/schemas/EnvironmentPackagesParam'
                     description: Packages to install in the environment. Defaults to empty package lists.
+                    $ref: '#/components/schemas/EnvironmentPackagesParam'
                 setup_commands:
                     type: array
                     items:
@@ -75397,11 +75243,11 @@ components:
                     maxItems: 16
                     description: Ordered, confidential setup commands. Command bodies are never returned.
                 network:
-                    $ref: '#/components/schemas/NetworkPolicyParam'
                     description: Network access policy for the environment. If omitted, the API version determines whether network access is enabled or disabled.
+                    $ref: '#/components/schemas/NetworkPolicyParam'
                 desktop:
-                    $ref: '#/components/schemas/DesktopParam'
                     description: Desktop provisioning. Omission or null inherits the template setting, or defaults to disabled.
+                    $ref: '#/components/schemas/DesktopParam'
                 env:
                     type: object
                     additionalProperties:
@@ -75632,8 +75478,8 @@ components:
                     maxItems: 16384
                     description: The IDs of vaults made available to the session.
                 input:
-                    $ref: '#/components/schemas/CreateSessionInputParam'
                     description: Initial input to submit when the session is created. A string is shorthand for a single user message. Required when `environment.type` is `none`, or when `stream` is `true` for an environment that is not `self_hosted`; optional for self-hosted and non-streaming execution environments.
+                    $ref: '#/components/schemas/CreateSessionInputParam'
                 stream:
                     type: boolean
                     default: false
@@ -75755,13 +75601,12 @@ components:
                     $ref: '#/components/schemas/SessionEnvironmentStatusResource'
                     description: The environment's connection status.
                 error:
-                    $ref: '#/components/schemas/SessionEnvironmentErrorResource'
                     description: The error reported while preparing the environment, if any.
+                    $ref: '#/components/schemas/SessionEnvironmentErrorResource'
             required:
                 - id
                 - type
                 - status
-                - error
             additionalProperties: false
             description: The current state of a session environment.
         SessionEventAgentSessionEnvironmentReady:
@@ -75995,15 +75840,14 @@ components:
                     $ref: '#/components/schemas/TurnResource'
                     description: The completed turn.
                 usage:
-                    $ref: '#/components/schemas/TokenUsageResource'
                     description: Token usage by the root agent during the turn, when available.
+                    $ref: '#/components/schemas/TokenUsageResource'
             required:
                 - type
                 - event_id
                 - session_id
                 - turn_id
                 - turn
-                - usage
             additionalProperties: false
             description: Emitted when a turn completes.
         SessionEventAgentSessionTurnFailed:
@@ -76032,15 +75876,14 @@ components:
                     $ref: '#/components/schemas/TurnResource'
                     description: The failed turn.
                 usage:
-                    $ref: '#/components/schemas/TokenUsageResource'
                     description: Token usage by the root agent during the turn, when available.
+                    $ref: '#/components/schemas/TokenUsageResource'
             required:
                 - type
                 - event_id
                 - session_id
                 - turn_id
                 - turn
-                - usage
             additionalProperties: false
             description: Emitted when a turn fails.
         SessionEventAgentSessionTurnCancelled:
@@ -76069,15 +75912,14 @@ components:
                     $ref: '#/components/schemas/TurnResource'
                     description: The cancelled turn.
                 usage:
-                    $ref: '#/components/schemas/TokenUsageResource'
                     description: Token usage by the root agent during the turn, when available.
+                    $ref: '#/components/schemas/TokenUsageResource'
             required:
                 - type
                 - event_id
                 - session_id
                 - turn_id
                 - turn
-                - usage
             additionalProperties: false
             description: Emitted when a turn is cancelled.
         SessionEventAgentSessionTurnItemAdded:
@@ -76443,8 +76285,8 @@ components:
                     maxItems: 2000
                     description: The content of the message.
                 phase:
-                    $ref: '#/components/schemas/MessagePhaseResource'
                     description: The phase of the assistant message.
+                    $ref: '#/components/schemas/MessagePhaseResource'
             required:
                 - type
                 - id
@@ -76452,7 +76294,6 @@ components:
                 - role
                 - status
                 - content
-                - phase
             additionalProperties: false
             description: An assistant message produced by the agent.
         AgentOutputItemResource:
@@ -77066,8 +76907,8 @@ components:
             type: object
             properties:
                 effort:
-                    $ref: '#/components/schemas/ReasoningEffortParam'
                     description: Omit to keep the current effort. Null selects the model's default effort.
+                    $ref: '#/components/schemas/ReasoningEffortParam'
             additionalProperties: false
             description: Reasoning effort for subsequent turns. The reasoning summary stays unchanged.
         UpdateSessionAgentParam:
@@ -77082,8 +76923,8 @@ components:
                     $ref: '#/components/schemas/UpdateSessionReasoningParam'
                     description: Reasoning settings to update. Omit to keep the current effort.
                 service_tier:
-                    $ref: '#/components/schemas/ServiceTierParam'
                     description: Omit to keep the current tier. Null resets it to auto.
+                    $ref: '#/components/schemas/ServiceTierParam'
             additionalProperties: false
             description: Model settings that can change after session creation.
         UpdateAgentSessionParams:
@@ -77459,8 +77300,8 @@ components:
                     type: boolean
                     description: Whether the function call succeeded.
                 output:
-                    $ref: '#/components/schemas/FunctionCallOutputParam'
                     description: The function result when the call succeeded.
+                    $ref: '#/components/schemas/FunctionCallOutputParam'
                 error:
                     type: string
                     minLength: 0
@@ -77839,12 +77680,11 @@ components:
                     minLength: 0
                     description: When the OAuth access token expires, as an RFC 3339 timestamp, if known.
                 refresh:
-                    $ref: '#/components/schemas/McpOauthRefreshResource'
                     description: Public refresh metadata without refresh tokens or OAuth client secrets.
+                    $ref: '#/components/schemas/McpOauthRefreshResource'
             required:
                 - type
                 - mcp_server_url
-                - refresh
             additionalProperties: false
             description: Public metadata for an OAuth credential; tokens and client secrets are never returned.
         VaultCredentialAuthResourceStaticBearer:
@@ -78177,8 +78017,8 @@ components:
                     maxLength: 1048576
                     description: When the OAuth access token expires, as an RFC 3339 timestamp, if known.
                 refresh:
-                    $ref: '#/components/schemas/CreateMcpOauthRefreshParam'
                     description: Optional refresh configuration for an HTTPS OAuth token endpoint.
+                    $ref: '#/components/schemas/CreateMcpOauthRefreshParam'
             required:
                 - type
                 - mcp_server_url
@@ -78402,8 +78242,8 @@ components:
                     maxLength: 1048576
                     description: Replacement space-separated OAuth scopes for refresh requests. Omit to keep the scopes, or pass `null` to stop sending a scope parameter.
                 token_endpoint_auth:
-                    $ref: '#/components/schemas/RotateMcpOauthTokenEndpointAuthParam'
                     description: Client-secret updates for the existing token endpoint authentication method.
+                    $ref: '#/components/schemas/RotateMcpOauthTokenEndpointAuthParam'
             additionalProperties: false
             description: Updates to an MCP credential's existing OAuth refresh configuration.
         RotateVaultCredentialAuthParamMcpOauth:
@@ -78427,8 +78267,8 @@ components:
                     maxLength: 1048576
                     description: The replacement expiry as an RFC 3339 timestamp, or `null` to clear it. Omitting this field preserves the expiry unless a new access token is supplied, in which case the expiry is cleared.
                 refresh:
-                    $ref: '#/components/schemas/RotateMcpOauthRefreshParam'
                     description: Optional write-only refresh-token and client-secret updates.
+                    $ref: '#/components/schemas/RotateMcpOauthRefreshParam'
             required:
                 - type
             additionalProperties: false
@@ -78578,7 +78418,6 @@ components:
                 - name
                 - url
                 - event_types
-                - signing_secret_hint
         WebhookEndpointListResource:
             properties:
                 object:
@@ -78606,8 +78445,6 @@ components:
             required:
                 - object
                 - data
-                - first_id
-                - last_id
                 - has_more
         ProjectEventTypeEnum:
             type: string
@@ -78703,7 +78540,6 @@ components:
                 - name
                 - url
                 - event_types
-                - signing_secret_hint
                 - signing_secret
         PublicUpdateEndpointBody:
             properties:
@@ -79218,7 +79054,6 @@ components:
                     type: string
             required:
                 - type
-                - delegation_id
                 - content
             x-oaiMeta:
                 example:
@@ -79255,7 +79090,6 @@ components:
                     type: string
             required:
                 - type
-                - delegation_id
                 - content
             x-oaiMeta:
                 example:
@@ -79292,7 +79126,6 @@ components:
                     type: string
             required:
                 - type
-                - delegation_id
                 - content
             x-oaiMeta:
                 example:
@@ -80626,9 +80459,7 @@ components:
             type: object
             required:
                 - type
-                - code
                 - message
-                - param
             title: Error payload
             description: An error payload that was emitted for a streaming error event.
         BetaTokenCountsResource:
@@ -82549,8 +82380,6 @@ components:
             required:
                 - type
                 - name
-                - strict
-                - parameters
             title: Function
             description: Defines a function in your own code the model can choose to call. Learn more about [function calling](https://developers.openai.com/api/docs/guides/function-calling).
             x-openai-structured-output: function
@@ -82747,8 +82576,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -82844,8 +82673,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83049,8 +82878,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83085,8 +82914,8 @@ components:
 
 '
                 error:
-                    $ref: '#/components/schemas/BetaMCPToolCallError'
                     description: The error from the tool call, if any.
+                    $ref: '#/components/schemas/BetaMCPToolCallError'
                 status:
                     $ref: '#/components/schemas/BetaMCPToolCallStatus'
                     description: 'The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`, or `failed`.
@@ -83175,8 +83004,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83217,8 +83046,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83261,8 +83090,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83674,8 +83503,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83715,8 +83544,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83796,8 +83625,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -83853,8 +83682,6 @@ components:
                 - id
                 - status
                 - container_id
-                - code
-                - outputs
         BetaCodeInterpreterOutputImage:
             properties:
                 type:
@@ -83937,17 +83764,17 @@ components:
                         - auto
                     description: The quality of the image generated by the image generation tool call. One of `low`, `medium`, `high`, `xhigh`, `max`, or `auto`.
                 action:
+                    x-openai-go-optional-enum: true
                     $ref: '#/components/schemas/BetaImageGenActionEnum'
                     description: The action used for image generation.
-                    x-openai-go-optional-enum: true
                 background:
+                    x-openai-go-optional-enum: true
                     $ref: '#/components/schemas/BetaImageBackground'
                     description: The background setting used for generation.
-                    x-openai-go-optional-enum: true
                 output_format:
+                    x-openai-go-optional-enum: true
                     $ref: '#/components/schemas/BetaImageOutputFormat'
                     description: The output format used for generation.
-                    x-openai-go-optional-enum: true
                 revised_prompt:
                     type: string
                     description: The prompt that was used after any model prompt rewriting.
@@ -83956,7 +83783,6 @@ components:
                 - type
                 - id
                 - status
-                - result
             title: Image generation call
             description: An image generation request made by the model.
         BetaImageOutputFormat:
@@ -84011,8 +83837,8 @@ components:
             title: Reasoning
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the object. Always `reasoning`.
@@ -84799,8 +84625,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 id:
                     type: string
                     description: 'The unique ID of the function tool call.
@@ -84867,8 +84693,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 id:
                     type: string
                     description: 'The unique ID of the web search tool call.
@@ -84950,11 +84776,11 @@ components:
 '
                     x-stainless-const: true
                 url:
-                    type: string
-                    format: uri
                     description: 'The URL opened by the model.
 
 '
+                    type: string
+                    format: uri
             required:
                 - type
         BetaWebSearchActionSearch:
@@ -85114,8 +84940,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the computer call. Always `computer_call`.
@@ -85374,7 +85200,6 @@ components:
                 - type
                 - x
                 - y
-                - keys
             title: DoubleClick
             description: A double click action.
         BetaClickParam:
@@ -85426,8 +85251,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 id:
                     type: string
                     description: 'The unique ID of the file search tool call.
@@ -85529,8 +85354,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 id:
                     type: string
                     description: 'The unique ID of the output message.
@@ -85823,8 +85648,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the message input. Always set to `message`.
@@ -86297,8 +86122,6 @@ components:
             required:
                 - type
                 - message
-                - param
-                - code
         BetaMisalignmentErrorDetailsResource:
             properties:
                 review_target:
@@ -86482,8 +86305,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -86714,7 +86537,6 @@ components:
                 - call_id
                 - status
                 - output
-                - max_output_length
             title: Shell call output
             description: The output of a shell tool call that was emitted.
         BetaFunctionShellCallOutputContent:
@@ -86824,7 +86646,6 @@ components:
                 - call_id
                 - action
                 - status
-                - environment
             title: Shell tool call
             description: A tool call that executes one or more shell commands in a managed environment.
         BetaContainerReferenceResource:
@@ -86880,8 +86701,6 @@ components:
             type: object
             required:
                 - commands
-                - timeout_ms
-                - max_output_length
             title: Shell exec action
             description: Execute a shell command.
         BetaCompactionBody:
@@ -87091,7 +86910,6 @@ components:
             required:
                 - type
                 - id
-                - call_id
                 - execution
                 - tools
                 - status
@@ -87128,7 +86946,6 @@ components:
             required:
                 - type
                 - id
-                - call_id
                 - execution
                 - arguments
                 - status
@@ -87297,8 +87114,6 @@ components:
             type: object
             required:
                 - type
-                - image_url
-                - file_id
                 - detail
             title: Computer screenshot
             description: A screenshot of a computer.
@@ -87351,8 +87166,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 id:
                     type: string
                     description: 'The unique ID of the function tool call output. Populated when this item
@@ -87476,8 +87291,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that produced this item.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the computer tool call output. Always `computer_call_output`.
@@ -87755,8 +87570,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -87793,8 +87608,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -87831,8 +87646,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88000,6 +87815,7 @@ components:
 '
                         default: true
                     conversation:
+                        default: null
                         $ref: '#/components/schemas/BetaResponseConversation'
                     max_output_tokens:
                         description: 'An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
@@ -88007,13 +87823,10 @@ components:
 '
                         type: integer
                   required:
-                    - access_programs
                     - id
                     - object
                     - created_at
                     - error
-                    - incomplete_details
-                    - instructions
                     - output
                     - parallel_tool_calls
             example:
@@ -88528,12 +88341,12 @@ components:
 
 '
                 prompt_cache_retention:
+                    deprecated: true
                     type: string
                     enum:
                         - in_memory
                         - 24h
                     description: "Deprecated. Use `prompt_cache_options.ttl` instead.\n\nThe retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours. [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).\nThis field expresses a maximum retention policy, while\n`prompt_cache_options.ttl` expresses a minimum cache lifetime. The two\nfields are independent and do not interact.\nFor `gpt-5.5`, `gpt-5.5-pro`, and future models, only `24h` is supported.\n\nFor older models that support both `in_memory` and `24h`, the default depends on your organization's data retention policy:\n  - Organizations without ZDR enabled default to `24h`.\n  - Organizations with ZDR enabled default to `in_memory` when `prompt_cache_retention` is not specified.\n"
-                    deprecated: true
         BetaMetadata:
             type: object
             description: 'Set of 16 key-value pairs that can be attached to an object. This can be
@@ -88559,8 +88372,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88583,15 +88396,14 @@ components:
                     type: integer
                     description: The sequence number of this event.
                 annotation:
-                    $ref: '#/components/schemas/BetaAnnotation'
                     description: The annotation object being added. (See annotation schema for details.)
+                    $ref: '#/components/schemas/BetaAnnotation'
             required:
                 - type
                 - item_id
                 - output_index
                 - content_index
                 - annotation_index
-                - annotation
                 - sequence_number
             x-oaiMeta:
                 name: response.output_text.annotation.added
@@ -88605,8 +88417,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88639,8 +88451,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88673,8 +88485,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88707,8 +88519,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88741,8 +88553,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88775,8 +88587,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88809,8 +88621,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88849,8 +88661,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88889,8 +88701,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88943,8 +88755,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -88977,8 +88789,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -89011,8 +88823,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -89042,8 +88854,8 @@ components:
             description: Emitted when a reasoning text is completed.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.reasoning_text.done`.
@@ -89093,8 +88905,8 @@ components:
             description: Emitted when a delta is added to a reasoning text.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.reasoning_text.delta`.
@@ -89144,8 +88956,8 @@ components:
             description: Emitted when a reasoning summary text is completed.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.reasoning_summary_text.done`.
@@ -89195,8 +89007,8 @@ components:
             description: Emitted when a delta is added to a reasoning summary text.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.reasoning_summary_text.delta`.
@@ -89246,8 +89058,8 @@ components:
             description: Emitted when a reasoning summary part is completed.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.reasoning_summary_part.done`.
@@ -89319,8 +89131,8 @@ components:
             description: Emitted when a new reasoning summary part is added.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.reasoning_summary_part.added`.
@@ -89383,8 +89195,8 @@ components:
             description: Emitted when text content is finalized.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.output_text.done`.
@@ -89469,8 +89281,8 @@ components:
             description: Emitted when there is an additional text delta.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.output_text.delta`.
@@ -89526,8 +89338,8 @@ components:
             description: Emitted when refusal text is finalized.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.refusal.done`.
@@ -89577,8 +89389,8 @@ components:
             description: Emitted when there is a partial refusal text.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.refusal.delta`.
@@ -89628,8 +89440,8 @@ components:
             description: Emitted when an output item is marked done.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.output_item.done`.
@@ -89667,8 +89479,8 @@ components:
             description: Emitted when a new output item is added.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.output_item.added`.
@@ -89712,8 +89524,8 @@ components:
             description: Emitted when the response is in progress.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.in_progress`.
@@ -89932,8 +89744,8 @@ components:
             description: Emitted when function-call arguments are finalized.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     enum:
@@ -89966,8 +89778,8 @@ components:
             description: Emitted when there is a partial function-call arguments delta.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.function_call_arguments.delta`.
@@ -90009,8 +89821,8 @@ components:
             description: Emitted when a file search is currently searching.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.file_search_call.searching`.
@@ -90046,8 +89858,8 @@ components:
             description: Emitted when a file search call is initiated.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.file_search_call.in_progress`.
@@ -90083,8 +89895,8 @@ components:
             description: Emitted when a file search call is completed (results found).
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.file_search_call.completed`.
@@ -90120,8 +89932,8 @@ components:
             description: Emitted when an error occurs.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `error`.
@@ -90150,9 +89962,7 @@ components:
                     description: The sequence number of this event.
             required:
                 - type
-                - code
                 - message
-                - param
                 - sequence_number
             x-oaiMeta:
                 name: error
@@ -90165,8 +89975,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.created`.
@@ -90196,8 +90006,8 @@ components:
             description: Emitted when a content part is done.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.content_part.done`.
@@ -90252,8 +90062,8 @@ components:
             description: Emitted when a new content part is added.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.content_part.added`.
@@ -90301,8 +90111,8 @@ components:
             description: Emitted when the model response is complete.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.completed`.
@@ -90361,8 +90171,8 @@ components:
             description: Emitted when the code interpreter is actively interpreting the code snippet.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the event. Always `response.code_interpreter_call.interpreting`.
@@ -90392,8 +90202,8 @@ components:
             description: Emitted when a code interpreter call is in progress.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the event. Always `response.code_interpreter_call.in_progress`.
@@ -90423,8 +90233,8 @@ components:
             description: Emitted when the code interpreter call is completed.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the event. Always `response.code_interpreter_call.completed`.
@@ -90454,8 +90264,8 @@ components:
             description: Emitted when the code snippet is finalized by the code interpreter.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the event. Always `response.code_interpreter_call_code.done`.
@@ -90489,8 +90299,8 @@ components:
             description: Emitted when a partial code snippet is streamed by the code interpreter.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the event. Always `response.code_interpreter_call_code.delta`.
@@ -90524,8 +90334,8 @@ components:
             description: Emitted when the full audio transcript is completed.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.audio.transcript.done`.
@@ -90549,8 +90359,8 @@ components:
             description: Emitted when there is a partial transcript of audio.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.audio.transcript.delta`.
@@ -90580,8 +90390,8 @@ components:
             description: Emitted when the audio response is complete.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.audio.done`.
@@ -90607,8 +90417,8 @@ components:
             description: Emitted when there is a partial audio response.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.audio.delta`.
@@ -90649,8 +90459,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.incomplete`.
@@ -90682,8 +90492,8 @@ components:
 '
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.failed`.
@@ -90713,8 +90523,8 @@ components:
             description: Emitted when a web search call is completed.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.web_search_call.completed`.
@@ -90750,8 +90560,8 @@ components:
             description: Emitted when a web search call is executing.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.web_search_call.searching`.
@@ -90787,8 +90597,8 @@ components:
             description: Emitted when a web search call is initiated.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: 'The type of the event. Always `response.web_search_call.in_progress`.
@@ -92587,8 +92397,8 @@ components:
             description: Emitted when an error occurs while processing a Responses WebSocket request.
             properties:
                 agent:
-                    $ref: '#/components/schemas/BetaAgentTag'
                     description: The agent that owns this multi-agent streaming event.
+                    $ref: '#/components/schemas/BetaAgentTag'
                 type:
                     type: string
                     description: The type of the event. Always `error`.
@@ -92644,9 +92454,7 @@ components:
             type: object
             required:
                 - type
-                - code
                 - message
-                - param
             title: Error payload
             description: An error payload that was emitted for a streaming error event.
         BetaResponsesWebSocketStreamEvent:
@@ -92831,13 +92639,13 @@ components:
                     service_tier:
                         $ref: '#/components/schemas/BetaServiceTierResponses'
                     truncation:
+                        deprecated: true
                         type: string
                         description: "The truncation strategy to use for the model response.\n- `auto`: If the input to this Response exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping items from the beginning of the conversation.\n- `disabled` (default): If the input size will exceed the context window\n  size for a model, the request will fail with a 400 error.\n"
                         enum:
                             - auto
                             - disabled
                         default: disabled
-                        deprecated: true
                     reasoning:
                         $ref: '#/components/schemas/BetaReasoning'
                     input:

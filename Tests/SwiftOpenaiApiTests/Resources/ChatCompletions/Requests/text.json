@@ -1,0 +1,6 @@
+{
+  "model": "gpt-5.6-luna",
+  "messages": [{"role": "user", "content": "Reply with exactly: Hello."}],
+  "max_completion_tokens": 128,
+  "store": false
+}

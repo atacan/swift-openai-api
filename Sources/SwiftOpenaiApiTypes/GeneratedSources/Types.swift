@@ -1006,7 +1006,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/role`.
                 public var role: Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.rolePayload
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/content`.
-                public var content: Swift.String
+                public var content: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/content_partsPayload`.
                 public struct content_partsPayloadPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/content_partsPayload/type`.
@@ -1133,7 +1133,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/content_parts`.
                 public typealias content_partsPayload = [Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.content_partsPayloadPayload]
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/content_parts`.
-                public var content_parts: Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.content_partsPayload
+                public var content_parts: Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.content_partsPayload?
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageList/dataPayload/name`.
                 public var name: Swift.String?
                 /// Creates a new `dataPayloadPayload`.
@@ -1147,8 +1147,8 @@ public enum Components {
                 public init(
                     id: Swift.String,
                     role: Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.rolePayload,
-                    content: Swift.String,
-                    content_parts: Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.content_partsPayload,
+                    content: Swift.String? = nil,
+                    content_parts: Components.Schemas.ChatCompletionMessageList.dataPayloadPayload.content_partsPayload? = nil,
                     name: Swift.String? = nil
                 ) {
                     self.id = id
@@ -1363,10 +1363,10 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageToolCalls`.
         @frozen public enum ChatCompletionMessageToolCallsPayload: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageToolCalls/ChatCompletionMessageToolCall`.
-            case ChatCompletionMessageToolCall(Components.Schemas.ChatCompletionMessageToolCall)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageToolCalls/ChatCompletionMessageCustomToolCall`.
-            case ChatCompletionMessageCustomToolCall(Components.Schemas.ChatCompletionMessageCustomToolCall)
+            case custom(Components.Schemas.ChatCompletionMessageCustomToolCall)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionMessageToolCalls/ChatCompletionMessageToolCall`.
+            case function(Components.Schemas.ChatCompletionMessageToolCall)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -1377,10 +1377,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "ChatCompletionMessageToolCall", "#/components/schemas/ChatCompletionMessageToolCall":
-                    self = .ChatCompletionMessageToolCall(try .init(from: decoder))
-                case "ChatCompletionMessageCustomToolCall", "#/components/schemas/ChatCompletionMessageCustomToolCall":
-                    self = .ChatCompletionMessageCustomToolCall(try .init(from: decoder))
+                case "custom":
+                    self = .custom(try .init(from: decoder))
+                case "function":
+                    self = .function(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -1391,9 +1391,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .ChatCompletionMessageToolCall(value):
+                case let .custom(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionMessageCustomToolCall(value):
+                case let .function(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -2007,7 +2007,7 @@ public enum Components {
             /// The contents of the function message.
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestFunctionMessage/content`.
-            public var content: Swift.String
+            public var content: Swift.String?
             /// The name of the function to call.
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestFunctionMessage/name`.
@@ -2020,7 +2020,7 @@ public enum Components {
             ///   - name: The name of the function to call.
             public init(
                 role: Components.Schemas.ChatCompletionRequestFunctionMessage.rolePayload,
-                content: Swift.String,
+                content: Swift.String? = nil,
                 name: Swift.String
             ) {
                 self.role = role
@@ -2035,18 +2035,18 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage`.
         @frozen public enum ChatCompletionRequestMessage: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestDeveloperMessage`.
-            case ChatCompletionRequestDeveloperMessage(Components.Schemas.ChatCompletionRequestDeveloperMessage)
-            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestSystemMessage`.
-            case ChatCompletionRequestSystemMessage(Components.Schemas.ChatCompletionRequestSystemMessage)
-            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestUserMessage`.
-            case ChatCompletionRequestUserMessage(Components.Schemas.ChatCompletionRequestUserMessage)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestAssistantMessage`.
-            case ChatCompletionRequestAssistantMessage(Components.Schemas.ChatCompletionRequestAssistantMessage)
-            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestToolMessage`.
-            case ChatCompletionRequestToolMessage(Components.Schemas.ChatCompletionRequestToolMessage)
+            case assistant(Components.Schemas.ChatCompletionRequestAssistantMessage)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestDeveloperMessage`.
+            case developer(Components.Schemas.ChatCompletionRequestDeveloperMessage)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestFunctionMessage`.
-            case ChatCompletionRequestFunctionMessage(Components.Schemas.ChatCompletionRequestFunctionMessage)
+            case function(Components.Schemas.ChatCompletionRequestFunctionMessage)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestSystemMessage`.
+            case system(Components.Schemas.ChatCompletionRequestSystemMessage)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestToolMessage`.
+            case tool(Components.Schemas.ChatCompletionRequestToolMessage)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestMessage/ChatCompletionRequestUserMessage`.
+            case user(Components.Schemas.ChatCompletionRequestUserMessage)
             public enum CodingKeys: String, CodingKey {
                 case role
             }
@@ -2057,18 +2057,18 @@ public enum Components {
                     forKey: .role
                 )
                 switch discriminator {
-                case "ChatCompletionRequestDeveloperMessage", "#/components/schemas/ChatCompletionRequestDeveloperMessage":
-                    self = .ChatCompletionRequestDeveloperMessage(try .init(from: decoder))
-                case "ChatCompletionRequestSystemMessage", "#/components/schemas/ChatCompletionRequestSystemMessage":
-                    self = .ChatCompletionRequestSystemMessage(try .init(from: decoder))
-                case "ChatCompletionRequestUserMessage", "#/components/schemas/ChatCompletionRequestUserMessage":
-                    self = .ChatCompletionRequestUserMessage(try .init(from: decoder))
-                case "ChatCompletionRequestAssistantMessage", "#/components/schemas/ChatCompletionRequestAssistantMessage":
-                    self = .ChatCompletionRequestAssistantMessage(try .init(from: decoder))
-                case "ChatCompletionRequestToolMessage", "#/components/schemas/ChatCompletionRequestToolMessage":
-                    self = .ChatCompletionRequestToolMessage(try .init(from: decoder))
-                case "ChatCompletionRequestFunctionMessage", "#/components/schemas/ChatCompletionRequestFunctionMessage":
-                    self = .ChatCompletionRequestFunctionMessage(try .init(from: decoder))
+                case "assistant":
+                    self = .assistant(try .init(from: decoder))
+                case "developer":
+                    self = .developer(try .init(from: decoder))
+                case "function":
+                    self = .function(try .init(from: decoder))
+                case "system":
+                    self = .system(try .init(from: decoder))
+                case "tool":
+                    self = .tool(try .init(from: decoder))
+                case "user":
+                    self = .user(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys.role,
@@ -2079,17 +2079,17 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .ChatCompletionRequestDeveloperMessage(value):
+                case let .assistant(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionRequestSystemMessage(value):
+                case let .developer(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionRequestUserMessage(value):
+                case let .function(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionRequestAssistantMessage(value):
+                case let .system(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionRequestToolMessage(value):
+                case let .tool(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionRequestFunctionMessage(value):
+                case let .user(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -2724,7 +2724,7 @@ public enum Components {
             /// The contents of the message.
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionResponseMessage/content`.
-            public var content: Swift.String
+            public var content: Swift.String?
             /// The refusal message generated by the model.
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionResponseMessage/refusal`.
@@ -2938,7 +2938,7 @@ public enum Components {
             ///   - function_call: Deprecated and replaced by `tool_calls`. The name and arguments of a function that should be called, as generated by the model.
             ///   - audio: If the audio output modality is requested, this object contains data
             public init(
-                content: Swift.String,
+                content: Swift.String? = nil,
                 refusal: Swift.String? = nil,
                 tool_calls: Components.Schemas.ChatCompletionMessageToolCalls? = nil,
                 annotations: Components.Schemas.ChatCompletionResponseMessage.annotationsPayload? = nil,
@@ -3178,7 +3178,7 @@ public enum Components {
             /// A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionTokenLogprob/bytes`.
-            public var bytes: [Swift.Int]
+            public var bytes: [Swift.Int]?
             /// - Remark: Generated from `#/components/schemas/ChatCompletionTokenLogprob/top_logprobsPayload`.
             public struct top_logprobsPayloadPayload: Codable, Hashable, Sendable {
                 /// The token.
@@ -3192,7 +3192,7 @@ public enum Components {
                 /// A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
                 ///
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionTokenLogprob/top_logprobsPayload/bytes`.
-                public var bytes: [Swift.Int]
+                public var bytes: [Swift.Int]?
                 /// Creates a new `top_logprobsPayloadPayload`.
                 ///
                 /// - Parameters:
@@ -3202,7 +3202,7 @@ public enum Components {
                 public init(
                     token: Swift.String,
                     logprob: Swift.Double,
-                    bytes: [Swift.Int]
+                    bytes: [Swift.Int]? = nil
                 ) {
                     self.token = token
                     self.logprob = logprob
@@ -3232,7 +3232,7 @@ public enum Components {
             public init(
                 token: Swift.String,
                 logprob: Swift.Double,
-                bytes: [Swift.Int],
+                bytes: [Swift.Int]? = nil,
                 top_logprobs: Components.Schemas.ChatCompletionTokenLogprob.top_logprobsPayload
             ) {
                 self.token = token
@@ -3495,7 +3495,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/code`.
-            public var code: Swift.String
+            public var code: Swift.String?
             /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputsPayload`.
             @frozen public enum outputsPayloadPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputsPayload/CodeInterpreterOutputLogs`.
@@ -3544,7 +3544,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputs`.
-            public var outputs: Components.Schemas.CodeInterpreterToolCall.outputsPayload
+            public var outputs: Components.Schemas.CodeInterpreterToolCall.outputsPayload?
             /// Creates a new `CodeInterpreterToolCall`.
             ///
             /// - Parameters:
@@ -3559,8 +3559,8 @@ public enum Components {
                 id: Swift.String,
                 status: Components.Schemas.CodeInterpreterToolCall.statusPayload,
                 container_id: Swift.String,
-                code: Swift.String,
-                outputs: Components.Schemas.CodeInterpreterToolCall.outputsPayload
+                code: Swift.String? = nil,
+                outputs: Components.Schemas.CodeInterpreterToolCall.outputsPayload? = nil
             ) {
                 self._type = _type
                 self.id = id
@@ -5213,19 +5213,19 @@ public enum Components {
                     /// A list of message content tokens with log probability information.
                     ///
                     /// - Remark: Generated from `#/components/schemas/CreateChatCompletionResponse/choicesPayload/logprobs/content`.
-                    public var content: [Components.Schemas.ChatCompletionTokenLogprob]
+                    public var content: [Components.Schemas.ChatCompletionTokenLogprob]?
                     /// A list of message refusal tokens with log probability information.
                     ///
                     /// - Remark: Generated from `#/components/schemas/CreateChatCompletionResponse/choicesPayload/logprobs/refusal`.
-                    public var refusal: [Components.Schemas.ChatCompletionTokenLogprob]
+                    public var refusal: [Components.Schemas.ChatCompletionTokenLogprob]?
                     /// Creates a new `logprobsPayload`.
                     ///
                     /// - Parameters:
                     ///   - content: A list of message content tokens with log probability information.
                     ///   - refusal: A list of message refusal tokens with log probability information.
                     public init(
-                        content: [Components.Schemas.ChatCompletionTokenLogprob],
-                        refusal: [Components.Schemas.ChatCompletionTokenLogprob]
+                        content: [Components.Schemas.ChatCompletionTokenLogprob]? = nil,
+                        refusal: [Components.Schemas.ChatCompletionTokenLogprob]? = nil
                     ) {
                         self.content = content
                         self.refusal = refusal
@@ -5238,7 +5238,7 @@ public enum Components {
                 /// Log probability information for the choice.
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionResponse/choicesPayload/logprobs`.
-                public var logprobs: Components.Schemas.CreateChatCompletionResponse.choicesPayloadPayload.logprobsPayload
+                public var logprobs: Components.Schemas.CreateChatCompletionResponse.choicesPayloadPayload.logprobsPayload?
                 /// Creates a new `choicesPayloadPayload`.
                 ///
                 /// - Parameters:
@@ -5250,7 +5250,7 @@ public enum Components {
                     finish_reason: Components.Schemas.CreateChatCompletionResponse.choicesPayloadPayload.finish_reasonPayload,
                     index: Swift.Int,
                     message: Components.Schemas.ChatCompletionResponseMessage,
-                    logprobs: Components.Schemas.CreateChatCompletionResponse.choicesPayloadPayload.logprobsPayload
+                    logprobs: Components.Schemas.CreateChatCompletionResponse.choicesPayloadPayload.logprobsPayload? = nil
                 ) {
                     self.finish_reason = finish_reason
                     self.index = index
@@ -6520,11 +6520,11 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/Error`.
         public struct _Error: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/Error/code`.
-            public var code: Swift.String
+            public var code: Swift.String?
             /// - Remark: Generated from `#/components/schemas/Error/message`.
             public var message: Swift.String
             /// - Remark: Generated from `#/components/schemas/Error/param`.
-            public var param: Swift.String
+            public var param: Swift.String?
             /// - Remark: Generated from `#/components/schemas/Error/type`.
             public var _type: Swift.String
             /// - Remark: Generated from `#/components/schemas/Error/misalignment`.
@@ -6538,9 +6538,9 @@ public enum Components {
             ///   - _type:
             ///   - misalignment:
             public init(
-                code: Swift.String,
+                code: Swift.String? = nil,
                 message: Swift.String,
-                param: Swift.String,
+                param: Swift.String? = nil,
                 _type: Swift.String,
                 misalignment: Components.Schemas.MisalignmentErrorDetailsResource? = nil
             ) {
@@ -10502,7 +10502,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/Response/value3/status`.
                 public var status: Components.Schemas.Response.Value3Payload.statusPayload?
                 /// - Remark: Generated from `#/components/schemas/Response/value3/access_programs`.
-                public var access_programs: Components.Schemas.AccessProgramsBody
+                public var access_programs: Components.Schemas.AccessProgramsBody?
                 /// Unix timestamp (in seconds) of when this Response was created.
                 ///
                 ///
@@ -10557,7 +10557,7 @@ public enum Components {
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/Response/value3/incomplete_details`.
-                public var incomplete_details: Components.Schemas.Response.Value3Payload.incomplete_detailsPayload
+                public var incomplete_details: Components.Schemas.Response.Value3Payload.incomplete_detailsPayload?
                 /// An array of content items generated by the model.
                 ///
                 /// - The length and order of items in the `output` array is dependent
@@ -10630,7 +10630,7 @@ public enum Components {
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/Response/value3/instructions`.
-                public var instructions: Components.Schemas.Response.Value3Payload.instructionsPayload
+                public var instructions: Components.Schemas.Response.Value3Payload.instructionsPayload?
                 /// SDK-only convenience property that contains the aggregated text output
                 /// from all `output_text` items in the `output` array, if any are present.
                 /// Supported in the Python and JavaScript SDKs.
@@ -10691,14 +10691,14 @@ public enum Components {
                     id: Swift.String,
                     object: Components.Schemas.Response.Value3Payload.objectPayload,
                     status: Components.Schemas.Response.Value3Payload.statusPayload? = nil,
-                    access_programs: Components.Schemas.AccessProgramsBody,
+                    access_programs: Components.Schemas.AccessProgramsBody? = nil,
                     created_at: Swift.Double,
                     completed_at: Swift.Double? = nil,
                     error: Components.Schemas.ResponseError,
-                    incomplete_details: Components.Schemas.Response.Value3Payload.incomplete_detailsPayload,
+                    incomplete_details: Components.Schemas.Response.Value3Payload.incomplete_detailsPayload? = nil,
                     output: [Components.Schemas.OutputItem],
                     reasoning: Components.Schemas.Reasoning? = nil,
-                    instructions: Components.Schemas.Response.Value3Payload.instructionsPayload,
+                    instructions: Components.Schemas.Response.Value3Payload.instructionsPayload? = nil,
                     output_text: Swift.String? = nil,
                     usage: Components.Schemas.ResponseUsage? = nil,
                     prompt_cache_options: Components.Schemas.PromptCacheOptions? = nil,
@@ -11795,7 +11795,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/ResponseErrorEvent/code`.
-            public var code: Swift.String
+            public var code: Swift.String?
             /// The error message.
             ///
             ///
@@ -11805,7 +11805,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/ResponseErrorEvent/param`.
-            public var param: Swift.String
+            public var param: Swift.String?
             /// The sequence number of this event.
             ///
             /// - Remark: Generated from `#/components/schemas/ResponseErrorEvent/sequence_number`.
@@ -11820,9 +11820,9 @@ public enum Components {
             ///   - sequence_number: The sequence number of this event.
             public init(
                 _type: Components.Schemas.ResponseErrorEvent._typePayload,
-                code: Swift.String,
+                code: Swift.String? = nil,
                 message: Swift.String,
-                param: Swift.String,
+                param: Swift.String? = nil,
                 sequence_number: Swift.Int
             ) {
                 self._type = _type
@@ -13430,7 +13430,7 @@ public enum Components {
             /// The annotation object being added. (See annotation schema for details.)
             ///
             /// - Remark: Generated from `#/components/schemas/ResponseOutputTextAnnotationAddedEvent/annotation`.
-            public var annotation: Components.Schemas.Annotation
+            public var annotation: Components.Schemas.Annotation?
             /// Creates a new `ResponseOutputTextAnnotationAddedEvent`.
             ///
             /// - Parameters:
@@ -13448,7 +13448,7 @@ public enum Components {
                 content_index: Swift.Int,
                 annotation_index: Swift.Int,
                 sequence_number: Swift.Int,
-                annotation: Components.Schemas.Annotation
+                annotation: Components.Schemas.Annotation? = nil
             ) {
                 self._type = _type
                 self.item_id = item_id
@@ -18476,11 +18476,11 @@ public enum Components {
             /// The URL of the screenshot image.
             ///
             /// - Remark: Generated from `#/components/schemas/ComputerScreenshotContent/image_url`.
-            public var image_url: Swift.String
+            public var image_url: Swift.String?
             /// The identifier of an uploaded file that contains the screenshot.
             ///
             /// - Remark: Generated from `#/components/schemas/ComputerScreenshotContent/file_id`.
-            public var file_id: Swift.String
+            public var file_id: Swift.String?
             /// The detail level of the screenshot image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`.
             ///
             /// - Remark: Generated from `#/components/schemas/ComputerScreenshotContent/detail`.
@@ -18497,8 +18497,8 @@ public enum Components {
             ///   - prompt_cache_breakpoint:
             public init(
                 _type: Components.Schemas.ComputerScreenshotContent._typePayload,
-                image_url: Swift.String,
-                file_id: Swift.String,
+                image_url: Swift.String? = nil,
+                file_id: Swift.String? = nil,
                 detail: Components.Schemas.ImageDetail,
                 prompt_cache_breakpoint: Components.Schemas.PromptCacheBreakpointConfig? = nil
             ) {
@@ -19007,7 +19007,7 @@ public enum Components {
             /// The generated image encoded in base64.
             ///
             /// - Remark: Generated from `#/components/schemas/ImageGenToolCall/result`.
-            public var result: Swift.String
+            public var result: Swift.String?
             /// The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
             ///
             /// - Remark: Generated from `#/components/schemas/ImageGenToolCall/size`.
@@ -19115,7 +19115,7 @@ public enum Components {
                 _type: Components.Schemas.ImageGenToolCall._typePayload,
                 id: Swift.String,
                 status: Components.Schemas.ImageGenToolCall.statusPayload,
-                result: Swift.String,
+                result: Swift.String? = nil,
                 size: Components.Schemas.ImageGenToolCall.sizePayload? = nil,
                 quality: Components.Schemas.ImageGenToolCall.qualityPayload? = nil,
                 action: Components.Schemas.ImageGenActionEnum? = nil,
@@ -19239,7 +19239,7 @@ public enum Components {
             /// The keys being held while double-clicking.
             ///
             /// - Remark: Generated from `#/components/schemas/DoubleClickAction/keys`.
-            public var keys: [Swift.String]
+            public var keys: [Swift.String]?
             /// Creates a new `DoubleClickAction`.
             ///
             /// - Parameters:
@@ -19251,7 +19251,7 @@ public enum Components {
                 _type: Components.Schemas.DoubleClickAction._typePayload,
                 x: Swift.Int,
                 y: Swift.Int,
-                keys: [Swift.String]
+                keys: [Swift.String]? = nil
             ) {
                 self._type = _type
                 self.x = x
@@ -19648,7 +19648,7 @@ public enum Components {
             /// The unique ID of the tool search call generated by the model.
             ///
             /// - Remark: Generated from `#/components/schemas/ToolSearchCall/call_id`.
-            public var call_id: Swift.String
+            public var call_id: Swift.String?
             /// Whether tool search was executed by the server or by the client.
             ///
             /// - Remark: Generated from `#/components/schemas/ToolSearchCall/execution`.
@@ -19678,7 +19678,7 @@ public enum Components {
             public init(
                 _type: Components.Schemas.ToolSearchCall._typePayload,
                 id: Swift.String,
-                call_id: Swift.String,
+                call_id: Swift.String? = nil,
                 execution: Components.Schemas.ToolSearchExecutionType,
                 arguments: OpenAPIRuntime.OpenAPIValueContainer,
                 status: Components.Schemas.FunctionCallStatus,
@@ -19754,7 +19754,7 @@ public enum Components {
             /// A JSON schema object describing the parameters of the function.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionTool/parameters`.
-            public var parameters: Components.Schemas.FunctionTool.parametersPayload
+            public var parameters: Components.Schemas.FunctionTool.parametersPayload?
             /// A JSON schema object describing the JSON value encoded in string outputs for this function.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionTool/output_schema`.
@@ -19782,7 +19782,7 @@ public enum Components {
             /// Whether strict parameter validation is enforced for this function tool.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionTool/strict`.
-            public var strict: Swift.Bool
+            public var strict: Swift.Bool?
             /// Whether this function is deferred and loaded via tool search.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionTool/defer_loading`.
@@ -19808,9 +19808,9 @@ public enum Components {
                 name: Swift.String,
                 async: Swift.Bool? = nil,
                 description: Swift.String? = nil,
-                parameters: Components.Schemas.FunctionTool.parametersPayload,
+                parameters: Components.Schemas.FunctionTool.parametersPayload? = nil,
                 output_schema: Components.Schemas.FunctionTool.output_schemaPayload? = nil,
-                strict: Swift.Bool,
+                strict: Swift.Bool? = nil,
                 defer_loading: Swift.Bool? = nil,
                 allowed_callers: [Components.Schemas.CallableToolAllowedCaller]? = nil
             ) {
@@ -21170,7 +21170,7 @@ public enum Components {
             /// The unique ID of the tool search call generated by the model.
             ///
             /// - Remark: Generated from `#/components/schemas/ToolSearchOutput/call_id`.
-            public var call_id: Swift.String
+            public var call_id: Swift.String?
             /// Whether tool search was executed by the server or by the client.
             ///
             /// - Remark: Generated from `#/components/schemas/ToolSearchOutput/execution`.
@@ -21200,7 +21200,7 @@ public enum Components {
             public init(
                 _type: Components.Schemas.ToolSearchOutput._typePayload,
                 id: Swift.String,
-                call_id: Swift.String,
+                call_id: Swift.String? = nil,
                 execution: Components.Schemas.ToolSearchExecutionType,
                 tools: [Components.Schemas.Tool],
                 status: Components.Schemas.FunctionCallOutputStatusEnum,
@@ -21609,11 +21609,11 @@ public enum Components {
             /// Optional timeout in milliseconds for the commands.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellAction/timeout_ms`.
-            public var timeout_ms: Swift.Int
+            public var timeout_ms: Swift.Int?
             /// Optional maximum number of characters to return from each command.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellAction/max_output_length`.
-            public var max_output_length: Swift.Int
+            public var max_output_length: Swift.Int?
             /// Creates a new `FunctionShellAction`.
             ///
             /// - Parameters:
@@ -21622,8 +21622,8 @@ public enum Components {
             ///   - max_output_length: Optional maximum number of characters to return from each command.
             public init(
                 commands: [Swift.String],
-                timeout_ms: Swift.Int,
-                max_output_length: Swift.Int
+                timeout_ms: Swift.Int? = nil,
+                max_output_length: Swift.Int? = nil
             ) {
                 self.commands = commands
                 self.timeout_ms = timeout_ms
@@ -21771,7 +21771,7 @@ public enum Components {
                 }
             }
             /// - Remark: Generated from `#/components/schemas/FunctionShellCall/environment`.
-            public var environment: Components.Schemas.FunctionShellCall.environmentPayload
+            public var environment: Components.Schemas.FunctionShellCall.environmentPayload?
             /// The ID of the entity that created this tool call.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellCall/created_by`.
@@ -21794,7 +21794,7 @@ public enum Components {
                 caller: Components.Schemas.ToolCallCaller? = nil,
                 action: Components.Schemas.FunctionShellAction,
                 status: Components.Schemas.FunctionShellCallStatus,
-                environment: Components.Schemas.FunctionShellCall.environmentPayload,
+                environment: Components.Schemas.FunctionShellCall.environmentPayload? = nil,
                 created_by: Swift.String? = nil
             ) {
                 self._type = _type
@@ -22004,7 +22004,7 @@ public enum Components {
             /// The maximum length of the shell command output. This is generated by the model and should be passed back with the raw output.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutput/max_output_length`.
-            public var max_output_length: Swift.Int
+            public var max_output_length: Swift.Int?
             /// The identifier of the actor that created the item.
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutput/created_by`.
@@ -22027,7 +22027,7 @@ public enum Components {
                 caller: Components.Schemas.ToolCallCaller? = nil,
                 status: Components.Schemas.FunctionShellCallOutputStatusEnum,
                 output: [Components.Schemas.FunctionShellCallOutputContent],
-                max_output_length: Swift.Int,
+                max_output_length: Swift.Int? = nil,
                 created_by: Swift.String? = nil
             ) {
                 self._type = _type
@@ -30157,7 +30157,7 @@ public enum Components {
             /// A JSON schema object describing the parameters of the function.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionTool/parameters`.
-            public var parameters: Components.Schemas.BetaFunctionTool.parametersPayload
+            public var parameters: Components.Schemas.BetaFunctionTool.parametersPayload?
             /// A JSON schema object describing the JSON value encoded in string outputs for this function.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionTool/output_schema`.
@@ -30185,7 +30185,7 @@ public enum Components {
             /// Whether strict parameter validation is enforced for this function tool.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionTool/strict`.
-            public var strict: Swift.Bool
+            public var strict: Swift.Bool?
             /// Whether this function is deferred and loaded via tool search.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionTool/defer_loading`.
@@ -30211,9 +30211,9 @@ public enum Components {
                 name: Swift.String,
                 async: Swift.Bool? = nil,
                 description: Swift.String? = nil,
-                parameters: Components.Schemas.BetaFunctionTool.parametersPayload,
+                parameters: Components.Schemas.BetaFunctionTool.parametersPayload? = nil,
                 output_schema: Components.Schemas.BetaFunctionTool.output_schemaPayload? = nil,
-                strict: Swift.Bool,
+                strict: Swift.Bool? = nil,
                 defer_loading: Swift.Bool? = nil,
                 allowed_callers: [Components.Schemas.BetaCallableToolAllowedCaller]? = nil
             ) {
@@ -32955,7 +32955,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/code`.
-            public var code: Swift.String
+            public var code: Swift.String?
             /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputsPayload`.
             @frozen public enum outputsPayloadPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputsPayload/BetaCodeInterpreterOutputLogs`.
@@ -33004,7 +33004,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputs`.
-            public var outputs: Components.Schemas.BetaCodeInterpreterToolCall.outputsPayload
+            public var outputs: Components.Schemas.BetaCodeInterpreterToolCall.outputsPayload?
             /// Creates a new `BetaCodeInterpreterToolCall`.
             ///
             /// - Parameters:
@@ -33021,8 +33021,8 @@ public enum Components {
                 id: Swift.String,
                 status: Components.Schemas.BetaCodeInterpreterToolCall.statusPayload,
                 container_id: Swift.String,
-                code: Swift.String,
-                outputs: Components.Schemas.BetaCodeInterpreterToolCall.outputsPayload
+                code: Swift.String? = nil,
+                outputs: Components.Schemas.BetaCodeInterpreterToolCall.outputsPayload? = nil
             ) {
                 self.agent = agent
                 self._type = _type
@@ -33150,7 +33150,7 @@ public enum Components {
             /// The generated image encoded in base64.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaImageGenToolCall/result`.
-            public var result: Swift.String
+            public var result: Swift.String?
             /// The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaImageGenToolCall/size`.
@@ -33260,7 +33260,7 @@ public enum Components {
                 _type: Components.Schemas.BetaImageGenToolCall._typePayload,
                 id: Swift.String,
                 status: Components.Schemas.BetaImageGenToolCall.statusPayload,
-                result: Swift.String,
+                result: Swift.String? = nil,
                 size: Components.Schemas.BetaImageGenToolCall.sizePayload? = nil,
                 quality: Components.Schemas.BetaImageGenToolCall.qualityPayload? = nil,
                 action: Components.Schemas.BetaImageGenActionEnum? = nil,
@@ -36189,7 +36189,7 @@ public enum Components {
             /// The keys being held while double-clicking.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaDoubleClickAction/keys`.
-            public var keys: [Swift.String]
+            public var keys: [Swift.String]?
             /// Creates a new `BetaDoubleClickAction`.
             ///
             /// - Parameters:
@@ -36201,7 +36201,7 @@ public enum Components {
                 _type: Components.Schemas.BetaDoubleClickAction._typePayload,
                 x: Swift.Int,
                 y: Swift.Int,
-                keys: [Swift.String]
+                keys: [Swift.String]? = nil
             ) {
                 self._type = _type
                 self.x = x
@@ -37759,11 +37759,11 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaError`.
         public struct BetaError: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaError/code`.
-            public var code: Swift.String
+            public var code: Swift.String?
             /// - Remark: Generated from `#/components/schemas/BetaError/message`.
             public var message: Swift.String
             /// - Remark: Generated from `#/components/schemas/BetaError/param`.
-            public var param: Swift.String
+            public var param: Swift.String?
             /// - Remark: Generated from `#/components/schemas/BetaError/type`.
             public var _type: Swift.String
             /// - Remark: Generated from `#/components/schemas/BetaError/misalignment`.
@@ -37777,9 +37777,9 @@ public enum Components {
             ///   - _type:
             ///   - misalignment:
             public init(
-                code: Swift.String,
+                code: Swift.String? = nil,
                 message: Swift.String,
-                param: Swift.String,
+                param: Swift.String? = nil,
                 _type: Swift.String,
                 misalignment: Components.Schemas.BetaMisalignmentErrorDetailsResource? = nil
             ) {
@@ -38789,7 +38789,7 @@ public enum Components {
             /// The maximum length of the shell command output. This is generated by the model and should be passed back with the raw output.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutput/max_output_length`.
-            public var max_output_length: Swift.Int
+            public var max_output_length: Swift.Int?
             /// The identifier of the actor that created the item.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutput/created_by`.
@@ -38814,7 +38814,7 @@ public enum Components {
                 caller: Components.Schemas.BetaToolCallCaller? = nil,
                 status: Components.Schemas.BetaFunctionShellCallOutputStatusEnum,
                 output: [Components.Schemas.BetaFunctionShellCallOutputContent],
-                max_output_length: Swift.Int,
+                max_output_length: Swift.Int? = nil,
                 created_by: Swift.String? = nil
             ) {
                 self.agent = agent
@@ -39065,7 +39065,7 @@ public enum Components {
                 }
             }
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCall/environment`.
-            public var environment: Components.Schemas.BetaFunctionShellCall.environmentPayload
+            public var environment: Components.Schemas.BetaFunctionShellCall.environmentPayload?
             /// The ID of the entity that created this tool call.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCall/created_by`.
@@ -39090,7 +39090,7 @@ public enum Components {
                 caller: Components.Schemas.BetaToolCallCaller? = nil,
                 action: Components.Schemas.BetaFunctionShellAction,
                 status: Components.Schemas.BetaFunctionShellCallStatus,
-                environment: Components.Schemas.BetaFunctionShellCall.environmentPayload,
+                environment: Components.Schemas.BetaFunctionShellCall.environmentPayload? = nil,
                 created_by: Swift.String? = nil
             ) {
                 self.agent = agent
@@ -39188,11 +39188,11 @@ public enum Components {
             /// Optional timeout in milliseconds for the commands.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellAction/timeout_ms`.
-            public var timeout_ms: Swift.Int
+            public var timeout_ms: Swift.Int?
             /// Optional maximum number of characters to return from each command.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellAction/max_output_length`.
-            public var max_output_length: Swift.Int
+            public var max_output_length: Swift.Int?
             /// Creates a new `BetaFunctionShellAction`.
             ///
             /// - Parameters:
@@ -39201,8 +39201,8 @@ public enum Components {
             ///   - max_output_length: Optional maximum number of characters to return from each command.
             public init(
                 commands: [Swift.String],
-                timeout_ms: Swift.Int,
-                max_output_length: Swift.Int
+                timeout_ms: Swift.Int? = nil,
+                max_output_length: Swift.Int? = nil
             ) {
                 self.commands = commands
                 self.timeout_ms = timeout_ms
@@ -39573,7 +39573,7 @@ public enum Components {
             /// The unique ID of the tool search call generated by the model.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutput/call_id`.
-            public var call_id: Swift.String
+            public var call_id: Swift.String?
             /// Whether tool search was executed by the server or by the client.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutput/execution`.
@@ -39605,7 +39605,7 @@ public enum Components {
                 agent: Components.Schemas.BetaAgentTag? = nil,
                 _type: Components.Schemas.BetaToolSearchOutput._typePayload,
                 id: Swift.String,
-                call_id: Swift.String,
+                call_id: Swift.String? = nil,
                 execution: Components.Schemas.BetaToolSearchExecutionType,
                 tools: [Components.Schemas.BetaTool],
                 status: Components.Schemas.BetaFunctionCallOutputStatusEnum,
@@ -39654,7 +39654,7 @@ public enum Components {
             /// The unique ID of the tool search call generated by the model.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaToolSearchCall/call_id`.
-            public var call_id: Swift.String
+            public var call_id: Swift.String?
             /// Whether tool search was executed by the server or by the client.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaToolSearchCall/execution`.
@@ -39686,7 +39686,7 @@ public enum Components {
                 agent: Components.Schemas.BetaAgentTag? = nil,
                 _type: Components.Schemas.BetaToolSearchCall._typePayload,
                 id: Swift.String,
-                call_id: Swift.String,
+                call_id: Swift.String? = nil,
                 execution: Components.Schemas.BetaToolSearchExecutionType,
                 arguments: OpenAPIRuntime.OpenAPIValueContainer,
                 status: Components.Schemas.BetaFunctionCallStatus,
@@ -40059,11 +40059,11 @@ public enum Components {
             /// The URL of the screenshot image.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaComputerScreenshotContent/image_url`.
-            public var image_url: Swift.String
+            public var image_url: Swift.String?
             /// The identifier of an uploaded file that contains the screenshot.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaComputerScreenshotContent/file_id`.
-            public var file_id: Swift.String
+            public var file_id: Swift.String?
             /// The detail level of the screenshot image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaComputerScreenshotContent/detail`.
@@ -40080,8 +40080,8 @@ public enum Components {
             ///   - prompt_cache_breakpoint:
             public init(
                 _type: Components.Schemas.BetaComputerScreenshotContent._typePayload,
-                image_url: Swift.String,
-                file_id: Swift.String,
+                image_url: Swift.String? = nil,
+                file_id: Swift.String? = nil,
                 detail: Components.Schemas.BetaImageDetail,
                 prompt_cache_breakpoint: Components.Schemas.BetaPromptCacheBreakpointConfig? = nil
             ) {
@@ -41426,7 +41426,7 @@ public enum Components {
                 /// - Remark: Generated from `#/components/schemas/BetaResponse/value3/status`.
                 public var status: Components.Schemas.BetaResponse.Value3Payload.statusPayload?
                 /// - Remark: Generated from `#/components/schemas/BetaResponse/value3/access_programs`.
-                public var access_programs: Components.Schemas.BetaAccessProgramsBody
+                public var access_programs: Components.Schemas.BetaAccessProgramsBody?
                 /// Unix timestamp (in seconds) of when this Response was created.
                 ///
                 ///
@@ -41481,7 +41481,7 @@ public enum Components {
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/BetaResponse/value3/incomplete_details`.
-                public var incomplete_details: Components.Schemas.BetaResponse.Value3Payload.incomplete_detailsPayload
+                public var incomplete_details: Components.Schemas.BetaResponse.Value3Payload.incomplete_detailsPayload?
                 /// An array of content items generated by the model.
                 ///
                 /// - The length and order of items in the `output` array is dependent
@@ -41554,7 +41554,7 @@ public enum Components {
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/BetaResponse/value3/instructions`.
-                public var instructions: Components.Schemas.BetaResponse.Value3Payload.instructionsPayload
+                public var instructions: Components.Schemas.BetaResponse.Value3Payload.instructionsPayload?
                 /// SDK-only convenience property that contains the aggregated text output
                 /// from all `output_text` items in the `output` array, if any are present.
                 /// Supported in the Python and JavaScript SDKs.
@@ -41615,14 +41615,14 @@ public enum Components {
                     id: Swift.String,
                     object: Components.Schemas.BetaResponse.Value3Payload.objectPayload,
                     status: Components.Schemas.BetaResponse.Value3Payload.statusPayload? = nil,
-                    access_programs: Components.Schemas.BetaAccessProgramsBody,
+                    access_programs: Components.Schemas.BetaAccessProgramsBody? = nil,
                     created_at: Swift.Double,
                     completed_at: Swift.Double? = nil,
                     error: Components.Schemas.BetaResponseError,
-                    incomplete_details: Components.Schemas.BetaResponse.Value3Payload.incomplete_detailsPayload,
+                    incomplete_details: Components.Schemas.BetaResponse.Value3Payload.incomplete_detailsPayload? = nil,
                     output: [Components.Schemas.BetaOutputItem],
                     reasoning: Components.Schemas.BetaReasoning? = nil,
-                    instructions: Components.Schemas.BetaResponse.Value3Payload.instructionsPayload,
+                    instructions: Components.Schemas.BetaResponse.Value3Payload.instructionsPayload? = nil,
                     output_text: Swift.String? = nil,
                     usage: Components.Schemas.BetaResponseUsage? = nil,
                     prompt_cache_options: Components.Schemas.BetaPromptCacheOptions? = nil,
@@ -42928,7 +42928,7 @@ public enum Components {
             /// The annotation object being added. (See annotation schema for details.)
             ///
             /// - Remark: Generated from `#/components/schemas/BetaResponseOutputTextAnnotationAddedEvent/annotation`.
-            public var annotation: Components.Schemas.BetaAnnotation
+            public var annotation: Components.Schemas.BetaAnnotation?
             /// Creates a new `BetaResponseOutputTextAnnotationAddedEvent`.
             ///
             /// - Parameters:
@@ -42948,7 +42948,7 @@ public enum Components {
                 content_index: Swift.Int,
                 annotation_index: Swift.Int,
                 sequence_number: Swift.Int,
-                annotation: Components.Schemas.BetaAnnotation
+                annotation: Components.Schemas.BetaAnnotation? = nil
             ) {
                 self.agent = agent
                 self._type = _type
@@ -45677,7 +45677,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/BetaResponseErrorEvent/code`.
-            public var code: Swift.String
+            public var code: Swift.String?
             /// The error message.
             ///
             ///
@@ -45687,7 +45687,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/BetaResponseErrorEvent/param`.
-            public var param: Swift.String
+            public var param: Swift.String?
             /// The sequence number of this event.
             ///
             /// - Remark: Generated from `#/components/schemas/BetaResponseErrorEvent/sequence_number`.
@@ -45704,9 +45704,9 @@ public enum Components {
             public init(
                 agent: Components.Schemas.BetaAgentTag? = nil,
                 _type: Components.Schemas.BetaResponseErrorEvent._typePayload,
-                code: Swift.String,
+                code: Swift.String? = nil,
                 message: Swift.String,
-                param: Swift.String,
+                param: Swift.String? = nil,
                 sequence_number: Swift.Int
             ) {
                 self.agent = agent

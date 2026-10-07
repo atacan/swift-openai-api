@@ -1,0 +1,40 @@
+{
+  "model": "gpt-5.6-luna",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Call get_weather for Berlin."
+    }
+  ],
+  "max_completion_tokens": 128,
+  "store": false,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Get the weather in a city.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "city"
+          ],
+          "additionalProperties": false
+        },
+        "strict": true
+      }
+    }
+  ],
+  "tool_choice": {
+    "type": "function",
+    "function": {
+      "name": "get_weather"
+    }
+  },
+  "reasoning_effort": "none"
+}

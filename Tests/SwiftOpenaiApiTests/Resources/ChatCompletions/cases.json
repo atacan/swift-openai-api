@@ -1,0 +1,51 @@
+[
+  {
+    "name": "text",
+    "response": "text.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "tool-call",
+    "response": "tool-call.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "logprobs",
+    "response": "logprobs.json",
+    "status": 200,
+    "content_type": "application/json"
+  },
+  {
+    "name": "stream",
+    "response": "stream.sse",
+    "status": 200,
+    "content_type": "text/event-stream"
+  },
+  {
+    "name": "unsupported-reasoning",
+    "response": "unsupported-reasoning.json",
+    "status": 400,
+    "content_type": "application/json"
+  },
+  {
+    "name": "missing-messages",
+    "response": "missing-messages.json",
+    "status": 400,
+    "content_type": "application/json"
+  },
+  {
+    "name": "unknown-model",
+    "response": "unknown-model.json",
+    "status": 404,
+    "content_type": "application/json"
+  },
+  {
+    "name": "unauthenticated",
+    "response": "unauthenticated.json",
+    "status": 401,
+    "content_type": "application/json",
+    "authenticated": false
+  }
+]

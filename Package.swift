@@ -28,7 +28,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.10.0"),
         .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.8.0"),
         .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.1.0"),
-        .package(url: "https://github.com/atacan/UsefulThings", branch: "main"),
+        .package(url: "https://github.com/apple/swift-http-types.git", from: "1.0.0"),
     ],
     targets: [
         // Types target: Contains generated types from OpenAPI spec
@@ -52,8 +52,11 @@ let package = Package(
             name: "SwiftOpenaiApiTests",
             dependencies: [
                 .target(name: "SwiftOpenaiApi"),
-                .product(name: "UsefulThings", package: "UsefulThings"),
-            ]
+                .target(name: "SwiftOpenaiApiTypes"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+            ],
+            resources: [.copy("Resources")]
         ),
     ]
 )
