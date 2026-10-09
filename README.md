@@ -16,7 +16,8 @@ then apply [openapi-overlay.yaml](openapi-overlay.yaml). Run `make regenerate` t
 rebuild the specification and Swift sources.
 
 Regeneration uses the bootstrapper's nullable-first transformation pipeline and
-requires [Speakeasy's OpenAPI CLI](https://github.com/speakeasy-api/openapi)
+discriminator mapping inference (op14). It requires
+[Speakeasy's OpenAPI CLI](https://github.com/speakeasy-api/openapi)
 (`brew install openapi`) to apply overlays without corrupting Int64 bounds.
 
 ## Additions
@@ -157,7 +158,7 @@ First incoming message is a `transcription_session.created` event.
 
 ## RealtimeServerEvent.discriminator
 
-[openapi-overlay.yaml](openapi-overlay.yaml) maps every `RealtimeServerEvent.oneOf`
-variant to its JSON `type` value, so the generated enum decodes event names such as
-`conversation.item.input_audio_transcription.completed`. When adding a variant to
-the specification, keep this mapping in sync with its `type` enum.
+The Python bootstrapper infers `RealtimeServerEvent` discriminator mappings from
+the variants' required `type` enums, so the generated enum decodes event names such
+as `conversation.item.input_audio_transcription.completed`. New variants with
+distinct, required tag values are mapped automatically during regeneration.

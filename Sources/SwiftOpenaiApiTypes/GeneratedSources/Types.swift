@@ -1648,10 +1648,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/input`.
             @frozen public enum inputPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/input/ChatCompletionModerationResults`.
-                case ChatCompletionModerationResults(Components.Schemas.ChatCompletionModerationResults)
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/input/ChatCompletionModerationError`.
-                case ChatCompletionModerationError(Components.Schemas.ChatCompletionModerationError)
+                case error(Components.Schemas.ChatCompletionModerationError)
+                /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/input/ChatCompletionModerationResults`.
+                case moderation_results(Components.Schemas.ChatCompletionModerationResults)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -1662,10 +1662,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ChatCompletionModerationResults", "#/components/schemas/ChatCompletionModerationResults":
-                        self = .ChatCompletionModerationResults(try .init(from: decoder))
-                    case "ChatCompletionModerationError", "#/components/schemas/ChatCompletionModerationError":
-                        self = .ChatCompletionModerationError(try .init(from: decoder))
+                    case "error":
+                        self = .error(try .init(from: decoder))
+                    case "moderation_results":
+                        self = .moderation_results(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -1676,9 +1676,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ChatCompletionModerationResults(value):
+                    case let .error(value):
                         try value.encode(to: encoder)
-                    case let .ChatCompletionModerationError(value):
+                    case let .moderation_results(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -1691,10 +1691,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/output`.
             @frozen public enum outputPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/output/ChatCompletionModerationResults`.
-                case ChatCompletionModerationResults(Components.Schemas.ChatCompletionModerationResults)
                 /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/output/ChatCompletionModerationError`.
-                case ChatCompletionModerationError(Components.Schemas.ChatCompletionModerationError)
+                case error(Components.Schemas.ChatCompletionModerationError)
+                /// - Remark: Generated from `#/components/schemas/ChatCompletionModeration/output/ChatCompletionModerationResults`.
+                case moderation_results(Components.Schemas.ChatCompletionModerationResults)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -1705,10 +1705,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ChatCompletionModerationResults", "#/components/schemas/ChatCompletionModerationResults":
-                        self = .ChatCompletionModerationResults(try .init(from: decoder))
-                    case "ChatCompletionModerationError", "#/components/schemas/ChatCompletionModerationError":
-                        self = .ChatCompletionModerationError(try .init(from: decoder))
+                    case "error":
+                        self = .error(try .init(from: decoder))
+                    case "moderation_results":
+                        self = .moderation_results(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -1719,9 +1719,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ChatCompletionModerationResults(value):
+                    case let .error(value):
                         try value.encode(to: encoder)
-                    case let .ChatCompletionModerationError(value):
+                    case let .moderation_results(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -2107,10 +2107,10 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestAssistantMessageContentPart`.
         @frozen public enum ChatCompletionRequestAssistantMessageContentPart: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestAssistantMessageContentPart/ChatCompletionRequestMessageContentPartText`.
-            case ChatCompletionRequestMessageContentPartText(Components.Schemas.ChatCompletionRequestMessageContentPartText)
             /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestAssistantMessageContentPart/ChatCompletionRequestMessageContentPartRefusal`.
-            case ChatCompletionRequestMessageContentPartRefusal(Components.Schemas.ChatCompletionRequestMessageContentPartRefusal)
+            case refusal(Components.Schemas.ChatCompletionRequestMessageContentPartRefusal)
+            /// - Remark: Generated from `#/components/schemas/ChatCompletionRequestAssistantMessageContentPart/ChatCompletionRequestMessageContentPartText`.
+            case text(Components.Schemas.ChatCompletionRequestMessageContentPartText)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -2121,10 +2121,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "ChatCompletionRequestMessageContentPartText", "#/components/schemas/ChatCompletionRequestMessageContentPartText":
-                    self = .ChatCompletionRequestMessageContentPartText(try .init(from: decoder))
-                case "ChatCompletionRequestMessageContentPartRefusal", "#/components/schemas/ChatCompletionRequestMessageContentPartRefusal":
-                    self = .ChatCompletionRequestMessageContentPartRefusal(try .init(from: decoder))
+                case "refusal":
+                    self = .refusal(try .init(from: decoder))
+                case "text":
+                    self = .text(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -2135,9 +2135,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .ChatCompletionRequestMessageContentPartText(value):
+                case let .refusal(value):
                     try value.encode(to: encoder)
-                case let .ChatCompletionRequestMessageContentPartRefusal(value):
+                case let .text(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -3736,10 +3736,10 @@ public enum Components {
             public var code: Swift.String?
             /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputsPayload`.
             @frozen public enum outputsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputsPayload/CodeInterpreterOutputLogs`.
-                case CodeInterpreterOutputLogs(Components.Schemas.CodeInterpreterOutputLogs)
                 /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputsPayload/CodeInterpreterOutputImage`.
-                case CodeInterpreterOutputImage(Components.Schemas.CodeInterpreterOutputImage)
+                case image(Components.Schemas.CodeInterpreterOutputImage)
+                /// - Remark: Generated from `#/components/schemas/CodeInterpreterToolCall/outputsPayload/CodeInterpreterOutputLogs`.
+                case logs(Components.Schemas.CodeInterpreterOutputLogs)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -3750,10 +3750,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "CodeInterpreterOutputLogs", "#/components/schemas/CodeInterpreterOutputLogs":
-                        self = .CodeInterpreterOutputLogs(try .init(from: decoder))
-                    case "CodeInterpreterOutputImage", "#/components/schemas/CodeInterpreterOutputImage":
-                        self = .CodeInterpreterOutputImage(try .init(from: decoder))
+                    case "image":
+                        self = .image(try .init(from: decoder))
+                    case "logs":
+                        self = .logs(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -3764,9 +3764,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .CodeInterpreterOutputLogs(value):
+                    case let .image(value):
                         try value.encode(to: encoder)
-                    case let .CodeInterpreterOutputImage(value):
+                    case let .logs(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -4189,10 +4189,26 @@ public enum Components {
             }
             /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload`.
             @frozen public enum filtersPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
-                case ComparisonFilter(Components.Schemas.ComparisonFilter)
                 /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/CompoundFilter`.
-                case CompoundFilter(Components.Schemas.CompoundFilter)
+                case and(Components.Schemas.CompoundFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case eq(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case gt(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case gte(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case _in(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case lt(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case lte(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case ne(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                case nin(Components.Schemas.ComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/CompoundFilter`.
+                case or(Components.Schemas.CompoundFilter)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -4203,10 +4219,26 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ComparisonFilter", "#/components/schemas/ComparisonFilter":
-                        self = .ComparisonFilter(try .init(from: decoder))
-                    case "CompoundFilter", "#/components/schemas/CompoundFilter":
-                        self = .CompoundFilter(try .init(from: decoder))
+                    case "and":
+                        self = .and(try .init(from: decoder))
+                    case "eq":
+                        self = .eq(try .init(from: decoder))
+                    case "gt":
+                        self = .gt(try .init(from: decoder))
+                    case "gte":
+                        self = .gte(try .init(from: decoder))
+                    case "in":
+                        self = ._in(try .init(from: decoder))
+                    case "lt":
+                        self = .lt(try .init(from: decoder))
+                    case "lte":
+                        self = .lte(try .init(from: decoder))
+                    case "ne":
+                        self = .ne(try .init(from: decoder))
+                    case "nin":
+                        self = .nin(try .init(from: decoder))
+                    case "or":
+                        self = .or(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -4217,9 +4249,25 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ComparisonFilter(value):
+                    case let .and(value):
                         try value.encode(to: encoder)
-                    case let .CompoundFilter(value):
+                    case let .eq(value):
+                        try value.encode(to: encoder)
+                    case let .gt(value):
+                        try value.encode(to: encoder)
+                    case let .gte(value):
+                        try value.encode(to: encoder)
+                    case let ._in(value):
+                        try value.encode(to: encoder)
+                    case let .lt(value):
+                        try value.encode(to: encoder)
+                    case let .lte(value):
+                        try value.encode(to: encoder)
+                    case let .ne(value):
+                        try value.encode(to: encoder)
+                    case let .nin(value):
+                        try value.encode(to: encoder)
+                    case let .or(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -4279,10 +4327,26 @@ public enum Components {
                 var _type: Components.Schemas.CompoundFilter._typePayload
                 /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload`.
                 enum filtersPayloadPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
-                    case ComparisonFilter(Components.Schemas.ComparisonFilter)
                     /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/CompoundFilter`.
-                    case CompoundFilter(Components.Schemas.CompoundFilter)
+                    case and(Components.Schemas.CompoundFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case eq(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case gt(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case gte(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case _in(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case lt(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case lte(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case ne(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/ComparisonFilter`.
+                    case nin(Components.Schemas.ComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/CompoundFilter/filtersPayload/CompoundFilter`.
+                    case or(Components.Schemas.CompoundFilter)
                     public enum CodingKeys: String, CodingKey {
                         case _type = "type"
                     }
@@ -4293,10 +4357,26 @@ public enum Components {
                             forKey: ._type
                         )
                         switch discriminator {
-                        case "ComparisonFilter", "#/components/schemas/ComparisonFilter":
-                            self = .ComparisonFilter(try .init(from: decoder))
-                        case "CompoundFilter", "#/components/schemas/CompoundFilter":
-                            self = .CompoundFilter(try .init(from: decoder))
+                        case "and":
+                            self = .and(try .init(from: decoder))
+                        case "eq":
+                            self = .eq(try .init(from: decoder))
+                        case "gt":
+                            self = .gt(try .init(from: decoder))
+                        case "gte":
+                            self = .gte(try .init(from: decoder))
+                        case "in":
+                            self = ._in(try .init(from: decoder))
+                        case "lt":
+                            self = .lt(try .init(from: decoder))
+                        case "lte":
+                            self = .lte(try .init(from: decoder))
+                        case "ne":
+                            self = .ne(try .init(from: decoder))
+                        case "nin":
+                            self = .nin(try .init(from: decoder))
+                        case "or":
+                            self = .or(try .init(from: decoder))
                         default:
                             throw Swift.DecodingError.unknownOneOfDiscriminator(
                                 discriminatorKey: CodingKeys._type,
@@ -4307,9 +4387,25 @@ public enum Components {
                     }
                     public func encode(to encoder: any Swift.Encoder) throws {
                         switch self {
-                        case let .ComparisonFilter(value):
+                        case let .and(value):
                             try value.encode(to: encoder)
-                        case let .CompoundFilter(value):
+                        case let .eq(value):
+                            try value.encode(to: encoder)
+                        case let .gt(value):
+                            try value.encode(to: encoder)
+                        case let .gte(value):
+                            try value.encode(to: encoder)
+                        case let ._in(value):
+                            try value.encode(to: encoder)
+                        case let .lt(value):
+                            try value.encode(to: encoder)
+                        case let .lte(value):
+                            try value.encode(to: encoder)
+                        case let .ne(value):
+                            try value.encode(to: encoder)
+                        case let .nin(value):
+                            try value.encode(to: encoder)
+                        case let .or(value):
                             try value.encode(to: encoder)
                         }
                     }
@@ -4350,23 +4446,23 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/ComputerAction`.
         @frozen public enum ComputerAction: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/ComputerAction/ClickParam`.
-            case ClickParam(Components.Schemas.ClickParam)
+            case click(Components.Schemas.ClickParam)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/DoubleClickAction`.
-            case DoubleClickAction(Components.Schemas.DoubleClickAction)
+            case double_click(Components.Schemas.DoubleClickAction)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/DragParam`.
-            case DragParam(Components.Schemas.DragParam)
+            case drag(Components.Schemas.DragParam)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/KeyPressAction`.
-            case KeyPressAction(Components.Schemas.KeyPressAction)
+            case keypress(Components.Schemas.KeyPressAction)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/MoveParam`.
-            case MoveParam(Components.Schemas.MoveParam)
+            case move(Components.Schemas.MoveParam)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/ScreenshotParam`.
-            case ScreenshotParam(Components.Schemas.ScreenshotParam)
+            case screenshot(Components.Schemas.ScreenshotParam)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/ScrollParam`.
-            case ScrollParam(Components.Schemas.ScrollParam)
+            case scroll(Components.Schemas.ScrollParam)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/TypeParam`.
-            case TypeParam(Components.Schemas.TypeParam)
+            case _type(Components.Schemas.TypeParam)
             /// - Remark: Generated from `#/components/schemas/ComputerAction/WaitParam`.
-            case WaitParam(Components.Schemas.WaitParam)
+            case wait(Components.Schemas.WaitParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -4377,24 +4473,24 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "ClickParam", "#/components/schemas/ClickParam":
-                    self = .ClickParam(try .init(from: decoder))
-                case "DoubleClickAction", "#/components/schemas/DoubleClickAction":
-                    self = .DoubleClickAction(try .init(from: decoder))
-                case "DragParam", "#/components/schemas/DragParam":
-                    self = .DragParam(try .init(from: decoder))
-                case "KeyPressAction", "#/components/schemas/KeyPressAction":
-                    self = .KeyPressAction(try .init(from: decoder))
-                case "MoveParam", "#/components/schemas/MoveParam":
-                    self = .MoveParam(try .init(from: decoder))
-                case "ScreenshotParam", "#/components/schemas/ScreenshotParam":
-                    self = .ScreenshotParam(try .init(from: decoder))
-                case "ScrollParam", "#/components/schemas/ScrollParam":
-                    self = .ScrollParam(try .init(from: decoder))
-                case "TypeParam", "#/components/schemas/TypeParam":
-                    self = .TypeParam(try .init(from: decoder))
-                case "WaitParam", "#/components/schemas/WaitParam":
-                    self = .WaitParam(try .init(from: decoder))
+                case "click":
+                    self = .click(try .init(from: decoder))
+                case "double_click":
+                    self = .double_click(try .init(from: decoder))
+                case "drag":
+                    self = .drag(try .init(from: decoder))
+                case "keypress":
+                    self = .keypress(try .init(from: decoder))
+                case "move":
+                    self = .move(try .init(from: decoder))
+                case "screenshot":
+                    self = .screenshot(try .init(from: decoder))
+                case "scroll":
+                    self = .scroll(try .init(from: decoder))
+                case "type":
+                    self = ._type(try .init(from: decoder))
+                case "wait":
+                    self = .wait(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -4405,23 +4501,23 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .ClickParam(value):
+                case let .click(value):
                     try value.encode(to: encoder)
-                case let .DoubleClickAction(value):
+                case let .double_click(value):
                     try value.encode(to: encoder)
-                case let .DragParam(value):
+                case let .drag(value):
                     try value.encode(to: encoder)
-                case let .KeyPressAction(value):
+                case let .keypress(value):
                     try value.encode(to: encoder)
-                case let .MoveParam(value):
+                case let .move(value):
                     try value.encode(to: encoder)
-                case let .ScreenshotParam(value):
+                case let .screenshot(value):
                     try value.encode(to: encoder)
-                case let .ScrollParam(value):
+                case let .scroll(value):
                     try value.encode(to: encoder)
-                case let .TypeParam(value):
+                case let ._type(value):
                     try value.encode(to: encoder)
-                case let .WaitParam(value):
+                case let .wait(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -4894,12 +4990,12 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/value2/response_format`.
                 @frozen public enum response_formatPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/value2/response_format/ResponseFormatText`.
-                    case ResponseFormatText(Components.Schemas.ResponseFormatText)
-                    /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/value2/response_format/ResponseFormatJsonSchema`.
-                    case ResponseFormatJsonSchema(Components.Schemas.ResponseFormatJsonSchema)
                     /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/value2/response_format/ResponseFormatJsonObject`.
-                    case ResponseFormatJsonObject(Components.Schemas.ResponseFormatJsonObject)
+                    case json_object(Components.Schemas.ResponseFormatJsonObject)
+                    /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/value2/response_format/ResponseFormatJsonSchema`.
+                    case json_schema(Components.Schemas.ResponseFormatJsonSchema)
+                    /// - Remark: Generated from `#/components/schemas/CreateChatCompletionRequest/value2/response_format/ResponseFormatText`.
+                    case text(Components.Schemas.ResponseFormatText)
                     public enum CodingKeys: String, CodingKey {
                         case _type = "type"
                     }
@@ -4910,12 +5006,12 @@ public enum Components {
                             forKey: ._type
                         )
                         switch discriminator {
-                        case "ResponseFormatText", "#/components/schemas/ResponseFormatText":
-                            self = .ResponseFormatText(try .init(from: decoder))
-                        case "ResponseFormatJsonSchema", "#/components/schemas/ResponseFormatJsonSchema":
-                            self = .ResponseFormatJsonSchema(try .init(from: decoder))
-                        case "ResponseFormatJsonObject", "#/components/schemas/ResponseFormatJsonObject":
-                            self = .ResponseFormatJsonObject(try .init(from: decoder))
+                        case "json_object":
+                            self = .json_object(try .init(from: decoder))
+                        case "json_schema":
+                            self = .json_schema(try .init(from: decoder))
+                        case "text":
+                            self = .text(try .init(from: decoder))
                         default:
                             throw Swift.DecodingError.unknownOneOfDiscriminator(
                                 discriminatorKey: CodingKeys._type,
@@ -4926,11 +5022,11 @@ public enum Components {
                     }
                     public func encode(to encoder: any Swift.Encoder) throws {
                         switch self {
-                        case let .ResponseFormatText(value):
+                        case let .json_object(value):
                             try value.encode(to: encoder)
-                        case let .ResponseFormatJsonSchema(value):
+                        case let .json_schema(value):
                             try value.encode(to: encoder)
-                        case let .ResponseFormatJsonObject(value):
+                        case let .text(value):
                             try value.encode(to: encoder)
                         }
                     }
@@ -8273,12 +8369,12 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/FunctionAndCustomToolCallOutput`.
         @frozen public enum FunctionAndCustomToolCallOutput: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/FunctionAndCustomToolCallOutput/InputTextContent`.
-            case InputTextContent(Components.Schemas.InputTextContent)
-            /// - Remark: Generated from `#/components/schemas/FunctionAndCustomToolCallOutput/InputImageContent`.
-            case InputImageContent(Components.Schemas.InputImageContent)
             /// - Remark: Generated from `#/components/schemas/FunctionAndCustomToolCallOutput/InputFileContent`.
-            case InputFileContent(Components.Schemas.InputFileContent)
+            case input_file(Components.Schemas.InputFileContent)
+            /// - Remark: Generated from `#/components/schemas/FunctionAndCustomToolCallOutput/InputImageContent`.
+            case input_image(Components.Schemas.InputImageContent)
+            /// - Remark: Generated from `#/components/schemas/FunctionAndCustomToolCallOutput/InputTextContent`.
+            case input_text(Components.Schemas.InputTextContent)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -8289,12 +8385,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "InputTextContent", "#/components/schemas/InputTextContent":
-                    self = .InputTextContent(try .init(from: decoder))
-                case "InputImageContent", "#/components/schemas/InputImageContent":
-                    self = .InputImageContent(try .init(from: decoder))
-                case "InputFileContent", "#/components/schemas/InputFileContent":
-                    self = .InputFileContent(try .init(from: decoder))
+                case "input_file":
+                    self = .input_file(try .init(from: decoder))
+                case "input_image":
+                    self = .input_image(try .init(from: decoder))
+                case "input_text":
+                    self = .input_text(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -8305,11 +8401,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .InputTextContent(value):
+                case let .input_file(value):
                     try value.encode(to: encoder)
-                case let .InputImageContent(value):
+                case let .input_image(value):
                     try value.encode(to: encoder)
-                case let .InputFileContent(value):
+                case let .input_text(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -10835,12 +10931,12 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/MCPToolCallError`.
         @frozen public enum MCPToolCallError: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/MCPToolCallError/MCPProtocolError`.
-            case MCPProtocolError(Components.Schemas.MCPProtocolError)
-            /// - Remark: Generated from `#/components/schemas/MCPToolCallError/MCPToolExecutionError`.
-            case MCPToolExecutionError(Components.Schemas.MCPToolExecutionError)
             /// - Remark: Generated from `#/components/schemas/MCPToolCallError/HTTPError`.
-            case HTTPError(Components.Schemas.HTTPError)
+            case http_error(Components.Schemas.HTTPError)
+            /// - Remark: Generated from `#/components/schemas/MCPToolCallError/MCPProtocolError`.
+            case mcp_protocol_error(Components.Schemas.MCPProtocolError)
+            /// - Remark: Generated from `#/components/schemas/MCPToolCallError/MCPToolExecutionError`.
+            case mcp_tool_execution_error(Components.Schemas.MCPToolExecutionError)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -10851,12 +10947,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "MCPProtocolError", "#/components/schemas/MCPProtocolError":
-                    self = .MCPProtocolError(try .init(from: decoder))
-                case "MCPToolExecutionError", "#/components/schemas/MCPToolExecutionError":
-                    self = .MCPToolExecutionError(try .init(from: decoder))
-                case "HTTPError", "#/components/schemas/HTTPError":
-                    self = .HTTPError(try .init(from: decoder))
+                case "http_error":
+                    self = .http_error(try .init(from: decoder))
+                case "mcp_protocol_error":
+                    self = .mcp_protocol_error(try .init(from: decoder))
+                case "mcp_tool_execution_error":
+                    self = .mcp_tool_execution_error(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -10867,11 +10963,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .MCPProtocolError(value):
+                case let .http_error(value):
                     try value.encode(to: encoder)
-                case let .MCPToolExecutionError(value):
+                case let .mcp_protocol_error(value):
                     try value.encode(to: encoder)
-                case let .HTTPError(value):
+                case let .mcp_tool_execution_error(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -17725,38 +17821,42 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool`.
         @frozen public enum ToolSearchOutputTool: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/FunctionTool`.
-            case FunctionTool(Components.Schemas.FunctionTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/FileSearchTool`.
-            case FileSearchTool(Components.Schemas.FileSearchTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ComputerTool`.
-            case ComputerTool(Components.Schemas.ComputerTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ComputerUsePreviewTool`.
-            case ComputerUsePreviewTool(Components.Schemas.ComputerUsePreviewTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/WebSearchTool`.
-            case WebSearchTool(Components.Schemas.WebSearchTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/MCPTool`.
-            case MCPTool(Components.Schemas.MCPTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/CodeInterpreterTool`.
-            case CodeInterpreterTool(Components.Schemas.CodeInterpreterTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ProgrammaticToolCallingParam`.
-            case ProgrammaticToolCallingParam(Components.Schemas.ProgrammaticToolCallingParam)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ImageGenTool`.
-            case ImageGenTool(Components.Schemas.ImageGenTool)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/LocalShellToolParam`.
-            case LocalShellToolParam(Components.Schemas.LocalShellToolParam)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/FunctionShellToolParam`.
-            case FunctionShellToolParam(Components.Schemas.FunctionShellToolParam)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/CustomToolParam`.
-            case CustomToolParam(Components.Schemas.CustomToolParam)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ToolSearchOutputNamespaceToolParam`.
-            case ToolSearchOutputNamespaceToolParam(Components.Schemas.ToolSearchOutputNamespaceToolParam)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ToolSearchToolParam`.
-            case ToolSearchToolParam(Components.Schemas.ToolSearchToolParam)
-            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/WebSearchPreviewTool`.
-            case WebSearchPreviewTool(Components.Schemas.WebSearchPreviewTool)
             /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ApplyPatchToolParam`.
-            case ApplyPatchToolParam(Components.Schemas.ApplyPatchToolParam)
+            case apply_patch(Components.Schemas.ApplyPatchToolParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/CodeInterpreterTool`.
+            case code_interpreter(Components.Schemas.CodeInterpreterTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ComputerTool`.
+            case computer(Components.Schemas.ComputerTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ComputerUsePreviewTool`.
+            case computer_use_preview(Components.Schemas.ComputerUsePreviewTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/CustomToolParam`.
+            case custom(Components.Schemas.CustomToolParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/FileSearchTool`.
+            case file_search(Components.Schemas.FileSearchTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/FunctionTool`.
+            case function(Components.Schemas.FunctionTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ImageGenTool`.
+            case image_generation(Components.Schemas.ImageGenTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/LocalShellToolParam`.
+            case local_shell(Components.Schemas.LocalShellToolParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/MCPTool`.
+            case mcp(Components.Schemas.MCPTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ToolSearchOutputNamespaceToolParam`.
+            case namespace(Components.Schemas.ToolSearchOutputNamespaceToolParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ProgrammaticToolCallingParam`.
+            case programmatic_tool_calling(Components.Schemas.ProgrammaticToolCallingParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/FunctionShellToolParam`.
+            case shell(Components.Schemas.FunctionShellToolParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/ToolSearchToolParam`.
+            case tool_search(Components.Schemas.ToolSearchToolParam)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/WebSearchTool`.
+            case web_search(Components.Schemas.WebSearchTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/WebSearchTool`.
+            case web_search_2025_08_26(Components.Schemas.WebSearchTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/WebSearchPreviewTool`.
+            case web_search_preview(Components.Schemas.WebSearchPreviewTool)
+            /// - Remark: Generated from `#/components/schemas/ToolSearchOutputTool/WebSearchPreviewTool`.
+            case web_search_preview_2025_03_11(Components.Schemas.WebSearchPreviewTool)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -17767,38 +17867,42 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "FunctionTool", "#/components/schemas/FunctionTool":
-                    self = .FunctionTool(try .init(from: decoder))
-                case "FileSearchTool", "#/components/schemas/FileSearchTool":
-                    self = .FileSearchTool(try .init(from: decoder))
-                case "ComputerTool", "#/components/schemas/ComputerTool":
-                    self = .ComputerTool(try .init(from: decoder))
-                case "ComputerUsePreviewTool", "#/components/schemas/ComputerUsePreviewTool":
-                    self = .ComputerUsePreviewTool(try .init(from: decoder))
-                case "WebSearchTool", "#/components/schemas/WebSearchTool":
-                    self = .WebSearchTool(try .init(from: decoder))
-                case "MCPTool", "#/components/schemas/MCPTool":
-                    self = .MCPTool(try .init(from: decoder))
-                case "CodeInterpreterTool", "#/components/schemas/CodeInterpreterTool":
-                    self = .CodeInterpreterTool(try .init(from: decoder))
-                case "ProgrammaticToolCallingParam", "#/components/schemas/ProgrammaticToolCallingParam":
-                    self = .ProgrammaticToolCallingParam(try .init(from: decoder))
-                case "ImageGenTool", "#/components/schemas/ImageGenTool":
-                    self = .ImageGenTool(try .init(from: decoder))
-                case "LocalShellToolParam", "#/components/schemas/LocalShellToolParam":
-                    self = .LocalShellToolParam(try .init(from: decoder))
-                case "FunctionShellToolParam", "#/components/schemas/FunctionShellToolParam":
-                    self = .FunctionShellToolParam(try .init(from: decoder))
-                case "CustomToolParam", "#/components/schemas/CustomToolParam":
-                    self = .CustomToolParam(try .init(from: decoder))
-                case "ToolSearchOutputNamespaceToolParam", "#/components/schemas/ToolSearchOutputNamespaceToolParam":
-                    self = .ToolSearchOutputNamespaceToolParam(try .init(from: decoder))
-                case "ToolSearchToolParam", "#/components/schemas/ToolSearchToolParam":
-                    self = .ToolSearchToolParam(try .init(from: decoder))
-                case "WebSearchPreviewTool", "#/components/schemas/WebSearchPreviewTool":
-                    self = .WebSearchPreviewTool(try .init(from: decoder))
-                case "ApplyPatchToolParam", "#/components/schemas/ApplyPatchToolParam":
-                    self = .ApplyPatchToolParam(try .init(from: decoder))
+                case "apply_patch":
+                    self = .apply_patch(try .init(from: decoder))
+                case "code_interpreter":
+                    self = .code_interpreter(try .init(from: decoder))
+                case "computer":
+                    self = .computer(try .init(from: decoder))
+                case "computer_use_preview":
+                    self = .computer_use_preview(try .init(from: decoder))
+                case "custom":
+                    self = .custom(try .init(from: decoder))
+                case "file_search":
+                    self = .file_search(try .init(from: decoder))
+                case "function":
+                    self = .function(try .init(from: decoder))
+                case "image_generation":
+                    self = .image_generation(try .init(from: decoder))
+                case "local_shell":
+                    self = .local_shell(try .init(from: decoder))
+                case "mcp":
+                    self = .mcp(try .init(from: decoder))
+                case "namespace":
+                    self = .namespace(try .init(from: decoder))
+                case "programmatic_tool_calling":
+                    self = .programmatic_tool_calling(try .init(from: decoder))
+                case "shell":
+                    self = .shell(try .init(from: decoder))
+                case "tool_search":
+                    self = .tool_search(try .init(from: decoder))
+                case "web_search":
+                    self = .web_search(try .init(from: decoder))
+                case "web_search_2025_08_26":
+                    self = .web_search_2025_08_26(try .init(from: decoder))
+                case "web_search_preview":
+                    self = .web_search_preview(try .init(from: decoder))
+                case "web_search_preview_2025_03_11":
+                    self = .web_search_preview_2025_03_11(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -17809,37 +17913,41 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .FunctionTool(value):
+                case let .apply_patch(value):
                     try value.encode(to: encoder)
-                case let .FileSearchTool(value):
+                case let .code_interpreter(value):
                     try value.encode(to: encoder)
-                case let .ComputerTool(value):
+                case let .computer(value):
                     try value.encode(to: encoder)
-                case let .ComputerUsePreviewTool(value):
+                case let .computer_use_preview(value):
                     try value.encode(to: encoder)
-                case let .WebSearchTool(value):
+                case let .custom(value):
                     try value.encode(to: encoder)
-                case let .MCPTool(value):
+                case let .file_search(value):
                     try value.encode(to: encoder)
-                case let .CodeInterpreterTool(value):
+                case let .function(value):
                     try value.encode(to: encoder)
-                case let .ProgrammaticToolCallingParam(value):
+                case let .image_generation(value):
                     try value.encode(to: encoder)
-                case let .ImageGenTool(value):
+                case let .local_shell(value):
                     try value.encode(to: encoder)
-                case let .LocalShellToolParam(value):
+                case let .mcp(value):
                     try value.encode(to: encoder)
-                case let .FunctionShellToolParam(value):
+                case let .namespace(value):
                     try value.encode(to: encoder)
-                case let .CustomToolParam(value):
+                case let .programmatic_tool_calling(value):
                     try value.encode(to: encoder)
-                case let .ToolSearchOutputNamespaceToolParam(value):
+                case let .shell(value):
                     try value.encode(to: encoder)
-                case let .ToolSearchToolParam(value):
+                case let .tool_search(value):
                     try value.encode(to: encoder)
-                case let .WebSearchPreviewTool(value):
+                case let .web_search(value):
                     try value.encode(to: encoder)
-                case let .ApplyPatchToolParam(value):
+                case let .web_search_2025_08_26(value):
+                    try value.encode(to: encoder)
+                case let .web_search_preview(value):
+                    try value.encode(to: encoder)
+                case let .web_search_preview_2025_03_11(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -19605,12 +19713,12 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/WebSearchToolCall/action`.
             @frozen public enum actionPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/WebSearchToolCall/action/WebSearchActionSearch`.
-                case WebSearchActionSearch(Components.Schemas.WebSearchActionSearch)
-                /// - Remark: Generated from `#/components/schemas/WebSearchToolCall/action/WebSearchActionOpenPage`.
-                case WebSearchActionOpenPage(Components.Schemas.WebSearchActionOpenPage)
                 /// - Remark: Generated from `#/components/schemas/WebSearchToolCall/action/WebSearchActionFind`.
-                case WebSearchActionFind(Components.Schemas.WebSearchActionFind)
+                case find_in_page(Components.Schemas.WebSearchActionFind)
+                /// - Remark: Generated from `#/components/schemas/WebSearchToolCall/action/WebSearchActionOpenPage`.
+                case open_page(Components.Schemas.WebSearchActionOpenPage)
+                /// - Remark: Generated from `#/components/schemas/WebSearchToolCall/action/WebSearchActionSearch`.
+                case search(Components.Schemas.WebSearchActionSearch)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -19621,12 +19729,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "WebSearchActionSearch", "#/components/schemas/WebSearchActionSearch":
-                        self = .WebSearchActionSearch(try .init(from: decoder))
-                    case "WebSearchActionOpenPage", "#/components/schemas/WebSearchActionOpenPage":
-                        self = .WebSearchActionOpenPage(try .init(from: decoder))
-                    case "WebSearchActionFind", "#/components/schemas/WebSearchActionFind":
-                        self = .WebSearchActionFind(try .init(from: decoder))
+                    case "find_in_page":
+                        self = .find_in_page(try .init(from: decoder))
+                    case "open_page":
+                        self = .open_page(try .init(from: decoder))
+                    case "search":
+                        self = .search(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -19637,11 +19745,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .WebSearchActionSearch(value):
+                    case let .find_in_page(value):
                         try value.encode(to: encoder)
-                    case let .WebSearchActionOpenPage(value):
+                    case let .open_page(value):
                         try value.encode(to: encoder)
-                    case let .WebSearchActionFind(value):
+                    case let .search(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -20581,14 +20689,14 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/Annotation`.
         @frozen public enum Annotation: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/Annotation/FileCitationBody`.
-            case FileCitationBody(Components.Schemas.FileCitationBody)
-            /// - Remark: Generated from `#/components/schemas/Annotation/UrlCitationBody`.
-            case UrlCitationBody(Components.Schemas.UrlCitationBody)
             /// - Remark: Generated from `#/components/schemas/Annotation/ContainerFileCitationBody`.
-            case ContainerFileCitationBody(Components.Schemas.ContainerFileCitationBody)
+            case container_file_citation(Components.Schemas.ContainerFileCitationBody)
+            /// - Remark: Generated from `#/components/schemas/Annotation/FileCitationBody`.
+            case file_citation(Components.Schemas.FileCitationBody)
             /// - Remark: Generated from `#/components/schemas/Annotation/FilePath`.
-            case FilePath(Components.Schemas.FilePath)
+            case file_path(Components.Schemas.FilePath)
+            /// - Remark: Generated from `#/components/schemas/Annotation/UrlCitationBody`.
+            case url_citation(Components.Schemas.UrlCitationBody)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -20599,14 +20707,14 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "FileCitationBody", "#/components/schemas/FileCitationBody":
-                    self = .FileCitationBody(try .init(from: decoder))
-                case "UrlCitationBody", "#/components/schemas/UrlCitationBody":
-                    self = .UrlCitationBody(try .init(from: decoder))
-                case "ContainerFileCitationBody", "#/components/schemas/ContainerFileCitationBody":
-                    self = .ContainerFileCitationBody(try .init(from: decoder))
-                case "FilePath", "#/components/schemas/FilePath":
-                    self = .FilePath(try .init(from: decoder))
+                case "container_file_citation":
+                    self = .container_file_citation(try .init(from: decoder))
+                case "file_citation":
+                    self = .file_citation(try .init(from: decoder))
+                case "file_path":
+                    self = .file_path(try .init(from: decoder))
+                case "url_citation":
+                    self = .url_citation(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -20617,13 +20725,13 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .FileCitationBody(value):
+                case let .container_file_citation(value):
                     try value.encode(to: encoder)
-                case let .UrlCitationBody(value):
+                case let .file_citation(value):
                     try value.encode(to: encoder)
-                case let .ContainerFileCitationBody(value):
+                case let .file_path(value):
                     try value.encode(to: encoder)
-                case let .FilePath(value):
+                case let .url_citation(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -21115,24 +21223,24 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Message/contentPayload`.
             @frozen public enum contentPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/InputTextContent`.
-                case InputTextContent(Components.Schemas.InputTextContent)
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/OutputTextContent`.
-                case OutputTextContent(Components.Schemas.OutputTextContent)
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/TextContent`.
-                case TextContent(Components.Schemas.TextContent)
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/SummaryTextContent`.
-                case SummaryTextContent(Components.Schemas.SummaryTextContent)
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/ReasoningTextContent`.
-                case ReasoningTextContent(Components.Schemas.ReasoningTextContent)
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/RefusalContent`.
-                case RefusalContent(Components.Schemas.RefusalContent)
-                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/InputImageContent`.
-                case InputImageContent(Components.Schemas.InputImageContent)
                 /// - Remark: Generated from `#/components/schemas/Message/contentPayload/ComputerScreenshotContent`.
-                case ComputerScreenshotContent(Components.Schemas.ComputerScreenshotContent)
+                case computer_screenshot(Components.Schemas.ComputerScreenshotContent)
                 /// - Remark: Generated from `#/components/schemas/Message/contentPayload/InputFileContent`.
-                case InputFileContent(Components.Schemas.InputFileContent)
+                case input_file(Components.Schemas.InputFileContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/InputImageContent`.
+                case input_image(Components.Schemas.InputImageContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/InputTextContent`.
+                case input_text(Components.Schemas.InputTextContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/OutputTextContent`.
+                case output_text(Components.Schemas.OutputTextContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/ReasoningTextContent`.
+                case reasoning_text(Components.Schemas.ReasoningTextContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/RefusalContent`.
+                case refusal(Components.Schemas.RefusalContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/SummaryTextContent`.
+                case summary_text(Components.Schemas.SummaryTextContent)
+                /// - Remark: Generated from `#/components/schemas/Message/contentPayload/TextContent`.
+                case text(Components.Schemas.TextContent)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -21143,24 +21251,24 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "InputTextContent", "#/components/schemas/InputTextContent":
-                        self = .InputTextContent(try .init(from: decoder))
-                    case "OutputTextContent", "#/components/schemas/OutputTextContent":
-                        self = .OutputTextContent(try .init(from: decoder))
-                    case "TextContent", "#/components/schemas/TextContent":
-                        self = .TextContent(try .init(from: decoder))
-                    case "SummaryTextContent", "#/components/schemas/SummaryTextContent":
-                        self = .SummaryTextContent(try .init(from: decoder))
-                    case "ReasoningTextContent", "#/components/schemas/ReasoningTextContent":
-                        self = .ReasoningTextContent(try .init(from: decoder))
-                    case "RefusalContent", "#/components/schemas/RefusalContent":
-                        self = .RefusalContent(try .init(from: decoder))
-                    case "InputImageContent", "#/components/schemas/InputImageContent":
-                        self = .InputImageContent(try .init(from: decoder))
-                    case "ComputerScreenshotContent", "#/components/schemas/ComputerScreenshotContent":
-                        self = .ComputerScreenshotContent(try .init(from: decoder))
-                    case "InputFileContent", "#/components/schemas/InputFileContent":
-                        self = .InputFileContent(try .init(from: decoder))
+                    case "computer_screenshot":
+                        self = .computer_screenshot(try .init(from: decoder))
+                    case "input_file":
+                        self = .input_file(try .init(from: decoder))
+                    case "input_image":
+                        self = .input_image(try .init(from: decoder))
+                    case "input_text":
+                        self = .input_text(try .init(from: decoder))
+                    case "output_text":
+                        self = .output_text(try .init(from: decoder))
+                    case "reasoning_text":
+                        self = .reasoning_text(try .init(from: decoder))
+                    case "refusal":
+                        self = .refusal(try .init(from: decoder))
+                    case "summary_text":
+                        self = .summary_text(try .init(from: decoder))
+                    case "text":
+                        self = .text(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -21171,23 +21279,23 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .InputTextContent(value):
+                    case let .computer_screenshot(value):
                         try value.encode(to: encoder)
-                    case let .OutputTextContent(value):
+                    case let .input_file(value):
                         try value.encode(to: encoder)
-                    case let .TextContent(value):
+                    case let .input_image(value):
                         try value.encode(to: encoder)
-                    case let .SummaryTextContent(value):
+                    case let .input_text(value):
                         try value.encode(to: encoder)
-                    case let .ReasoningTextContent(value):
+                    case let .output_text(value):
                         try value.encode(to: encoder)
-                    case let .RefusalContent(value):
+                    case let .reasoning_text(value):
                         try value.encode(to: encoder)
-                    case let .InputImageContent(value):
+                    case let .refusal(value):
                         try value.encode(to: encoder)
-                    case let .ComputerScreenshotContent(value):
+                    case let .summary_text(value):
                         try value.encode(to: encoder)
-                    case let .InputFileContent(value):
+                    case let .text(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -21290,9 +21398,9 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/ToolCallCaller`.
         @frozen public enum ToolCallCaller: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/ToolCallCaller/DirectToolCallCaller`.
-            case DirectToolCallCaller(Components.Schemas.DirectToolCallCaller)
+            case direct(Components.Schemas.DirectToolCallCaller)
             /// - Remark: Generated from `#/components/schemas/ToolCallCaller/ProgramToolCallCaller`.
-            case ProgramToolCallCaller(Components.Schemas.ProgramToolCallCaller)
+            case program(Components.Schemas.ProgramToolCallCaller)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -21303,10 +21411,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "DirectToolCallCaller", "#/components/schemas/DirectToolCallCaller":
-                    self = .DirectToolCallCaller(try .init(from: decoder))
-                case "ProgramToolCallCaller", "#/components/schemas/ProgramToolCallCaller":
-                    self = .ProgramToolCallCaller(try .init(from: decoder))
+                case "direct":
+                    self = .direct(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -21317,9 +21425,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .DirectToolCallCaller(value):
+                case let .direct(value):
                     try value.encode(to: encoder)
-                case let .ProgramToolCallCaller(value):
+                case let .program(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -21391,9 +21499,9 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/ToolCallCallerParam`.
         @frozen public enum ToolCallCallerParam: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/ToolCallCallerParam/DirectToolCallCallerParam`.
-            case DirectToolCallCallerParam(Components.Schemas.DirectToolCallCallerParam)
+            case direct(Components.Schemas.DirectToolCallCallerParam)
             /// - Remark: Generated from `#/components/schemas/ToolCallCallerParam/ProgramToolCallCallerParam`.
-            case ProgramToolCallCallerParam(Components.Schemas.ProgramToolCallCallerParam)
+            case program(Components.Schemas.ProgramToolCallCallerParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -21404,10 +21512,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "DirectToolCallCallerParam", "#/components/schemas/DirectToolCallCallerParam":
-                    self = .DirectToolCallCallerParam(try .init(from: decoder))
-                case "ProgramToolCallCallerParam", "#/components/schemas/ProgramToolCallCallerParam":
-                    self = .ProgramToolCallCallerParam(try .init(from: decoder))
+                case "direct":
+                    self = .direct(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -21418,9 +21526,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .DirectToolCallCallerParam(value):
+                case let .direct(value):
                     try value.encode(to: encoder)
-                case let .ProgramToolCallCallerParam(value):
+                case let .program(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -22608,10 +22716,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/AutoCodeInterpreterToolParam/network_policy`.
             @frozen public enum network_policyPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/AutoCodeInterpreterToolParam/network_policy/ContainerNetworkPolicyDisabledParam`.
-                case ContainerNetworkPolicyDisabledParam(Components.Schemas.ContainerNetworkPolicyDisabledParam)
                 /// - Remark: Generated from `#/components/schemas/AutoCodeInterpreterToolParam/network_policy/ContainerNetworkPolicyAllowlistParam`.
-                case ContainerNetworkPolicyAllowlistParam(Components.Schemas.ContainerNetworkPolicyAllowlistParam)
+                case allowlist(Components.Schemas.ContainerNetworkPolicyAllowlistParam)
+                /// - Remark: Generated from `#/components/schemas/AutoCodeInterpreterToolParam/network_policy/ContainerNetworkPolicyDisabledParam`.
+                case disabled(Components.Schemas.ContainerNetworkPolicyDisabledParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -22622,10 +22730,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ContainerNetworkPolicyDisabledParam", "#/components/schemas/ContainerNetworkPolicyDisabledParam":
-                        self = .ContainerNetworkPolicyDisabledParam(try .init(from: decoder))
-                    case "ContainerNetworkPolicyAllowlistParam", "#/components/schemas/ContainerNetworkPolicyAllowlistParam":
-                        self = .ContainerNetworkPolicyAllowlistParam(try .init(from: decoder))
+                    case "allowlist":
+                        self = .allowlist(try .init(from: decoder))
+                    case "disabled":
+                        self = .disabled(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -22636,9 +22744,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ContainerNetworkPolicyDisabledParam(value):
+                    case let .allowlist(value):
                         try value.encode(to: encoder)
-                    case let .ContainerNetworkPolicyAllowlistParam(value):
+                    case let .disabled(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -22751,10 +22859,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/network_policy`.
             @frozen public enum network_policyPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/network_policy/ContainerNetworkPolicyDisabledParam`.
-                case ContainerNetworkPolicyDisabledParam(Components.Schemas.ContainerNetworkPolicyDisabledParam)
                 /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/network_policy/ContainerNetworkPolicyAllowlistParam`.
-                case ContainerNetworkPolicyAllowlistParam(Components.Schemas.ContainerNetworkPolicyAllowlistParam)
+                case allowlist(Components.Schemas.ContainerNetworkPolicyAllowlistParam)
+                /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/network_policy/ContainerNetworkPolicyDisabledParam`.
+                case disabled(Components.Schemas.ContainerNetworkPolicyDisabledParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -22765,10 +22873,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ContainerNetworkPolicyDisabledParam", "#/components/schemas/ContainerNetworkPolicyDisabledParam":
-                        self = .ContainerNetworkPolicyDisabledParam(try .init(from: decoder))
-                    case "ContainerNetworkPolicyAllowlistParam", "#/components/schemas/ContainerNetworkPolicyAllowlistParam":
-                        self = .ContainerNetworkPolicyAllowlistParam(try .init(from: decoder))
+                    case "allowlist":
+                        self = .allowlist(try .init(from: decoder))
+                    case "disabled":
+                        self = .disabled(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -22779,9 +22887,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ContainerNetworkPolicyDisabledParam(value):
+                    case let .allowlist(value):
                         try value.encode(to: encoder)
-                    case let .ContainerNetworkPolicyAllowlistParam(value):
+                    case let .disabled(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -22792,10 +22900,10 @@ public enum Components {
             public var network_policy: Components.Schemas.ContainerAutoParam.network_policyPayload?
             /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/skillsPayload`.
             @frozen public enum skillsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/skillsPayload/SkillReferenceParam`.
-                case SkillReferenceParam(Components.Schemas.SkillReferenceParam)
                 /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/skillsPayload/InlineSkillParam`.
-                case InlineSkillParam(Components.Schemas.InlineSkillParam)
+                case inline(Components.Schemas.InlineSkillParam)
+                /// - Remark: Generated from `#/components/schemas/ContainerAutoParam/skillsPayload/SkillReferenceParam`.
+                case skill_reference(Components.Schemas.SkillReferenceParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -22806,10 +22914,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "SkillReferenceParam", "#/components/schemas/SkillReferenceParam":
-                        self = .SkillReferenceParam(try .init(from: decoder))
-                    case "InlineSkillParam", "#/components/schemas/InlineSkillParam":
-                        self = .InlineSkillParam(try .init(from: decoder))
+                    case "inline":
+                        self = .inline(try .init(from: decoder))
+                    case "skill_reference":
+                        self = .skill_reference(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -22820,9 +22928,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .SkillReferenceParam(value):
+                    case let .inline(value):
                         try value.encode(to: encoder)
-                    case let .InlineSkillParam(value):
+                    case let .skill_reference(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -22982,11 +23090,11 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/FunctionShellToolParam/environment`.
             @frozen public enum environmentPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/FunctionShellToolParam/environment/ContainerAutoParam`.
-                case ContainerAutoParam(Components.Schemas.ContainerAutoParam)
-                /// - Remark: Generated from `#/components/schemas/FunctionShellToolParam/environment/LocalEnvironmentParam`.
-                case LocalEnvironmentParam(Components.Schemas.LocalEnvironmentParam)
+                case container_auto(Components.Schemas.ContainerAutoParam)
                 /// - Remark: Generated from `#/components/schemas/FunctionShellToolParam/environment/ContainerReferenceParam`.
-                case ContainerReferenceParam(Components.Schemas.ContainerReferenceParam)
+                case container_reference(Components.Schemas.ContainerReferenceParam)
+                /// - Remark: Generated from `#/components/schemas/FunctionShellToolParam/environment/LocalEnvironmentParam`.
+                case local(Components.Schemas.LocalEnvironmentParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -22997,12 +23105,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ContainerAutoParam", "#/components/schemas/ContainerAutoParam":
-                        self = .ContainerAutoParam(try .init(from: decoder))
-                    case "LocalEnvironmentParam", "#/components/schemas/LocalEnvironmentParam":
-                        self = .LocalEnvironmentParam(try .init(from: decoder))
-                    case "ContainerReferenceParam", "#/components/schemas/ContainerReferenceParam":
-                        self = .ContainerReferenceParam(try .init(from: decoder))
+                    case "container_auto":
+                        self = .container_auto(try .init(from: decoder))
+                    case "container_reference":
+                        self = .container_reference(try .init(from: decoder))
+                    case "local":
+                        self = .local(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -23013,11 +23121,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ContainerAutoParam(value):
+                    case let .container_auto(value):
                         try value.encode(to: encoder)
-                    case let .LocalEnvironmentParam(value):
+                    case let .container_reference(value):
                         try value.encode(to: encoder)
-                    case let .ContainerReferenceParam(value):
+                    case let .local(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -23152,10 +23260,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/CustomToolParam/format`.
             @frozen public enum formatPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/CustomToolParam/format/CustomTextFormatParam`.
-                case CustomTextFormatParam(Components.Schemas.CustomTextFormatParam)
                 /// - Remark: Generated from `#/components/schemas/CustomToolParam/format/CustomGrammarFormatParam`.
-                case CustomGrammarFormatParam(Components.Schemas.CustomGrammarFormatParam)
+                case grammar(Components.Schemas.CustomGrammarFormatParam)
+                /// - Remark: Generated from `#/components/schemas/CustomToolParam/format/CustomTextFormatParam`.
+                case text(Components.Schemas.CustomTextFormatParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -23166,10 +23274,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "CustomTextFormatParam", "#/components/schemas/CustomTextFormatParam":
-                        self = .CustomTextFormatParam(try .init(from: decoder))
-                    case "CustomGrammarFormatParam", "#/components/schemas/CustomGrammarFormatParam":
-                        self = .CustomGrammarFormatParam(try .init(from: decoder))
+                    case "grammar":
+                        self = .grammar(try .init(from: decoder))
+                    case "text":
+                        self = .text(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -23180,9 +23288,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .CustomTextFormatParam(value):
+                    case let .grammar(value):
                         try value.encode(to: encoder)
-                    case let .CustomGrammarFormatParam(value):
+                    case let .text(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -23363,10 +23471,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/NamespaceToolParam/toolsPayload`.
             @frozen public enum toolsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/NamespaceToolParam/toolsPayload/FunctionToolParam`.
-                case FunctionToolParam(Components.Schemas.FunctionToolParam)
                 /// - Remark: Generated from `#/components/schemas/NamespaceToolParam/toolsPayload/CustomToolParam`.
-                case CustomToolParam(Components.Schemas.CustomToolParam)
+                case custom(Components.Schemas.CustomToolParam)
+                /// - Remark: Generated from `#/components/schemas/NamespaceToolParam/toolsPayload/FunctionToolParam`.
+                case function(Components.Schemas.FunctionToolParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -23377,10 +23485,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "FunctionToolParam", "#/components/schemas/FunctionToolParam":
-                        self = .FunctionToolParam(try .init(from: decoder))
-                    case "CustomToolParam", "#/components/schemas/CustomToolParam":
-                        self = .CustomToolParam(try .init(from: decoder))
+                    case "custom":
+                        self = .custom(try .init(from: decoder))
+                    case "function":
+                        self = .function(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -23391,9 +23499,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .FunctionToolParam(value):
+                    case let .custom(value):
                         try value.encode(to: encoder)
-                    case let .CustomToolParam(value):
+                    case let .function(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -24219,10 +24327,10 @@ public enum Components {
             public var status: Components.Schemas.FunctionShellCallStatus
             /// - Remark: Generated from `#/components/schemas/FunctionShellCall/environment`.
             @frozen public enum environmentPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/FunctionShellCall/environment/LocalEnvironmentResource`.
-                case LocalEnvironmentResource(Components.Schemas.LocalEnvironmentResource)
                 /// - Remark: Generated from `#/components/schemas/FunctionShellCall/environment/ContainerReferenceResource`.
-                case ContainerReferenceResource(Components.Schemas.ContainerReferenceResource)
+                case container_reference(Components.Schemas.ContainerReferenceResource)
+                /// - Remark: Generated from `#/components/schemas/FunctionShellCall/environment/LocalEnvironmentResource`.
+                case local(Components.Schemas.LocalEnvironmentResource)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -24233,10 +24341,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "LocalEnvironmentResource", "#/components/schemas/LocalEnvironmentResource":
-                        self = .LocalEnvironmentResource(try .init(from: decoder))
-                    case "ContainerReferenceResource", "#/components/schemas/ContainerReferenceResource":
-                        self = .ContainerReferenceResource(try .init(from: decoder))
+                    case "container_reference":
+                        self = .container_reference(try .init(from: decoder))
+                    case "local":
+                        self = .local(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -24247,9 +24355,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .LocalEnvironmentResource(value):
+                    case let .container_reference(value):
                         try value.encode(to: encoder)
-                    case let .ContainerReferenceResource(value):
+                    case let .local(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -24383,10 +24491,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputContent/outcome`.
             @frozen public enum outcomePayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputContent/outcome/FunctionShellCallOutputTimeoutOutcome`.
-                case FunctionShellCallOutputTimeoutOutcome(Components.Schemas.FunctionShellCallOutputTimeoutOutcome)
                 /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputContent/outcome/FunctionShellCallOutputExitOutcome`.
-                case FunctionShellCallOutputExitOutcome(Components.Schemas.FunctionShellCallOutputExitOutcome)
+                case exit(Components.Schemas.FunctionShellCallOutputExitOutcome)
+                /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputContent/outcome/FunctionShellCallOutputTimeoutOutcome`.
+                case timeout(Components.Schemas.FunctionShellCallOutputTimeoutOutcome)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -24397,10 +24505,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "FunctionShellCallOutputTimeoutOutcome", "#/components/schemas/FunctionShellCallOutputTimeoutOutcome":
-                        self = .FunctionShellCallOutputTimeoutOutcome(try .init(from: decoder))
-                    case "FunctionShellCallOutputExitOutcome", "#/components/schemas/FunctionShellCallOutputExitOutcome":
-                        self = .FunctionShellCallOutputExitOutcome(try .init(from: decoder))
+                    case "exit":
+                        self = .exit(try .init(from: decoder))
+                    case "timeout":
+                        self = .timeout(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -24411,9 +24519,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .FunctionShellCallOutputTimeoutOutcome(value):
+                    case let .exit(value):
                         try value.encode(to: encoder)
-                    case let .FunctionShellCallOutputExitOutcome(value):
+                    case let .timeout(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -24695,11 +24803,11 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/ApplyPatchToolCall/operation`.
             @frozen public enum operationPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/ApplyPatchToolCall/operation/ApplyPatchCreateFileOperation`.
-                case ApplyPatchCreateFileOperation(Components.Schemas.ApplyPatchCreateFileOperation)
+                case create_file(Components.Schemas.ApplyPatchCreateFileOperation)
                 /// - Remark: Generated from `#/components/schemas/ApplyPatchToolCall/operation/ApplyPatchDeleteFileOperation`.
-                case ApplyPatchDeleteFileOperation(Components.Schemas.ApplyPatchDeleteFileOperation)
+                case delete_file(Components.Schemas.ApplyPatchDeleteFileOperation)
                 /// - Remark: Generated from `#/components/schemas/ApplyPatchToolCall/operation/ApplyPatchUpdateFileOperation`.
-                case ApplyPatchUpdateFileOperation(Components.Schemas.ApplyPatchUpdateFileOperation)
+                case update_file(Components.Schemas.ApplyPatchUpdateFileOperation)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -24710,12 +24818,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ApplyPatchCreateFileOperation", "#/components/schemas/ApplyPatchCreateFileOperation":
-                        self = .ApplyPatchCreateFileOperation(try .init(from: decoder))
-                    case "ApplyPatchDeleteFileOperation", "#/components/schemas/ApplyPatchDeleteFileOperation":
-                        self = .ApplyPatchDeleteFileOperation(try .init(from: decoder))
-                    case "ApplyPatchUpdateFileOperation", "#/components/schemas/ApplyPatchUpdateFileOperation":
-                        self = .ApplyPatchUpdateFileOperation(try .init(from: decoder))
+                    case "create_file":
+                        self = .create_file(try .init(from: decoder))
+                    case "delete_file":
+                        self = .delete_file(try .init(from: decoder))
+                    case "update_file":
+                        self = .update_file(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -24726,11 +24834,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ApplyPatchCreateFileOperation(value):
+                    case let .create_file(value):
                         try value.encode(to: encoder)
-                    case let .ApplyPatchDeleteFileOperation(value):
+                    case let .delete_file(value):
                         try value.encode(to: encoder)
-                    case let .ApplyPatchUpdateFileOperation(value):
+                    case let .update_file(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -25250,12 +25358,12 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/FunctionCallOutputItemParam/output/Case2Payload`.
                 @frozen public enum Case2PayloadPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/FunctionCallOutputItemParam/output/Case2Payload/InputTextContentParam`.
-                    case InputTextContentParam(Components.Schemas.InputTextContentParam)
-                    /// - Remark: Generated from `#/components/schemas/FunctionCallOutputItemParam/output/Case2Payload/InputImageContentParamAutoParam`.
-                    case InputImageContentParamAutoParam(Components.Schemas.InputImageContentParamAutoParam)
                     /// - Remark: Generated from `#/components/schemas/FunctionCallOutputItemParam/output/Case2Payload/InputFileContentParam`.
-                    case InputFileContentParam(Components.Schemas.InputFileContentParam)
+                    case input_file(Components.Schemas.InputFileContentParam)
+                    /// - Remark: Generated from `#/components/schemas/FunctionCallOutputItemParam/output/Case2Payload/InputImageContentParamAutoParam`.
+                    case input_image(Components.Schemas.InputImageContentParamAutoParam)
+                    /// - Remark: Generated from `#/components/schemas/FunctionCallOutputItemParam/output/Case2Payload/InputTextContentParam`.
+                    case input_text(Components.Schemas.InputTextContentParam)
                     public enum CodingKeys: String, CodingKey {
                         case _type = "type"
                     }
@@ -25266,12 +25374,12 @@ public enum Components {
                             forKey: ._type
                         )
                         switch discriminator {
-                        case "InputTextContentParam", "#/components/schemas/InputTextContentParam":
-                            self = .InputTextContentParam(try .init(from: decoder))
-                        case "InputImageContentParamAutoParam", "#/components/schemas/InputImageContentParamAutoParam":
-                            self = .InputImageContentParamAutoParam(try .init(from: decoder))
-                        case "InputFileContentParam", "#/components/schemas/InputFileContentParam":
-                            self = .InputFileContentParam(try .init(from: decoder))
+                        case "input_file":
+                            self = .input_file(try .init(from: decoder))
+                        case "input_image":
+                            self = .input_image(try .init(from: decoder))
+                        case "input_text":
+                            self = .input_text(try .init(from: decoder))
                         default:
                             throw Swift.DecodingError.unknownOneOfDiscriminator(
                                 discriminatorKey: CodingKeys._type,
@@ -25282,11 +25390,11 @@ public enum Components {
                     }
                     public func encode(to encoder: any Swift.Encoder) throws {
                         switch self {
-                        case let .InputTextContentParam(value):
+                        case let .input_file(value):
                             try value.encode(to: encoder)
-                        case let .InputImageContentParamAutoParam(value):
+                        case let .input_image(value):
                             try value.encode(to: encoder)
-                        case let .InputFileContentParam(value):
+                        case let .input_text(value):
                             try value.encode(to: encoder)
                         }
                     }
@@ -25581,10 +25689,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/ToolSearchOutputNamespaceToolParam/toolsPayload`.
             @frozen public enum toolsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/ToolSearchOutputNamespaceToolParam/toolsPayload/ToolSearchOutputFunctionToolParam`.
-                case ToolSearchOutputFunctionToolParam(Components.Schemas.ToolSearchOutputFunctionToolParam)
                 /// - Remark: Generated from `#/components/schemas/ToolSearchOutputNamespaceToolParam/toolsPayload/CustomToolParam`.
-                case CustomToolParam(Components.Schemas.CustomToolParam)
+                case custom(Components.Schemas.CustomToolParam)
+                /// - Remark: Generated from `#/components/schemas/ToolSearchOutputNamespaceToolParam/toolsPayload/ToolSearchOutputFunctionToolParam`.
+                case function(Components.Schemas.ToolSearchOutputFunctionToolParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -25595,10 +25703,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ToolSearchOutputFunctionToolParam", "#/components/schemas/ToolSearchOutputFunctionToolParam":
-                        self = .ToolSearchOutputFunctionToolParam(try .init(from: decoder))
-                    case "CustomToolParam", "#/components/schemas/CustomToolParam":
-                        self = .CustomToolParam(try .init(from: decoder))
+                    case "custom":
+                        self = .custom(try .init(from: decoder))
+                    case "function":
+                        self = .function(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -25609,9 +25717,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ToolSearchOutputFunctionToolParam(value):
+                    case let .custom(value):
                         try value.encode(to: encoder)
-                    case let .CustomToolParam(value):
+                    case let .function(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -25895,10 +26003,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/FunctionShellCallItemParam/environment`.
             @frozen public enum environmentPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/FunctionShellCallItemParam/environment/LocalEnvironmentParam`.
-                case LocalEnvironmentParam(Components.Schemas.LocalEnvironmentParam)
                 /// - Remark: Generated from `#/components/schemas/FunctionShellCallItemParam/environment/ContainerReferenceParam`.
-                case ContainerReferenceParam(Components.Schemas.ContainerReferenceParam)
+                case container_reference(Components.Schemas.ContainerReferenceParam)
+                /// - Remark: Generated from `#/components/schemas/FunctionShellCallItemParam/environment/LocalEnvironmentParam`.
+                case local(Components.Schemas.LocalEnvironmentParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -25909,10 +26017,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "LocalEnvironmentParam", "#/components/schemas/LocalEnvironmentParam":
-                        self = .LocalEnvironmentParam(try .init(from: decoder))
-                    case "ContainerReferenceParam", "#/components/schemas/ContainerReferenceParam":
-                        self = .ContainerReferenceParam(try .init(from: decoder))
+                    case "container_reference":
+                        self = .container_reference(try .init(from: decoder))
+                    case "local":
+                        self = .local(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -25923,9 +26031,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .LocalEnvironmentParam(value):
+                    case let .container_reference(value):
                         try value.encode(to: encoder)
-                    case let .ContainerReferenceParam(value):
+                    case let .local(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -26035,10 +26143,10 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputOutcomeParam`.
         @frozen public enum FunctionShellCallOutputOutcomeParam: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputOutcomeParam/FunctionShellCallOutputTimeoutOutcomeParam`.
-            case FunctionShellCallOutputTimeoutOutcomeParam(Components.Schemas.FunctionShellCallOutputTimeoutOutcomeParam)
             /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputOutcomeParam/FunctionShellCallOutputExitOutcomeParam`.
-            case FunctionShellCallOutputExitOutcomeParam(Components.Schemas.FunctionShellCallOutputExitOutcomeParam)
+            case exit(Components.Schemas.FunctionShellCallOutputExitOutcomeParam)
+            /// - Remark: Generated from `#/components/schemas/FunctionShellCallOutputOutcomeParam/FunctionShellCallOutputTimeoutOutcomeParam`.
+            case timeout(Components.Schemas.FunctionShellCallOutputTimeoutOutcomeParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -26049,10 +26157,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "FunctionShellCallOutputTimeoutOutcomeParam", "#/components/schemas/FunctionShellCallOutputTimeoutOutcomeParam":
-                    self = .FunctionShellCallOutputTimeoutOutcomeParam(try .init(from: decoder))
-                case "FunctionShellCallOutputExitOutcomeParam", "#/components/schemas/FunctionShellCallOutputExitOutcomeParam":
-                    self = .FunctionShellCallOutputExitOutcomeParam(try .init(from: decoder))
+                case "exit":
+                    self = .exit(try .init(from: decoder))
+                case "timeout":
+                    self = .timeout(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -26063,9 +26171,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .FunctionShellCallOutputTimeoutOutcomeParam(value):
+                case let .exit(value):
                     try value.encode(to: encoder)
-                case let .FunctionShellCallOutputExitOutcomeParam(value):
+                case let .timeout(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -26315,11 +26423,11 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/ApplyPatchOperationParam`.
         @frozen public enum ApplyPatchOperationParam: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/ApplyPatchOperationParam/ApplyPatchCreateFileOperationParam`.
-            case ApplyPatchCreateFileOperationParam(Components.Schemas.ApplyPatchCreateFileOperationParam)
+            case create_file(Components.Schemas.ApplyPatchCreateFileOperationParam)
             /// - Remark: Generated from `#/components/schemas/ApplyPatchOperationParam/ApplyPatchDeleteFileOperationParam`.
-            case ApplyPatchDeleteFileOperationParam(Components.Schemas.ApplyPatchDeleteFileOperationParam)
+            case delete_file(Components.Schemas.ApplyPatchDeleteFileOperationParam)
             /// - Remark: Generated from `#/components/schemas/ApplyPatchOperationParam/ApplyPatchUpdateFileOperationParam`.
-            case ApplyPatchUpdateFileOperationParam(Components.Schemas.ApplyPatchUpdateFileOperationParam)
+            case update_file(Components.Schemas.ApplyPatchUpdateFileOperationParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -26330,12 +26438,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "ApplyPatchCreateFileOperationParam", "#/components/schemas/ApplyPatchCreateFileOperationParam":
-                    self = .ApplyPatchCreateFileOperationParam(try .init(from: decoder))
-                case "ApplyPatchDeleteFileOperationParam", "#/components/schemas/ApplyPatchDeleteFileOperationParam":
-                    self = .ApplyPatchDeleteFileOperationParam(try .init(from: decoder))
-                case "ApplyPatchUpdateFileOperationParam", "#/components/schemas/ApplyPatchUpdateFileOperationParam":
-                    self = .ApplyPatchUpdateFileOperationParam(try .init(from: decoder))
+                case "create_file":
+                    self = .create_file(try .init(from: decoder))
+                case "delete_file":
+                    self = .delete_file(try .init(from: decoder))
+                case "update_file":
+                    self = .update_file(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -26346,11 +26454,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .ApplyPatchCreateFileOperationParam(value):
+                case let .create_file(value):
                     try value.encode(to: encoder)
-                case let .ApplyPatchDeleteFileOperationParam(value):
+                case let .delete_file(value):
                     try value.encode(to: encoder)
-                case let .ApplyPatchUpdateFileOperationParam(value):
+                case let .update_file(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -27108,14 +27216,14 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/PromptCacheDiagnostics`.
         @frozen public enum PromptCacheDiagnostics: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/PromptCacheDiagnostics/PromptCacheMissDiagnosticsBody`.
-            case PromptCacheMissDiagnosticsBody(Components.Schemas.PromptCacheMissDiagnosticsBody)
             /// - Remark: Generated from `#/components/schemas/PromptCacheDiagnostics/PromptCacheHitDiagnosticsBody`.
-            case PromptCacheHitDiagnosticsBody(Components.Schemas.PromptCacheHitDiagnosticsBody)
+            case cache_hit(Components.Schemas.PromptCacheHitDiagnosticsBody)
+            /// - Remark: Generated from `#/components/schemas/PromptCacheDiagnostics/PromptCacheMissDiagnosticsBody`.
+            case cache_miss(Components.Schemas.PromptCacheMissDiagnosticsBody)
             /// - Remark: Generated from `#/components/schemas/PromptCacheDiagnostics/PromptCacheComparisonResponseNotFoundDiagnosticsBody`.
-            case PromptCacheComparisonResponseNotFoundDiagnosticsBody(Components.Schemas.PromptCacheComparisonResponseNotFoundDiagnosticsBody)
+            case comparison_response_not_found(Components.Schemas.PromptCacheComparisonResponseNotFoundDiagnosticsBody)
             /// - Remark: Generated from `#/components/schemas/PromptCacheDiagnostics/PromptCacheUnavailableDiagnosticsBody`.
-            case PromptCacheUnavailableDiagnosticsBody(Components.Schemas.PromptCacheUnavailableDiagnosticsBody)
+            case unavailable(Components.Schemas.PromptCacheUnavailableDiagnosticsBody)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -27126,14 +27234,14 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "PromptCacheMissDiagnosticsBody", "#/components/schemas/PromptCacheMissDiagnosticsBody":
-                    self = .PromptCacheMissDiagnosticsBody(try .init(from: decoder))
-                case "PromptCacheHitDiagnosticsBody", "#/components/schemas/PromptCacheHitDiagnosticsBody":
-                    self = .PromptCacheHitDiagnosticsBody(try .init(from: decoder))
-                case "PromptCacheComparisonResponseNotFoundDiagnosticsBody", "#/components/schemas/PromptCacheComparisonResponseNotFoundDiagnosticsBody":
-                    self = .PromptCacheComparisonResponseNotFoundDiagnosticsBody(try .init(from: decoder))
-                case "PromptCacheUnavailableDiagnosticsBody", "#/components/schemas/PromptCacheUnavailableDiagnosticsBody":
-                    self = .PromptCacheUnavailableDiagnosticsBody(try .init(from: decoder))
+                case "cache_hit":
+                    self = .cache_hit(try .init(from: decoder))
+                case "cache_miss":
+                    self = .cache_miss(try .init(from: decoder))
+                case "comparison_response_not_found":
+                    self = .comparison_response_not_found(try .init(from: decoder))
+                case "unavailable":
+                    self = .unavailable(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -27144,13 +27252,13 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .PromptCacheMissDiagnosticsBody(value):
+                case let .cache_hit(value):
                     try value.encode(to: encoder)
-                case let .PromptCacheHitDiagnosticsBody(value):
+                case let .cache_miss(value):
                     try value.encode(to: encoder)
-                case let .PromptCacheComparisonResponseNotFoundDiagnosticsBody(value):
+                case let .comparison_response_not_found(value):
                     try value.encode(to: encoder)
-                case let .PromptCacheUnavailableDiagnosticsBody(value):
+                case let .unavailable(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -27206,10 +27314,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Moderation/input`.
             @frozen public enum inputPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/Moderation/input/ModerationResultBody`.
-                case ModerationResultBody(Components.Schemas.ModerationResultBody)
                 /// - Remark: Generated from `#/components/schemas/Moderation/input/ModerationErrorBody`.
-                case ModerationErrorBody(Components.Schemas.ModerationErrorBody)
+                case error(Components.Schemas.ModerationErrorBody)
+                /// - Remark: Generated from `#/components/schemas/Moderation/input/ModerationResultBody`.
+                case moderation_result(Components.Schemas.ModerationResultBody)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -27220,10 +27328,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ModerationResultBody", "#/components/schemas/ModerationResultBody":
-                        self = .ModerationResultBody(try .init(from: decoder))
-                    case "ModerationErrorBody", "#/components/schemas/ModerationErrorBody":
-                        self = .ModerationErrorBody(try .init(from: decoder))
+                    case "error":
+                        self = .error(try .init(from: decoder))
+                    case "moderation_result":
+                        self = .moderation_result(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -27234,9 +27342,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ModerationResultBody(value):
+                    case let .error(value):
                         try value.encode(to: encoder)
-                    case let .ModerationErrorBody(value):
+                    case let .moderation_result(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -27249,10 +27357,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Moderation/output`.
             @frozen public enum outputPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/Moderation/output/ModerationResultBody`.
-                case ModerationResultBody(Components.Schemas.ModerationResultBody)
                 /// - Remark: Generated from `#/components/schemas/Moderation/output/ModerationErrorBody`.
-                case ModerationErrorBody(Components.Schemas.ModerationErrorBody)
+                case error(Components.Schemas.ModerationErrorBody)
+                /// - Remark: Generated from `#/components/schemas/Moderation/output/ModerationResultBody`.
+                case moderation_result(Components.Schemas.ModerationResultBody)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -27263,10 +27371,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "ModerationResultBody", "#/components/schemas/ModerationResultBody":
-                        self = .ModerationResultBody(try .init(from: decoder))
-                    case "ModerationErrorBody", "#/components/schemas/ModerationErrorBody":
-                        self = .ModerationErrorBody(try .init(from: decoder))
+                    case "error":
+                        self = .error(try .init(from: decoder))
+                    case "moderation_result":
+                        self = .moderation_result(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -27277,9 +27385,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .ModerationResultBody(value):
+                    case let .error(value):
                         try value.encode(to: encoder)
-                    case let .ModerationErrorBody(value):
+                    case let .moderation_result(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -28085,62 +28193,62 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/ItemField`.
         @frozen public enum ItemField: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/ItemField/Message`.
-            case Message(Components.Schemas.Message)
-            /// - Remark: Generated from `#/components/schemas/ItemField/Program`.
-            case Program(Components.Schemas.Program)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ProgramOutput`.
-            case ProgramOutput(Components.Schemas.ProgramOutput)
-            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionToolCall`.
-            case FunctionToolCall(Components.Schemas.FunctionToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ToolSearchCall`.
-            case ToolSearchCall(Components.Schemas.ToolSearchCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ToolSearchOutput`.
-            case ToolSearchOutput(Components.Schemas.ToolSearchOutput)
             /// - Remark: Generated from `#/components/schemas/ItemField/AdditionalTools`.
-            case AdditionalTools(Components.Schemas.AdditionalTools)
-            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionToolCallOutput`.
-            case FunctionToolCallOutput(Components.Schemas.FunctionToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/ItemField/FileSearchToolCall`.
-            case FileSearchToolCall(Components.Schemas.FileSearchToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/WebSearchToolCall`.
-            case WebSearchToolCall(Components.Schemas.WebSearchToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ImageGenToolCall`.
-            case ImageGenToolCall(Components.Schemas.ImageGenToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ComputerToolCall`.
-            case ComputerToolCall(Components.Schemas.ComputerToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ComputerToolCallOutputResource`.
-            case ComputerToolCallOutputResource(Components.Schemas.ComputerToolCallOutputResource)
-            /// - Remark: Generated from `#/components/schemas/ItemField/ReasoningItem`.
-            case ReasoningItem(Components.Schemas.ReasoningItem)
-            /// - Remark: Generated from `#/components/schemas/ItemField/CompactionBody`.
-            case CompactionBody(Components.Schemas.CompactionBody)
-            /// - Remark: Generated from `#/components/schemas/ItemField/CodeInterpreterToolCall`.
-            case CodeInterpreterToolCall(Components.Schemas.CodeInterpreterToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/LocalShellToolCall`.
-            case LocalShellToolCall(Components.Schemas.LocalShellToolCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/LocalShellToolCallOutput`.
-            case LocalShellToolCallOutput(Components.Schemas.LocalShellToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionShellCall`.
-            case FunctionShellCall(Components.Schemas.FunctionShellCall)
-            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionShellCallOutput`.
-            case FunctionShellCallOutput(Components.Schemas.FunctionShellCallOutput)
+            case additional_tools(Components.Schemas.AdditionalTools)
             /// - Remark: Generated from `#/components/schemas/ItemField/ApplyPatchToolCall`.
-            case ApplyPatchToolCall(Components.Schemas.ApplyPatchToolCall)
+            case apply_patch_call(Components.Schemas.ApplyPatchToolCall)
             /// - Remark: Generated from `#/components/schemas/ItemField/ApplyPatchToolCallOutput`.
-            case ApplyPatchToolCallOutput(Components.Schemas.ApplyPatchToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/ItemField/MCPListTools`.
-            case MCPListTools(Components.Schemas.MCPListTools)
-            /// - Remark: Generated from `#/components/schemas/ItemField/MCPApprovalRequest`.
-            case MCPApprovalRequest(Components.Schemas.MCPApprovalRequest)
-            /// - Remark: Generated from `#/components/schemas/ItemField/MCPApprovalResponseResource`.
-            case MCPApprovalResponseResource(Components.Schemas.MCPApprovalResponseResource)
-            /// - Remark: Generated from `#/components/schemas/ItemField/MCPToolCall`.
-            case MCPToolCall(Components.Schemas.MCPToolCall)
+            case apply_patch_call_output(Components.Schemas.ApplyPatchToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/CodeInterpreterToolCall`.
+            case code_interpreter_call(Components.Schemas.CodeInterpreterToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/CompactionBody`.
+            case compaction(Components.Schemas.CompactionBody)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ComputerToolCall`.
+            case computer_call(Components.Schemas.ComputerToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ComputerToolCallOutputResource`.
+            case computer_call_output(Components.Schemas.ComputerToolCallOutputResource)
             /// - Remark: Generated from `#/components/schemas/ItemField/CustomToolCall`.
-            case CustomToolCall(Components.Schemas.CustomToolCall)
+            case custom_tool_call(Components.Schemas.CustomToolCall)
             /// - Remark: Generated from `#/components/schemas/ItemField/CustomToolCallOutput`.
-            case CustomToolCallOutput(Components.Schemas.CustomToolCallOutput)
+            case custom_tool_call_output(Components.Schemas.CustomToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/FileSearchToolCall`.
+            case file_search_call(Components.Schemas.FileSearchToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionToolCall`.
+            case function_call(Components.Schemas.FunctionToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionToolCallOutput`.
+            case function_call_output(Components.Schemas.FunctionToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ImageGenToolCall`.
+            case image_generation_call(Components.Schemas.ImageGenToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/LocalShellToolCall`.
+            case local_shell_call(Components.Schemas.LocalShellToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/LocalShellToolCallOutput`.
+            case local_shell_call_output(Components.Schemas.LocalShellToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/MCPApprovalRequest`.
+            case mcp_approval_request(Components.Schemas.MCPApprovalRequest)
+            /// - Remark: Generated from `#/components/schemas/ItemField/MCPApprovalResponseResource`.
+            case mcp_approval_response(Components.Schemas.MCPApprovalResponseResource)
+            /// - Remark: Generated from `#/components/schemas/ItemField/MCPToolCall`.
+            case mcp_call(Components.Schemas.MCPToolCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/MCPListTools`.
+            case mcp_list_tools(Components.Schemas.MCPListTools)
+            /// - Remark: Generated from `#/components/schemas/ItemField/Message`.
+            case message(Components.Schemas.Message)
+            /// - Remark: Generated from `#/components/schemas/ItemField/Program`.
+            case program(Components.Schemas.Program)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ProgramOutput`.
+            case program_output(Components.Schemas.ProgramOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ReasoningItem`.
+            case reasoning(Components.Schemas.ReasoningItem)
+            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionShellCall`.
+            case shell_call(Components.Schemas.FunctionShellCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/FunctionShellCallOutput`.
+            case shell_call_output(Components.Schemas.FunctionShellCallOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ToolSearchCall`.
+            case tool_search_call(Components.Schemas.ToolSearchCall)
+            /// - Remark: Generated from `#/components/schemas/ItemField/ToolSearchOutput`.
+            case tool_search_output(Components.Schemas.ToolSearchOutput)
+            /// - Remark: Generated from `#/components/schemas/ItemField/WebSearchToolCall`.
+            case web_search_call(Components.Schemas.WebSearchToolCall)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -28151,62 +28259,62 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "Message", "#/components/schemas/Message":
-                    self = .Message(try .init(from: decoder))
-                case "Program", "#/components/schemas/Program":
-                    self = .Program(try .init(from: decoder))
-                case "ProgramOutput", "#/components/schemas/ProgramOutput":
-                    self = .ProgramOutput(try .init(from: decoder))
-                case "FunctionToolCall", "#/components/schemas/FunctionToolCall":
-                    self = .FunctionToolCall(try .init(from: decoder))
-                case "ToolSearchCall", "#/components/schemas/ToolSearchCall":
-                    self = .ToolSearchCall(try .init(from: decoder))
-                case "ToolSearchOutput", "#/components/schemas/ToolSearchOutput":
-                    self = .ToolSearchOutput(try .init(from: decoder))
-                case "AdditionalTools", "#/components/schemas/AdditionalTools":
-                    self = .AdditionalTools(try .init(from: decoder))
-                case "FunctionToolCallOutput", "#/components/schemas/FunctionToolCallOutput":
-                    self = .FunctionToolCallOutput(try .init(from: decoder))
-                case "FileSearchToolCall", "#/components/schemas/FileSearchToolCall":
-                    self = .FileSearchToolCall(try .init(from: decoder))
-                case "WebSearchToolCall", "#/components/schemas/WebSearchToolCall":
-                    self = .WebSearchToolCall(try .init(from: decoder))
-                case "ImageGenToolCall", "#/components/schemas/ImageGenToolCall":
-                    self = .ImageGenToolCall(try .init(from: decoder))
-                case "ComputerToolCall", "#/components/schemas/ComputerToolCall":
-                    self = .ComputerToolCall(try .init(from: decoder))
-                case "ComputerToolCallOutputResource", "#/components/schemas/ComputerToolCallOutputResource":
-                    self = .ComputerToolCallOutputResource(try .init(from: decoder))
-                case "ReasoningItem", "#/components/schemas/ReasoningItem":
-                    self = .ReasoningItem(try .init(from: decoder))
-                case "CompactionBody", "#/components/schemas/CompactionBody":
-                    self = .CompactionBody(try .init(from: decoder))
-                case "CodeInterpreterToolCall", "#/components/schemas/CodeInterpreterToolCall":
-                    self = .CodeInterpreterToolCall(try .init(from: decoder))
-                case "LocalShellToolCall", "#/components/schemas/LocalShellToolCall":
-                    self = .LocalShellToolCall(try .init(from: decoder))
-                case "LocalShellToolCallOutput", "#/components/schemas/LocalShellToolCallOutput":
-                    self = .LocalShellToolCallOutput(try .init(from: decoder))
-                case "FunctionShellCall", "#/components/schemas/FunctionShellCall":
-                    self = .FunctionShellCall(try .init(from: decoder))
-                case "FunctionShellCallOutput", "#/components/schemas/FunctionShellCallOutput":
-                    self = .FunctionShellCallOutput(try .init(from: decoder))
-                case "ApplyPatchToolCall", "#/components/schemas/ApplyPatchToolCall":
-                    self = .ApplyPatchToolCall(try .init(from: decoder))
-                case "ApplyPatchToolCallOutput", "#/components/schemas/ApplyPatchToolCallOutput":
-                    self = .ApplyPatchToolCallOutput(try .init(from: decoder))
-                case "MCPListTools", "#/components/schemas/MCPListTools":
-                    self = .MCPListTools(try .init(from: decoder))
-                case "MCPApprovalRequest", "#/components/schemas/MCPApprovalRequest":
-                    self = .MCPApprovalRequest(try .init(from: decoder))
-                case "MCPApprovalResponseResource", "#/components/schemas/MCPApprovalResponseResource":
-                    self = .MCPApprovalResponseResource(try .init(from: decoder))
-                case "MCPToolCall", "#/components/schemas/MCPToolCall":
-                    self = .MCPToolCall(try .init(from: decoder))
-                case "CustomToolCall", "#/components/schemas/CustomToolCall":
-                    self = .CustomToolCall(try .init(from: decoder))
-                case "CustomToolCallOutput", "#/components/schemas/CustomToolCallOutput":
-                    self = .CustomToolCallOutput(try .init(from: decoder))
+                case "additional_tools":
+                    self = .additional_tools(try .init(from: decoder))
+                case "apply_patch_call":
+                    self = .apply_patch_call(try .init(from: decoder))
+                case "apply_patch_call_output":
+                    self = .apply_patch_call_output(try .init(from: decoder))
+                case "code_interpreter_call":
+                    self = .code_interpreter_call(try .init(from: decoder))
+                case "compaction":
+                    self = .compaction(try .init(from: decoder))
+                case "computer_call":
+                    self = .computer_call(try .init(from: decoder))
+                case "computer_call_output":
+                    self = .computer_call_output(try .init(from: decoder))
+                case "custom_tool_call":
+                    self = .custom_tool_call(try .init(from: decoder))
+                case "custom_tool_call_output":
+                    self = .custom_tool_call_output(try .init(from: decoder))
+                case "file_search_call":
+                    self = .file_search_call(try .init(from: decoder))
+                case "function_call":
+                    self = .function_call(try .init(from: decoder))
+                case "function_call_output":
+                    self = .function_call_output(try .init(from: decoder))
+                case "image_generation_call":
+                    self = .image_generation_call(try .init(from: decoder))
+                case "local_shell_call":
+                    self = .local_shell_call(try .init(from: decoder))
+                case "local_shell_call_output":
+                    self = .local_shell_call_output(try .init(from: decoder))
+                case "mcp_approval_request":
+                    self = .mcp_approval_request(try .init(from: decoder))
+                case "mcp_approval_response":
+                    self = .mcp_approval_response(try .init(from: decoder))
+                case "mcp_call":
+                    self = .mcp_call(try .init(from: decoder))
+                case "mcp_list_tools":
+                    self = .mcp_list_tools(try .init(from: decoder))
+                case "message":
+                    self = .message(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
+                case "program_output":
+                    self = .program_output(try .init(from: decoder))
+                case "reasoning":
+                    self = .reasoning(try .init(from: decoder))
+                case "shell_call":
+                    self = .shell_call(try .init(from: decoder))
+                case "shell_call_output":
+                    self = .shell_call_output(try .init(from: decoder))
+                case "tool_search_call":
+                    self = .tool_search_call(try .init(from: decoder))
+                case "tool_search_output":
+                    self = .tool_search_output(try .init(from: decoder))
+                case "web_search_call":
+                    self = .web_search_call(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -28217,61 +28325,61 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .Message(value):
+                case let .additional_tools(value):
                     try value.encode(to: encoder)
-                case let .Program(value):
+                case let .apply_patch_call(value):
                     try value.encode(to: encoder)
-                case let .ProgramOutput(value):
+                case let .apply_patch_call_output(value):
                     try value.encode(to: encoder)
-                case let .FunctionToolCall(value):
+                case let .code_interpreter_call(value):
                     try value.encode(to: encoder)
-                case let .ToolSearchCall(value):
+                case let .compaction(value):
                     try value.encode(to: encoder)
-                case let .ToolSearchOutput(value):
+                case let .computer_call(value):
                     try value.encode(to: encoder)
-                case let .AdditionalTools(value):
+                case let .computer_call_output(value):
                     try value.encode(to: encoder)
-                case let .FunctionToolCallOutput(value):
+                case let .custom_tool_call(value):
                     try value.encode(to: encoder)
-                case let .FileSearchToolCall(value):
+                case let .custom_tool_call_output(value):
                     try value.encode(to: encoder)
-                case let .WebSearchToolCall(value):
+                case let .file_search_call(value):
                     try value.encode(to: encoder)
-                case let .ImageGenToolCall(value):
+                case let .function_call(value):
                     try value.encode(to: encoder)
-                case let .ComputerToolCall(value):
+                case let .function_call_output(value):
                     try value.encode(to: encoder)
-                case let .ComputerToolCallOutputResource(value):
+                case let .image_generation_call(value):
                     try value.encode(to: encoder)
-                case let .ReasoningItem(value):
+                case let .local_shell_call(value):
                     try value.encode(to: encoder)
-                case let .CompactionBody(value):
+                case let .local_shell_call_output(value):
                     try value.encode(to: encoder)
-                case let .CodeInterpreterToolCall(value):
+                case let .mcp_approval_request(value):
                     try value.encode(to: encoder)
-                case let .LocalShellToolCall(value):
+                case let .mcp_approval_response(value):
                     try value.encode(to: encoder)
-                case let .LocalShellToolCallOutput(value):
+                case let .mcp_call(value):
                     try value.encode(to: encoder)
-                case let .FunctionShellCall(value):
+                case let .mcp_list_tools(value):
                     try value.encode(to: encoder)
-                case let .FunctionShellCallOutput(value):
+                case let .message(value):
                     try value.encode(to: encoder)
-                case let .ApplyPatchToolCall(value):
+                case let .program(value):
                     try value.encode(to: encoder)
-                case let .ApplyPatchToolCallOutput(value):
+                case let .program_output(value):
                     try value.encode(to: encoder)
-                case let .MCPListTools(value):
+                case let .reasoning(value):
                     try value.encode(to: encoder)
-                case let .MCPApprovalRequest(value):
+                case let .shell_call(value):
                     try value.encode(to: encoder)
-                case let .MCPApprovalResponseResource(value):
+                case let .shell_call_output(value):
                     try value.encode(to: encoder)
-                case let .MCPToolCall(value):
+                case let .tool_search_call(value):
                     try value.encode(to: encoder)
-                case let .CustomToolCall(value):
+                case let .tool_search_output(value):
                     try value.encode(to: encoder)
-                case let .CustomToolCallOutput(value):
+                case let .web_search_call(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -29542,38 +29650,42 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaTool`.
         @frozen public enum BetaTool: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaFunctionTool`.
-            case BetaFunctionTool(Components.Schemas.BetaFunctionTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaFileSearchTool`.
-            case BetaFileSearchTool(Components.Schemas.BetaFileSearchTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaComputerTool`.
-            case BetaComputerTool(Components.Schemas.BetaComputerTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaComputerUsePreviewTool`.
-            case BetaComputerUsePreviewTool(Components.Schemas.BetaComputerUsePreviewTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaWebSearchTool`.
-            case BetaWebSearchTool(Components.Schemas.BetaWebSearchTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaMCPTool`.
-            case BetaMCPTool(Components.Schemas.BetaMCPTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaCodeInterpreterTool`.
-            case BetaCodeInterpreterTool(Components.Schemas.BetaCodeInterpreterTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaProgrammaticToolCallingParam`.
-            case BetaProgrammaticToolCallingParam(Components.Schemas.BetaProgrammaticToolCallingParam)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaImageGenTool`.
-            case BetaImageGenTool(Components.Schemas.BetaImageGenTool)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaLocalShellToolParam`.
-            case BetaLocalShellToolParam(Components.Schemas.BetaLocalShellToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaFunctionShellToolParam`.
-            case BetaFunctionShellToolParam(Components.Schemas.BetaFunctionShellToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaCustomToolParam`.
-            case BetaCustomToolParam(Components.Schemas.BetaCustomToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaNamespaceToolParam`.
-            case BetaNamespaceToolParam(Components.Schemas.BetaNamespaceToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaToolSearchToolParam`.
-            case BetaToolSearchToolParam(Components.Schemas.BetaToolSearchToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaWebSearchPreviewTool`.
-            case BetaWebSearchPreviewTool(Components.Schemas.BetaWebSearchPreviewTool)
             /// - Remark: Generated from `#/components/schemas/BetaTool/BetaApplyPatchToolParam`.
-            case BetaApplyPatchToolParam(Components.Schemas.BetaApplyPatchToolParam)
+            case apply_patch(Components.Schemas.BetaApplyPatchToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaCodeInterpreterTool`.
+            case code_interpreter(Components.Schemas.BetaCodeInterpreterTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaComputerTool`.
+            case computer(Components.Schemas.BetaComputerTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaComputerUsePreviewTool`.
+            case computer_use_preview(Components.Schemas.BetaComputerUsePreviewTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaCustomToolParam`.
+            case custom(Components.Schemas.BetaCustomToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaFileSearchTool`.
+            case file_search(Components.Schemas.BetaFileSearchTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaFunctionTool`.
+            case function(Components.Schemas.BetaFunctionTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaImageGenTool`.
+            case image_generation(Components.Schemas.BetaImageGenTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaLocalShellToolParam`.
+            case local_shell(Components.Schemas.BetaLocalShellToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaMCPTool`.
+            case mcp(Components.Schemas.BetaMCPTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaNamespaceToolParam`.
+            case namespace(Components.Schemas.BetaNamespaceToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaProgrammaticToolCallingParam`.
+            case programmatic_tool_calling(Components.Schemas.BetaProgrammaticToolCallingParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaFunctionShellToolParam`.
+            case shell(Components.Schemas.BetaFunctionShellToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaToolSearchToolParam`.
+            case tool_search(Components.Schemas.BetaToolSearchToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaWebSearchTool`.
+            case web_search(Components.Schemas.BetaWebSearchTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaWebSearchTool`.
+            case web_search_2025_08_26(Components.Schemas.BetaWebSearchTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaWebSearchPreviewTool`.
+            case web_search_preview(Components.Schemas.BetaWebSearchPreviewTool)
+            /// - Remark: Generated from `#/components/schemas/BetaTool/BetaWebSearchPreviewTool`.
+            case web_search_preview_2025_03_11(Components.Schemas.BetaWebSearchPreviewTool)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -29584,38 +29696,42 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaFunctionTool", "#/components/schemas/BetaFunctionTool":
-                    self = .BetaFunctionTool(try .init(from: decoder))
-                case "BetaFileSearchTool", "#/components/schemas/BetaFileSearchTool":
-                    self = .BetaFileSearchTool(try .init(from: decoder))
-                case "BetaComputerTool", "#/components/schemas/BetaComputerTool":
-                    self = .BetaComputerTool(try .init(from: decoder))
-                case "BetaComputerUsePreviewTool", "#/components/schemas/BetaComputerUsePreviewTool":
-                    self = .BetaComputerUsePreviewTool(try .init(from: decoder))
-                case "BetaWebSearchTool", "#/components/schemas/BetaWebSearchTool":
-                    self = .BetaWebSearchTool(try .init(from: decoder))
-                case "BetaMCPTool", "#/components/schemas/BetaMCPTool":
-                    self = .BetaMCPTool(try .init(from: decoder))
-                case "BetaCodeInterpreterTool", "#/components/schemas/BetaCodeInterpreterTool":
-                    self = .BetaCodeInterpreterTool(try .init(from: decoder))
-                case "BetaProgrammaticToolCallingParam", "#/components/schemas/BetaProgrammaticToolCallingParam":
-                    self = .BetaProgrammaticToolCallingParam(try .init(from: decoder))
-                case "BetaImageGenTool", "#/components/schemas/BetaImageGenTool":
-                    self = .BetaImageGenTool(try .init(from: decoder))
-                case "BetaLocalShellToolParam", "#/components/schemas/BetaLocalShellToolParam":
-                    self = .BetaLocalShellToolParam(try .init(from: decoder))
-                case "BetaFunctionShellToolParam", "#/components/schemas/BetaFunctionShellToolParam":
-                    self = .BetaFunctionShellToolParam(try .init(from: decoder))
-                case "BetaCustomToolParam", "#/components/schemas/BetaCustomToolParam":
-                    self = .BetaCustomToolParam(try .init(from: decoder))
-                case "BetaNamespaceToolParam", "#/components/schemas/BetaNamespaceToolParam":
-                    self = .BetaNamespaceToolParam(try .init(from: decoder))
-                case "BetaToolSearchToolParam", "#/components/schemas/BetaToolSearchToolParam":
-                    self = .BetaToolSearchToolParam(try .init(from: decoder))
-                case "BetaWebSearchPreviewTool", "#/components/schemas/BetaWebSearchPreviewTool":
-                    self = .BetaWebSearchPreviewTool(try .init(from: decoder))
-                case "BetaApplyPatchToolParam", "#/components/schemas/BetaApplyPatchToolParam":
-                    self = .BetaApplyPatchToolParam(try .init(from: decoder))
+                case "apply_patch":
+                    self = .apply_patch(try .init(from: decoder))
+                case "code_interpreter":
+                    self = .code_interpreter(try .init(from: decoder))
+                case "computer":
+                    self = .computer(try .init(from: decoder))
+                case "computer_use_preview":
+                    self = .computer_use_preview(try .init(from: decoder))
+                case "custom":
+                    self = .custom(try .init(from: decoder))
+                case "file_search":
+                    self = .file_search(try .init(from: decoder))
+                case "function":
+                    self = .function(try .init(from: decoder))
+                case "image_generation":
+                    self = .image_generation(try .init(from: decoder))
+                case "local_shell":
+                    self = .local_shell(try .init(from: decoder))
+                case "mcp":
+                    self = .mcp(try .init(from: decoder))
+                case "namespace":
+                    self = .namespace(try .init(from: decoder))
+                case "programmatic_tool_calling":
+                    self = .programmatic_tool_calling(try .init(from: decoder))
+                case "shell":
+                    self = .shell(try .init(from: decoder))
+                case "tool_search":
+                    self = .tool_search(try .init(from: decoder))
+                case "web_search":
+                    self = .web_search(try .init(from: decoder))
+                case "web_search_2025_08_26":
+                    self = .web_search_2025_08_26(try .init(from: decoder))
+                case "web_search_preview":
+                    self = .web_search_preview(try .init(from: decoder))
+                case "web_search_preview_2025_03_11":
+                    self = .web_search_preview_2025_03_11(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -29626,37 +29742,41 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaFunctionTool(value):
+                case let .apply_patch(value):
                     try value.encode(to: encoder)
-                case let .BetaFileSearchTool(value):
+                case let .code_interpreter(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerTool(value):
+                case let .computer(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerUsePreviewTool(value):
+                case let .computer_use_preview(value):
                     try value.encode(to: encoder)
-                case let .BetaWebSearchTool(value):
+                case let .custom(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPTool(value):
+                case let .file_search(value):
                     try value.encode(to: encoder)
-                case let .BetaCodeInterpreterTool(value):
+                case let .function(value):
                     try value.encode(to: encoder)
-                case let .BetaProgrammaticToolCallingParam(value):
+                case let .image_generation(value):
                     try value.encode(to: encoder)
-                case let .BetaImageGenTool(value):
+                case let .local_shell(value):
                     try value.encode(to: encoder)
-                case let .BetaLocalShellToolParam(value):
+                case let .mcp(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellToolParam(value):
+                case let .namespace(value):
                     try value.encode(to: encoder)
-                case let .BetaCustomToolParam(value):
+                case let .programmatic_tool_calling(value):
                     try value.encode(to: encoder)
-                case let .BetaNamespaceToolParam(value):
+                case let .shell(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchToolParam(value):
+                case let .tool_search(value):
                     try value.encode(to: encoder)
-                case let .BetaWebSearchPreviewTool(value):
+                case let .web_search(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchToolParam(value):
+                case let .web_search_2025_08_26(value):
+                    try value.encode(to: encoder)
+                case let .web_search_preview(value):
+                    try value.encode(to: encoder)
+                case let .web_search_preview_2025_03_11(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -29903,10 +30023,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaNamespaceToolParam/toolsPayload`.
             @frozen public enum toolsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaNamespaceToolParam/toolsPayload/BetaFunctionToolParam`.
-                case BetaFunctionToolParam(Components.Schemas.BetaFunctionToolParam)
                 /// - Remark: Generated from `#/components/schemas/BetaNamespaceToolParam/toolsPayload/BetaCustomToolParam`.
-                case BetaCustomToolParam(Components.Schemas.BetaCustomToolParam)
+                case custom(Components.Schemas.BetaCustomToolParam)
+                /// - Remark: Generated from `#/components/schemas/BetaNamespaceToolParam/toolsPayload/BetaFunctionToolParam`.
+                case function(Components.Schemas.BetaFunctionToolParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -29917,10 +30037,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaFunctionToolParam", "#/components/schemas/BetaFunctionToolParam":
-                        self = .BetaFunctionToolParam(try .init(from: decoder))
-                    case "BetaCustomToolParam", "#/components/schemas/BetaCustomToolParam":
-                        self = .BetaCustomToolParam(try .init(from: decoder))
+                    case "custom":
+                        self = .custom(try .init(from: decoder))
+                    case "function":
+                        self = .function(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -29931,9 +30051,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaFunctionToolParam(value):
+                    case let .custom(value):
                         try value.encode(to: encoder)
-                    case let .BetaCustomToolParam(value):
+                    case let .function(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -30001,10 +30121,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaCustomToolParam/format`.
             @frozen public enum formatPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaCustomToolParam/format/BetaCustomTextFormatParam`.
-                case BetaCustomTextFormatParam(Components.Schemas.BetaCustomTextFormatParam)
                 /// - Remark: Generated from `#/components/schemas/BetaCustomToolParam/format/BetaCustomGrammarFormatParam`.
-                case BetaCustomGrammarFormatParam(Components.Schemas.BetaCustomGrammarFormatParam)
+                case grammar(Components.Schemas.BetaCustomGrammarFormatParam)
+                /// - Remark: Generated from `#/components/schemas/BetaCustomToolParam/format/BetaCustomTextFormatParam`.
+                case text(Components.Schemas.BetaCustomTextFormatParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -30015,10 +30135,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaCustomTextFormatParam", "#/components/schemas/BetaCustomTextFormatParam":
-                        self = .BetaCustomTextFormatParam(try .init(from: decoder))
-                    case "BetaCustomGrammarFormatParam", "#/components/schemas/BetaCustomGrammarFormatParam":
-                        self = .BetaCustomGrammarFormatParam(try .init(from: decoder))
+                    case "grammar":
+                        self = .grammar(try .init(from: decoder))
+                    case "text":
+                        self = .text(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -30029,9 +30149,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaCustomTextFormatParam(value):
+                    case let .grammar(value):
                         try value.encode(to: encoder)
-                    case let .BetaCustomGrammarFormatParam(value):
+                    case let .text(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -30274,11 +30394,11 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellToolParam/environment`.
             @frozen public enum environmentPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/BetaFunctionShellToolParam/environment/BetaContainerAutoParam`.
-                case BetaContainerAutoParam(Components.Schemas.BetaContainerAutoParam)
-                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellToolParam/environment/BetaLocalEnvironmentParam`.
-                case BetaLocalEnvironmentParam(Components.Schemas.BetaLocalEnvironmentParam)
+                case container_auto(Components.Schemas.BetaContainerAutoParam)
                 /// - Remark: Generated from `#/components/schemas/BetaFunctionShellToolParam/environment/BetaContainerReferenceParam`.
-                case BetaContainerReferenceParam(Components.Schemas.BetaContainerReferenceParam)
+                case container_reference(Components.Schemas.BetaContainerReferenceParam)
+                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellToolParam/environment/BetaLocalEnvironmentParam`.
+                case local(Components.Schemas.BetaLocalEnvironmentParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -30289,12 +30409,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaContainerAutoParam", "#/components/schemas/BetaContainerAutoParam":
-                        self = .BetaContainerAutoParam(try .init(from: decoder))
-                    case "BetaLocalEnvironmentParam", "#/components/schemas/BetaLocalEnvironmentParam":
-                        self = .BetaLocalEnvironmentParam(try .init(from: decoder))
-                    case "BetaContainerReferenceParam", "#/components/schemas/BetaContainerReferenceParam":
-                        self = .BetaContainerReferenceParam(try .init(from: decoder))
+                    case "container_auto":
+                        self = .container_auto(try .init(from: decoder))
+                    case "container_reference":
+                        self = .container_reference(try .init(from: decoder))
+                    case "local":
+                        self = .local(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -30305,11 +30425,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaContainerAutoParam(value):
+                    case let .container_auto(value):
                         try value.encode(to: encoder)
-                    case let .BetaLocalEnvironmentParam(value):
+                    case let .container_reference(value):
                         try value.encode(to: encoder)
-                    case let .BetaContainerReferenceParam(value):
+                    case let .local(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -30466,10 +30586,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/network_policy`.
             @frozen public enum network_policyPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/network_policy/BetaContainerNetworkPolicyDisabledParam`.
-                case BetaContainerNetworkPolicyDisabledParam(Components.Schemas.BetaContainerNetworkPolicyDisabledParam)
                 /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/network_policy/BetaContainerNetworkPolicyAllowlistParam`.
-                case BetaContainerNetworkPolicyAllowlistParam(Components.Schemas.BetaContainerNetworkPolicyAllowlistParam)
+                case allowlist(Components.Schemas.BetaContainerNetworkPolicyAllowlistParam)
+                /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/network_policy/BetaContainerNetworkPolicyDisabledParam`.
+                case disabled(Components.Schemas.BetaContainerNetworkPolicyDisabledParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -30480,10 +30600,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaContainerNetworkPolicyDisabledParam", "#/components/schemas/BetaContainerNetworkPolicyDisabledParam":
-                        self = .BetaContainerNetworkPolicyDisabledParam(try .init(from: decoder))
-                    case "BetaContainerNetworkPolicyAllowlistParam", "#/components/schemas/BetaContainerNetworkPolicyAllowlistParam":
-                        self = .BetaContainerNetworkPolicyAllowlistParam(try .init(from: decoder))
+                    case "allowlist":
+                        self = .allowlist(try .init(from: decoder))
+                    case "disabled":
+                        self = .disabled(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -30494,9 +30614,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaContainerNetworkPolicyDisabledParam(value):
+                    case let .allowlist(value):
                         try value.encode(to: encoder)
-                    case let .BetaContainerNetworkPolicyAllowlistParam(value):
+                    case let .disabled(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -30507,10 +30627,10 @@ public enum Components {
             public var network_policy: Components.Schemas.BetaContainerAutoParam.network_policyPayload?
             /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/skillsPayload`.
             @frozen public enum skillsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/skillsPayload/BetaSkillReferenceParam`.
-                case BetaSkillReferenceParam(Components.Schemas.BetaSkillReferenceParam)
                 /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/skillsPayload/BetaInlineSkillParam`.
-                case BetaInlineSkillParam(Components.Schemas.BetaInlineSkillParam)
+                case inline(Components.Schemas.BetaInlineSkillParam)
+                /// - Remark: Generated from `#/components/schemas/BetaContainerAutoParam/skillsPayload/BetaSkillReferenceParam`.
+                case skill_reference(Components.Schemas.BetaSkillReferenceParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -30521,10 +30641,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaSkillReferenceParam", "#/components/schemas/BetaSkillReferenceParam":
-                        self = .BetaSkillReferenceParam(try .init(from: decoder))
-                    case "BetaInlineSkillParam", "#/components/schemas/BetaInlineSkillParam":
-                        self = .BetaInlineSkillParam(try .init(from: decoder))
+                    case "inline":
+                        self = .inline(try .init(from: decoder))
+                    case "skill_reference":
+                        self = .skill_reference(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -30535,9 +30655,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaSkillReferenceParam(value):
+                    case let .inline(value):
                         try value.encode(to: encoder)
-                    case let .BetaInlineSkillParam(value):
+                    case let .skill_reference(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -31362,10 +31482,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaAutoCodeInterpreterToolParam/network_policy`.
             @frozen public enum network_policyPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaAutoCodeInterpreterToolParam/network_policy/BetaContainerNetworkPolicyDisabledParam`.
-                case BetaContainerNetworkPolicyDisabledParam(Components.Schemas.BetaContainerNetworkPolicyDisabledParam)
                 /// - Remark: Generated from `#/components/schemas/BetaAutoCodeInterpreterToolParam/network_policy/BetaContainerNetworkPolicyAllowlistParam`.
-                case BetaContainerNetworkPolicyAllowlistParam(Components.Schemas.BetaContainerNetworkPolicyAllowlistParam)
+                case allowlist(Components.Schemas.BetaContainerNetworkPolicyAllowlistParam)
+                /// - Remark: Generated from `#/components/schemas/BetaAutoCodeInterpreterToolParam/network_policy/BetaContainerNetworkPolicyDisabledParam`.
+                case disabled(Components.Schemas.BetaContainerNetworkPolicyDisabledParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -31376,10 +31496,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaContainerNetworkPolicyDisabledParam", "#/components/schemas/BetaContainerNetworkPolicyDisabledParam":
-                        self = .BetaContainerNetworkPolicyDisabledParam(try .init(from: decoder))
-                    case "BetaContainerNetworkPolicyAllowlistParam", "#/components/schemas/BetaContainerNetworkPolicyAllowlistParam":
-                        self = .BetaContainerNetworkPolicyAllowlistParam(try .init(from: decoder))
+                    case "allowlist":
+                        self = .allowlist(try .init(from: decoder))
+                    case "disabled":
+                        self = .disabled(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -31390,9 +31510,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaContainerNetworkPolicyDisabledParam(value):
+                    case let .allowlist(value):
                         try value.encode(to: encoder)
-                    case let .BetaContainerNetworkPolicyAllowlistParam(value):
+                    case let .disabled(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -32186,10 +32306,26 @@ public enum Components {
             }
             /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload`.
             @frozen public enum filtersPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
-                case BetaComparisonFilter(Components.Schemas.BetaComparisonFilter)
                 /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaCompoundFilter`.
-                case BetaCompoundFilter(Components.Schemas.BetaCompoundFilter)
+                case and(Components.Schemas.BetaCompoundFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case eq(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case gt(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case gte(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case _in(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case lt(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case lte(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case ne(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                case nin(Components.Schemas.BetaComparisonFilter)
+                /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaCompoundFilter`.
+                case or(Components.Schemas.BetaCompoundFilter)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -32200,10 +32336,26 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaComparisonFilter", "#/components/schemas/BetaComparisonFilter":
-                        self = .BetaComparisonFilter(try .init(from: decoder))
-                    case "BetaCompoundFilter", "#/components/schemas/BetaCompoundFilter":
-                        self = .BetaCompoundFilter(try .init(from: decoder))
+                    case "and":
+                        self = .and(try .init(from: decoder))
+                    case "eq":
+                        self = .eq(try .init(from: decoder))
+                    case "gt":
+                        self = .gt(try .init(from: decoder))
+                    case "gte":
+                        self = .gte(try .init(from: decoder))
+                    case "in":
+                        self = ._in(try .init(from: decoder))
+                    case "lt":
+                        self = .lt(try .init(from: decoder))
+                    case "lte":
+                        self = .lte(try .init(from: decoder))
+                    case "ne":
+                        self = .ne(try .init(from: decoder))
+                    case "nin":
+                        self = .nin(try .init(from: decoder))
+                    case "or":
+                        self = .or(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -32214,9 +32366,25 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaComparisonFilter(value):
+                    case let .and(value):
                         try value.encode(to: encoder)
-                    case let .BetaCompoundFilter(value):
+                    case let .eq(value):
+                        try value.encode(to: encoder)
+                    case let .gt(value):
+                        try value.encode(to: encoder)
+                    case let .gte(value):
+                        try value.encode(to: encoder)
+                    case let ._in(value):
+                        try value.encode(to: encoder)
+                    case let .lt(value):
+                        try value.encode(to: encoder)
+                    case let .lte(value):
+                        try value.encode(to: encoder)
+                    case let .ne(value):
+                        try value.encode(to: encoder)
+                    case let .nin(value):
+                        try value.encode(to: encoder)
+                    case let .or(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -32276,10 +32444,26 @@ public enum Components {
                 var _type: Components.Schemas.BetaCompoundFilter._typePayload
                 /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload`.
                 enum filtersPayloadPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
-                    case BetaComparisonFilter(Components.Schemas.BetaComparisonFilter)
                     /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaCompoundFilter`.
-                    case BetaCompoundFilter(Components.Schemas.BetaCompoundFilter)
+                    case and(Components.Schemas.BetaCompoundFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case eq(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case gt(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case gte(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case _in(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case lt(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case lte(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case ne(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaComparisonFilter`.
+                    case nin(Components.Schemas.BetaComparisonFilter)
+                    /// - Remark: Generated from `#/components/schemas/BetaCompoundFilter/filtersPayload/BetaCompoundFilter`.
+                    case or(Components.Schemas.BetaCompoundFilter)
                     public enum CodingKeys: String, CodingKey {
                         case _type = "type"
                     }
@@ -32290,10 +32474,26 @@ public enum Components {
                             forKey: ._type
                         )
                         switch discriminator {
-                        case "BetaComparisonFilter", "#/components/schemas/BetaComparisonFilter":
-                            self = .BetaComparisonFilter(try .init(from: decoder))
-                        case "BetaCompoundFilter", "#/components/schemas/BetaCompoundFilter":
-                            self = .BetaCompoundFilter(try .init(from: decoder))
+                        case "and":
+                            self = .and(try .init(from: decoder))
+                        case "eq":
+                            self = .eq(try .init(from: decoder))
+                        case "gt":
+                            self = .gt(try .init(from: decoder))
+                        case "gte":
+                            self = .gte(try .init(from: decoder))
+                        case "in":
+                            self = ._in(try .init(from: decoder))
+                        case "lt":
+                            self = .lt(try .init(from: decoder))
+                        case "lte":
+                            self = .lte(try .init(from: decoder))
+                        case "ne":
+                            self = .ne(try .init(from: decoder))
+                        case "nin":
+                            self = .nin(try .init(from: decoder))
+                        case "or":
+                            self = .or(try .init(from: decoder))
                         default:
                             throw Swift.DecodingError.unknownOneOfDiscriminator(
                                 discriminatorKey: CodingKeys._type,
@@ -32304,9 +32504,25 @@ public enum Components {
                     }
                     public func encode(to encoder: any Swift.Encoder) throws {
                         switch self {
-                        case let .BetaComparisonFilter(value):
+                        case let .and(value):
                             try value.encode(to: encoder)
-                        case let .BetaCompoundFilter(value):
+                        case let .eq(value):
+                            try value.encode(to: encoder)
+                        case let .gt(value):
+                            try value.encode(to: encoder)
+                        case let .gte(value):
+                            try value.encode(to: encoder)
+                        case let ._in(value):
+                            try value.encode(to: encoder)
+                        case let .lt(value):
+                            try value.encode(to: encoder)
+                        case let .lte(value):
+                            try value.encode(to: encoder)
+                        case let .ne(value):
+                            try value.encode(to: encoder)
+                        case let .nin(value):
+                            try value.encode(to: encoder)
+                        case let .or(value):
                             try value.encode(to: encoder)
                         }
                     }
@@ -33341,9 +33557,9 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaToolCallCaller`.
         @frozen public enum BetaToolCallCaller: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaToolCallCaller/BetaDirectToolCallCaller`.
-            case BetaDirectToolCallCaller(Components.Schemas.BetaDirectToolCallCaller)
+            case direct(Components.Schemas.BetaDirectToolCallCaller)
             /// - Remark: Generated from `#/components/schemas/BetaToolCallCaller/BetaProgramToolCallCaller`.
-            case BetaProgramToolCallCaller(Components.Schemas.BetaProgramToolCallCaller)
+            case program(Components.Schemas.BetaProgramToolCallCaller)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -33354,10 +33570,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaDirectToolCallCaller", "#/components/schemas/BetaDirectToolCallCaller":
-                    self = .BetaDirectToolCallCaller(try .init(from: decoder))
-                case "BetaProgramToolCallCaller", "#/components/schemas/BetaProgramToolCallCaller":
-                    self = .BetaProgramToolCallCaller(try .init(from: decoder))
+                case "direct":
+                    self = .direct(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -33368,9 +33584,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaDirectToolCallCaller(value):
+                case let .direct(value):
                     try value.encode(to: encoder)
-                case let .BetaProgramToolCallCaller(value):
+                case let .program(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -33559,12 +33775,12 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/BetaFunctionAndCustomToolCallOutput`.
         @frozen public enum BetaFunctionAndCustomToolCallOutput: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaFunctionAndCustomToolCallOutput/BetaInputTextContent`.
-            case BetaInputTextContent(Components.Schemas.BetaInputTextContent)
-            /// - Remark: Generated from `#/components/schemas/BetaFunctionAndCustomToolCallOutput/BetaInputImageContent`.
-            case BetaInputImageContent(Components.Schemas.BetaInputImageContent)
             /// - Remark: Generated from `#/components/schemas/BetaFunctionAndCustomToolCallOutput/BetaInputFileContent`.
-            case BetaInputFileContent(Components.Schemas.BetaInputFileContent)
+            case input_file(Components.Schemas.BetaInputFileContent)
+            /// - Remark: Generated from `#/components/schemas/BetaFunctionAndCustomToolCallOutput/BetaInputImageContent`.
+            case input_image(Components.Schemas.BetaInputImageContent)
+            /// - Remark: Generated from `#/components/schemas/BetaFunctionAndCustomToolCallOutput/BetaInputTextContent`.
+            case input_text(Components.Schemas.BetaInputTextContent)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -33575,12 +33791,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaInputTextContent", "#/components/schemas/BetaInputTextContent":
-                    self = .BetaInputTextContent(try .init(from: decoder))
-                case "BetaInputImageContent", "#/components/schemas/BetaInputImageContent":
-                    self = .BetaInputImageContent(try .init(from: decoder))
-                case "BetaInputFileContent", "#/components/schemas/BetaInputFileContent":
-                    self = .BetaInputFileContent(try .init(from: decoder))
+                case "input_file":
+                    self = .input_file(try .init(from: decoder))
+                case "input_image":
+                    self = .input_image(try .init(from: decoder))
+                case "input_text":
+                    self = .input_text(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -33591,11 +33807,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaInputTextContent(value):
+                case let .input_file(value):
                     try value.encode(to: encoder)
-                case let .BetaInputImageContent(value):
+                case let .input_image(value):
                     try value.encode(to: encoder)
-                case let .BetaInputFileContent(value):
+                case let .input_text(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -33815,9 +34031,9 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaToolCallCallerParam`.
         @frozen public enum BetaToolCallCallerParam: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaToolCallCallerParam/BetaDirectToolCallCallerParam`.
-            case BetaDirectToolCallCallerParam(Components.Schemas.BetaDirectToolCallCallerParam)
+            case direct(Components.Schemas.BetaDirectToolCallCallerParam)
             /// - Remark: Generated from `#/components/schemas/BetaToolCallCallerParam/BetaProgramToolCallCallerParam`.
-            case BetaProgramToolCallCallerParam(Components.Schemas.BetaProgramToolCallCallerParam)
+            case program(Components.Schemas.BetaProgramToolCallCallerParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -33828,10 +34044,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaDirectToolCallCallerParam", "#/components/schemas/BetaDirectToolCallCallerParam":
-                    self = .BetaDirectToolCallCallerParam(try .init(from: decoder))
-                case "BetaProgramToolCallCallerParam", "#/components/schemas/BetaProgramToolCallCallerParam":
-                    self = .BetaProgramToolCallCallerParam(try .init(from: decoder))
+                case "direct":
+                    self = .direct(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -33842,9 +34058,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaDirectToolCallCallerParam(value):
+                case let .direct(value):
                     try value.encode(to: encoder)
-                case let .BetaProgramToolCallCallerParam(value):
+                case let .program(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -34025,12 +34241,12 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/BetaMCPToolCallError`.
         @frozen public enum BetaMCPToolCallError: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaMCPToolCallError/BetaMCPProtocolError`.
-            case BetaMCPProtocolError(Components.Schemas.BetaMCPProtocolError)
-            /// - Remark: Generated from `#/components/schemas/BetaMCPToolCallError/BetaMCPToolExecutionError`.
-            case BetaMCPToolExecutionError(Components.Schemas.BetaMCPToolExecutionError)
             /// - Remark: Generated from `#/components/schemas/BetaMCPToolCallError/BetaHTTPError`.
-            case BetaHTTPError(Components.Schemas.BetaHTTPError)
+            case http_error(Components.Schemas.BetaHTTPError)
+            /// - Remark: Generated from `#/components/schemas/BetaMCPToolCallError/BetaMCPProtocolError`.
+            case mcp_protocol_error(Components.Schemas.BetaMCPProtocolError)
+            /// - Remark: Generated from `#/components/schemas/BetaMCPToolCallError/BetaMCPToolExecutionError`.
+            case mcp_tool_execution_error(Components.Schemas.BetaMCPToolExecutionError)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -34041,12 +34257,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaMCPProtocolError", "#/components/schemas/BetaMCPProtocolError":
-                    self = .BetaMCPProtocolError(try .init(from: decoder))
-                case "BetaMCPToolExecutionError", "#/components/schemas/BetaMCPToolExecutionError":
-                    self = .BetaMCPToolExecutionError(try .init(from: decoder))
-                case "BetaHTTPError", "#/components/schemas/BetaHTTPError":
-                    self = .BetaHTTPError(try .init(from: decoder))
+                case "http_error":
+                    self = .http_error(try .init(from: decoder))
+                case "mcp_protocol_error":
+                    self = .mcp_protocol_error(try .init(from: decoder))
+                case "mcp_tool_execution_error":
+                    self = .mcp_tool_execution_error(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -34057,11 +34273,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaMCPProtocolError(value):
+                case let .http_error(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPToolExecutionError(value):
+                case let .mcp_protocol_error(value):
                     try value.encode(to: encoder)
-                case let .BetaHTTPError(value):
+                case let .mcp_tool_execution_error(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -34593,11 +34809,11 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaApplyPatchOperationParam`.
         @frozen public enum BetaApplyPatchOperationParam: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaApplyPatchOperationParam/BetaApplyPatchCreateFileOperationParam`.
-            case BetaApplyPatchCreateFileOperationParam(Components.Schemas.BetaApplyPatchCreateFileOperationParam)
+            case create_file(Components.Schemas.BetaApplyPatchCreateFileOperationParam)
             /// - Remark: Generated from `#/components/schemas/BetaApplyPatchOperationParam/BetaApplyPatchDeleteFileOperationParam`.
-            case BetaApplyPatchDeleteFileOperationParam(Components.Schemas.BetaApplyPatchDeleteFileOperationParam)
+            case delete_file(Components.Schemas.BetaApplyPatchDeleteFileOperationParam)
             /// - Remark: Generated from `#/components/schemas/BetaApplyPatchOperationParam/BetaApplyPatchUpdateFileOperationParam`.
-            case BetaApplyPatchUpdateFileOperationParam(Components.Schemas.BetaApplyPatchUpdateFileOperationParam)
+            case update_file(Components.Schemas.BetaApplyPatchUpdateFileOperationParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -34608,12 +34824,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaApplyPatchCreateFileOperationParam", "#/components/schemas/BetaApplyPatchCreateFileOperationParam":
-                    self = .BetaApplyPatchCreateFileOperationParam(try .init(from: decoder))
-                case "BetaApplyPatchDeleteFileOperationParam", "#/components/schemas/BetaApplyPatchDeleteFileOperationParam":
-                    self = .BetaApplyPatchDeleteFileOperationParam(try .init(from: decoder))
-                case "BetaApplyPatchUpdateFileOperationParam", "#/components/schemas/BetaApplyPatchUpdateFileOperationParam":
-                    self = .BetaApplyPatchUpdateFileOperationParam(try .init(from: decoder))
+                case "create_file":
+                    self = .create_file(try .init(from: decoder))
+                case "delete_file":
+                    self = .delete_file(try .init(from: decoder))
+                case "update_file":
+                    self = .update_file(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -34624,11 +34840,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaApplyPatchCreateFileOperationParam(value):
+                case let .create_file(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchDeleteFileOperationParam(value):
+                case let .delete_file(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchUpdateFileOperationParam(value):
+                case let .update_file(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -34893,10 +35109,10 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputOutcomeParam`.
         @frozen public enum BetaFunctionShellCallOutputOutcomeParam: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputOutcomeParam/BetaFunctionShellCallOutputTimeoutOutcomeParam`.
-            case BetaFunctionShellCallOutputTimeoutOutcomeParam(Components.Schemas.BetaFunctionShellCallOutputTimeoutOutcomeParam)
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputOutcomeParam/BetaFunctionShellCallOutputExitOutcomeParam`.
-            case BetaFunctionShellCallOutputExitOutcomeParam(Components.Schemas.BetaFunctionShellCallOutputExitOutcomeParam)
+            case exit(Components.Schemas.BetaFunctionShellCallOutputExitOutcomeParam)
+            /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputOutcomeParam/BetaFunctionShellCallOutputTimeoutOutcomeParam`.
+            case timeout(Components.Schemas.BetaFunctionShellCallOutputTimeoutOutcomeParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -34907,10 +35123,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaFunctionShellCallOutputTimeoutOutcomeParam", "#/components/schemas/BetaFunctionShellCallOutputTimeoutOutcomeParam":
-                    self = .BetaFunctionShellCallOutputTimeoutOutcomeParam(try .init(from: decoder))
-                case "BetaFunctionShellCallOutputExitOutcomeParam", "#/components/schemas/BetaFunctionShellCallOutputExitOutcomeParam":
-                    self = .BetaFunctionShellCallOutputExitOutcomeParam(try .init(from: decoder))
+                case "exit":
+                    self = .exit(try .init(from: decoder))
+                case "timeout":
+                    self = .timeout(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -34921,9 +35137,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaFunctionShellCallOutputTimeoutOutcomeParam(value):
+                case let .exit(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellCallOutputExitOutcomeParam(value):
+                case let .timeout(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -35030,10 +35246,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallItemParam/environment`.
             @frozen public enum environmentPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallItemParam/environment/BetaLocalEnvironmentParam`.
-                case BetaLocalEnvironmentParam(Components.Schemas.BetaLocalEnvironmentParam)
                 /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallItemParam/environment/BetaContainerReferenceParam`.
-                case BetaContainerReferenceParam(Components.Schemas.BetaContainerReferenceParam)
+                case container_reference(Components.Schemas.BetaContainerReferenceParam)
+                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallItemParam/environment/BetaLocalEnvironmentParam`.
+                case local(Components.Schemas.BetaLocalEnvironmentParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -35044,10 +35260,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaLocalEnvironmentParam", "#/components/schemas/BetaLocalEnvironmentParam":
-                        self = .BetaLocalEnvironmentParam(try .init(from: decoder))
-                    case "BetaContainerReferenceParam", "#/components/schemas/BetaContainerReferenceParam":
-                        self = .BetaContainerReferenceParam(try .init(from: decoder))
+                    case "container_reference":
+                        self = .container_reference(try .init(from: decoder))
+                    case "local":
+                        self = .local(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -35058,9 +35274,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaLocalEnvironmentParam(value):
+                    case let .container_reference(value):
                         try value.encode(to: encoder)
-                    case let .BetaContainerReferenceParam(value):
+                    case let .local(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -35442,10 +35658,10 @@ public enum Components {
             public var code: Swift.String?
             /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputsPayload`.
             @frozen public enum outputsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputsPayload/BetaCodeInterpreterOutputLogs`.
-                case BetaCodeInterpreterOutputLogs(Components.Schemas.BetaCodeInterpreterOutputLogs)
                 /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputsPayload/BetaCodeInterpreterOutputImage`.
-                case BetaCodeInterpreterOutputImage(Components.Schemas.BetaCodeInterpreterOutputImage)
+                case image(Components.Schemas.BetaCodeInterpreterOutputImage)
+                /// - Remark: Generated from `#/components/schemas/BetaCodeInterpreterToolCall/outputsPayload/BetaCodeInterpreterOutputLogs`.
+                case logs(Components.Schemas.BetaCodeInterpreterOutputLogs)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -35456,10 +35672,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaCodeInterpreterOutputLogs", "#/components/schemas/BetaCodeInterpreterOutputLogs":
-                        self = .BetaCodeInterpreterOutputLogs(try .init(from: decoder))
-                    case "BetaCodeInterpreterOutputImage", "#/components/schemas/BetaCodeInterpreterOutputImage":
-                        self = .BetaCodeInterpreterOutputImage(try .init(from: decoder))
+                    case "image":
+                        self = .image(try .init(from: decoder))
+                    case "logs":
+                        self = .logs(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -35470,9 +35686,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaCodeInterpreterOutputLogs(value):
+                    case let .image(value):
                         try value.encode(to: encoder)
-                    case let .BetaCodeInterpreterOutputImage(value):
+                    case let .logs(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -36238,38 +36454,42 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool`.
         @frozen public enum BetaToolSearchOutputTool: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaFunctionTool`.
-            case BetaFunctionTool(Components.Schemas.BetaFunctionTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaFileSearchTool`.
-            case BetaFileSearchTool(Components.Schemas.BetaFileSearchTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaComputerTool`.
-            case BetaComputerTool(Components.Schemas.BetaComputerTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaComputerUsePreviewTool`.
-            case BetaComputerUsePreviewTool(Components.Schemas.BetaComputerUsePreviewTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaWebSearchTool`.
-            case BetaWebSearchTool(Components.Schemas.BetaWebSearchTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaMCPTool`.
-            case BetaMCPTool(Components.Schemas.BetaMCPTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaCodeInterpreterTool`.
-            case BetaCodeInterpreterTool(Components.Schemas.BetaCodeInterpreterTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaProgrammaticToolCallingParam`.
-            case BetaProgrammaticToolCallingParam(Components.Schemas.BetaProgrammaticToolCallingParam)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaImageGenTool`.
-            case BetaImageGenTool(Components.Schemas.BetaImageGenTool)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaLocalShellToolParam`.
-            case BetaLocalShellToolParam(Components.Schemas.BetaLocalShellToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaFunctionShellToolParam`.
-            case BetaFunctionShellToolParam(Components.Schemas.BetaFunctionShellToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaCustomToolParam`.
-            case BetaCustomToolParam(Components.Schemas.BetaCustomToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaToolSearchOutputNamespaceToolParam`.
-            case BetaToolSearchOutputNamespaceToolParam(Components.Schemas.BetaToolSearchOutputNamespaceToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaToolSearchToolParam`.
-            case BetaToolSearchToolParam(Components.Schemas.BetaToolSearchToolParam)
-            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaWebSearchPreviewTool`.
-            case BetaWebSearchPreviewTool(Components.Schemas.BetaWebSearchPreviewTool)
             /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaApplyPatchToolParam`.
-            case BetaApplyPatchToolParam(Components.Schemas.BetaApplyPatchToolParam)
+            case apply_patch(Components.Schemas.BetaApplyPatchToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaCodeInterpreterTool`.
+            case code_interpreter(Components.Schemas.BetaCodeInterpreterTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaComputerTool`.
+            case computer(Components.Schemas.BetaComputerTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaComputerUsePreviewTool`.
+            case computer_use_preview(Components.Schemas.BetaComputerUsePreviewTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaCustomToolParam`.
+            case custom(Components.Schemas.BetaCustomToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaFileSearchTool`.
+            case file_search(Components.Schemas.BetaFileSearchTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaFunctionTool`.
+            case function(Components.Schemas.BetaFunctionTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaImageGenTool`.
+            case image_generation(Components.Schemas.BetaImageGenTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaLocalShellToolParam`.
+            case local_shell(Components.Schemas.BetaLocalShellToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaMCPTool`.
+            case mcp(Components.Schemas.BetaMCPTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaToolSearchOutputNamespaceToolParam`.
+            case namespace(Components.Schemas.BetaToolSearchOutputNamespaceToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaProgrammaticToolCallingParam`.
+            case programmatic_tool_calling(Components.Schemas.BetaProgrammaticToolCallingParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaFunctionShellToolParam`.
+            case shell(Components.Schemas.BetaFunctionShellToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaToolSearchToolParam`.
+            case tool_search(Components.Schemas.BetaToolSearchToolParam)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaWebSearchTool`.
+            case web_search(Components.Schemas.BetaWebSearchTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaWebSearchTool`.
+            case web_search_2025_08_26(Components.Schemas.BetaWebSearchTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaWebSearchPreviewTool`.
+            case web_search_preview(Components.Schemas.BetaWebSearchPreviewTool)
+            /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputTool/BetaWebSearchPreviewTool`.
+            case web_search_preview_2025_03_11(Components.Schemas.BetaWebSearchPreviewTool)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -36280,38 +36500,42 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaFunctionTool", "#/components/schemas/BetaFunctionTool":
-                    self = .BetaFunctionTool(try .init(from: decoder))
-                case "BetaFileSearchTool", "#/components/schemas/BetaFileSearchTool":
-                    self = .BetaFileSearchTool(try .init(from: decoder))
-                case "BetaComputerTool", "#/components/schemas/BetaComputerTool":
-                    self = .BetaComputerTool(try .init(from: decoder))
-                case "BetaComputerUsePreviewTool", "#/components/schemas/BetaComputerUsePreviewTool":
-                    self = .BetaComputerUsePreviewTool(try .init(from: decoder))
-                case "BetaWebSearchTool", "#/components/schemas/BetaWebSearchTool":
-                    self = .BetaWebSearchTool(try .init(from: decoder))
-                case "BetaMCPTool", "#/components/schemas/BetaMCPTool":
-                    self = .BetaMCPTool(try .init(from: decoder))
-                case "BetaCodeInterpreterTool", "#/components/schemas/BetaCodeInterpreterTool":
-                    self = .BetaCodeInterpreterTool(try .init(from: decoder))
-                case "BetaProgrammaticToolCallingParam", "#/components/schemas/BetaProgrammaticToolCallingParam":
-                    self = .BetaProgrammaticToolCallingParam(try .init(from: decoder))
-                case "BetaImageGenTool", "#/components/schemas/BetaImageGenTool":
-                    self = .BetaImageGenTool(try .init(from: decoder))
-                case "BetaLocalShellToolParam", "#/components/schemas/BetaLocalShellToolParam":
-                    self = .BetaLocalShellToolParam(try .init(from: decoder))
-                case "BetaFunctionShellToolParam", "#/components/schemas/BetaFunctionShellToolParam":
-                    self = .BetaFunctionShellToolParam(try .init(from: decoder))
-                case "BetaCustomToolParam", "#/components/schemas/BetaCustomToolParam":
-                    self = .BetaCustomToolParam(try .init(from: decoder))
-                case "BetaToolSearchOutputNamespaceToolParam", "#/components/schemas/BetaToolSearchOutputNamespaceToolParam":
-                    self = .BetaToolSearchOutputNamespaceToolParam(try .init(from: decoder))
-                case "BetaToolSearchToolParam", "#/components/schemas/BetaToolSearchToolParam":
-                    self = .BetaToolSearchToolParam(try .init(from: decoder))
-                case "BetaWebSearchPreviewTool", "#/components/schemas/BetaWebSearchPreviewTool":
-                    self = .BetaWebSearchPreviewTool(try .init(from: decoder))
-                case "BetaApplyPatchToolParam", "#/components/schemas/BetaApplyPatchToolParam":
-                    self = .BetaApplyPatchToolParam(try .init(from: decoder))
+                case "apply_patch":
+                    self = .apply_patch(try .init(from: decoder))
+                case "code_interpreter":
+                    self = .code_interpreter(try .init(from: decoder))
+                case "computer":
+                    self = .computer(try .init(from: decoder))
+                case "computer_use_preview":
+                    self = .computer_use_preview(try .init(from: decoder))
+                case "custom":
+                    self = .custom(try .init(from: decoder))
+                case "file_search":
+                    self = .file_search(try .init(from: decoder))
+                case "function":
+                    self = .function(try .init(from: decoder))
+                case "image_generation":
+                    self = .image_generation(try .init(from: decoder))
+                case "local_shell":
+                    self = .local_shell(try .init(from: decoder))
+                case "mcp":
+                    self = .mcp(try .init(from: decoder))
+                case "namespace":
+                    self = .namespace(try .init(from: decoder))
+                case "programmatic_tool_calling":
+                    self = .programmatic_tool_calling(try .init(from: decoder))
+                case "shell":
+                    self = .shell(try .init(from: decoder))
+                case "tool_search":
+                    self = .tool_search(try .init(from: decoder))
+                case "web_search":
+                    self = .web_search(try .init(from: decoder))
+                case "web_search_2025_08_26":
+                    self = .web_search_2025_08_26(try .init(from: decoder))
+                case "web_search_preview":
+                    self = .web_search_preview(try .init(from: decoder))
+                case "web_search_preview_2025_03_11":
+                    self = .web_search_preview_2025_03_11(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -36322,37 +36546,41 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaFunctionTool(value):
+                case let .apply_patch(value):
                     try value.encode(to: encoder)
-                case let .BetaFileSearchTool(value):
+                case let .code_interpreter(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerTool(value):
+                case let .computer(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerUsePreviewTool(value):
+                case let .computer_use_preview(value):
                     try value.encode(to: encoder)
-                case let .BetaWebSearchTool(value):
+                case let .custom(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPTool(value):
+                case let .file_search(value):
                     try value.encode(to: encoder)
-                case let .BetaCodeInterpreterTool(value):
+                case let .function(value):
                     try value.encode(to: encoder)
-                case let .BetaProgrammaticToolCallingParam(value):
+                case let .image_generation(value):
                     try value.encode(to: encoder)
-                case let .BetaImageGenTool(value):
+                case let .local_shell(value):
                     try value.encode(to: encoder)
-                case let .BetaLocalShellToolParam(value):
+                case let .mcp(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellToolParam(value):
+                case let .namespace(value):
                     try value.encode(to: encoder)
-                case let .BetaCustomToolParam(value):
+                case let .programmatic_tool_calling(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchOutputNamespaceToolParam(value):
+                case let .shell(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchToolParam(value):
+                case let .tool_search(value):
                     try value.encode(to: encoder)
-                case let .BetaWebSearchPreviewTool(value):
+                case let .web_search(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchToolParam(value):
+                case let .web_search_2025_08_26(value):
+                    try value.encode(to: encoder)
+                case let .web_search_preview(value):
+                    try value.encode(to: encoder)
+                case let .web_search_preview_2025_03_11(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -36383,10 +36611,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputNamespaceToolParam/toolsPayload`.
             @frozen public enum toolsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputNamespaceToolParam/toolsPayload/BetaToolSearchOutputFunctionToolParam`.
-                case BetaToolSearchOutputFunctionToolParam(Components.Schemas.BetaToolSearchOutputFunctionToolParam)
                 /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputNamespaceToolParam/toolsPayload/BetaCustomToolParam`.
-                case BetaCustomToolParam(Components.Schemas.BetaCustomToolParam)
+                case custom(Components.Schemas.BetaCustomToolParam)
+                /// - Remark: Generated from `#/components/schemas/BetaToolSearchOutputNamespaceToolParam/toolsPayload/BetaToolSearchOutputFunctionToolParam`.
+                case function(Components.Schemas.BetaToolSearchOutputFunctionToolParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -36397,10 +36625,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaToolSearchOutputFunctionToolParam", "#/components/schemas/BetaToolSearchOutputFunctionToolParam":
-                        self = .BetaToolSearchOutputFunctionToolParam(try .init(from: decoder))
-                    case "BetaCustomToolParam", "#/components/schemas/BetaCustomToolParam":
-                        self = .BetaCustomToolParam(try .init(from: decoder))
+                    case "custom":
+                        self = .custom(try .init(from: decoder))
+                    case "function":
+                        self = .function(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -36411,9 +36639,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaToolSearchOutputFunctionToolParam(value):
+                    case let .custom(value):
                         try value.encode(to: encoder)
-                    case let .BetaCustomToolParam(value):
+                    case let .function(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -36708,12 +36936,12 @@ public enum Components {
             public var text: Swift.String
             /// - Remark: Generated from `#/components/schemas/BetaOutputTextContentParam/annotationsPayload`.
             @frozen public enum annotationsPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaOutputTextContentParam/annotationsPayload/BetaFileCitationParam`.
-                case BetaFileCitationParam(Components.Schemas.BetaFileCitationParam)
-                /// - Remark: Generated from `#/components/schemas/BetaOutputTextContentParam/annotationsPayload/BetaUrlCitationParam`.
-                case BetaUrlCitationParam(Components.Schemas.BetaUrlCitationParam)
                 /// - Remark: Generated from `#/components/schemas/BetaOutputTextContentParam/annotationsPayload/BetaContainerFileCitationParam`.
-                case BetaContainerFileCitationParam(Components.Schemas.BetaContainerFileCitationParam)
+                case container_file_citation(Components.Schemas.BetaContainerFileCitationParam)
+                /// - Remark: Generated from `#/components/schemas/BetaOutputTextContentParam/annotationsPayload/BetaFileCitationParam`.
+                case file_citation(Components.Schemas.BetaFileCitationParam)
+                /// - Remark: Generated from `#/components/schemas/BetaOutputTextContentParam/annotationsPayload/BetaUrlCitationParam`.
+                case url_citation(Components.Schemas.BetaUrlCitationParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -36724,12 +36952,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaFileCitationParam", "#/components/schemas/BetaFileCitationParam":
-                        self = .BetaFileCitationParam(try .init(from: decoder))
-                    case "BetaUrlCitationParam", "#/components/schemas/BetaUrlCitationParam":
-                        self = .BetaUrlCitationParam(try .init(from: decoder))
-                    case "BetaContainerFileCitationParam", "#/components/schemas/BetaContainerFileCitationParam":
-                        self = .BetaContainerFileCitationParam(try .init(from: decoder))
+                    case "container_file_citation":
+                        self = .container_file_citation(try .init(from: decoder))
+                    case "file_citation":
+                        self = .file_citation(try .init(from: decoder))
+                    case "url_citation":
+                        self = .url_citation(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -36740,11 +36968,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaFileCitationParam(value):
+                    case let .container_file_citation(value):
                         try value.encode(to: encoder)
-                    case let .BetaUrlCitationParam(value):
+                    case let .file_citation(value):
                         try value.encode(to: encoder)
-                    case let .BetaContainerFileCitationParam(value):
+                    case let .url_citation(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -37057,12 +37285,12 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaAgentMessageItemParam/contentPayload`.
             @frozen public enum contentPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessageItemParam/contentPayload/BetaInputTextContentParam`.
-                case BetaInputTextContentParam(Components.Schemas.BetaInputTextContentParam)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessageItemParam/contentPayload/BetaInputImageContentParamAutoParam`.
-                case BetaInputImageContentParamAutoParam(Components.Schemas.BetaInputImageContentParamAutoParam)
                 /// - Remark: Generated from `#/components/schemas/BetaAgentMessageItemParam/contentPayload/BetaEncryptedContentParam`.
-                case BetaEncryptedContentParam(Components.Schemas.BetaEncryptedContentParam)
+                case encrypted_content(Components.Schemas.BetaEncryptedContentParam)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessageItemParam/contentPayload/BetaInputImageContentParamAutoParam`.
+                case input_image(Components.Schemas.BetaInputImageContentParamAutoParam)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessageItemParam/contentPayload/BetaInputTextContentParam`.
+                case input_text(Components.Schemas.BetaInputTextContentParam)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -37073,12 +37301,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaInputTextContentParam", "#/components/schemas/BetaInputTextContentParam":
-                        self = .BetaInputTextContentParam(try .init(from: decoder))
-                    case "BetaInputImageContentParamAutoParam", "#/components/schemas/BetaInputImageContentParamAutoParam":
-                        self = .BetaInputImageContentParamAutoParam(try .init(from: decoder))
-                    case "BetaEncryptedContentParam", "#/components/schemas/BetaEncryptedContentParam":
-                        self = .BetaEncryptedContentParam(try .init(from: decoder))
+                    case "encrypted_content":
+                        self = .encrypted_content(try .init(from: decoder))
+                    case "input_image":
+                        self = .input_image(try .init(from: decoder))
+                    case "input_text":
+                        self = .input_text(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -37089,11 +37317,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaInputTextContentParam(value):
+                    case let .encrypted_content(value):
                         try value.encode(to: encoder)
-                    case let .BetaInputImageContentParamAutoParam(value):
+                    case let .input_image(value):
                         try value.encode(to: encoder)
-                    case let .BetaEncryptedContentParam(value):
+                    case let .input_text(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -37342,12 +37570,12 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/BetaFunctionCallOutputItemParam/output/Case2Payload`.
                 @frozen public enum Case2PayloadPayload: Codable, Hashable, Sendable {
-                    /// - Remark: Generated from `#/components/schemas/BetaFunctionCallOutputItemParam/output/Case2Payload/BetaInputTextContentParam`.
-                    case BetaInputTextContentParam(Components.Schemas.BetaInputTextContentParam)
-                    /// - Remark: Generated from `#/components/schemas/BetaFunctionCallOutputItemParam/output/Case2Payload/BetaInputImageContentParamAutoParam`.
-                    case BetaInputImageContentParamAutoParam(Components.Schemas.BetaInputImageContentParamAutoParam)
                     /// - Remark: Generated from `#/components/schemas/BetaFunctionCallOutputItemParam/output/Case2Payload/BetaInputFileContentParam`.
-                    case BetaInputFileContentParam(Components.Schemas.BetaInputFileContentParam)
+                    case input_file(Components.Schemas.BetaInputFileContentParam)
+                    /// - Remark: Generated from `#/components/schemas/BetaFunctionCallOutputItemParam/output/Case2Payload/BetaInputImageContentParamAutoParam`.
+                    case input_image(Components.Schemas.BetaInputImageContentParamAutoParam)
+                    /// - Remark: Generated from `#/components/schemas/BetaFunctionCallOutputItemParam/output/Case2Payload/BetaInputTextContentParam`.
+                    case input_text(Components.Schemas.BetaInputTextContentParam)
                     public enum CodingKeys: String, CodingKey {
                         case _type = "type"
                     }
@@ -37358,12 +37586,12 @@ public enum Components {
                             forKey: ._type
                         )
                         switch discriminator {
-                        case "BetaInputTextContentParam", "#/components/schemas/BetaInputTextContentParam":
-                            self = .BetaInputTextContentParam(try .init(from: decoder))
-                        case "BetaInputImageContentParamAutoParam", "#/components/schemas/BetaInputImageContentParamAutoParam":
-                            self = .BetaInputImageContentParamAutoParam(try .init(from: decoder))
-                        case "BetaInputFileContentParam", "#/components/schemas/BetaInputFileContentParam":
-                            self = .BetaInputFileContentParam(try .init(from: decoder))
+                        case "input_file":
+                            self = .input_file(try .init(from: decoder))
+                        case "input_image":
+                            self = .input_image(try .init(from: decoder))
+                        case "input_text":
+                            self = .input_text(try .init(from: decoder))
                         default:
                             throw Swift.DecodingError.unknownOneOfDiscriminator(
                                 discriminatorKey: CodingKeys._type,
@@ -37374,11 +37602,11 @@ public enum Components {
                     }
                     public func encode(to encoder: any Swift.Encoder) throws {
                         switch self {
-                        case let .BetaInputTextContentParam(value):
+                        case let .input_file(value):
                             try value.encode(to: encoder)
-                        case let .BetaInputImageContentParamAutoParam(value):
+                        case let .input_image(value):
                             try value.encode(to: encoder)
-                        case let .BetaInputFileContentParam(value):
+                        case let .input_text(value):
                             try value.encode(to: encoder)
                         }
                     }
@@ -37721,12 +37949,12 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaWebSearchToolCall/action`.
             @frozen public enum actionPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaWebSearchToolCall/action/BetaWebSearchActionSearch`.
-                case BetaWebSearchActionSearch(Components.Schemas.BetaWebSearchActionSearch)
-                /// - Remark: Generated from `#/components/schemas/BetaWebSearchToolCall/action/BetaWebSearchActionOpenPage`.
-                case BetaWebSearchActionOpenPage(Components.Schemas.BetaWebSearchActionOpenPage)
                 /// - Remark: Generated from `#/components/schemas/BetaWebSearchToolCall/action/BetaWebSearchActionFind`.
-                case BetaWebSearchActionFind(Components.Schemas.BetaWebSearchActionFind)
+                case find_in_page(Components.Schemas.BetaWebSearchActionFind)
+                /// - Remark: Generated from `#/components/schemas/BetaWebSearchToolCall/action/BetaWebSearchActionOpenPage`.
+                case open_page(Components.Schemas.BetaWebSearchActionOpenPage)
+                /// - Remark: Generated from `#/components/schemas/BetaWebSearchToolCall/action/BetaWebSearchActionSearch`.
+                case search(Components.Schemas.BetaWebSearchActionSearch)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -37737,12 +37965,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaWebSearchActionSearch", "#/components/schemas/BetaWebSearchActionSearch":
-                        self = .BetaWebSearchActionSearch(try .init(from: decoder))
-                    case "BetaWebSearchActionOpenPage", "#/components/schemas/BetaWebSearchActionOpenPage":
-                        self = .BetaWebSearchActionOpenPage(try .init(from: decoder))
-                    case "BetaWebSearchActionFind", "#/components/schemas/BetaWebSearchActionFind":
-                        self = .BetaWebSearchActionFind(try .init(from: decoder))
+                    case "find_in_page":
+                        self = .find_in_page(try .init(from: decoder))
+                    case "open_page":
+                        self = .open_page(try .init(from: decoder))
+                    case "search":
+                        self = .search(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -37753,11 +37981,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaWebSearchActionSearch(value):
+                    case let .find_in_page(value):
                         try value.encode(to: encoder)
-                    case let .BetaWebSearchActionOpenPage(value):
+                    case let .open_page(value):
                         try value.encode(to: encoder)
-                    case let .BetaWebSearchActionFind(value):
+                    case let .search(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -38256,23 +38484,23 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaComputerAction`.
         @frozen public enum BetaComputerAction: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaClickParam`.
-            case BetaClickParam(Components.Schemas.BetaClickParam)
+            case click(Components.Schemas.BetaClickParam)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaDoubleClickAction`.
-            case BetaDoubleClickAction(Components.Schemas.BetaDoubleClickAction)
+            case double_click(Components.Schemas.BetaDoubleClickAction)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaDragParam`.
-            case BetaDragParam(Components.Schemas.BetaDragParam)
+            case drag(Components.Schemas.BetaDragParam)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaKeyPressAction`.
-            case BetaKeyPressAction(Components.Schemas.BetaKeyPressAction)
+            case keypress(Components.Schemas.BetaKeyPressAction)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaMoveParam`.
-            case BetaMoveParam(Components.Schemas.BetaMoveParam)
+            case move(Components.Schemas.BetaMoveParam)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaScreenshotParam`.
-            case BetaScreenshotParam(Components.Schemas.BetaScreenshotParam)
+            case screenshot(Components.Schemas.BetaScreenshotParam)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaScrollParam`.
-            case BetaScrollParam(Components.Schemas.BetaScrollParam)
+            case scroll(Components.Schemas.BetaScrollParam)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaTypeParam`.
-            case BetaTypeParam(Components.Schemas.BetaTypeParam)
+            case _type(Components.Schemas.BetaTypeParam)
             /// - Remark: Generated from `#/components/schemas/BetaComputerAction/BetaWaitParam`.
-            case BetaWaitParam(Components.Schemas.BetaWaitParam)
+            case wait(Components.Schemas.BetaWaitParam)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -38283,24 +38511,24 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaClickParam", "#/components/schemas/BetaClickParam":
-                    self = .BetaClickParam(try .init(from: decoder))
-                case "BetaDoubleClickAction", "#/components/schemas/BetaDoubleClickAction":
-                    self = .BetaDoubleClickAction(try .init(from: decoder))
-                case "BetaDragParam", "#/components/schemas/BetaDragParam":
-                    self = .BetaDragParam(try .init(from: decoder))
-                case "BetaKeyPressAction", "#/components/schemas/BetaKeyPressAction":
-                    self = .BetaKeyPressAction(try .init(from: decoder))
-                case "BetaMoveParam", "#/components/schemas/BetaMoveParam":
-                    self = .BetaMoveParam(try .init(from: decoder))
-                case "BetaScreenshotParam", "#/components/schemas/BetaScreenshotParam":
-                    self = .BetaScreenshotParam(try .init(from: decoder))
-                case "BetaScrollParam", "#/components/schemas/BetaScrollParam":
-                    self = .BetaScrollParam(try .init(from: decoder))
-                case "BetaTypeParam", "#/components/schemas/BetaTypeParam":
-                    self = .BetaTypeParam(try .init(from: decoder))
-                case "BetaWaitParam", "#/components/schemas/BetaWaitParam":
-                    self = .BetaWaitParam(try .init(from: decoder))
+                case "click":
+                    self = .click(try .init(from: decoder))
+                case "double_click":
+                    self = .double_click(try .init(from: decoder))
+                case "drag":
+                    self = .drag(try .init(from: decoder))
+                case "keypress":
+                    self = .keypress(try .init(from: decoder))
+                case "move":
+                    self = .move(try .init(from: decoder))
+                case "screenshot":
+                    self = .screenshot(try .init(from: decoder))
+                case "scroll":
+                    self = .scroll(try .init(from: decoder))
+                case "type":
+                    self = ._type(try .init(from: decoder))
+                case "wait":
+                    self = .wait(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -38311,23 +38539,23 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaClickParam(value):
+                case let .click(value):
                     try value.encode(to: encoder)
-                case let .BetaDoubleClickAction(value):
+                case let .double_click(value):
                     try value.encode(to: encoder)
-                case let .BetaDragParam(value):
+                case let .drag(value):
                     try value.encode(to: encoder)
-                case let .BetaKeyPressAction(value):
+                case let .keypress(value):
                     try value.encode(to: encoder)
-                case let .BetaMoveParam(value):
+                case let .move(value):
                     try value.encode(to: encoder)
-                case let .BetaScreenshotParam(value):
+                case let .screenshot(value):
                     try value.encode(to: encoder)
-                case let .BetaScrollParam(value):
+                case let .scroll(value):
                     try value.encode(to: encoder)
-                case let .BetaTypeParam(value):
+                case let ._type(value):
                     try value.encode(to: encoder)
-                case let .BetaWaitParam(value):
+                case let .wait(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -39093,9 +39321,9 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaOutputMessageContent`.
         @frozen public enum BetaOutputMessageContent: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaOutputMessageContent/BetaOutputTextContent`.
-            case BetaOutputTextContent(Components.Schemas.BetaOutputTextContent)
+            case output_text(Components.Schemas.BetaOutputTextContent)
             /// - Remark: Generated from `#/components/schemas/BetaOutputMessageContent/BetaRefusalContent`.
-            case BetaRefusalContent(Components.Schemas.BetaRefusalContent)
+            case refusal(Components.Schemas.BetaRefusalContent)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -39106,10 +39334,10 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaOutputTextContent", "#/components/schemas/BetaOutputTextContent":
-                    self = .BetaOutputTextContent(try .init(from: decoder))
-                case "BetaRefusalContent", "#/components/schemas/BetaRefusalContent":
-                    self = .BetaRefusalContent(try .init(from: decoder))
+                case "output_text":
+                    self = .output_text(try .init(from: decoder))
+                case "refusal":
+                    self = .refusal(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -39120,9 +39348,9 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaOutputTextContent(value):
+                case let .output_text(value):
                     try value.encode(to: encoder)
-                case let .BetaRefusalContent(value):
+                case let .refusal(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -39283,14 +39511,14 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaAnnotation`.
         @frozen public enum BetaAnnotation: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaAnnotation/BetaFileCitationBody`.
-            case BetaFileCitationBody(Components.Schemas.BetaFileCitationBody)
-            /// - Remark: Generated from `#/components/schemas/BetaAnnotation/BetaUrlCitationBody`.
-            case BetaUrlCitationBody(Components.Schemas.BetaUrlCitationBody)
             /// - Remark: Generated from `#/components/schemas/BetaAnnotation/BetaContainerFileCitationBody`.
-            case BetaContainerFileCitationBody(Components.Schemas.BetaContainerFileCitationBody)
+            case container_file_citation(Components.Schemas.BetaContainerFileCitationBody)
+            /// - Remark: Generated from `#/components/schemas/BetaAnnotation/BetaFileCitationBody`.
+            case file_citation(Components.Schemas.BetaFileCitationBody)
             /// - Remark: Generated from `#/components/schemas/BetaAnnotation/BetaFilePath`.
-            case BetaFilePath(Components.Schemas.BetaFilePath)
+            case file_path(Components.Schemas.BetaFilePath)
+            /// - Remark: Generated from `#/components/schemas/BetaAnnotation/BetaUrlCitationBody`.
+            case url_citation(Components.Schemas.BetaUrlCitationBody)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -39301,14 +39529,14 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaFileCitationBody", "#/components/schemas/BetaFileCitationBody":
-                    self = .BetaFileCitationBody(try .init(from: decoder))
-                case "BetaUrlCitationBody", "#/components/schemas/BetaUrlCitationBody":
-                    self = .BetaUrlCitationBody(try .init(from: decoder))
-                case "BetaContainerFileCitationBody", "#/components/schemas/BetaContainerFileCitationBody":
-                    self = .BetaContainerFileCitationBody(try .init(from: decoder))
-                case "BetaFilePath", "#/components/schemas/BetaFilePath":
-                    self = .BetaFilePath(try .init(from: decoder))
+                case "container_file_citation":
+                    self = .container_file_citation(try .init(from: decoder))
+                case "file_citation":
+                    self = .file_citation(try .init(from: decoder))
+                case "file_path":
+                    self = .file_path(try .init(from: decoder))
+                case "url_citation":
+                    self = .url_citation(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -39319,13 +39547,13 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaFileCitationBody(value):
+                case let .container_file_citation(value):
                     try value.encode(to: encoder)
-                case let .BetaUrlCitationBody(value):
+                case let .file_citation(value):
                     try value.encode(to: encoder)
-                case let .BetaContainerFileCitationBody(value):
+                case let .file_path(value):
                     try value.encode(to: encoder)
-                case let .BetaFilePath(value):
+                case let .url_citation(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -39647,12 +39875,12 @@ public enum Components {
         public typealias BetaInputMessageContentList = [Components.Schemas.BetaInputContent]
         /// - Remark: Generated from `#/components/schemas/BetaInputContent`.
         @frozen public enum BetaInputContent: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaInputContent/BetaInputTextContent`.
-            case BetaInputTextContent(Components.Schemas.BetaInputTextContent)
-            /// - Remark: Generated from `#/components/schemas/BetaInputContent/BetaInputImageContent`.
-            case BetaInputImageContent(Components.Schemas.BetaInputImageContent)
             /// - Remark: Generated from `#/components/schemas/BetaInputContent/BetaInputFileContent`.
-            case BetaInputFileContent(Components.Schemas.BetaInputFileContent)
+            case input_file(Components.Schemas.BetaInputFileContent)
+            /// - Remark: Generated from `#/components/schemas/BetaInputContent/BetaInputImageContent`.
+            case input_image(Components.Schemas.BetaInputImageContent)
+            /// - Remark: Generated from `#/components/schemas/BetaInputContent/BetaInputTextContent`.
+            case input_text(Components.Schemas.BetaInputTextContent)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -39663,12 +39891,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaInputTextContent", "#/components/schemas/BetaInputTextContent":
-                    self = .BetaInputTextContent(try .init(from: decoder))
-                case "BetaInputImageContent", "#/components/schemas/BetaInputImageContent":
-                    self = .BetaInputImageContent(try .init(from: decoder))
-                case "BetaInputFileContent", "#/components/schemas/BetaInputFileContent":
-                    self = .BetaInputFileContent(try .init(from: decoder))
+                case "input_file":
+                    self = .input_file(try .init(from: decoder))
+                case "input_image":
+                    self = .input_image(try .init(from: decoder))
+                case "input_text":
+                    self = .input_text(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -39679,11 +39907,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaInputTextContent(value):
+                case let .input_file(value):
                     try value.encode(to: encoder)
-                case let .BetaInputImageContent(value):
+                case let .input_image(value):
                     try value.encode(to: encoder)
-                case let .BetaInputFileContent(value):
+                case let .input_text(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -41017,11 +41245,11 @@ public enum Components {
             /// - Remark: Generated from `#/components/schemas/BetaApplyPatchToolCall/operation`.
             @frozen public enum operationPayload: Codable, Hashable, Sendable {
                 /// - Remark: Generated from `#/components/schemas/BetaApplyPatchToolCall/operation/BetaApplyPatchCreateFileOperation`.
-                case BetaApplyPatchCreateFileOperation(Components.Schemas.BetaApplyPatchCreateFileOperation)
+                case create_file(Components.Schemas.BetaApplyPatchCreateFileOperation)
                 /// - Remark: Generated from `#/components/schemas/BetaApplyPatchToolCall/operation/BetaApplyPatchDeleteFileOperation`.
-                case BetaApplyPatchDeleteFileOperation(Components.Schemas.BetaApplyPatchDeleteFileOperation)
+                case delete_file(Components.Schemas.BetaApplyPatchDeleteFileOperation)
                 /// - Remark: Generated from `#/components/schemas/BetaApplyPatchToolCall/operation/BetaApplyPatchUpdateFileOperation`.
-                case BetaApplyPatchUpdateFileOperation(Components.Schemas.BetaApplyPatchUpdateFileOperation)
+                case update_file(Components.Schemas.BetaApplyPatchUpdateFileOperation)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -41032,12 +41260,12 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaApplyPatchCreateFileOperation", "#/components/schemas/BetaApplyPatchCreateFileOperation":
-                        self = .BetaApplyPatchCreateFileOperation(try .init(from: decoder))
-                    case "BetaApplyPatchDeleteFileOperation", "#/components/schemas/BetaApplyPatchDeleteFileOperation":
-                        self = .BetaApplyPatchDeleteFileOperation(try .init(from: decoder))
-                    case "BetaApplyPatchUpdateFileOperation", "#/components/schemas/BetaApplyPatchUpdateFileOperation":
-                        self = .BetaApplyPatchUpdateFileOperation(try .init(from: decoder))
+                    case "create_file":
+                        self = .create_file(try .init(from: decoder))
+                    case "delete_file":
+                        self = .delete_file(try .init(from: decoder))
+                    case "update_file":
+                        self = .update_file(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -41048,11 +41276,11 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaApplyPatchCreateFileOperation(value):
+                    case let .create_file(value):
                         try value.encode(to: encoder)
-                    case let .BetaApplyPatchDeleteFileOperation(value):
+                    case let .delete_file(value):
                         try value.encode(to: encoder)
-                    case let .BetaApplyPatchUpdateFileOperation(value):
+                    case let .update_file(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -41339,10 +41567,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputContent/outcome`.
             @frozen public enum outcomePayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputContent/outcome/BetaFunctionShellCallOutputTimeoutOutcome`.
-                case BetaFunctionShellCallOutputTimeoutOutcome(Components.Schemas.BetaFunctionShellCallOutputTimeoutOutcome)
                 /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputContent/outcome/BetaFunctionShellCallOutputExitOutcome`.
-                case BetaFunctionShellCallOutputExitOutcome(Components.Schemas.BetaFunctionShellCallOutputExitOutcome)
+                case exit(Components.Schemas.BetaFunctionShellCallOutputExitOutcome)
+                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCallOutputContent/outcome/BetaFunctionShellCallOutputTimeoutOutcome`.
+                case timeout(Components.Schemas.BetaFunctionShellCallOutputTimeoutOutcome)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -41353,10 +41581,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaFunctionShellCallOutputTimeoutOutcome", "#/components/schemas/BetaFunctionShellCallOutputTimeoutOutcome":
-                        self = .BetaFunctionShellCallOutputTimeoutOutcome(try .init(from: decoder))
-                    case "BetaFunctionShellCallOutputExitOutcome", "#/components/schemas/BetaFunctionShellCallOutputExitOutcome":
-                        self = .BetaFunctionShellCallOutputExitOutcome(try .init(from: decoder))
+                    case "exit":
+                        self = .exit(try .init(from: decoder))
+                    case "timeout":
+                        self = .timeout(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -41367,9 +41595,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaFunctionShellCallOutputTimeoutOutcome(value):
+                    case let .exit(value):
                         try value.encode(to: encoder)
-                    case let .BetaFunctionShellCallOutputExitOutcome(value):
+                    case let .timeout(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -41513,10 +41741,10 @@ public enum Components {
             public var status: Components.Schemas.BetaFunctionShellCallStatus
             /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCall/environment`.
             @frozen public enum environmentPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCall/environment/BetaLocalEnvironmentResource`.
-                case BetaLocalEnvironmentResource(Components.Schemas.BetaLocalEnvironmentResource)
                 /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCall/environment/BetaContainerReferenceResource`.
-                case BetaContainerReferenceResource(Components.Schemas.BetaContainerReferenceResource)
+                case container_reference(Components.Schemas.BetaContainerReferenceResource)
+                /// - Remark: Generated from `#/components/schemas/BetaFunctionShellCall/environment/BetaLocalEnvironmentResource`.
+                case local(Components.Schemas.BetaLocalEnvironmentResource)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -41527,10 +41755,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaLocalEnvironmentResource", "#/components/schemas/BetaLocalEnvironmentResource":
-                        self = .BetaLocalEnvironmentResource(try .init(from: decoder))
-                    case "BetaContainerReferenceResource", "#/components/schemas/BetaContainerReferenceResource":
-                        self = .BetaContainerReferenceResource(try .init(from: decoder))
+                    case "container_reference":
+                        self = .container_reference(try .init(from: decoder))
+                    case "local":
+                        self = .local(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -41541,9 +41769,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaLocalEnvironmentResource(value):
+                    case let .container_reference(value):
                         try value.encode(to: encoder)
-                    case let .BetaContainerReferenceResource(value):
+                    case let .local(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -42367,26 +42595,26 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload`.
             @frozen public enum contentPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaInputTextContent`.
-                case BetaInputTextContent(Components.Schemas.BetaInputTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaOutputTextContent`.
-                case BetaOutputTextContent(Components.Schemas.BetaOutputTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaTextContent`.
-                case BetaTextContent(Components.Schemas.BetaTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaSummaryTextContent`.
-                case BetaSummaryTextContent(Components.Schemas.BetaSummaryTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaReasoningTextContent`.
-                case BetaReasoningTextContent(Components.Schemas.BetaReasoningTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaRefusalContent`.
-                case BetaRefusalContent(Components.Schemas.BetaRefusalContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaInputImageContent`.
-                case BetaInputImageContent(Components.Schemas.BetaInputImageContent)
                 /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaComputerScreenshotContent`.
-                case BetaComputerScreenshotContent(Components.Schemas.BetaComputerScreenshotContent)
-                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaInputFileContent`.
-                case BetaInputFileContent(Components.Schemas.BetaInputFileContent)
+                case computer_screenshot(Components.Schemas.BetaComputerScreenshotContent)
                 /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaEncryptedContent`.
-                case BetaEncryptedContent(Components.Schemas.BetaEncryptedContent)
+                case encrypted_content(Components.Schemas.BetaEncryptedContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaInputFileContent`.
+                case input_file(Components.Schemas.BetaInputFileContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaInputImageContent`.
+                case input_image(Components.Schemas.BetaInputImageContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaInputTextContent`.
+                case input_text(Components.Schemas.BetaInputTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaOutputTextContent`.
+                case output_text(Components.Schemas.BetaOutputTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaReasoningTextContent`.
+                case reasoning_text(Components.Schemas.BetaReasoningTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaRefusalContent`.
+                case refusal(Components.Schemas.BetaRefusalContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaSummaryTextContent`.
+                case summary_text(Components.Schemas.BetaSummaryTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaAgentMessage/contentPayload/BetaTextContent`.
+                case text(Components.Schemas.BetaTextContent)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -42397,26 +42625,26 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaInputTextContent", "#/components/schemas/BetaInputTextContent":
-                        self = .BetaInputTextContent(try .init(from: decoder))
-                    case "BetaOutputTextContent", "#/components/schemas/BetaOutputTextContent":
-                        self = .BetaOutputTextContent(try .init(from: decoder))
-                    case "BetaTextContent", "#/components/schemas/BetaTextContent":
-                        self = .BetaTextContent(try .init(from: decoder))
-                    case "BetaSummaryTextContent", "#/components/schemas/BetaSummaryTextContent":
-                        self = .BetaSummaryTextContent(try .init(from: decoder))
-                    case "BetaReasoningTextContent", "#/components/schemas/BetaReasoningTextContent":
-                        self = .BetaReasoningTextContent(try .init(from: decoder))
-                    case "BetaRefusalContent", "#/components/schemas/BetaRefusalContent":
-                        self = .BetaRefusalContent(try .init(from: decoder))
-                    case "BetaInputImageContent", "#/components/schemas/BetaInputImageContent":
-                        self = .BetaInputImageContent(try .init(from: decoder))
-                    case "BetaComputerScreenshotContent", "#/components/schemas/BetaComputerScreenshotContent":
-                        self = .BetaComputerScreenshotContent(try .init(from: decoder))
-                    case "BetaInputFileContent", "#/components/schemas/BetaInputFileContent":
-                        self = .BetaInputFileContent(try .init(from: decoder))
-                    case "BetaEncryptedContent", "#/components/schemas/BetaEncryptedContent":
-                        self = .BetaEncryptedContent(try .init(from: decoder))
+                    case "computer_screenshot":
+                        self = .computer_screenshot(try .init(from: decoder))
+                    case "encrypted_content":
+                        self = .encrypted_content(try .init(from: decoder))
+                    case "input_file":
+                        self = .input_file(try .init(from: decoder))
+                    case "input_image":
+                        self = .input_image(try .init(from: decoder))
+                    case "input_text":
+                        self = .input_text(try .init(from: decoder))
+                    case "output_text":
+                        self = .output_text(try .init(from: decoder))
+                    case "reasoning_text":
+                        self = .reasoning_text(try .init(from: decoder))
+                    case "refusal":
+                        self = .refusal(try .init(from: decoder))
+                    case "summary_text":
+                        self = .summary_text(try .init(from: decoder))
+                    case "text":
+                        self = .text(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -42427,25 +42655,25 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaInputTextContent(value):
+                    case let .computer_screenshot(value):
                         try value.encode(to: encoder)
-                    case let .BetaOutputTextContent(value):
+                    case let .encrypted_content(value):
                         try value.encode(to: encoder)
-                    case let .BetaTextContent(value):
+                    case let .input_file(value):
                         try value.encode(to: encoder)
-                    case let .BetaSummaryTextContent(value):
+                    case let .input_image(value):
                         try value.encode(to: encoder)
-                    case let .BetaReasoningTextContent(value):
+                    case let .input_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaRefusalContent(value):
+                    case let .output_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaInputImageContent(value):
+                    case let .reasoning_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaComputerScreenshotContent(value):
+                    case let .refusal(value):
                         try value.encode(to: encoder)
-                    case let .BetaInputFileContent(value):
+                    case let .summary_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaEncryptedContent(value):
+                    case let .text(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -43266,68 +43494,68 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaItemField`.
         @frozen public enum BetaItemField: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMessage`.
-            case BetaMessage(Components.Schemas.BetaMessage)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaProgram`.
-            case BetaProgram(Components.Schemas.BetaProgram)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaProgramOutput`.
-            case BetaProgramOutput(Components.Schemas.BetaProgramOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionToolCall`.
-            case BetaFunctionToolCall(Components.Schemas.BetaFunctionToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMultiAgentCall`.
-            case BetaMultiAgentCall(Components.Schemas.BetaMultiAgentCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMultiAgentCallOutput`.
-            case BetaMultiAgentCallOutput(Components.Schemas.BetaMultiAgentCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaToolSearchCall`.
-            case BetaToolSearchCall(Components.Schemas.BetaToolSearchCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaToolSearchOutput`.
-            case BetaToolSearchOutput(Components.Schemas.BetaToolSearchOutput)
             /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaAdditionalTools`.
-            case BetaAdditionalTools(Components.Schemas.BetaAdditionalTools)
+            case additional_tools(Components.Schemas.BetaAdditionalTools)
             /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaAgentMessage`.
-            case BetaAgentMessage(Components.Schemas.BetaAgentMessage)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionToolCallOutput`.
-            case BetaFunctionToolCallOutput(Components.Schemas.BetaFunctionToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFileSearchToolCall`.
-            case BetaFileSearchToolCall(Components.Schemas.BetaFileSearchToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaWebSearchToolCall`.
-            case BetaWebSearchToolCall(Components.Schemas.BetaWebSearchToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaImageGenToolCall`.
-            case BetaImageGenToolCall(Components.Schemas.BetaImageGenToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaComputerToolCall`.
-            case BetaComputerToolCall(Components.Schemas.BetaComputerToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaComputerToolCallOutputResource`.
-            case BetaComputerToolCallOutputResource(Components.Schemas.BetaComputerToolCallOutputResource)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaReasoningItem`.
-            case BetaReasoningItem(Components.Schemas.BetaReasoningItem)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaCompactionBody`.
-            case BetaCompactionBody(Components.Schemas.BetaCompactionBody)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaCodeInterpreterToolCall`.
-            case BetaCodeInterpreterToolCall(Components.Schemas.BetaCodeInterpreterToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaLocalShellToolCall`.
-            case BetaLocalShellToolCall(Components.Schemas.BetaLocalShellToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaLocalShellToolCallOutput`.
-            case BetaLocalShellToolCallOutput(Components.Schemas.BetaLocalShellToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionShellCall`.
-            case BetaFunctionShellCall(Components.Schemas.BetaFunctionShellCall)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionShellCallOutput`.
-            case BetaFunctionShellCallOutput(Components.Schemas.BetaFunctionShellCallOutput)
+            case agent_message(Components.Schemas.BetaAgentMessage)
             /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaApplyPatchToolCall`.
-            case BetaApplyPatchToolCall(Components.Schemas.BetaApplyPatchToolCall)
+            case apply_patch_call(Components.Schemas.BetaApplyPatchToolCall)
             /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaApplyPatchToolCallOutput`.
-            case BetaApplyPatchToolCallOutput(Components.Schemas.BetaApplyPatchToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPListTools`.
-            case BetaMCPListTools(Components.Schemas.BetaMCPListTools)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPApprovalRequest`.
-            case BetaMCPApprovalRequest(Components.Schemas.BetaMCPApprovalRequest)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPApprovalResponseResource`.
-            case BetaMCPApprovalResponseResource(Components.Schemas.BetaMCPApprovalResponseResource)
-            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPToolCall`.
-            case BetaMCPToolCall(Components.Schemas.BetaMCPToolCall)
+            case apply_patch_call_output(Components.Schemas.BetaApplyPatchToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaCodeInterpreterToolCall`.
+            case code_interpreter_call(Components.Schemas.BetaCodeInterpreterToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaCompactionBody`.
+            case compaction(Components.Schemas.BetaCompactionBody)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaComputerToolCall`.
+            case computer_call(Components.Schemas.BetaComputerToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaComputerToolCallOutputResource`.
+            case computer_call_output(Components.Schemas.BetaComputerToolCallOutputResource)
             /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaCustomToolCall`.
-            case BetaCustomToolCall(Components.Schemas.BetaCustomToolCall)
+            case custom_tool_call(Components.Schemas.BetaCustomToolCall)
             /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaCustomToolCallOutput`.
-            case BetaCustomToolCallOutput(Components.Schemas.BetaCustomToolCallOutput)
+            case custom_tool_call_output(Components.Schemas.BetaCustomToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFileSearchToolCall`.
+            case file_search_call(Components.Schemas.BetaFileSearchToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionToolCall`.
+            case function_call(Components.Schemas.BetaFunctionToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionToolCallOutput`.
+            case function_call_output(Components.Schemas.BetaFunctionToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaImageGenToolCall`.
+            case image_generation_call(Components.Schemas.BetaImageGenToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaLocalShellToolCall`.
+            case local_shell_call(Components.Schemas.BetaLocalShellToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaLocalShellToolCallOutput`.
+            case local_shell_call_output(Components.Schemas.BetaLocalShellToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPApprovalRequest`.
+            case mcp_approval_request(Components.Schemas.BetaMCPApprovalRequest)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPApprovalResponseResource`.
+            case mcp_approval_response(Components.Schemas.BetaMCPApprovalResponseResource)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPToolCall`.
+            case mcp_call(Components.Schemas.BetaMCPToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMCPListTools`.
+            case mcp_list_tools(Components.Schemas.BetaMCPListTools)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMessage`.
+            case message(Components.Schemas.BetaMessage)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMultiAgentCall`.
+            case multi_agent_call(Components.Schemas.BetaMultiAgentCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaMultiAgentCallOutput`.
+            case multi_agent_call_output(Components.Schemas.BetaMultiAgentCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaProgram`.
+            case program(Components.Schemas.BetaProgram)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaProgramOutput`.
+            case program_output(Components.Schemas.BetaProgramOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaReasoningItem`.
+            case reasoning(Components.Schemas.BetaReasoningItem)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionShellCall`.
+            case shell_call(Components.Schemas.BetaFunctionShellCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaFunctionShellCallOutput`.
+            case shell_call_output(Components.Schemas.BetaFunctionShellCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaToolSearchCall`.
+            case tool_search_call(Components.Schemas.BetaToolSearchCall)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaToolSearchOutput`.
+            case tool_search_output(Components.Schemas.BetaToolSearchOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaItemField/BetaWebSearchToolCall`.
+            case web_search_call(Components.Schemas.BetaWebSearchToolCall)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -43338,68 +43566,68 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaMessage", "#/components/schemas/BetaMessage":
-                    self = .BetaMessage(try .init(from: decoder))
-                case "BetaProgram", "#/components/schemas/BetaProgram":
-                    self = .BetaProgram(try .init(from: decoder))
-                case "BetaProgramOutput", "#/components/schemas/BetaProgramOutput":
-                    self = .BetaProgramOutput(try .init(from: decoder))
-                case "BetaFunctionToolCall", "#/components/schemas/BetaFunctionToolCall":
-                    self = .BetaFunctionToolCall(try .init(from: decoder))
-                case "BetaMultiAgentCall", "#/components/schemas/BetaMultiAgentCall":
-                    self = .BetaMultiAgentCall(try .init(from: decoder))
-                case "BetaMultiAgentCallOutput", "#/components/schemas/BetaMultiAgentCallOutput":
-                    self = .BetaMultiAgentCallOutput(try .init(from: decoder))
-                case "BetaToolSearchCall", "#/components/schemas/BetaToolSearchCall":
-                    self = .BetaToolSearchCall(try .init(from: decoder))
-                case "BetaToolSearchOutput", "#/components/schemas/BetaToolSearchOutput":
-                    self = .BetaToolSearchOutput(try .init(from: decoder))
-                case "BetaAdditionalTools", "#/components/schemas/BetaAdditionalTools":
-                    self = .BetaAdditionalTools(try .init(from: decoder))
-                case "BetaAgentMessage", "#/components/schemas/BetaAgentMessage":
-                    self = .BetaAgentMessage(try .init(from: decoder))
-                case "BetaFunctionToolCallOutput", "#/components/schemas/BetaFunctionToolCallOutput":
-                    self = .BetaFunctionToolCallOutput(try .init(from: decoder))
-                case "BetaFileSearchToolCall", "#/components/schemas/BetaFileSearchToolCall":
-                    self = .BetaFileSearchToolCall(try .init(from: decoder))
-                case "BetaWebSearchToolCall", "#/components/schemas/BetaWebSearchToolCall":
-                    self = .BetaWebSearchToolCall(try .init(from: decoder))
-                case "BetaImageGenToolCall", "#/components/schemas/BetaImageGenToolCall":
-                    self = .BetaImageGenToolCall(try .init(from: decoder))
-                case "BetaComputerToolCall", "#/components/schemas/BetaComputerToolCall":
-                    self = .BetaComputerToolCall(try .init(from: decoder))
-                case "BetaComputerToolCallOutputResource", "#/components/schemas/BetaComputerToolCallOutputResource":
-                    self = .BetaComputerToolCallOutputResource(try .init(from: decoder))
-                case "BetaReasoningItem", "#/components/schemas/BetaReasoningItem":
-                    self = .BetaReasoningItem(try .init(from: decoder))
-                case "BetaCompactionBody", "#/components/schemas/BetaCompactionBody":
-                    self = .BetaCompactionBody(try .init(from: decoder))
-                case "BetaCodeInterpreterToolCall", "#/components/schemas/BetaCodeInterpreterToolCall":
-                    self = .BetaCodeInterpreterToolCall(try .init(from: decoder))
-                case "BetaLocalShellToolCall", "#/components/schemas/BetaLocalShellToolCall":
-                    self = .BetaLocalShellToolCall(try .init(from: decoder))
-                case "BetaLocalShellToolCallOutput", "#/components/schemas/BetaLocalShellToolCallOutput":
-                    self = .BetaLocalShellToolCallOutput(try .init(from: decoder))
-                case "BetaFunctionShellCall", "#/components/schemas/BetaFunctionShellCall":
-                    self = .BetaFunctionShellCall(try .init(from: decoder))
-                case "BetaFunctionShellCallOutput", "#/components/schemas/BetaFunctionShellCallOutput":
-                    self = .BetaFunctionShellCallOutput(try .init(from: decoder))
-                case "BetaApplyPatchToolCall", "#/components/schemas/BetaApplyPatchToolCall":
-                    self = .BetaApplyPatchToolCall(try .init(from: decoder))
-                case "BetaApplyPatchToolCallOutput", "#/components/schemas/BetaApplyPatchToolCallOutput":
-                    self = .BetaApplyPatchToolCallOutput(try .init(from: decoder))
-                case "BetaMCPListTools", "#/components/schemas/BetaMCPListTools":
-                    self = .BetaMCPListTools(try .init(from: decoder))
-                case "BetaMCPApprovalRequest", "#/components/schemas/BetaMCPApprovalRequest":
-                    self = .BetaMCPApprovalRequest(try .init(from: decoder))
-                case "BetaMCPApprovalResponseResource", "#/components/schemas/BetaMCPApprovalResponseResource":
-                    self = .BetaMCPApprovalResponseResource(try .init(from: decoder))
-                case "BetaMCPToolCall", "#/components/schemas/BetaMCPToolCall":
-                    self = .BetaMCPToolCall(try .init(from: decoder))
-                case "BetaCustomToolCall", "#/components/schemas/BetaCustomToolCall":
-                    self = .BetaCustomToolCall(try .init(from: decoder))
-                case "BetaCustomToolCallOutput", "#/components/schemas/BetaCustomToolCallOutput":
-                    self = .BetaCustomToolCallOutput(try .init(from: decoder))
+                case "additional_tools":
+                    self = .additional_tools(try .init(from: decoder))
+                case "agent_message":
+                    self = .agent_message(try .init(from: decoder))
+                case "apply_patch_call":
+                    self = .apply_patch_call(try .init(from: decoder))
+                case "apply_patch_call_output":
+                    self = .apply_patch_call_output(try .init(from: decoder))
+                case "code_interpreter_call":
+                    self = .code_interpreter_call(try .init(from: decoder))
+                case "compaction":
+                    self = .compaction(try .init(from: decoder))
+                case "computer_call":
+                    self = .computer_call(try .init(from: decoder))
+                case "computer_call_output":
+                    self = .computer_call_output(try .init(from: decoder))
+                case "custom_tool_call":
+                    self = .custom_tool_call(try .init(from: decoder))
+                case "custom_tool_call_output":
+                    self = .custom_tool_call_output(try .init(from: decoder))
+                case "file_search_call":
+                    self = .file_search_call(try .init(from: decoder))
+                case "function_call":
+                    self = .function_call(try .init(from: decoder))
+                case "function_call_output":
+                    self = .function_call_output(try .init(from: decoder))
+                case "image_generation_call":
+                    self = .image_generation_call(try .init(from: decoder))
+                case "local_shell_call":
+                    self = .local_shell_call(try .init(from: decoder))
+                case "local_shell_call_output":
+                    self = .local_shell_call_output(try .init(from: decoder))
+                case "mcp_approval_request":
+                    self = .mcp_approval_request(try .init(from: decoder))
+                case "mcp_approval_response":
+                    self = .mcp_approval_response(try .init(from: decoder))
+                case "mcp_call":
+                    self = .mcp_call(try .init(from: decoder))
+                case "mcp_list_tools":
+                    self = .mcp_list_tools(try .init(from: decoder))
+                case "message":
+                    self = .message(try .init(from: decoder))
+                case "multi_agent_call":
+                    self = .multi_agent_call(try .init(from: decoder))
+                case "multi_agent_call_output":
+                    self = .multi_agent_call_output(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
+                case "program_output":
+                    self = .program_output(try .init(from: decoder))
+                case "reasoning":
+                    self = .reasoning(try .init(from: decoder))
+                case "shell_call":
+                    self = .shell_call(try .init(from: decoder))
+                case "shell_call_output":
+                    self = .shell_call_output(try .init(from: decoder))
+                case "tool_search_call":
+                    self = .tool_search_call(try .init(from: decoder))
+                case "tool_search_output":
+                    self = .tool_search_output(try .init(from: decoder))
+                case "web_search_call":
+                    self = .web_search_call(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -43410,67 +43638,67 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaMessage(value):
+                case let .additional_tools(value):
                     try value.encode(to: encoder)
-                case let .BetaProgram(value):
+                case let .agent_message(value):
                     try value.encode(to: encoder)
-                case let .BetaProgramOutput(value):
+                case let .apply_patch_call(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionToolCall(value):
+                case let .apply_patch_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaMultiAgentCall(value):
+                case let .code_interpreter_call(value):
                     try value.encode(to: encoder)
-                case let .BetaMultiAgentCallOutput(value):
+                case let .compaction(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchCall(value):
+                case let .computer_call(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchOutput(value):
+                case let .computer_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaAdditionalTools(value):
+                case let .custom_tool_call(value):
                     try value.encode(to: encoder)
-                case let .BetaAgentMessage(value):
+                case let .custom_tool_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionToolCallOutput(value):
+                case let .file_search_call(value):
                     try value.encode(to: encoder)
-                case let .BetaFileSearchToolCall(value):
+                case let .function_call(value):
                     try value.encode(to: encoder)
-                case let .BetaWebSearchToolCall(value):
+                case let .function_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaImageGenToolCall(value):
+                case let .image_generation_call(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerToolCall(value):
+                case let .local_shell_call(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerToolCallOutputResource(value):
+                case let .local_shell_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaReasoningItem(value):
+                case let .mcp_approval_request(value):
                     try value.encode(to: encoder)
-                case let .BetaCompactionBody(value):
+                case let .mcp_approval_response(value):
                     try value.encode(to: encoder)
-                case let .BetaCodeInterpreterToolCall(value):
+                case let .mcp_call(value):
                     try value.encode(to: encoder)
-                case let .BetaLocalShellToolCall(value):
+                case let .mcp_list_tools(value):
                     try value.encode(to: encoder)
-                case let .BetaLocalShellToolCallOutput(value):
+                case let .message(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellCall(value):
+                case let .multi_agent_call(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellCallOutput(value):
+                case let .multi_agent_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchToolCall(value):
+                case let .program(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchToolCallOutput(value):
+                case let .program_output(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPListTools(value):
+                case let .reasoning(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPApprovalRequest(value):
+                case let .shell_call(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPApprovalResponseResource(value):
+                case let .shell_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPToolCall(value):
+                case let .tool_search_call(value):
                     try value.encode(to: encoder)
-                case let .BetaCustomToolCall(value):
+                case let .tool_search_output(value):
                     try value.encode(to: encoder)
-                case let .BetaCustomToolCallOutput(value):
+                case let .web_search_call(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -43509,26 +43737,26 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload`.
             @frozen public enum contentPayloadPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaInputTextContent`.
-                case BetaInputTextContent(Components.Schemas.BetaInputTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaOutputTextContent`.
-                case BetaOutputTextContent(Components.Schemas.BetaOutputTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaTextContent`.
-                case BetaTextContent(Components.Schemas.BetaTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaSummaryTextContent`.
-                case BetaSummaryTextContent(Components.Schemas.BetaSummaryTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaReasoningTextContent`.
-                case BetaReasoningTextContent(Components.Schemas.BetaReasoningTextContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaRefusalContent`.
-                case BetaRefusalContent(Components.Schemas.BetaRefusalContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaInputImageContent`.
-                case BetaInputImageContent(Components.Schemas.BetaInputImageContent)
                 /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaComputerScreenshotContent`.
-                case BetaComputerScreenshotContent(Components.Schemas.BetaComputerScreenshotContent)
-                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaInputFileContent`.
-                case BetaInputFileContent(Components.Schemas.BetaInputFileContent)
+                case computer_screenshot(Components.Schemas.BetaComputerScreenshotContent)
                 /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaEncryptedContent`.
-                case BetaEncryptedContent(Components.Schemas.BetaEncryptedContent)
+                case encrypted_content(Components.Schemas.BetaEncryptedContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaInputFileContent`.
+                case input_file(Components.Schemas.BetaInputFileContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaInputImageContent`.
+                case input_image(Components.Schemas.BetaInputImageContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaInputTextContent`.
+                case input_text(Components.Schemas.BetaInputTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaOutputTextContent`.
+                case output_text(Components.Schemas.BetaOutputTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaReasoningTextContent`.
+                case reasoning_text(Components.Schemas.BetaReasoningTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaRefusalContent`.
+                case refusal(Components.Schemas.BetaRefusalContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaSummaryTextContent`.
+                case summary_text(Components.Schemas.BetaSummaryTextContent)
+                /// - Remark: Generated from `#/components/schemas/BetaMessage/contentPayload/BetaTextContent`.
+                case text(Components.Schemas.BetaTextContent)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -43539,26 +43767,26 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaInputTextContent", "#/components/schemas/BetaInputTextContent":
-                        self = .BetaInputTextContent(try .init(from: decoder))
-                    case "BetaOutputTextContent", "#/components/schemas/BetaOutputTextContent":
-                        self = .BetaOutputTextContent(try .init(from: decoder))
-                    case "BetaTextContent", "#/components/schemas/BetaTextContent":
-                        self = .BetaTextContent(try .init(from: decoder))
-                    case "BetaSummaryTextContent", "#/components/schemas/BetaSummaryTextContent":
-                        self = .BetaSummaryTextContent(try .init(from: decoder))
-                    case "BetaReasoningTextContent", "#/components/schemas/BetaReasoningTextContent":
-                        self = .BetaReasoningTextContent(try .init(from: decoder))
-                    case "BetaRefusalContent", "#/components/schemas/BetaRefusalContent":
-                        self = .BetaRefusalContent(try .init(from: decoder))
-                    case "BetaInputImageContent", "#/components/schemas/BetaInputImageContent":
-                        self = .BetaInputImageContent(try .init(from: decoder))
-                    case "BetaComputerScreenshotContent", "#/components/schemas/BetaComputerScreenshotContent":
-                        self = .BetaComputerScreenshotContent(try .init(from: decoder))
-                    case "BetaInputFileContent", "#/components/schemas/BetaInputFileContent":
-                        self = .BetaInputFileContent(try .init(from: decoder))
-                    case "BetaEncryptedContent", "#/components/schemas/BetaEncryptedContent":
-                        self = .BetaEncryptedContent(try .init(from: decoder))
+                    case "computer_screenshot":
+                        self = .computer_screenshot(try .init(from: decoder))
+                    case "encrypted_content":
+                        self = .encrypted_content(try .init(from: decoder))
+                    case "input_file":
+                        self = .input_file(try .init(from: decoder))
+                    case "input_image":
+                        self = .input_image(try .init(from: decoder))
+                    case "input_text":
+                        self = .input_text(try .init(from: decoder))
+                    case "output_text":
+                        self = .output_text(try .init(from: decoder))
+                    case "reasoning_text":
+                        self = .reasoning_text(try .init(from: decoder))
+                    case "refusal":
+                        self = .refusal(try .init(from: decoder))
+                    case "summary_text":
+                        self = .summary_text(try .init(from: decoder))
+                    case "text":
+                        self = .text(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -43569,25 +43797,25 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaInputTextContent(value):
+                    case let .computer_screenshot(value):
                         try value.encode(to: encoder)
-                    case let .BetaOutputTextContent(value):
+                    case let .encrypted_content(value):
                         try value.encode(to: encoder)
-                    case let .BetaTextContent(value):
+                    case let .input_file(value):
                         try value.encode(to: encoder)
-                    case let .BetaSummaryTextContent(value):
+                    case let .input_image(value):
                         try value.encode(to: encoder)
-                    case let .BetaReasoningTextContent(value):
+                    case let .input_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaRefusalContent(value):
+                    case let .output_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaInputImageContent(value):
+                    case let .reasoning_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaComputerScreenshotContent(value):
+                    case let .refusal(value):
                         try value.encode(to: encoder)
-                    case let .BetaInputFileContent(value):
+                    case let .summary_text(value):
                         try value.encode(to: encoder)
-                    case let .BetaEncryptedContent(value):
+                    case let .text(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -44217,10 +44445,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaModeration/input`.
             @frozen public enum inputPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaModeration/input/BetaModerationResultBody`.
-                case BetaModerationResultBody(Components.Schemas.BetaModerationResultBody)
                 /// - Remark: Generated from `#/components/schemas/BetaModeration/input/BetaModerationErrorBody`.
-                case BetaModerationErrorBody(Components.Schemas.BetaModerationErrorBody)
+                case error(Components.Schemas.BetaModerationErrorBody)
+                /// - Remark: Generated from `#/components/schemas/BetaModeration/input/BetaModerationResultBody`.
+                case moderation_result(Components.Schemas.BetaModerationResultBody)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -44231,10 +44459,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaModerationResultBody", "#/components/schemas/BetaModerationResultBody":
-                        self = .BetaModerationResultBody(try .init(from: decoder))
-                    case "BetaModerationErrorBody", "#/components/schemas/BetaModerationErrorBody":
-                        self = .BetaModerationErrorBody(try .init(from: decoder))
+                    case "error":
+                        self = .error(try .init(from: decoder))
+                    case "moderation_result":
+                        self = .moderation_result(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -44245,9 +44473,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaModerationResultBody(value):
+                    case let .error(value):
                         try value.encode(to: encoder)
-                    case let .BetaModerationErrorBody(value):
+                    case let .moderation_result(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -44260,10 +44488,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/BetaModeration/output`.
             @frozen public enum outputPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/schemas/BetaModeration/output/BetaModerationResultBody`.
-                case BetaModerationResultBody(Components.Schemas.BetaModerationResultBody)
                 /// - Remark: Generated from `#/components/schemas/BetaModeration/output/BetaModerationErrorBody`.
-                case BetaModerationErrorBody(Components.Schemas.BetaModerationErrorBody)
+                case error(Components.Schemas.BetaModerationErrorBody)
+                /// - Remark: Generated from `#/components/schemas/BetaModeration/output/BetaModerationResultBody`.
+                case moderation_result(Components.Schemas.BetaModerationResultBody)
                 public enum CodingKeys: String, CodingKey {
                     case _type = "type"
                 }
@@ -44274,10 +44502,10 @@ public enum Components {
                         forKey: ._type
                     )
                     switch discriminator {
-                    case "BetaModerationResultBody", "#/components/schemas/BetaModerationResultBody":
-                        self = .BetaModerationResultBody(try .init(from: decoder))
-                    case "BetaModerationErrorBody", "#/components/schemas/BetaModerationErrorBody":
-                        self = .BetaModerationErrorBody(try .init(from: decoder))
+                    case "error":
+                        self = .error(try .init(from: decoder))
+                    case "moderation_result":
+                        self = .moderation_result(try .init(from: decoder))
                     default:
                         throw Swift.DecodingError.unknownOneOfDiscriminator(
                             discriminatorKey: CodingKeys._type,
@@ -44288,9 +44516,9 @@ public enum Components {
                 }
                 public func encode(to encoder: any Swift.Encoder) throws {
                     switch self {
-                    case let .BetaModerationResultBody(value):
+                    case let .error(value):
                         try value.encode(to: encoder)
-                    case let .BetaModerationErrorBody(value):
+                    case let .moderation_result(value):
                         try value.encode(to: encoder)
                     }
                 }
@@ -44495,14 +44723,14 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaPromptCacheDiagnostics`.
         @frozen public enum BetaPromptCacheDiagnostics: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaPromptCacheDiagnostics/BetaPromptCacheMissDiagnosticsBody`.
-            case BetaPromptCacheMissDiagnosticsBody(Components.Schemas.BetaPromptCacheMissDiagnosticsBody)
             /// - Remark: Generated from `#/components/schemas/BetaPromptCacheDiagnostics/BetaPromptCacheHitDiagnosticsBody`.
-            case BetaPromptCacheHitDiagnosticsBody(Components.Schemas.BetaPromptCacheHitDiagnosticsBody)
+            case cache_hit(Components.Schemas.BetaPromptCacheHitDiagnosticsBody)
+            /// - Remark: Generated from `#/components/schemas/BetaPromptCacheDiagnostics/BetaPromptCacheMissDiagnosticsBody`.
+            case cache_miss(Components.Schemas.BetaPromptCacheMissDiagnosticsBody)
             /// - Remark: Generated from `#/components/schemas/BetaPromptCacheDiagnostics/BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody`.
-            case BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody(Components.Schemas.BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody)
+            case comparison_response_not_found(Components.Schemas.BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody)
             /// - Remark: Generated from `#/components/schemas/BetaPromptCacheDiagnostics/BetaPromptCacheUnavailableDiagnosticsBody`.
-            case BetaPromptCacheUnavailableDiagnosticsBody(Components.Schemas.BetaPromptCacheUnavailableDiagnosticsBody)
+            case unavailable(Components.Schemas.BetaPromptCacheUnavailableDiagnosticsBody)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -44513,14 +44741,14 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaPromptCacheMissDiagnosticsBody", "#/components/schemas/BetaPromptCacheMissDiagnosticsBody":
-                    self = .BetaPromptCacheMissDiagnosticsBody(try .init(from: decoder))
-                case "BetaPromptCacheHitDiagnosticsBody", "#/components/schemas/BetaPromptCacheHitDiagnosticsBody":
-                    self = .BetaPromptCacheHitDiagnosticsBody(try .init(from: decoder))
-                case "BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody", "#/components/schemas/BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody":
-                    self = .BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody(try .init(from: decoder))
-                case "BetaPromptCacheUnavailableDiagnosticsBody", "#/components/schemas/BetaPromptCacheUnavailableDiagnosticsBody":
-                    self = .BetaPromptCacheUnavailableDiagnosticsBody(try .init(from: decoder))
+                case "cache_hit":
+                    self = .cache_hit(try .init(from: decoder))
+                case "cache_miss":
+                    self = .cache_miss(try .init(from: decoder))
+                case "comparison_response_not_found":
+                    self = .comparison_response_not_found(try .init(from: decoder))
+                case "unavailable":
+                    self = .unavailable(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -44531,13 +44759,13 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaPromptCacheMissDiagnosticsBody(value):
+                case let .cache_hit(value):
                     try value.encode(to: encoder)
-                case let .BetaPromptCacheHitDiagnosticsBody(value):
+                case let .cache_miss(value):
                     try value.encode(to: encoder)
-                case let .BetaPromptCacheComparisonResponseNotFoundDiagnosticsBody(value):
+                case let .comparison_response_not_found(value):
                     try value.encode(to: encoder)
-                case let .BetaPromptCacheUnavailableDiagnosticsBody(value):
+                case let .unavailable(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -44695,68 +44923,68 @@ public enum Components {
         }
         /// - Remark: Generated from `#/components/schemas/BetaOutputItem`.
         @frozen public enum BetaOutputItem: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaOutputMessage`.
-            case BetaOutputMessage(Components.Schemas.BetaOutputMessage)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFileSearchToolCall`.
-            case BetaFileSearchToolCall(Components.Schemas.BetaFileSearchToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionToolCall`.
-            case BetaFunctionToolCall(Components.Schemas.BetaFunctionToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionToolCallOutputResource`.
-            case BetaFunctionToolCallOutputResource(Components.Schemas.BetaFunctionToolCallOutputResource)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaAgentMessage`.
-            case BetaAgentMessage(Components.Schemas.BetaAgentMessage)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMultiAgentCall`.
-            case BetaMultiAgentCall(Components.Schemas.BetaMultiAgentCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMultiAgentCallOutput`.
-            case BetaMultiAgentCallOutput(Components.Schemas.BetaMultiAgentCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaWebSearchToolCall`.
-            case BetaWebSearchToolCall(Components.Schemas.BetaWebSearchToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaComputerToolCall`.
-            case BetaComputerToolCall(Components.Schemas.BetaComputerToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaComputerToolCallOutputResource`.
-            case BetaComputerToolCallOutputResource(Components.Schemas.BetaComputerToolCallOutputResource)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaReasoningItem`.
-            case BetaReasoningItem(Components.Schemas.BetaReasoningItem)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaProgram`.
-            case BetaProgram(Components.Schemas.BetaProgram)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaProgramOutput`.
-            case BetaProgramOutput(Components.Schemas.BetaProgramOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaToolSearchCall`.
-            case BetaToolSearchCall(Components.Schemas.BetaToolSearchCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaToolSearchOutput`.
-            case BetaToolSearchOutput(Components.Schemas.BetaToolSearchOutput)
             /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaAdditionalTools`.
-            case BetaAdditionalTools(Components.Schemas.BetaAdditionalTools)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaCompactionBody`.
-            case BetaCompactionBody(Components.Schemas.BetaCompactionBody)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaImageGenToolCall`.
-            case BetaImageGenToolCall(Components.Schemas.BetaImageGenToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaCodeInterpreterToolCall`.
-            case BetaCodeInterpreterToolCall(Components.Schemas.BetaCodeInterpreterToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaLocalShellToolCall`.
-            case BetaLocalShellToolCall(Components.Schemas.BetaLocalShellToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaLocalShellToolCallOutput`.
-            case BetaLocalShellToolCallOutput(Components.Schemas.BetaLocalShellToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionShellCall`.
-            case BetaFunctionShellCall(Components.Schemas.BetaFunctionShellCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionShellCallOutput`.
-            case BetaFunctionShellCallOutput(Components.Schemas.BetaFunctionShellCallOutput)
+            case additional_tools(Components.Schemas.BetaAdditionalTools)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaAgentMessage`.
+            case agent_message(Components.Schemas.BetaAgentMessage)
             /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaApplyPatchToolCall`.
-            case BetaApplyPatchToolCall(Components.Schemas.BetaApplyPatchToolCall)
+            case apply_patch_call(Components.Schemas.BetaApplyPatchToolCall)
             /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaApplyPatchToolCallOutput`.
-            case BetaApplyPatchToolCallOutput(Components.Schemas.BetaApplyPatchToolCallOutput)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPToolCall`.
-            case BetaMCPToolCall(Components.Schemas.BetaMCPToolCall)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPListTools`.
-            case BetaMCPListTools(Components.Schemas.BetaMCPListTools)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPApprovalRequest`.
-            case BetaMCPApprovalRequest(Components.Schemas.BetaMCPApprovalRequest)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPApprovalResponseResource`.
-            case BetaMCPApprovalResponseResource(Components.Schemas.BetaMCPApprovalResponseResource)
+            case apply_patch_call_output(Components.Schemas.BetaApplyPatchToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaCodeInterpreterToolCall`.
+            case code_interpreter_call(Components.Schemas.BetaCodeInterpreterToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaCompactionBody`.
+            case compaction(Components.Schemas.BetaCompactionBody)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaComputerToolCall`.
+            case computer_call(Components.Schemas.BetaComputerToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaComputerToolCallOutputResource`.
+            case computer_call_output(Components.Schemas.BetaComputerToolCallOutputResource)
             /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaCustomToolCall`.
-            case BetaCustomToolCall(Components.Schemas.BetaCustomToolCall)
+            case custom_tool_call(Components.Schemas.BetaCustomToolCall)
             /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaCustomToolCallOutputResource`.
-            case BetaCustomToolCallOutputResource(Components.Schemas.BetaCustomToolCallOutputResource)
+            case custom_tool_call_output(Components.Schemas.BetaCustomToolCallOutputResource)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFileSearchToolCall`.
+            case file_search_call(Components.Schemas.BetaFileSearchToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionToolCall`.
+            case function_call(Components.Schemas.BetaFunctionToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionToolCallOutputResource`.
+            case function_call_output(Components.Schemas.BetaFunctionToolCallOutputResource)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaImageGenToolCall`.
+            case image_generation_call(Components.Schemas.BetaImageGenToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaLocalShellToolCall`.
+            case local_shell_call(Components.Schemas.BetaLocalShellToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaLocalShellToolCallOutput`.
+            case local_shell_call_output(Components.Schemas.BetaLocalShellToolCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPApprovalRequest`.
+            case mcp_approval_request(Components.Schemas.BetaMCPApprovalRequest)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPApprovalResponseResource`.
+            case mcp_approval_response(Components.Schemas.BetaMCPApprovalResponseResource)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPToolCall`.
+            case mcp_call(Components.Schemas.BetaMCPToolCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMCPListTools`.
+            case mcp_list_tools(Components.Schemas.BetaMCPListTools)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaOutputMessage`.
+            case message(Components.Schemas.BetaOutputMessage)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMultiAgentCall`.
+            case multi_agent_call(Components.Schemas.BetaMultiAgentCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaMultiAgentCallOutput`.
+            case multi_agent_call_output(Components.Schemas.BetaMultiAgentCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaProgram`.
+            case program(Components.Schemas.BetaProgram)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaProgramOutput`.
+            case program_output(Components.Schemas.BetaProgramOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaReasoningItem`.
+            case reasoning(Components.Schemas.BetaReasoningItem)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionShellCall`.
+            case shell_call(Components.Schemas.BetaFunctionShellCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaFunctionShellCallOutput`.
+            case shell_call_output(Components.Schemas.BetaFunctionShellCallOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaToolSearchCall`.
+            case tool_search_call(Components.Schemas.BetaToolSearchCall)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaToolSearchOutput`.
+            case tool_search_output(Components.Schemas.BetaToolSearchOutput)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputItem/BetaWebSearchToolCall`.
+            case web_search_call(Components.Schemas.BetaWebSearchToolCall)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -44767,68 +44995,68 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaOutputMessage", "#/components/schemas/BetaOutputMessage":
-                    self = .BetaOutputMessage(try .init(from: decoder))
-                case "BetaFileSearchToolCall", "#/components/schemas/BetaFileSearchToolCall":
-                    self = .BetaFileSearchToolCall(try .init(from: decoder))
-                case "BetaFunctionToolCall", "#/components/schemas/BetaFunctionToolCall":
-                    self = .BetaFunctionToolCall(try .init(from: decoder))
-                case "BetaFunctionToolCallOutputResource", "#/components/schemas/BetaFunctionToolCallOutputResource":
-                    self = .BetaFunctionToolCallOutputResource(try .init(from: decoder))
-                case "BetaAgentMessage", "#/components/schemas/BetaAgentMessage":
-                    self = .BetaAgentMessage(try .init(from: decoder))
-                case "BetaMultiAgentCall", "#/components/schemas/BetaMultiAgentCall":
-                    self = .BetaMultiAgentCall(try .init(from: decoder))
-                case "BetaMultiAgentCallOutput", "#/components/schemas/BetaMultiAgentCallOutput":
-                    self = .BetaMultiAgentCallOutput(try .init(from: decoder))
-                case "BetaWebSearchToolCall", "#/components/schemas/BetaWebSearchToolCall":
-                    self = .BetaWebSearchToolCall(try .init(from: decoder))
-                case "BetaComputerToolCall", "#/components/schemas/BetaComputerToolCall":
-                    self = .BetaComputerToolCall(try .init(from: decoder))
-                case "BetaComputerToolCallOutputResource", "#/components/schemas/BetaComputerToolCallOutputResource":
-                    self = .BetaComputerToolCallOutputResource(try .init(from: decoder))
-                case "BetaReasoningItem", "#/components/schemas/BetaReasoningItem":
-                    self = .BetaReasoningItem(try .init(from: decoder))
-                case "BetaProgram", "#/components/schemas/BetaProgram":
-                    self = .BetaProgram(try .init(from: decoder))
-                case "BetaProgramOutput", "#/components/schemas/BetaProgramOutput":
-                    self = .BetaProgramOutput(try .init(from: decoder))
-                case "BetaToolSearchCall", "#/components/schemas/BetaToolSearchCall":
-                    self = .BetaToolSearchCall(try .init(from: decoder))
-                case "BetaToolSearchOutput", "#/components/schemas/BetaToolSearchOutput":
-                    self = .BetaToolSearchOutput(try .init(from: decoder))
-                case "BetaAdditionalTools", "#/components/schemas/BetaAdditionalTools":
-                    self = .BetaAdditionalTools(try .init(from: decoder))
-                case "BetaCompactionBody", "#/components/schemas/BetaCompactionBody":
-                    self = .BetaCompactionBody(try .init(from: decoder))
-                case "BetaImageGenToolCall", "#/components/schemas/BetaImageGenToolCall":
-                    self = .BetaImageGenToolCall(try .init(from: decoder))
-                case "BetaCodeInterpreterToolCall", "#/components/schemas/BetaCodeInterpreterToolCall":
-                    self = .BetaCodeInterpreterToolCall(try .init(from: decoder))
-                case "BetaLocalShellToolCall", "#/components/schemas/BetaLocalShellToolCall":
-                    self = .BetaLocalShellToolCall(try .init(from: decoder))
-                case "BetaLocalShellToolCallOutput", "#/components/schemas/BetaLocalShellToolCallOutput":
-                    self = .BetaLocalShellToolCallOutput(try .init(from: decoder))
-                case "BetaFunctionShellCall", "#/components/schemas/BetaFunctionShellCall":
-                    self = .BetaFunctionShellCall(try .init(from: decoder))
-                case "BetaFunctionShellCallOutput", "#/components/schemas/BetaFunctionShellCallOutput":
-                    self = .BetaFunctionShellCallOutput(try .init(from: decoder))
-                case "BetaApplyPatchToolCall", "#/components/schemas/BetaApplyPatchToolCall":
-                    self = .BetaApplyPatchToolCall(try .init(from: decoder))
-                case "BetaApplyPatchToolCallOutput", "#/components/schemas/BetaApplyPatchToolCallOutput":
-                    self = .BetaApplyPatchToolCallOutput(try .init(from: decoder))
-                case "BetaMCPToolCall", "#/components/schemas/BetaMCPToolCall":
-                    self = .BetaMCPToolCall(try .init(from: decoder))
-                case "BetaMCPListTools", "#/components/schemas/BetaMCPListTools":
-                    self = .BetaMCPListTools(try .init(from: decoder))
-                case "BetaMCPApprovalRequest", "#/components/schemas/BetaMCPApprovalRequest":
-                    self = .BetaMCPApprovalRequest(try .init(from: decoder))
-                case "BetaMCPApprovalResponseResource", "#/components/schemas/BetaMCPApprovalResponseResource":
-                    self = .BetaMCPApprovalResponseResource(try .init(from: decoder))
-                case "BetaCustomToolCall", "#/components/schemas/BetaCustomToolCall":
-                    self = .BetaCustomToolCall(try .init(from: decoder))
-                case "BetaCustomToolCallOutputResource", "#/components/schemas/BetaCustomToolCallOutputResource":
-                    self = .BetaCustomToolCallOutputResource(try .init(from: decoder))
+                case "additional_tools":
+                    self = .additional_tools(try .init(from: decoder))
+                case "agent_message":
+                    self = .agent_message(try .init(from: decoder))
+                case "apply_patch_call":
+                    self = .apply_patch_call(try .init(from: decoder))
+                case "apply_patch_call_output":
+                    self = .apply_patch_call_output(try .init(from: decoder))
+                case "code_interpreter_call":
+                    self = .code_interpreter_call(try .init(from: decoder))
+                case "compaction":
+                    self = .compaction(try .init(from: decoder))
+                case "computer_call":
+                    self = .computer_call(try .init(from: decoder))
+                case "computer_call_output":
+                    self = .computer_call_output(try .init(from: decoder))
+                case "custom_tool_call":
+                    self = .custom_tool_call(try .init(from: decoder))
+                case "custom_tool_call_output":
+                    self = .custom_tool_call_output(try .init(from: decoder))
+                case "file_search_call":
+                    self = .file_search_call(try .init(from: decoder))
+                case "function_call":
+                    self = .function_call(try .init(from: decoder))
+                case "function_call_output":
+                    self = .function_call_output(try .init(from: decoder))
+                case "image_generation_call":
+                    self = .image_generation_call(try .init(from: decoder))
+                case "local_shell_call":
+                    self = .local_shell_call(try .init(from: decoder))
+                case "local_shell_call_output":
+                    self = .local_shell_call_output(try .init(from: decoder))
+                case "mcp_approval_request":
+                    self = .mcp_approval_request(try .init(from: decoder))
+                case "mcp_approval_response":
+                    self = .mcp_approval_response(try .init(from: decoder))
+                case "mcp_call":
+                    self = .mcp_call(try .init(from: decoder))
+                case "mcp_list_tools":
+                    self = .mcp_list_tools(try .init(from: decoder))
+                case "message":
+                    self = .message(try .init(from: decoder))
+                case "multi_agent_call":
+                    self = .multi_agent_call(try .init(from: decoder))
+                case "multi_agent_call_output":
+                    self = .multi_agent_call_output(try .init(from: decoder))
+                case "program":
+                    self = .program(try .init(from: decoder))
+                case "program_output":
+                    self = .program_output(try .init(from: decoder))
+                case "reasoning":
+                    self = .reasoning(try .init(from: decoder))
+                case "shell_call":
+                    self = .shell_call(try .init(from: decoder))
+                case "shell_call_output":
+                    self = .shell_call_output(try .init(from: decoder))
+                case "tool_search_call":
+                    self = .tool_search_call(try .init(from: decoder))
+                case "tool_search_output":
+                    self = .tool_search_output(try .init(from: decoder))
+                case "web_search_call":
+                    self = .web_search_call(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -44839,67 +45067,67 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaOutputMessage(value):
+                case let .additional_tools(value):
                     try value.encode(to: encoder)
-                case let .BetaFileSearchToolCall(value):
+                case let .agent_message(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionToolCall(value):
+                case let .apply_patch_call(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionToolCallOutputResource(value):
+                case let .apply_patch_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaAgentMessage(value):
+                case let .code_interpreter_call(value):
                     try value.encode(to: encoder)
-                case let .BetaMultiAgentCall(value):
+                case let .compaction(value):
                     try value.encode(to: encoder)
-                case let .BetaMultiAgentCallOutput(value):
+                case let .computer_call(value):
                     try value.encode(to: encoder)
-                case let .BetaWebSearchToolCall(value):
+                case let .computer_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerToolCall(value):
+                case let .custom_tool_call(value):
                     try value.encode(to: encoder)
-                case let .BetaComputerToolCallOutputResource(value):
+                case let .custom_tool_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaReasoningItem(value):
+                case let .file_search_call(value):
                     try value.encode(to: encoder)
-                case let .BetaProgram(value):
+                case let .function_call(value):
                     try value.encode(to: encoder)
-                case let .BetaProgramOutput(value):
+                case let .function_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchCall(value):
+                case let .image_generation_call(value):
                     try value.encode(to: encoder)
-                case let .BetaToolSearchOutput(value):
+                case let .local_shell_call(value):
                     try value.encode(to: encoder)
-                case let .BetaAdditionalTools(value):
+                case let .local_shell_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaCompactionBody(value):
+                case let .mcp_approval_request(value):
                     try value.encode(to: encoder)
-                case let .BetaImageGenToolCall(value):
+                case let .mcp_approval_response(value):
                     try value.encode(to: encoder)
-                case let .BetaCodeInterpreterToolCall(value):
+                case let .mcp_call(value):
                     try value.encode(to: encoder)
-                case let .BetaLocalShellToolCall(value):
+                case let .mcp_list_tools(value):
                     try value.encode(to: encoder)
-                case let .BetaLocalShellToolCallOutput(value):
+                case let .message(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellCall(value):
+                case let .multi_agent_call(value):
                     try value.encode(to: encoder)
-                case let .BetaFunctionShellCallOutput(value):
+                case let .multi_agent_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchToolCall(value):
+                case let .program(value):
                     try value.encode(to: encoder)
-                case let .BetaApplyPatchToolCallOutput(value):
+                case let .program_output(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPToolCall(value):
+                case let .reasoning(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPListTools(value):
+                case let .shell_call(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPApprovalRequest(value):
+                case let .shell_call_output(value):
                     try value.encode(to: encoder)
-                case let .BetaMCPApprovalResponseResource(value):
+                case let .tool_search_call(value):
                     try value.encode(to: encoder)
-                case let .BetaCustomToolCall(value):
+                case let .tool_search_output(value):
                     try value.encode(to: encoder)
-                case let .BetaCustomToolCallOutputResource(value):
+                case let .web_search_call(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -48348,11 +48576,11 @@ public enum Components {
         /// - Remark: Generated from `#/components/schemas/BetaOutputContent`.
         @frozen public enum BetaOutputContent: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/BetaOutputContent/BetaOutputTextContent`.
-            case BetaOutputTextContent(Components.Schemas.BetaOutputTextContent)
-            /// - Remark: Generated from `#/components/schemas/BetaOutputContent/BetaRefusalContent`.
-            case BetaRefusalContent(Components.Schemas.BetaRefusalContent)
+            case output_text(Components.Schemas.BetaOutputTextContent)
             /// - Remark: Generated from `#/components/schemas/BetaOutputContent/BetaReasoningTextContent`.
-            case BetaReasoningTextContent(Components.Schemas.BetaReasoningTextContent)
+            case reasoning_text(Components.Schemas.BetaReasoningTextContent)
+            /// - Remark: Generated from `#/components/schemas/BetaOutputContent/BetaRefusalContent`.
+            case refusal(Components.Schemas.BetaRefusalContent)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -48363,12 +48591,12 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaOutputTextContent", "#/components/schemas/BetaOutputTextContent":
-                    self = .BetaOutputTextContent(try .init(from: decoder))
-                case "BetaRefusalContent", "#/components/schemas/BetaRefusalContent":
-                    self = .BetaRefusalContent(try .init(from: decoder))
-                case "BetaReasoningTextContent", "#/components/schemas/BetaReasoningTextContent":
-                    self = .BetaReasoningTextContent(try .init(from: decoder))
+                case "output_text":
+                    self = .output_text(try .init(from: decoder))
+                case "reasoning_text":
+                    self = .reasoning_text(try .init(from: decoder))
+                case "refusal":
+                    self = .refusal(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -48379,11 +48607,11 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaOutputTextContent(value):
+                case let .output_text(value):
                     try value.encode(to: encoder)
-                case let .BetaRefusalContent(value):
+                case let .reasoning_text(value):
                     try value.encode(to: encoder)
-                case let .BetaReasoningTextContent(value):
+                case let .refusal(value):
                     try value.encode(to: encoder)
                 }
             }
@@ -49979,124 +50207,124 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent`.
         @frozen public enum BetaResponseStreamEvent: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioDeltaEvent`.
-            case BetaResponseAudioDeltaEvent(Components.Schemas.BetaResponseAudioDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioDoneEvent`.
-            case BetaResponseAudioDoneEvent(Components.Schemas.BetaResponseAudioDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioTranscriptDeltaEvent`.
-            case BetaResponseAudioTranscriptDeltaEvent(Components.Schemas.BetaResponseAudioTranscriptDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioTranscriptDoneEvent`.
-            case BetaResponseAudioTranscriptDoneEvent(Components.Schemas.BetaResponseAudioTranscriptDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallCodeDeltaEvent`.
-            case BetaResponseCodeInterpreterCallCodeDeltaEvent(Components.Schemas.BetaResponseCodeInterpreterCallCodeDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallCodeDoneEvent`.
-            case BetaResponseCodeInterpreterCallCodeDoneEvent(Components.Schemas.BetaResponseCodeInterpreterCallCodeDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallCompletedEvent`.
-            case BetaResponseCodeInterpreterCallCompletedEvent(Components.Schemas.BetaResponseCodeInterpreterCallCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallInProgressEvent`.
-            case BetaResponseCodeInterpreterCallInProgressEvent(Components.Schemas.BetaResponseCodeInterpreterCallInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallInterpretingEvent`.
-            case BetaResponseCodeInterpreterCallInterpretingEvent(Components.Schemas.BetaResponseCodeInterpreterCallInterpretingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCompactionCompactingStreamingEvent`.
-            case BetaResponseCompactionCompactingStreamingEvent(Components.Schemas.BetaResponseCompactionCompactingStreamingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCompletedEvent`.
-            case BetaResponseCompletedEvent(Components.Schemas.BetaResponseCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseContentPartAddedEvent`.
-            case BetaResponseContentPartAddedEvent(Components.Schemas.BetaResponseContentPartAddedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseContentPartDoneEvent`.
-            case BetaResponseContentPartDoneEvent(Components.Schemas.BetaResponseContentPartDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCreatedEvent`.
-            case BetaResponseCreatedEvent(Components.Schemas.BetaResponseCreatedEvent)
             /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseErrorEvent`.
-            case BetaResponseErrorEvent(Components.Schemas.BetaResponseErrorEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFileSearchCallCompletedEvent`.
-            case BetaResponseFileSearchCallCompletedEvent(Components.Schemas.BetaResponseFileSearchCallCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFileSearchCallInProgressEvent`.
-            case BetaResponseFileSearchCallInProgressEvent(Components.Schemas.BetaResponseFileSearchCallInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFileSearchCallSearchingEvent`.
-            case BetaResponseFileSearchCallSearchingEvent(Components.Schemas.BetaResponseFileSearchCallSearchingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFunctionCallArgumentsDeltaEvent`.
-            case BetaResponseFunctionCallArgumentsDeltaEvent(Components.Schemas.BetaResponseFunctionCallArgumentsDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFunctionCallArgumentsDoneEvent`.
-            case BetaResponseFunctionCallArgumentsDoneEvent(Components.Schemas.BetaResponseFunctionCallArgumentsDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallCommandAddedStreamingEvent`.
-            case BetaResponseShellCallCommandAddedStreamingEvent(Components.Schemas.BetaResponseShellCallCommandAddedStreamingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallCommandDeltaStreamingEvent`.
-            case BetaResponseShellCallCommandDeltaStreamingEvent(Components.Schemas.BetaResponseShellCallCommandDeltaStreamingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallCommandDoneStreamingEvent`.
-            case BetaResponseShellCallCommandDoneStreamingEvent(Components.Schemas.BetaResponseShellCallCommandDoneStreamingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallOutputContentDeltaStreamingEvent`.
-            case BetaResponseShellCallOutputContentDeltaStreamingEvent(Components.Schemas.BetaResponseShellCallOutputContentDeltaStreamingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallOutputContentDoneStreamingEvent`.
-            case BetaResponseShellCallOutputContentDoneStreamingEvent(Components.Schemas.BetaResponseShellCallOutputContentDoneStreamingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseInProgressEvent`.
-            case BetaResponseInProgressEvent(Components.Schemas.BetaResponseInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFailedEvent`.
-            case BetaResponseFailedEvent(Components.Schemas.BetaResponseFailedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseIncompleteEvent`.
-            case BetaResponseIncompleteEvent(Components.Schemas.BetaResponseIncompleteEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseOutputItemAddedEvent`.
-            case BetaResponseOutputItemAddedEvent(Components.Schemas.BetaResponseOutputItemAddedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseOutputItemDoneEvent`.
-            case BetaResponseOutputItemDoneEvent(Components.Schemas.BetaResponseOutputItemDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryPartAddedEvent`.
-            case BetaResponseReasoningSummaryPartAddedEvent(Components.Schemas.BetaResponseReasoningSummaryPartAddedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryPartDoneEvent`.
-            case BetaResponseReasoningSummaryPartDoneEvent(Components.Schemas.BetaResponseReasoningSummaryPartDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryTextDeltaEvent`.
-            case BetaResponseReasoningSummaryTextDeltaEvent(Components.Schemas.BetaResponseReasoningSummaryTextDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryTextDoneEvent`.
-            case BetaResponseReasoningSummaryTextDoneEvent(Components.Schemas.BetaResponseReasoningSummaryTextDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningTextDeltaEvent`.
-            case BetaResponseReasoningTextDeltaEvent(Components.Schemas.BetaResponseReasoningTextDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningTextDoneEvent`.
-            case BetaResponseReasoningTextDoneEvent(Components.Schemas.BetaResponseReasoningTextDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseRefusalDeltaEvent`.
-            case BetaResponseRefusalDeltaEvent(Components.Schemas.BetaResponseRefusalDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseRefusalDoneEvent`.
-            case BetaResponseRefusalDoneEvent(Components.Schemas.BetaResponseRefusalDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseTextDeltaEvent`.
-            case BetaResponseTextDeltaEvent(Components.Schemas.BetaResponseTextDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseTextDoneEvent`.
-            case BetaResponseTextDoneEvent(Components.Schemas.BetaResponseTextDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseWebSearchCallCompletedEvent`.
-            case BetaResponseWebSearchCallCompletedEvent(Components.Schemas.BetaResponseWebSearchCallCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseWebSearchCallInProgressEvent`.
-            case BetaResponseWebSearchCallInProgressEvent(Components.Schemas.BetaResponseWebSearchCallInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseWebSearchCallSearchingEvent`.
-            case BetaResponseWebSearchCallSearchingEvent(Components.Schemas.BetaResponseWebSearchCallSearchingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallCompletedEvent`.
-            case BetaResponseImageGenCallCompletedEvent(Components.Schemas.BetaResponseImageGenCallCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallGeneratingEvent`.
-            case BetaResponseImageGenCallGeneratingEvent(Components.Schemas.BetaResponseImageGenCallGeneratingEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallInProgressEvent`.
-            case BetaResponseImageGenCallInProgressEvent(Components.Schemas.BetaResponseImageGenCallInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallPartialImageEvent`.
-            case BetaResponseImageGenCallPartialImageEvent(Components.Schemas.BetaResponseImageGenCallPartialImageEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallArgumentsDeltaEvent`.
-            case BetaResponseMCPCallArgumentsDeltaEvent(Components.Schemas.BetaResponseMCPCallArgumentsDeltaEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallArgumentsDoneEvent`.
-            case BetaResponseMCPCallArgumentsDoneEvent(Components.Schemas.BetaResponseMCPCallArgumentsDoneEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallCompletedEvent`.
-            case BetaResponseMCPCallCompletedEvent(Components.Schemas.BetaResponseMCPCallCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallFailedEvent`.
-            case BetaResponseMCPCallFailedEvent(Components.Schemas.BetaResponseMCPCallFailedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallInProgressEvent`.
-            case BetaResponseMCPCallInProgressEvent(Components.Schemas.BetaResponseMCPCallInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPListToolsCompletedEvent`.
-            case BetaResponseMCPListToolsCompletedEvent(Components.Schemas.BetaResponseMCPListToolsCompletedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPListToolsFailedEvent`.
-            case BetaResponseMCPListToolsFailedEvent(Components.Schemas.BetaResponseMCPListToolsFailedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPListToolsInProgressEvent`.
-            case BetaResponseMCPListToolsInProgressEvent(Components.Schemas.BetaResponseMCPListToolsInProgressEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseOutputTextAnnotationAddedEvent`.
-            case BetaResponseOutputTextAnnotationAddedEvent(Components.Schemas.BetaResponseOutputTextAnnotationAddedEvent)
-            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseQueuedEvent`.
-            case BetaResponseQueuedEvent(Components.Schemas.BetaResponseQueuedEvent)
+            case error(Components.Schemas.BetaResponseErrorEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioDeltaEvent`.
+            case response_period_audio_period_delta(Components.Schemas.BetaResponseAudioDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioDoneEvent`.
+            case response_period_audio_period_done(Components.Schemas.BetaResponseAudioDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioTranscriptDeltaEvent`.
+            case response_period_audio_period_transcript_period_delta(Components.Schemas.BetaResponseAudioTranscriptDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseAudioTranscriptDoneEvent`.
+            case response_period_audio_period_transcript_period_done(Components.Schemas.BetaResponseAudioTranscriptDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallCodeDeltaEvent`.
+            case response_period_code_interpreter_call_code_period_delta(Components.Schemas.BetaResponseCodeInterpreterCallCodeDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallCodeDoneEvent`.
+            case response_period_code_interpreter_call_code_period_done(Components.Schemas.BetaResponseCodeInterpreterCallCodeDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallCompletedEvent`.
+            case response_period_code_interpreter_call_period_completed(Components.Schemas.BetaResponseCodeInterpreterCallCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallInProgressEvent`.
+            case response_period_code_interpreter_call_period_in_progress(Components.Schemas.BetaResponseCodeInterpreterCallInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCodeInterpreterCallInterpretingEvent`.
+            case response_period_code_interpreter_call_period_interpreting(Components.Schemas.BetaResponseCodeInterpreterCallInterpretingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCompactionCompactingStreamingEvent`.
+            case response_period_compaction_period_compacting(Components.Schemas.BetaResponseCompactionCompactingStreamingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCompletedEvent`.
+            case response_period_completed(Components.Schemas.BetaResponseCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseContentPartAddedEvent`.
+            case response_period_content_part_period_added(Components.Schemas.BetaResponseContentPartAddedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseContentPartDoneEvent`.
+            case response_period_content_part_period_done(Components.Schemas.BetaResponseContentPartDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCreatedEvent`.
+            case response_period_created(Components.Schemas.BetaResponseCreatedEvent)
             /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCustomToolCallInputDeltaEvent`.
-            case BetaResponseCustomToolCallInputDeltaEvent(Components.Schemas.BetaResponseCustomToolCallInputDeltaEvent)
+            case response_period_custom_tool_call_input_period_delta(Components.Schemas.BetaResponseCustomToolCallInputDeltaEvent)
             /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseCustomToolCallInputDoneEvent`.
-            case BetaResponseCustomToolCallInputDoneEvent(Components.Schemas.BetaResponseCustomToolCallInputDoneEvent)
+            case response_period_custom_tool_call_input_period_done(Components.Schemas.BetaResponseCustomToolCallInputDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFailedEvent`.
+            case response_period_failed(Components.Schemas.BetaResponseFailedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFileSearchCallCompletedEvent`.
+            case response_period_file_search_call_period_completed(Components.Schemas.BetaResponseFileSearchCallCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFileSearchCallInProgressEvent`.
+            case response_period_file_search_call_period_in_progress(Components.Schemas.BetaResponseFileSearchCallInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFileSearchCallSearchingEvent`.
+            case response_period_file_search_call_period_searching(Components.Schemas.BetaResponseFileSearchCallSearchingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFunctionCallArgumentsDeltaEvent`.
+            case response_period_function_call_arguments_period_delta(Components.Schemas.BetaResponseFunctionCallArgumentsDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseFunctionCallArgumentsDoneEvent`.
+            case response_period_function_call_arguments_period_done(Components.Schemas.BetaResponseFunctionCallArgumentsDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallCompletedEvent`.
+            case response_period_image_generation_call_period_completed(Components.Schemas.BetaResponseImageGenCallCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallGeneratingEvent`.
+            case response_period_image_generation_call_period_generating(Components.Schemas.BetaResponseImageGenCallGeneratingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallInProgressEvent`.
+            case response_period_image_generation_call_period_in_progress(Components.Schemas.BetaResponseImageGenCallInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseImageGenCallPartialImageEvent`.
+            case response_period_image_generation_call_period_partial_image(Components.Schemas.BetaResponseImageGenCallPartialImageEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseInProgressEvent`.
+            case response_period_in_progress(Components.Schemas.BetaResponseInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseIncompleteEvent`.
+            case response_period_incomplete(Components.Schemas.BetaResponseIncompleteEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallArgumentsDeltaEvent`.
+            case response_period_mcp_call_arguments_period_delta(Components.Schemas.BetaResponseMCPCallArgumentsDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallArgumentsDoneEvent`.
+            case response_period_mcp_call_arguments_period_done(Components.Schemas.BetaResponseMCPCallArgumentsDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallCompletedEvent`.
+            case response_period_mcp_call_period_completed(Components.Schemas.BetaResponseMCPCallCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallFailedEvent`.
+            case response_period_mcp_call_period_failed(Components.Schemas.BetaResponseMCPCallFailedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPCallInProgressEvent`.
+            case response_period_mcp_call_period_in_progress(Components.Schemas.BetaResponseMCPCallInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPListToolsCompletedEvent`.
+            case response_period_mcp_list_tools_period_completed(Components.Schemas.BetaResponseMCPListToolsCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPListToolsFailedEvent`.
+            case response_period_mcp_list_tools_period_failed(Components.Schemas.BetaResponseMCPListToolsFailedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseMCPListToolsInProgressEvent`.
+            case response_period_mcp_list_tools_period_in_progress(Components.Schemas.BetaResponseMCPListToolsInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseOutputItemAddedEvent`.
+            case response_period_output_item_period_added(Components.Schemas.BetaResponseOutputItemAddedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseOutputItemDoneEvent`.
+            case response_period_output_item_period_done(Components.Schemas.BetaResponseOutputItemDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseOutputTextAnnotationAddedEvent`.
+            case response_period_output_text_period_annotation_period_added(Components.Schemas.BetaResponseOutputTextAnnotationAddedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseTextDeltaEvent`.
+            case response_period_output_text_period_delta(Components.Schemas.BetaResponseTextDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseTextDoneEvent`.
+            case response_period_output_text_period_done(Components.Schemas.BetaResponseTextDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseQueuedEvent`.
+            case response_period_queued(Components.Schemas.BetaResponseQueuedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryPartAddedEvent`.
+            case response_period_reasoning_summary_part_period_added(Components.Schemas.BetaResponseReasoningSummaryPartAddedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryPartDoneEvent`.
+            case response_period_reasoning_summary_part_period_done(Components.Schemas.BetaResponseReasoningSummaryPartDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryTextDeltaEvent`.
+            case response_period_reasoning_summary_text_period_delta(Components.Schemas.BetaResponseReasoningSummaryTextDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningSummaryTextDoneEvent`.
+            case response_period_reasoning_summary_text_period_done(Components.Schemas.BetaResponseReasoningSummaryTextDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningTextDeltaEvent`.
+            case response_period_reasoning_text_period_delta(Components.Schemas.BetaResponseReasoningTextDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseReasoningTextDoneEvent`.
+            case response_period_reasoning_text_period_done(Components.Schemas.BetaResponseReasoningTextDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseRefusalDeltaEvent`.
+            case response_period_refusal_period_delta(Components.Schemas.BetaResponseRefusalDeltaEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseRefusalDoneEvent`.
+            case response_period_refusal_period_done(Components.Schemas.BetaResponseRefusalDoneEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallCommandAddedStreamingEvent`.
+            case response_period_shell_call_command_period_added(Components.Schemas.BetaResponseShellCallCommandAddedStreamingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallCommandDeltaStreamingEvent`.
+            case response_period_shell_call_command_period_delta(Components.Schemas.BetaResponseShellCallCommandDeltaStreamingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallCommandDoneStreamingEvent`.
+            case response_period_shell_call_command_period_done(Components.Schemas.BetaResponseShellCallCommandDoneStreamingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallOutputContentDeltaStreamingEvent`.
+            case response_period_shell_call_output_content_period_delta(Components.Schemas.BetaResponseShellCallOutputContentDeltaStreamingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseShellCallOutputContentDoneStreamingEvent`.
+            case response_period_shell_call_output_content_period_done(Components.Schemas.BetaResponseShellCallOutputContentDoneStreamingEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseWebSearchCallCompletedEvent`.
+            case response_period_web_search_call_period_completed(Components.Schemas.BetaResponseWebSearchCallCompletedEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseWebSearchCallInProgressEvent`.
+            case response_period_web_search_call_period_in_progress(Components.Schemas.BetaResponseWebSearchCallInProgressEvent)
+            /// - Remark: Generated from `#/components/schemas/BetaResponseStreamEvent/BetaResponseWebSearchCallSearchingEvent`.
+            case response_period_web_search_call_period_searching(Components.Schemas.BetaResponseWebSearchCallSearchingEvent)
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
             }
@@ -50107,124 +50335,124 @@ public enum Components {
                     forKey: ._type
                 )
                 switch discriminator {
-                case "BetaResponseAudioDeltaEvent", "#/components/schemas/BetaResponseAudioDeltaEvent":
-                    self = .BetaResponseAudioDeltaEvent(try .init(from: decoder))
-                case "BetaResponseAudioDoneEvent", "#/components/schemas/BetaResponseAudioDoneEvent":
-                    self = .BetaResponseAudioDoneEvent(try .init(from: decoder))
-                case "BetaResponseAudioTranscriptDeltaEvent", "#/components/schemas/BetaResponseAudioTranscriptDeltaEvent":
-                    self = .BetaResponseAudioTranscriptDeltaEvent(try .init(from: decoder))
-                case "BetaResponseAudioTranscriptDoneEvent", "#/components/schemas/BetaResponseAudioTranscriptDoneEvent":
-                    self = .BetaResponseAudioTranscriptDoneEvent(try .init(from: decoder))
-                case "BetaResponseCodeInterpreterCallCodeDeltaEvent", "#/components/schemas/BetaResponseCodeInterpreterCallCodeDeltaEvent":
-                    self = .BetaResponseCodeInterpreterCallCodeDeltaEvent(try .init(from: decoder))
-                case "BetaResponseCodeInterpreterCallCodeDoneEvent", "#/components/schemas/BetaResponseCodeInterpreterCallCodeDoneEvent":
-                    self = .BetaResponseCodeInterpreterCallCodeDoneEvent(try .init(from: decoder))
-                case "BetaResponseCodeInterpreterCallCompletedEvent", "#/components/schemas/BetaResponseCodeInterpreterCallCompletedEvent":
-                    self = .BetaResponseCodeInterpreterCallCompletedEvent(try .init(from: decoder))
-                case "BetaResponseCodeInterpreterCallInProgressEvent", "#/components/schemas/BetaResponseCodeInterpreterCallInProgressEvent":
-                    self = .BetaResponseCodeInterpreterCallInProgressEvent(try .init(from: decoder))
-                case "BetaResponseCodeInterpreterCallInterpretingEvent", "#/components/schemas/BetaResponseCodeInterpreterCallInterpretingEvent":
-                    self = .BetaResponseCodeInterpreterCallInterpretingEvent(try .init(from: decoder))
-                case "BetaResponseCompactionCompactingStreamingEvent", "#/components/schemas/BetaResponseCompactionCompactingStreamingEvent":
-                    self = .BetaResponseCompactionCompactingStreamingEvent(try .init(from: decoder))
-                case "BetaResponseCompletedEvent", "#/components/schemas/BetaResponseCompletedEvent":
-                    self = .BetaResponseCompletedEvent(try .init(from: decoder))
-                case "BetaResponseContentPartAddedEvent", "#/components/schemas/BetaResponseContentPartAddedEvent":
-                    self = .BetaResponseContentPartAddedEvent(try .init(from: decoder))
-                case "BetaResponseContentPartDoneEvent", "#/components/schemas/BetaResponseContentPartDoneEvent":
-                    self = .BetaResponseContentPartDoneEvent(try .init(from: decoder))
-                case "BetaResponseCreatedEvent", "#/components/schemas/BetaResponseCreatedEvent":
-                    self = .BetaResponseCreatedEvent(try .init(from: decoder))
-                case "BetaResponseErrorEvent", "#/components/schemas/BetaResponseErrorEvent":
-                    self = .BetaResponseErrorEvent(try .init(from: decoder))
-                case "BetaResponseFileSearchCallCompletedEvent", "#/components/schemas/BetaResponseFileSearchCallCompletedEvent":
-                    self = .BetaResponseFileSearchCallCompletedEvent(try .init(from: decoder))
-                case "BetaResponseFileSearchCallInProgressEvent", "#/components/schemas/BetaResponseFileSearchCallInProgressEvent":
-                    self = .BetaResponseFileSearchCallInProgressEvent(try .init(from: decoder))
-                case "BetaResponseFileSearchCallSearchingEvent", "#/components/schemas/BetaResponseFileSearchCallSearchingEvent":
-                    self = .BetaResponseFileSearchCallSearchingEvent(try .init(from: decoder))
-                case "BetaResponseFunctionCallArgumentsDeltaEvent", "#/components/schemas/BetaResponseFunctionCallArgumentsDeltaEvent":
-                    self = .BetaResponseFunctionCallArgumentsDeltaEvent(try .init(from: decoder))
-                case "BetaResponseFunctionCallArgumentsDoneEvent", "#/components/schemas/BetaResponseFunctionCallArgumentsDoneEvent":
-                    self = .BetaResponseFunctionCallArgumentsDoneEvent(try .init(from: decoder))
-                case "BetaResponseShellCallCommandAddedStreamingEvent", "#/components/schemas/BetaResponseShellCallCommandAddedStreamingEvent":
-                    self = .BetaResponseShellCallCommandAddedStreamingEvent(try .init(from: decoder))
-                case "BetaResponseShellCallCommandDeltaStreamingEvent", "#/components/schemas/BetaResponseShellCallCommandDeltaStreamingEvent":
-                    self = .BetaResponseShellCallCommandDeltaStreamingEvent(try .init(from: decoder))
-                case "BetaResponseShellCallCommandDoneStreamingEvent", "#/components/schemas/BetaResponseShellCallCommandDoneStreamingEvent":
-                    self = .BetaResponseShellCallCommandDoneStreamingEvent(try .init(from: decoder))
-                case "BetaResponseShellCallOutputContentDeltaStreamingEvent", "#/components/schemas/BetaResponseShellCallOutputContentDeltaStreamingEvent":
-                    self = .BetaResponseShellCallOutputContentDeltaStreamingEvent(try .init(from: decoder))
-                case "BetaResponseShellCallOutputContentDoneStreamingEvent", "#/components/schemas/BetaResponseShellCallOutputContentDoneStreamingEvent":
-                    self = .BetaResponseShellCallOutputContentDoneStreamingEvent(try .init(from: decoder))
-                case "BetaResponseInProgressEvent", "#/components/schemas/BetaResponseInProgressEvent":
-                    self = .BetaResponseInProgressEvent(try .init(from: decoder))
-                case "BetaResponseFailedEvent", "#/components/schemas/BetaResponseFailedEvent":
-                    self = .BetaResponseFailedEvent(try .init(from: decoder))
-                case "BetaResponseIncompleteEvent", "#/components/schemas/BetaResponseIncompleteEvent":
-                    self = .BetaResponseIncompleteEvent(try .init(from: decoder))
-                case "BetaResponseOutputItemAddedEvent", "#/components/schemas/BetaResponseOutputItemAddedEvent":
-                    self = .BetaResponseOutputItemAddedEvent(try .init(from: decoder))
-                case "BetaResponseOutputItemDoneEvent", "#/components/schemas/BetaResponseOutputItemDoneEvent":
-                    self = .BetaResponseOutputItemDoneEvent(try .init(from: decoder))
-                case "BetaResponseReasoningSummaryPartAddedEvent", "#/components/schemas/BetaResponseReasoningSummaryPartAddedEvent":
-                    self = .BetaResponseReasoningSummaryPartAddedEvent(try .init(from: decoder))
-                case "BetaResponseReasoningSummaryPartDoneEvent", "#/components/schemas/BetaResponseReasoningSummaryPartDoneEvent":
-                    self = .BetaResponseReasoningSummaryPartDoneEvent(try .init(from: decoder))
-                case "BetaResponseReasoningSummaryTextDeltaEvent", "#/components/schemas/BetaResponseReasoningSummaryTextDeltaEvent":
-                    self = .BetaResponseReasoningSummaryTextDeltaEvent(try .init(from: decoder))
-                case "BetaResponseReasoningSummaryTextDoneEvent", "#/components/schemas/BetaResponseReasoningSummaryTextDoneEvent":
-                    self = .BetaResponseReasoningSummaryTextDoneEvent(try .init(from: decoder))
-                case "BetaResponseReasoningTextDeltaEvent", "#/components/schemas/BetaResponseReasoningTextDeltaEvent":
-                    self = .BetaResponseReasoningTextDeltaEvent(try .init(from: decoder))
-                case "BetaResponseReasoningTextDoneEvent", "#/components/schemas/BetaResponseReasoningTextDoneEvent":
-                    self = .BetaResponseReasoningTextDoneEvent(try .init(from: decoder))
-                case "BetaResponseRefusalDeltaEvent", "#/components/schemas/BetaResponseRefusalDeltaEvent":
-                    self = .BetaResponseRefusalDeltaEvent(try .init(from: decoder))
-                case "BetaResponseRefusalDoneEvent", "#/components/schemas/BetaResponseRefusalDoneEvent":
-                    self = .BetaResponseRefusalDoneEvent(try .init(from: decoder))
-                case "BetaResponseTextDeltaEvent", "#/components/schemas/BetaResponseTextDeltaEvent":
-                    self = .BetaResponseTextDeltaEvent(try .init(from: decoder))
-                case "BetaResponseTextDoneEvent", "#/components/schemas/BetaResponseTextDoneEvent":
-                    self = .BetaResponseTextDoneEvent(try .init(from: decoder))
-                case "BetaResponseWebSearchCallCompletedEvent", "#/components/schemas/BetaResponseWebSearchCallCompletedEvent":
-                    self = .BetaResponseWebSearchCallCompletedEvent(try .init(from: decoder))
-                case "BetaResponseWebSearchCallInProgressEvent", "#/components/schemas/BetaResponseWebSearchCallInProgressEvent":
-                    self = .BetaResponseWebSearchCallInProgressEvent(try .init(from: decoder))
-                case "BetaResponseWebSearchCallSearchingEvent", "#/components/schemas/BetaResponseWebSearchCallSearchingEvent":
-                    self = .BetaResponseWebSearchCallSearchingEvent(try .init(from: decoder))
-                case "BetaResponseImageGenCallCompletedEvent", "#/components/schemas/BetaResponseImageGenCallCompletedEvent":
-                    self = .BetaResponseImageGenCallCompletedEvent(try .init(from: decoder))
-                case "BetaResponseImageGenCallGeneratingEvent", "#/components/schemas/BetaResponseImageGenCallGeneratingEvent":
-                    self = .BetaResponseImageGenCallGeneratingEvent(try .init(from: decoder))
-                case "BetaResponseImageGenCallInProgressEvent", "#/components/schemas/BetaResponseImageGenCallInProgressEvent":
-                    self = .BetaResponseImageGenCallInProgressEvent(try .init(from: decoder))
-                case "BetaResponseImageGenCallPartialImageEvent", "#/components/schemas/BetaResponseImageGenCallPartialImageEvent":
-                    self = .BetaResponseImageGenCallPartialImageEvent(try .init(from: decoder))
-                case "BetaResponseMCPCallArgumentsDeltaEvent", "#/components/schemas/BetaResponseMCPCallArgumentsDeltaEvent":
-                    self = .BetaResponseMCPCallArgumentsDeltaEvent(try .init(from: decoder))
-                case "BetaResponseMCPCallArgumentsDoneEvent", "#/components/schemas/BetaResponseMCPCallArgumentsDoneEvent":
-                    self = .BetaResponseMCPCallArgumentsDoneEvent(try .init(from: decoder))
-                case "BetaResponseMCPCallCompletedEvent", "#/components/schemas/BetaResponseMCPCallCompletedEvent":
-                    self = .BetaResponseMCPCallCompletedEvent(try .init(from: decoder))
-                case "BetaResponseMCPCallFailedEvent", "#/components/schemas/BetaResponseMCPCallFailedEvent":
-                    self = .BetaResponseMCPCallFailedEvent(try .init(from: decoder))
-                case "BetaResponseMCPCallInProgressEvent", "#/components/schemas/BetaResponseMCPCallInProgressEvent":
-                    self = .BetaResponseMCPCallInProgressEvent(try .init(from: decoder))
-                case "BetaResponseMCPListToolsCompletedEvent", "#/components/schemas/BetaResponseMCPListToolsCompletedEvent":
-                    self = .BetaResponseMCPListToolsCompletedEvent(try .init(from: decoder))
-                case "BetaResponseMCPListToolsFailedEvent", "#/components/schemas/BetaResponseMCPListToolsFailedEvent":
-                    self = .BetaResponseMCPListToolsFailedEvent(try .init(from: decoder))
-                case "BetaResponseMCPListToolsInProgressEvent", "#/components/schemas/BetaResponseMCPListToolsInProgressEvent":
-                    self = .BetaResponseMCPListToolsInProgressEvent(try .init(from: decoder))
-                case "BetaResponseOutputTextAnnotationAddedEvent", "#/components/schemas/BetaResponseOutputTextAnnotationAddedEvent":
-                    self = .BetaResponseOutputTextAnnotationAddedEvent(try .init(from: decoder))
-                case "BetaResponseQueuedEvent", "#/components/schemas/BetaResponseQueuedEvent":
-                    self = .BetaResponseQueuedEvent(try .init(from: decoder))
-                case "BetaResponseCustomToolCallInputDeltaEvent", "#/components/schemas/BetaResponseCustomToolCallInputDeltaEvent":
-                    self = .BetaResponseCustomToolCallInputDeltaEvent(try .init(from: decoder))
-                case "BetaResponseCustomToolCallInputDoneEvent", "#/components/schemas/BetaResponseCustomToolCallInputDoneEvent":
-                    self = .BetaResponseCustomToolCallInputDoneEvent(try .init(from: decoder))
+                case "error":
+                    self = .error(try .init(from: decoder))
+                case "response.audio.delta":
+                    self = .response_period_audio_period_delta(try .init(from: decoder))
+                case "response.audio.done":
+                    self = .response_period_audio_period_done(try .init(from: decoder))
+                case "response.audio.transcript.delta":
+                    self = .response_period_audio_period_transcript_period_delta(try .init(from: decoder))
+                case "response.audio.transcript.done":
+                    self = .response_period_audio_period_transcript_period_done(try .init(from: decoder))
+                case "response.code_interpreter_call_code.delta":
+                    self = .response_period_code_interpreter_call_code_period_delta(try .init(from: decoder))
+                case "response.code_interpreter_call_code.done":
+                    self = .response_period_code_interpreter_call_code_period_done(try .init(from: decoder))
+                case "response.code_interpreter_call.completed":
+                    self = .response_period_code_interpreter_call_period_completed(try .init(from: decoder))
+                case "response.code_interpreter_call.in_progress":
+                    self = .response_period_code_interpreter_call_period_in_progress(try .init(from: decoder))
+                case "response.code_interpreter_call.interpreting":
+                    self = .response_period_code_interpreter_call_period_interpreting(try .init(from: decoder))
+                case "response.compaction.compacting":
+                    self = .response_period_compaction_period_compacting(try .init(from: decoder))
+                case "response.completed":
+                    self = .response_period_completed(try .init(from: decoder))
+                case "response.content_part.added":
+                    self = .response_period_content_part_period_added(try .init(from: decoder))
+                case "response.content_part.done":
+                    self = .response_period_content_part_period_done(try .init(from: decoder))
+                case "response.created":
+                    self = .response_period_created(try .init(from: decoder))
+                case "response.custom_tool_call_input.delta":
+                    self = .response_period_custom_tool_call_input_period_delta(try .init(from: decoder))
+                case "response.custom_tool_call_input.done":
+                    self = .response_period_custom_tool_call_input_period_done(try .init(from: decoder))
+                case "response.failed":
+                    self = .response_period_failed(try .init(from: decoder))
+                case "response.file_search_call.completed":
+                    self = .response_period_file_search_call_period_completed(try .init(from: decoder))
+                case "response.file_search_call.in_progress":
+                    self = .response_period_file_search_call_period_in_progress(try .init(from: decoder))
+                case "response.file_search_call.searching":
+                    self = .response_period_file_search_call_period_searching(try .init(from: decoder))
+                case "response.function_call_arguments.delta":
+                    self = .response_period_function_call_arguments_period_delta(try .init(from: decoder))
+                case "response.function_call_arguments.done":
+                    self = .response_period_function_call_arguments_period_done(try .init(from: decoder))
+                case "response.image_generation_call.completed":
+                    self = .response_period_image_generation_call_period_completed(try .init(from: decoder))
+                case "response.image_generation_call.generating":
+                    self = .response_period_image_generation_call_period_generating(try .init(from: decoder))
+                case "response.image_generation_call.in_progress":
+                    self = .response_period_image_generation_call_period_in_progress(try .init(from: decoder))
+                case "response.image_generation_call.partial_image":
+                    self = .response_period_image_generation_call_period_partial_image(try .init(from: decoder))
+                case "response.in_progress":
+                    self = .response_period_in_progress(try .init(from: decoder))
+                case "response.incomplete":
+                    self = .response_period_incomplete(try .init(from: decoder))
+                case "response.mcp_call_arguments.delta":
+                    self = .response_period_mcp_call_arguments_period_delta(try .init(from: decoder))
+                case "response.mcp_call_arguments.done":
+                    self = .response_period_mcp_call_arguments_period_done(try .init(from: decoder))
+                case "response.mcp_call.completed":
+                    self = .response_period_mcp_call_period_completed(try .init(from: decoder))
+                case "response.mcp_call.failed":
+                    self = .response_period_mcp_call_period_failed(try .init(from: decoder))
+                case "response.mcp_call.in_progress":
+                    self = .response_period_mcp_call_period_in_progress(try .init(from: decoder))
+                case "response.mcp_list_tools.completed":
+                    self = .response_period_mcp_list_tools_period_completed(try .init(from: decoder))
+                case "response.mcp_list_tools.failed":
+                    self = .response_period_mcp_list_tools_period_failed(try .init(from: decoder))
+                case "response.mcp_list_tools.in_progress":
+                    self = .response_period_mcp_list_tools_period_in_progress(try .init(from: decoder))
+                case "response.output_item.added":
+                    self = .response_period_output_item_period_added(try .init(from: decoder))
+                case "response.output_item.done":
+                    self = .response_period_output_item_period_done(try .init(from: decoder))
+                case "response.output_text.annotation.added":
+                    self = .response_period_output_text_period_annotation_period_added(try .init(from: decoder))
+                case "response.output_text.delta":
+                    self = .response_period_output_text_period_delta(try .init(from: decoder))
+                case "response.output_text.done":
+                    self = .response_period_output_text_period_done(try .init(from: decoder))
+                case "response.queued":
+                    self = .response_period_queued(try .init(from: decoder))
+                case "response.reasoning_summary_part.added":
+                    self = .response_period_reasoning_summary_part_period_added(try .init(from: decoder))
+                case "response.reasoning_summary_part.done":
+                    self = .response_period_reasoning_summary_part_period_done(try .init(from: decoder))
+                case "response.reasoning_summary_text.delta":
+                    self = .response_period_reasoning_summary_text_period_delta(try .init(from: decoder))
+                case "response.reasoning_summary_text.done":
+                    self = .response_period_reasoning_summary_text_period_done(try .init(from: decoder))
+                case "response.reasoning_text.delta":
+                    self = .response_period_reasoning_text_period_delta(try .init(from: decoder))
+                case "response.reasoning_text.done":
+                    self = .response_period_reasoning_text_period_done(try .init(from: decoder))
+                case "response.refusal.delta":
+                    self = .response_period_refusal_period_delta(try .init(from: decoder))
+                case "response.refusal.done":
+                    self = .response_period_refusal_period_done(try .init(from: decoder))
+                case "response.shell_call_command.added":
+                    self = .response_period_shell_call_command_period_added(try .init(from: decoder))
+                case "response.shell_call_command.delta":
+                    self = .response_period_shell_call_command_period_delta(try .init(from: decoder))
+                case "response.shell_call_command.done":
+                    self = .response_period_shell_call_command_period_done(try .init(from: decoder))
+                case "response.shell_call_output_content.delta":
+                    self = .response_period_shell_call_output_content_period_delta(try .init(from: decoder))
+                case "response.shell_call_output_content.done":
+                    self = .response_period_shell_call_output_content_period_done(try .init(from: decoder))
+                case "response.web_search_call.completed":
+                    self = .response_period_web_search_call_period_completed(try .init(from: decoder))
+                case "response.web_search_call.in_progress":
+                    self = .response_period_web_search_call_period_in_progress(try .init(from: decoder))
+                case "response.web_search_call.searching":
+                    self = .response_period_web_search_call_period_searching(try .init(from: decoder))
                 default:
                     throw Swift.DecodingError.unknownOneOfDiscriminator(
                         discriminatorKey: CodingKeys._type,
@@ -50235,123 +50463,123 @@ public enum Components {
             }
             public func encode(to encoder: any Swift.Encoder) throws {
                 switch self {
-                case let .BetaResponseAudioDeltaEvent(value):
+                case let .error(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseAudioDoneEvent(value):
+                case let .response_period_audio_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseAudioTranscriptDeltaEvent(value):
+                case let .response_period_audio_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseAudioTranscriptDoneEvent(value):
+                case let .response_period_audio_period_transcript_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCodeInterpreterCallCodeDeltaEvent(value):
+                case let .response_period_audio_period_transcript_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCodeInterpreterCallCodeDoneEvent(value):
+                case let .response_period_code_interpreter_call_code_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCodeInterpreterCallCompletedEvent(value):
+                case let .response_period_code_interpreter_call_code_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCodeInterpreterCallInProgressEvent(value):
+                case let .response_period_code_interpreter_call_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCodeInterpreterCallInterpretingEvent(value):
+                case let .response_period_code_interpreter_call_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCompactionCompactingStreamingEvent(value):
+                case let .response_period_code_interpreter_call_period_interpreting(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCompletedEvent(value):
+                case let .response_period_compaction_period_compacting(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseContentPartAddedEvent(value):
+                case let .response_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseContentPartDoneEvent(value):
+                case let .response_period_content_part_period_added(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCreatedEvent(value):
+                case let .response_period_content_part_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseErrorEvent(value):
+                case let .response_period_created(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseFileSearchCallCompletedEvent(value):
+                case let .response_period_custom_tool_call_input_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseFileSearchCallInProgressEvent(value):
+                case let .response_period_custom_tool_call_input_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseFileSearchCallSearchingEvent(value):
+                case let .response_period_failed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseFunctionCallArgumentsDeltaEvent(value):
+                case let .response_period_file_search_call_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseFunctionCallArgumentsDoneEvent(value):
+                case let .response_period_file_search_call_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseShellCallCommandAddedStreamingEvent(value):
+                case let .response_period_file_search_call_period_searching(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseShellCallCommandDeltaStreamingEvent(value):
+                case let .response_period_function_call_arguments_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseShellCallCommandDoneStreamingEvent(value):
+                case let .response_period_function_call_arguments_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseShellCallOutputContentDeltaStreamingEvent(value):
+                case let .response_period_image_generation_call_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseShellCallOutputContentDoneStreamingEvent(value):
+                case let .response_period_image_generation_call_period_generating(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseInProgressEvent(value):
+                case let .response_period_image_generation_call_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseFailedEvent(value):
+                case let .response_period_image_generation_call_period_partial_image(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseIncompleteEvent(value):
+                case let .response_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseOutputItemAddedEvent(value):
+                case let .response_period_incomplete(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseOutputItemDoneEvent(value):
+                case let .response_period_mcp_call_arguments_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseReasoningSummaryPartAddedEvent(value):
+                case let .response_period_mcp_call_arguments_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseReasoningSummaryPartDoneEvent(value):
+                case let .response_period_mcp_call_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseReasoningSummaryTextDeltaEvent(value):
+                case let .response_period_mcp_call_period_failed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseReasoningSummaryTextDoneEvent(value):
+                case let .response_period_mcp_call_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseReasoningTextDeltaEvent(value):
+                case let .response_period_mcp_list_tools_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseReasoningTextDoneEvent(value):
+                case let .response_period_mcp_list_tools_period_failed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseRefusalDeltaEvent(value):
+                case let .response_period_mcp_list_tools_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseRefusalDoneEvent(value):
+                case let .response_period_output_item_period_added(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseTextDeltaEvent(value):
+                case let .response_period_output_item_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseTextDoneEvent(value):
+                case let .response_period_output_text_period_annotation_period_added(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseWebSearchCallCompletedEvent(value):
+                case let .response_period_output_text_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseWebSearchCallInProgressEvent(value):
+                case let .response_period_output_text_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseWebSearchCallSearchingEvent(value):
+                case let .response_period_queued(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseImageGenCallCompletedEvent(value):
+                case let .response_period_reasoning_summary_part_period_added(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseImageGenCallGeneratingEvent(value):
+                case let .response_period_reasoning_summary_part_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseImageGenCallInProgressEvent(value):
+                case let .response_period_reasoning_summary_text_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseImageGenCallPartialImageEvent(value):
+                case let .response_period_reasoning_summary_text_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPCallArgumentsDeltaEvent(value):
+                case let .response_period_reasoning_text_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPCallArgumentsDoneEvent(value):
+                case let .response_period_reasoning_text_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPCallCompletedEvent(value):
+                case let .response_period_refusal_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPCallFailedEvent(value):
+                case let .response_period_refusal_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPCallInProgressEvent(value):
+                case let .response_period_shell_call_command_period_added(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPListToolsCompletedEvent(value):
+                case let .response_period_shell_call_command_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPListToolsFailedEvent(value):
+                case let .response_period_shell_call_command_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseMCPListToolsInProgressEvent(value):
+                case let .response_period_shell_call_output_content_period_delta(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseOutputTextAnnotationAddedEvent(value):
+                case let .response_period_shell_call_output_content_period_done(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseQueuedEvent(value):
+                case let .response_period_web_search_call_period_completed(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCustomToolCallInputDeltaEvent(value):
+                case let .response_period_web_search_call_period_in_progress(value):
                     try value.encode(to: encoder)
-                case let .BetaResponseCustomToolCallInputDoneEvent(value):
+                case let .response_period_web_search_call_period_searching(value):
                     try value.encode(to: encoder)
                 }
             }
