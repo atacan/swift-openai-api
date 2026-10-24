@@ -27,11 +27,14 @@ let package = Package(
             name: "SwiftOpenaiApi",
             targets: ["SwiftOpenaiApi"]
         ),
+        .library(name: "SwiftOpenaiApiURLSession", targets: ["SwiftOpenaiApiURLSession"]),
+        .library(name: "SwiftOpenaiApiAsyncHTTPClient", targets: ["SwiftOpenaiApiAsyncHTTPClient"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.10.0"),
-        .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.8.0"),
-        .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.1.0"),
+        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.13.0"),
+        .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.12.0"),
+        .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.5.0"),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-http-types.git", from: "1.0.0"),
     ],
     targets: [
@@ -39,14 +42,16 @@ let package = Package(
         .target(
             name: "SwiftOpenaiApiTypes",
             dependencies: [
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
             ]
         ),
         // Realtime target: Contains generated WebSocket event types
         .target(
             name: "SwiftOpenaiApiRealtimeTypes",
             dependencies: [
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
             ]
         ),
         // Client target: Contains generated client and custom code
@@ -54,8 +59,50 @@ let package = Package(
             name: "SwiftOpenaiApi",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
-                .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
                 .target(name: "SwiftOpenaiApiTypes"),
+            ]
+        ),
+        .target(
+            name: "SwiftOpenaiApiURLSession",
+            dependencies: [
+                .target(name: "SwiftOpenaiApi"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+            ]
+        ),
+        .target(
+            name: "SwiftOpenaiApiAsyncHTTPClient",
+            dependencies: [
+                .target(name: "SwiftOpenaiApi"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+            ]
+        ),
+        .testTarget(
+            name: "SwiftOpenaiApiTypesTests",
+            dependencies: [.target(name: "SwiftOpenaiApiTypes")]
+        ),
+        .testTarget(
+            name: "SwiftOpenaiApiURLSessionTests",
+            dependencies: [
+                .target(name: "SwiftOpenaiApi"),
+                .target(name: "SwiftOpenaiApiURLSession"),
+                .target(name: "SwiftOpenaiApiTypes"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+            ]
+        ),
+        .testTarget(
+            name: "SwiftOpenaiApiAsyncHTTPClientTests",
+            dependencies: [
+                .target(name: "SwiftOpenaiApi"),
+                .target(name: "SwiftOpenaiApiAsyncHTTPClient"),
+                .target(name: "SwiftOpenaiApiTypes"),
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
             ]
         ),
         // Tests

@@ -5,7 +5,6 @@
 // You can add custom client utilities and helper functions here.
 
 import OpenAPIRuntime
-import OpenAPIAsyncHTTPClient
 
 // Add your custom client utilities here
 // After code generation, you can add helper functions that use the generated Client

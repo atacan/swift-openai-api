@@ -27,8 +27,63 @@ discriminator mapping inference (op14). It requires
 
 ## Usage
 
-- `AuthenticationMiddleware` is provided to add API key authentication.
-- Check out [Tests](/Tests)
+The package exposes five products: `SwiftOpenaiApiTypes` (HTTP models and API
+protocol), `SwiftOpenaiApi` (transport-independent client and authentication),
+`SwiftOpenaiApiURLSession`, `SwiftOpenaiApiAsyncHTTPClient`, and the separate
+`SwiftOpenaiApiRealtimeTypes` WebSocket models.
+
+Add the core product and your chosen convenience product to your target. Add
+`SwiftOpenaiApiTypes` if you import models directly. Both factories return the
+same `SwiftOpenaiApi.Client`:
+
+```swift
+import Foundation
+import SwiftOpenaiApi
+import SwiftOpenaiApiURLSession
+
+let client = Client.urlSession(
+    serverURL: URL(string: "https://api.openai.com/v1")!,
+    authentication: .credentials(["ApiKeyAuth": .init("YOUR_API_KEY")])
+)
+```
+
+```swift
+import Foundation
+import SwiftOpenaiApi
+import SwiftOpenaiApiAsyncHTTPClient
+
+let client = Client.asyncHTTPClient(
+    serverURL: URL(string: "https://api.openai.com/v1")!,
+    authentication: .credentials(["ApiKeyAuth": .init("YOUR_API_KEY")])
+)
+```
+
+The final specification declares two bearer schemes: ordinary requests use
+`ApiKeyAuth`; administration operations use `AdminApiKeyAuth`. Supply named
+credentials for the operations you call. `.bearer(...)` requires exactly one
+bearer scheme and therefore cannot select between these schemes. Dynamic tokens
+use `.credentials(["ApiKeyAuth": .init(provider: { try await tokenStore.token() })])`.
+Providers run per request; your application handles token acquisition and refresh.
+Missing credentials cause an authentication error before the request is sent.
+
+Both factories accept `configuration:`, `transportConfiguration:`, and
+`middlewares:`. Extra middleware runs before shared authentication. Use the
+core initializer `Client(serverURL:configuration:transport:authentication:middlewares:)`
+for your own transport. The original generated initializer with `transport:` and
+`middlewares:` remains available for custom authentication. The deprecated
+`SwiftOpenaiApiTypes.AuthenticationMiddleware(apiKey:)` remains available for
+existing callers; new code uses shared authentication from `SwiftOpenaiApi`.
+
+The default transports use their shared session/client. When injecting a session
+or HTTP client through the upstream transport configuration, declare and import
+the upstream transport product directly. Your application owns its lifecycle;
+do not invalidate the shared session or shut down the shared HTTP client.
+Transport packages are declared at package level even when using only core.
+
+Factory helpers and shared authentication are preserved by regeneration;
+`Authentication/GeneratedSecurity/OperationSecurity.swift` is regenerated from
+the final overlaid specification. Keep custom edits outside `GeneratedSources/`.
+Check out [Tests](/Tests).
 
 ### Realtime WebSocket types
 
@@ -76,11 +131,17 @@ make generate          # Generate HTTP types, the HTTP client, and realtime type
 make regenerate        # Transform the original specification, apply overlays, and generate all targets
 ```
 
-`swift test` also runs the offline [realtime tests](Tests/SwiftOpenaiApiRealtimeTypesTests).
+`swift test --filter RealtimeTypesTests` runs the offline [realtime tests](Tests/SwiftOpenaiApiRealtimeTypesTests).
 
 ### Chat Completions, Responses, and Audio fixtures
 
-`swift test` runs offline using captured payloads in
+Run the offline suites explicitly:
+
+```bash
+swift test --filter 'ChatCompletionsTests|ResponsesTests|AudioTests|RealtimeTypesTests|URLSessionFactoryTests|AsyncHTTPClientFactoryTests|AuthenticationTests|SwiftOpenaiApiTypesTests'
+```
+
+These suites use captured payloads in
 [ChatCompletions](Tests/SwiftOpenaiApiTests/Resources/ChatCompletions) and
 [Responses](Tests/SwiftOpenaiApiTests/Resources/Responses), and
 [Audio](Tests/SwiftOpenaiApiTests/Resources/Audio), with separate test suites.
@@ -117,15 +178,27 @@ Add the following to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/atacan/swift-openai-api", from: "0.1.0"),
+    .package(url: "https://github.com/atacan/swift-openai-api", from: "5.0.0"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: [
-        .product(name: "OpenAIUrlSessionClient", package: "swift-openai-api"),
-        // .product(name: "OpenAIAsyncHTTPClient", package: "swift-openai-api"),
+        .product(name: "SwiftOpenaiApi", package: "swift-openai-api"),
+        .product(name: "SwiftOpenaiApiURLSession", package: "swift-openai-api"),
+        // Or: .product(name: "SwiftOpenaiApiAsyncHTTPClient", package: "swift-openai-api"),
+        // Add SwiftOpenaiApiTypes when importing models directly.
     ]),
 ]
 ```
+
+## Troubleshooting response decoding
+
+The current schemas represent timestamps as numbers, so factories use the runtime's
+standard configuration. For future schemas with fractional ISO 8601 timestamps,
+`Expected date string to be ISO8601-formatted` can require
+`configuration: .init(dateTranscoder: .iso8601WithFractionalSeconds)`. Set a
+provider default in both factory helpers only after confirming the actual response
+format, and retain explicit configuration overrides. A standalone `JSONDecoder`
+still requires its own `dateDecodingStrategy`.
 
 ## Notes
 

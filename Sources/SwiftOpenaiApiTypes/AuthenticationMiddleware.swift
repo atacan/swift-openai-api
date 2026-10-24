@@ -6,6 +6,7 @@ import Foundation
 import OpenAPIRuntime
 import HTTPTypes
 
+@available(*, deprecated, message: "Use SwiftOpenaiApi.AuthenticationMiddleware(authentication:) with named credentials, or the transport factories.")
 public struct AuthenticationMiddleware: ClientMiddleware {
     public var apiKey: String
 
